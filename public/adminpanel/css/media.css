@@ -1,0 +1,158 @@
+
+
+@media only screen and (min-width : 1300px){
+
+}
+
+
+
+@media (max-width : 1033px){
+
+
+}
+
+
+@media (max-width : 1024px){
+
+
+}
+
+
+
+@media (max-width : 1218px){
+
+
+}
+
+
+
+@media (max-width : 1200px){
+
+
+}
+
+
+
+
+
+@media (max-width : 783px){
+
+}
+@media (max-width : 782px){
+
+
+}
+
+
+@media (max-width : 991px){
+
+
+
+
+}
+
+
+@media (max-width : 845px){
+
+
+}
+
+
+
+
+
+@media screen and (min-width : 768px) and (max-width : 1024px) {
+
+
+}
+
+@media (max-width : 766px){
+    
+  
+}
+@media (max-width : 663px){
+
+}
+/*************************360****************************/
+
+@media (max-width : 639px){
+   
+
+}
+
+@media (min-width : 556px){
+
+
+
+}
+
+
+
+@media (max-width : 708px){
+
+
+
+
+}
+
+
+ @media screen and (min-width : 320px) and (max-width : 640px) {
+.in-right-col {
+    display: none;
+}
+.in-left-col {
+    width: 100%;
+}
+.index-form-wrap {
+    width: 90%;
+}
+.left-col {
+    width: 100%;
+    text-align: center;
+}
+.left-col ul li a {
+    margin: 0;
+    padding: 7px;
+    font-size: 10px;
+}
+.mobile-logo {
+    width: 150px;
+    margin: 10px auto;
+}
+.mobile-logo img{
+    width: 100%;
+}
+.index-comn-heading {
+    font-size: 20px;
+
+}
+.index-note {
+    font-size: 12px;
+    margin: 10px 0 15px 0;
+}
+input[type="text"], input[type="password"] {
+    font-size: 14px;
+}
+.mobile-logo{
+    display:block;
+}
+
+
+}
+
+
+
+@media screen and (min-width : 320px) and (max-width : 640px) and (orientation : landscape) {
+
+
+}
+
+
+ @media screen and (min-width : 320px) and (max-width : 480px) {
+	 
+
+
+	
+ }
+ 
+ 

@@ -1,0 +1,10 @@
+Time : 10:50:33
+SQLSTATE[42S02]: Base table or view not found: 1146 Table 'appinventiv.Persons' doesn't exist
+Raw SQL : SELECT * FROM Persons WHERE firstname = :firstname AND age = :age
+
+Time : 10:49:34
+SQLSTATE[42S02]: Base table or view not found: 1146 Table 'appinventiv.Persons' doesn't exist
+Raw SQL : SELECT * FROM Persons WHERE firstname = :firstname AND age = :age
+
+Time : 10:40:27
+SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)

@@ -1,0 +1,467 @@
+[17-Oct-2017 13:32:40 UTC] PHP Fatal error:  Call to undefined method Admin::loadAdmin() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/controllers/Admin.php on line 85
+[31-Oct-2017 10:11:04 UTC] PHP Fatal error:  Call to undefined function form_open_multipart() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/adminPanel/notification/add.php on line 13
+[31-Oct-2017 10:12:52 UTC] PHP Fatal error:  Call to undefined function form_open_multipart() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/adminPanel/notification/add.php on line 13
+[31-Oct-2017 10:13:57 UTC] PHP Fatal error:  Call to undefined function form_open_multipart() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/adminPanel/notification/add.php on line 13
+[31-Oct-2017 10:16:57 UTC] PHP Fatal error:  Call to undefined function form_open_multipart() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/adminPanel/notification/add.php on line 13
+[31-Oct-2017 10:17:34 UTC] PHP Fatal error:  Call to undefined function set_value() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/adminPanel/notification/add.php on line 41
+[31-Oct-2017 10:17:35 UTC] PHP Fatal error:  Call to undefined function set_value() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/adminPanel/notification/add.php on line 41
+[31-Oct-2017 10:18:15 UTC] PHP Fatal error:  Call to undefined function form_open() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/adminPanel/notification/add.php on line 13
+[31-Oct-2017 10:19:48 UTC] PHP Parse error:  syntax error, unexpected 's' (T_STRING), expecting ',' or ';' in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/adminPanel/notification/index.php on line 124
+[31-Oct-2017 10:20:24 UTC] PHP Parse error:  syntax error, unexpected '?>' in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/adminPanel/notification/index.php on line 34
+[31-Oct-2017 10:21:18 UTC] PHP Fatal error:  Call to undefined function form_open_multipart() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/adminPanel/notification/add.php on line 13
+[31-Oct-2017 10:22:10 UTC] PHP Fatal error:  Call to undefined function set_value() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/adminPanel/notification/add.php on line 41
+[31-Oct-2017 10:22:12 UTC] PHP Fatal error:  Call to undefined function set_value() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/adminPanel/notification/add.php on line 41
+[31-Oct-2017 10:24:01 UTC] PHP Fatal error:  Call to undefined function set_value() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/adminPanel/notification/add.php on line 41
+[31-Oct-2017 10:24:09 UTC] PHP Fatal error:  Call to undefined function set_value() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/adminPanel/notification/add.php on line 41
+[31-Oct-2017 10:24:11 UTC] PHP Fatal error:  Call to undefined function set_value() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/adminPanel/notification/add.php on line 41
+[31-Oct-2017 10:24:13 UTC] PHP Fatal error:  Call to undefined function set_value() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/adminPanel/notification/add.php on line 41
+[31-Oct-2017 10:25:06 UTC] PHP Fatal error:  Call to undefined function form_error() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/adminPanel/notification/add.php on line 42
+[31-Oct-2017 10:25:06 UTC] PHP Fatal error:  Call to undefined function form_error() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/adminPanel/notification/add.php on line 42
+[31-Oct-2017 10:25:31 UTC] PHP Fatal error:  Call to undefined function form_error() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/adminPanel/notification/add.php on line 42
+[31-Oct-2017 10:25:33 UTC] PHP Fatal error:  Call to undefined function form_error() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/adminPanel/notification/add.php on line 42
+[31-Oct-2017 10:25:35 UTC] PHP Fatal error:  Call to undefined function form_error() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/adminPanel/notification/add.php on line 42
+[31-Oct-2017 10:25:39 UTC] PHP Fatal error:  Call to undefined function form_error() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/adminPanel/notification/add.php on line 42
+[31-Oct-2017 10:29:36 UTC] PHP Fatal error:  Call to undefined function set_value() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/adminPanel/notification/add.php on line 64
+[31-Oct-2017 10:30:04 UTC] PHP Fatal error:  Call to undefined function set_value() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/adminPanel/notification/add.php on line 64
+[31-Oct-2017 10:30:04 UTC] PHP Fatal error:  Call to undefined function set_value() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/adminPanel/notification/add.php on line 64
+[31-Oct-2017 10:30:07 UTC] PHP Fatal error:  Call to undefined function set_value() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/adminPanel/notification/add.php on line 64
+[31-Oct-2017 10:30:08 UTC] PHP Fatal error:  Call to undefined function set_value() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/adminPanel/notification/add.php on line 64
+[03-Nov-2017 06:26:25 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/models/User_Model.php on line 65
+[03-Nov-2017 06:26:46 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/models/User_Model.php on line 65
+[03-Nov-2017 06:27:27 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/models/User_Model.php on line 66
+[08-Nov-2017 14:11:25 UTC] PHP Fatal error:  Call to a member function fetch_data() on null in /home/applau8/reusable.applaurels.com/admin/application/modules/api/controllers/Reset.php on line 16
+[08-Nov-2017 14:14:29 UTC] PHP Fatal error:  Call to a member function fetch_data() on null in /home/applau8/reusable.applaurels.com/admin/application/modules/api/controllers/Reset.php on line 16
+[08-Nov-2017 14:14:33 UTC] PHP Fatal error:  Call to a member function fetch_data() on null in /home/applau8/reusable.applaurels.com/admin/application/modules/api/controllers/Reset.php on line 16
+[08-Nov-2017 14:16:41 UTC] PHP Fatal error:  Call to undefined function base_url() in /home/applau8/reusable.applaurels.com/admin/application/modules/api/views/reset/index.php on line 8
+[09-Nov-2017 07:49:02 UTC] PHP Fatal error:  Call to undefined method Resetpass::encrypt() in /home/applau8/reusable.applaurels.com/admin/application/modules/api/controllers/Resetpass.php on line 57
+[09-Nov-2017 12:29:33 UTC] PHP Fatal error:  Call to undefined method Forgot::response_data() in /home/applau8/reusable.applaurels.com/admin/application/modules/api/controllers/Forgot.php on line 105
+[13-Nov-2017 07:37:02 UTC] PHP Fatal error:  Call to undefined method Common_model::sendNotification() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/controllers/Notification.php on line 56
+[13-Nov-2017 07:46:03 UTC] PHP Fatal error:  Call to undefined method Common_model::sendNotification() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/controllers/Notification.php on line 56
+[13-Nov-2017 07:48:15 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/models/Common_model.php on line 1136
+[13-Nov-2017 11:23:49 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/models/Common_model.php on line 1151
+[13-Nov-2017 11:31:46 UTC] PHP Fatal error:  Call to a member function pagination() on null in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/controllers/Notification.php on line 41
+[13-Nov-2017 11:31:49 UTC] PHP Fatal error:  Call to a member function pagination() on null in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/controllers/Notification.php on line 41
+[13-Nov-2017 14:18:51 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/models/Common_model.php on line 35
+[13-Nov-2017 15:35:37 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/models/Common_model.php on line 35
+[14-Nov-2017 05:08:42 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/models/Common_model.php on line 35
+[14-Nov-2017 06:02:12 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/models/Common_model.php on line 35
+[14-Nov-2017 12:39:47 UTC] PHP Fatal error:  Call to undefined function form_open() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/adminPanel/notification/edit.php on line 32
+[15-Nov-2017 04:55:39 UTC] PHP Fatal error:  Call to a member function pagination() on null in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/controllers/User.php on line 74
+[15-Nov-2017 13:20:52 UTC] PHP Fatal error:  Call to undefined method Dashboard::load_views() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/controllers/Dashboard.php on line 35
+[15-Nov-2017 13:20:55 UTC] PHP Fatal error:  Call to undefined method Dashboard::load_views() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/controllers/Dashboard.php on line 35
+[15-Nov-2017 14:11:43 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/models/Common_model.php on line 35
+[15-Nov-2017 14:14:27 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/models/Common_model.php on line 35
+[15-Nov-2017 14:28:23 UTC] PHP Fatal error:  Cannot redeclare encrypt_with_openssl() (previously declared in /home/applau8/reusable.applaurels.com/admin/application/helpers/common_helper.php:83) in /home/applau8/reusable.applaurels.com/admin/application/helpers/encrypt_openssl_helper.php on line 14
+[15-Nov-2017 14:29:49 UTC] PHP Fatal error:  Class 'Encryption\OpenSSLEncrypt' not found in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/users/index.php on line 197
+[15-Nov-2017 14:29:52 UTC] PHP Fatal error:  Class 'Encryption\OpenSSLEncrypt' not found in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/users/index.php on line 197
+[15-Nov-2017 14:29:55 UTC] PHP Fatal error:  Class 'Encryption\OpenSSLEncrypt' not found in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/users/index.php on line 197
+[15-Nov-2017 14:31:43 UTC] PHP Fatal error:  Cannot redeclare class OpenSSLEncrypt in /home/applau8/reusable.applaurels.com/admin/application/libraries/OpenSSLEncrypt.php on line 14
+[15-Nov-2017 14:32:18 UTC] PHP Fatal error:  Cannot redeclare class OpenSSLEncrypt in /home/applau8/reusable.applaurels.com/admin/application/libraries/OpenSSLEncrypt.php on line 14
+[15-Nov-2017 14:32:32 UTC] PHP Fatal error:  Class 'Encryption\OpenSSLEncrypt' not found in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/users/index.php on line 197
+[15-Nov-2017 14:32:44 UTC] PHP Fatal error:  Class 'Encryption\OpenSSLEncrypt' not found in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/users/index.php on line 197
+[15-Nov-2017 14:36:11 UTC] PHP Fatal error:  Cannot redeclare class OpenSSLEncrypt in /home/applau8/reusable.applaurels.com/admin/application/libraries/OpenSSLEncrypt.php on line 14
+[15-Nov-2017 14:39:11 UTC] PHP Fatal error:  Cannot redeclare class OpenSSLEncrypt in /home/applau8/reusable.applaurels.com/admin/application/libraries/OpenSSLEncrypt.php on line 14
+[15-Nov-2017 14:52:09 UTC] PHP Fatal error:  Cannot redeclare class OpenSSLEncrypt in /home/applau8/reusable.applaurels.com/admin/application/libraries/OpenSSLEncrypt.php on line 14
+[15-Nov-2017 14:52:13 UTC] PHP Fatal error:  Cannot redeclare class OpenSSLEncrypt in /home/applau8/reusable.applaurels.com/admin/application/libraries/OpenSSLEncrypt.php on line 14
+[15-Nov-2017 14:52:58 UTC] PHP Fatal error:  require(): Failed opening required '/home/applau8/reusable.applaurels.com/admin/application/libraries/OpenSSLEncrypt.php' (include_path='.:/usr/lib/php:/usr/local/lib/php:/home/applau8/php') in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/controllers/User.php on line 4
+[15-Nov-2017 14:53:27 UTC] PHP Fatal error:  Class 'Encryption\OpenSSLEncrypt' not found in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/users/index.php on line 197
+[15-Nov-2017 14:55:19 UTC] PHP Fatal error:  Class 'Encryption\OpenSSLEncrypt' not found in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/users/index.php on line 197
+[15-Nov-2017 14:55:59 UTC] PHP Fatal error:  Class 'Encryption\OpenSSLEncrypt' not found in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/users/index.php on line 197
+[15-Nov-2017 15:00:31 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/models/Common_model.php on line 35
+[15-Nov-2017 15:01:58 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/models/Common_model.php on line 35
+[15-Nov-2017 15:02:00 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/models/Common_model.php on line 35
+[15-Nov-2017 15:06:42 UTC] PHP Fatal error:  Cannot redeclare class OpenSSLEncrypt in /home/applau8/reusable.applaurels.com/admin/application/libraries/OpenSSLEncrypt.php on line 14
+[15-Nov-2017 15:12:39 UTC] PHP Fatal error:  Cannot redeclare class OpenSSLEncrypt in /home/applau8/reusable.applaurels.com/admin/application/libraries/OpenSSLEncrypt.php on line 14
+[15-Nov-2017 15:13:27 UTC] PHP Fatal error:  Cannot redeclare class OpenSSLEncrypt in /home/applau8/reusable.applaurels.com/admin/application/libraries/OpenSSLEncrypt.php on line 14
+[15-Nov-2017 15:14:23 UTC] PHP Fatal error:  Class 'Encryption\OpenSSLEncrypt' not found in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/cms/index.php on line 75
+[15-Nov-2017 15:14:25 UTC] PHP Fatal error:  Class 'Encryption\OpenSSLEncrypt' not found in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/cms/index.php on line 75
+[16-Nov-2017 13:39:08 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/models/User_Model.php on line 66
+[16-Nov-2017 13:43:17 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/models/User_Model.php on line 66
+[25-Nov-2017 08:07:33 UTC] PHP Fatal error:  Call to undefined function head() in /home/applau8/reusable.applaurels.com/admin/application/modules/api/controllers/Chat_details.php on line 154
+[27-Nov-2017 06:27:03 UTC] PHP Fatal error:  Call to undefined method CommonModel::validateCookie() in /home/applau8/reusable.applaurels.com/admin/application/helpers/custom_cookie_helper.php on line 21
+[27-Nov-2017 06:27:06 UTC] PHP Fatal error:  Call to undefined method CommonModel::validateCookie() in /home/applau8/reusable.applaurels.com/admin/application/helpers/custom_cookie_helper.php on line 21
+[27-Nov-2017 06:28:16 UTC] PHP Fatal error:  Call to undefined method CommonModel::validateCookie() in /home/applau8/reusable.applaurels.com/admin/application/helpers/custom_cookie_helper.php on line 21
+[27-Nov-2017 06:28:22 UTC] PHP Fatal error:  Call to undefined method CommonModel::validateCookie() in /home/applau8/reusable.applaurels.com/admin/application/helpers/custom_cookie_helper.php on line 21
+[27-Nov-2017 06:28:30 UTC] PHP Fatal error:  Call to undefined method CommonModel::validateCookie() in /home/applau8/reusable.applaurels.com/admin/application/helpers/custom_cookie_helper.php on line 21
+[27-Nov-2017 07:51:08 UTC] PHP Fatal error:  Call to undefined function get_cookie() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/templates/header.php on line 36
+[27-Nov-2017 07:51:10 UTC] PHP Fatal error:  Call to undefined function get_cookie() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/templates/header.php on line 36
+[27-Nov-2017 07:51:13 UTC] PHP Fatal error:  Call to undefined function get_cookie() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/templates/header.php on line 36
+[27-Nov-2017 07:51:20 UTC] PHP Fatal error:  Call to undefined function get_cookie() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/templates/header.php on line 36
+[27-Nov-2017 07:51:27 UTC] PHP Fatal error:  Call to undefined function get_cookie() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/templates/header.php on line 36
+[27-Nov-2017 07:51:41 UTC] PHP Fatal error:  Call to undefined function get_cookie() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/templates/header.php on line 36
+[27-Nov-2017 07:52:08 UTC] PHP Fatal error:  Call to undefined function get_cookie() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/templates/header.php on line 36
+[27-Nov-2017 07:56:15 UTC] PHP Fatal error:  Call to undefined function get_cookie() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/templates/header.php on line 36
+[27-Nov-2017 08:04:59 UTC] PHP Fatal error:  Call to undefined function get_cookie() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/templates/header.php on line 36
+[27-Nov-2017 08:05:05 UTC] PHP Fatal error:  Call to undefined function get_cookie() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/templates/header.php on line 36
+[27-Nov-2017 10:24:47 UTC] PHP Fatal error:  Call to undefined function get_cookie() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/templates/header.php on line 36
+[27-Nov-2017 10:24:54 UTC] PHP Fatal error:  Call to undefined function get_cookie() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/templates/header.php on line 36
+[27-Nov-2017 10:24:56 UTC] PHP Fatal error:  Call to undefined function get_cookie() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/templates/header.php on line 36
+[27-Nov-2017 13:24:34 UTC] PHP Fatal error:  Call to a member function pagination() on null in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/controllers/Cms.php on line 57
+[27-Nov-2017 13:24:35 UTC] PHP Fatal error:  Call to a member function pagination() on null in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/controllers/Cms.php on line 57
+[28-Nov-2017 03:51:09 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Chat_model.php on line 72
+[28-Nov-2017 05:57:37 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Chat_model.php on line 41
+[28-Nov-2017 05:58:47 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Chat_model.php on line 41
+[28-Nov-2017 06:15:16 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Chat_model.php on line 41
+[28-Nov-2017 06:15:28 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Chat_model.php on line 41
+[28-Nov-2017 06:19:29 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Chat_model.php on line 41
+[28-Nov-2017 07:34:11 UTC] PHP Fatal error:  Call to a member function set_rules() on null in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/controllers/Version.php on line 72
+[28-Nov-2017 10:42:10 UTC] PHP Fatal error:  Call to a member function set_rules() on null in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/controllers/Version.php on line 72
+[29-Nov-2017 13:51:37 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1164
+[29-Nov-2017 14:05:49 UTC] PHP Fatal error:  Class 'Common_model' not found in /home/applau8/reusable.applaurels.com/admin/application/third_party/MX/Loader.php on line 211
+[29-Nov-2017 14:06:07 UTC] PHP Fatal error:  Class 'Common_model' not found in /home/applau8/reusable.applaurels.com/admin/application/third_party/MX/Loader.php on line 211
+[29-Nov-2017 14:38:15 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Chat_model.php on line 82
+[29-Nov-2017 14:38:40 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Chat_model.php on line 82
+[29-Nov-2017 14:38:57 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Chat_model.php on line 82
+[29-Nov-2017 14:39:28 UTC] PHP Fatal error:  Call to undefined function load_views() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/controllers/Dashboard.php on line 34
+[29-Nov-2017 14:39:34 UTC] PHP Fatal error:  Call to undefined function load_views() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/controllers/Dashboard.php on line 34
+[29-Nov-2017 14:41:58 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Chat_model.php on line 82
+[29-Nov-2017 14:42:22 UTC] PHP Fatal error:  Call to undefined function encryptDecrypt() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/users/index.php on line 166
+[29-Nov-2017 14:42:39 UTC] PHP Fatal error:  Call to undefined function encryptDecrypt() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/controllers/User.php on line 122
+[29-Nov-2017 14:42:43 UTC] PHP Fatal error:  Call to undefined function encryptDecrypt() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/users/index.php on line 166
+[29-Nov-2017 14:43:41 UTC] PHP Fatal error:  Call to undefined function encryptDecrypt() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/controllers/User.php on line 122
+[29-Nov-2017 14:46:53 UTC] PHP Fatal error:  Call to undefined function encryptDecrypt() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/views/users/index.php on line 166
+[29-Nov-2017 15:31:51 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1169
+[29-Nov-2017 15:32:06 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1169
+[29-Nov-2017 15:32:25 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1169
+[29-Nov-2017 15:33:42 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1169
+[30-Nov-2017 04:58:07 UTC] PHP Fatal error:  Class 'Common_model' not found in /home/applau8/reusable.applaurels.com/admin/application/third_party/MX/Loader.php on line 211
+[30-Nov-2017 05:02:17 UTC] PHP Fatal error:  Class 'Common_model' not found in /home/applau8/reusable.applaurels.com/admin/application/third_party/MX/Loader.php on line 211
+[30-Nov-2017 05:03:06 UTC] PHP Fatal error:  Class 'Common_model' not found in /home/applau8/reusable.applaurels.com/admin/application/third_party/MX/Loader.php on line 211
+[30-Nov-2017 05:03:50 UTC] PHP Fatal error:  Class 'Common_model' not found in /home/applau8/reusable.applaurels.com/admin/application/third_party/MX/Loader.php on line 211
+[30-Nov-2017 05:04:49 UTC] PHP Fatal error:  Class 'Common_model' not found in /home/applau8/reusable.applaurels.com/admin/application/third_party/MX/Loader.php on line 211
+[30-Nov-2017 05:07:20 UTC] PHP Fatal error:  Class 'Common_model' not found in /home/applau8/reusable.applaurels.com/admin/application/third_party/MX/Loader.php on line 211
+[30-Nov-2017 05:07:31 UTC] PHP Fatal error:  Class 'Common_model' not found in /home/applau8/reusable.applaurels.com/admin/application/third_party/MX/Loader.php on line 211
+[30-Nov-2017 05:07:56 UTC] PHP Fatal error:  Class 'Common_model' not found in /home/applau8/reusable.applaurels.com/admin/application/third_party/MX/Loader.php on line 211
+[30-Nov-2017 05:13:45 UTC] PHP Fatal error:  Class 'Common_model' not found in /home/applau8/reusable.applaurels.com/admin/application/third_party/MX/Loader.php on line 211
+[30-Nov-2017 05:14:54 UTC] PHP Fatal error:  Class 'Common_model' not found in /home/applau8/reusable.applaurels.com/admin/application/third_party/MX/Loader.php on line 211
+[30-Nov-2017 05:14:55 UTC] PHP Fatal error:  Class 'Common_model' not found in /home/applau8/reusable.applaurels.com/admin/application/third_party/MX/Loader.php on line 211
+[30-Nov-2017 05:14:57 UTC] PHP Fatal error:  Class 'Common_model' not found in /home/applau8/reusable.applaurels.com/admin/application/third_party/MX/Loader.php on line 211
+[30-Nov-2017 05:15:01 UTC] PHP Fatal error:  Class 'Common_model' not found in /home/applau8/reusable.applaurels.com/admin/application/third_party/MX/Loader.php on line 211
+[30-Nov-2017 05:16:31 UTC] PHP Fatal error:  Class 'Common_model' not found in /home/applau8/reusable.applaurels.com/admin/application/third_party/MX/Loader.php on line 211
+[30-Nov-2017 05:17:44 UTC] PHP Fatal error:  Class 'Common_model' not found in /home/applau8/reusable.applaurels.com/admin/application/third_party/MX/Loader.php on line 211
+[30-Nov-2017 05:18:47 UTC] PHP Fatal error:  Class 'Common_model' not found in /home/applau8/reusable.applaurels.com/admin/application/third_party/MX/Loader.php on line 211
+[30-Nov-2017 05:18:49 UTC] PHP Fatal error:  Class 'Common_model' not found in /home/applau8/reusable.applaurels.com/admin/application/third_party/MX/Loader.php on line 211
+[30-Nov-2017 05:19:25 UTC] PHP Fatal error:  Class 'Common_model' not found in /home/applau8/reusable.applaurels.com/admin/application/third_party/MX/Loader.php on line 211
+[30-Nov-2017 11:26:54 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting ')' in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 468
+[30-Nov-2017 13:01:26 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1165
+[30-Nov-2017 13:54:33 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 35
+[30-Nov-2017 13:56:06 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 35
+[30-Nov-2017 13:56:07 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 35
+[30-Nov-2017 13:56:09 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 35
+[30-Nov-2017 13:56:26 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 35
+[30-Nov-2017 13:56:28 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 35
+[30-Nov-2017 13:57:32 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 35
+[30-Nov-2017 13:57:33 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 35
+[30-Nov-2017 13:57:35 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 35
+[30-Nov-2017 13:57:36 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 35
+[30-Nov-2017 13:57:36 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 35
+[30-Nov-2017 13:57:38 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 35
+[30-Nov-2017 13:57:39 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 35
+[30-Nov-2017 13:57:39 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 35
+[30-Nov-2017 13:58:10 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 35
+[30-Nov-2017 14:18:22 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1165
+[30-Nov-2017 14:18:38 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1165
+[30-Nov-2017 14:18:51 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1165
+[30-Nov-2017 14:18:58 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1165
+[30-Nov-2017 14:20:40 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1165
+[30-Nov-2017 14:21:22 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1165
+[30-Nov-2017 14:37:06 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1165
+[30-Nov-2017 14:37:09 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1165
+[30-Nov-2017 14:37:18 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1165
+[01-Dec-2017 11:37:04 UTC] PHP Fatal error:  Call to undefined method Admin::get() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/controllers/Admin.php on line 203
+[01-Dec-2017 14:20:23 UTC] PHP Fatal error:  Call to undefined method Admin::load_views() in /home/applau8/reusable.applaurels.com/admin/application/modules/admin/controllers/Admin.php on line 133
+[04-Dec-2017 15:46:28 Asia/Kolkata] PHP Warning:  defined() expects exactly 1 parameter, 2 given in /home/applau8/reusable.applaurels.com/admin/application/config/constants.php on line 219
+[04-Dec-2017 15:46:35 Asia/Kolkata] PHP Warning:  defined() expects exactly 1 parameter, 2 given in /home/applau8/reusable.applaurels.com/admin/application/config/constants.php on line 219
+[05-Dec-2017 10:04:09 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 10:04:21 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 10:05:36 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 10:05:52 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 10:13:21 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 10:13:37 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 10:14:08 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 10:30:07 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 10:30:35 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 10:31:01 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 10:31:13 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 10:32:11 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 10:35:43 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 10:35:45 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 10:37:30 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 11:38:41 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 11:38:56 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 11:39:13 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 11:39:17 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 11:39:45 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 11:40:01 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 11:40:04 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 11:40:12 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 11:41:06 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 11:41:13 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 11:41:32 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 11:41:34 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 11:41:48 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 11:42:33 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 11:42:46 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 11:42:58 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 11:44:53 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 11:45:16 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 12:57:11 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 12:57:27 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 12:59:30 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 12:59:35 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 13:00:15 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 13:08:27 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Common_model.php on line 1167
+[05-Dec-2017 13:33:36 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Follow_model.php on line 33
+[05-Dec-2017 13:34:46 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Follow_model.php on line 33
+[05-Dec-2017 13:34:48 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Follow_model.php on line 33
+[05-Dec-2017 13:34:48 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Follow_model.php on line 33
+[05-Dec-2017 13:34:48 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Follow_model.php on line 33
+[05-Dec-2017 13:34:48 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Follow_model.php on line 33
+[05-Dec-2017 13:34:49 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Follow_model.php on line 33
+[05-Dec-2017 13:35:00 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Follow_model.php on line 33
+[05-Dec-2017 13:35:00 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Follow_model.php on line 33
+[05-Dec-2017 13:35:00 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Follow_model.php on line 33
+[05-Dec-2017 13:35:00 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Follow_model.php on line 33
+[05-Dec-2017 13:35:01 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Follow_model.php on line 33
+[05-Dec-2017 13:53:21 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Follow_model.php on line 33
+[05-Dec-2017 13:53:22 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Follow_model.php on line 33
+[05-Dec-2017 13:53:24 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Follow_model.php on line 33
+[05-Dec-2017 13:53:27 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Follow_model.php on line 33
+[05-Dec-2017 13:53:40 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Follow_model.php on line 33
+[05-Dec-2017 13:57:04 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Follow_model.php on line 33
+[05-Dec-2017 14:01:40 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Follow_model.php on line 33
+[05-Dec-2017 14:02:24 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Follow_model.php on line 33
+[05-Dec-2017 14:02:26 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Follow_model.php on line 33
+[05-Dec-2017 14:02:27 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Follow_model.php on line 33
+[05-Dec-2017 14:02:30 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Follow_model.php on line 33
+[05-Dec-2017 14:03:56 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Follow_model.php on line 33
+[05-Dec-2017 14:10:37 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Follow_model.php on line 33
+[05-Dec-2017 14:11:41 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Follow_model.php on line 33
+[05-Dec-2017 14:13:31 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Follow_model.php on line 33
+[05-Dec-2017 14:13:45 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Follow_model.php on line 33
+[05-Dec-2017 14:18:58 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/admin/application/modules/api/models/Follow_model.php on line 33
+[05-Dec-2017 14:55:35 UTC] PHP Fatal error:  Call to a member function iosPush() on null in /home/applau8/reusable.applaurels.com/admin/application/helpers/common_helper.php on line 123
+[05-Dec-2017 14:56:41 UTC] PHP Fatal error:  Call to a member function iosPush() on null in /home/applau8/reusable.applaurels.com/admin/application/modules/api/controllers/Managefriends.php on line 164
+[05-Dec-2017 14:56:46 UTC] PHP Fatal error:  Call to a member function iosPush() on null in /home/applau8/reusable.applaurels.com/admin/application/modules/api/controllers/Managefriends.php on line 164
+[05-Dec-2017 14:57:05 UTC] PHP Fatal error:  Call to a member function iosPush() on null in /home/applau8/reusable.applaurels.com/admin/application/modules/api/controllers/Managefriends.php on line 164
+[06-Dec-2017 12:49:29 UTC] PHP Fatal error:  Call to a member function thumb_create() on null in /home/applau8/reusable.applaurels.com/application/modules/admin/controllers/Admin_Profile.php on line 110
+[06-Dec-2017 13:02:34 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/admin/models/Common_model.php on line 36
+[06-Dec-2017 13:02:36 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/admin/models/Common_model.php on line 36
+[06-Dec-2017 13:04:46 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/admin/models/Common_model.php on line 36
+[06-Dec-2017 13:04:49 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/admin/models/Common_model.php on line 36
+[06-Dec-2017 13:05:05 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/admin/models/Common_model.php on line 36
+[06-Dec-2017 13:05:33 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/admin/models/Common_model.php on line 36
+[06-Dec-2017 13:05:35 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/admin/models/Common_model.php on line 36
+[06-Dec-2017 13:05:50 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/admin/models/Common_model.php on line 36
+[06-Dec-2017 13:08:22 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/admin/models/Common_model.php on line 36
+[06-Dec-2017 13:08:40 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/admin/models/Common_model.php on line 36
+[06-Dec-2017 13:08:56 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/admin/models/Common_model.php on line 36
+[06-Dec-2017 13:08:58 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/admin/models/Common_model.php on line 36
+[06-Dec-2017 13:09:41 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/admin/models/Common_model.php on line 36
+[06-Dec-2017 13:09:55 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/admin/models/Common_model.php on line 36
+[06-Dec-2017 13:10:09 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/admin/models/Common_model.php on line 36
+[06-Dec-2017 13:12:57 UTC] PHP Fatal error:  Class 'Common_model' not found in /home/applau8/reusable.applaurels.com/application/third_party/MX/Loader.php on line 211
+[07-Dec-2017 05:39:27 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/admin/models/User_Model.php on line 71
+[07-Dec-2017 05:45:33 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/admin/models/User_Model.php on line 71
+[07-Dec-2017 05:45:46 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/admin/models/User_Model.php on line 71
+[07-Dec-2017 05:48:50 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/admin/models/User_Model.php on line 71
+[07-Dec-2017 09:51:24 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 1197
+[07-Dec-2017 09:51:34 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 1197
+[07-Dec-2017 09:51:34 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 1197
+[07-Dec-2017 09:51:35 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 1197
+[07-Dec-2017 09:51:35 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 1197
+[07-Dec-2017 09:52:35 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 1197
+[07-Dec-2017 09:55:54 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 1197
+[07-Dec-2017 10:04:39 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 1198
+[07-Dec-2017 10:04:41 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 1198
+[07-Dec-2017 10:05:25 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 1198
+[07-Dec-2017 10:09:15 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 1198
+[07-Dec-2017 10:09:34 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 1198
+[07-Dec-2017 10:22:17 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Favorite_model.php on line 27
+[07-Dec-2017 10:24:00 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Favorite_model.php on line 27
+[07-Dec-2017 10:24:26 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Favorite_model.php on line 27
+[07-Dec-2017 10:24:37 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Favorite_model.php on line 27
+[07-Dec-2017 10:33:53 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Favorite_model.php on line 27
+[07-Dec-2017 10:33:57 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Favorite_model.php on line 27
+[07-Dec-2017 10:41:48 UTC] PHP Fatal error:  Cannot redeclare Chat_model::mark_as_read() in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 296
+[07-Dec-2017 10:44:40 UTC] PHP Fatal error:  Cannot redeclare Chat_model::mark_as_read() in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 296
+[07-Dec-2017 10:45:18 UTC] PHP Fatal error:  Cannot redeclare Commonfn::sendPush() in /home/applau8/reusable.applaurels.com/application/libraries/Commonfn.php on line 519
+[07-Dec-2017 10:46:07 UTC] PHP Fatal error:  Cannot redeclare Commonfn::sendPush() in /home/applau8/reusable.applaurels.com/application/libraries/Commonfn.php on line 519
+[07-Dec-2017 10:50:54 UTC] PHP Fatal error:  Call to a member function insert_single() on null in /home/applau8/reusable.applaurels.com/application/modules/api/controllers/Chat.php on line 137
+[07-Dec-2017 10:50:57 UTC] PHP Fatal error:  Call to a member function insert_single() on null in /home/applau8/reusable.applaurels.com/application/modules/api/controllers/Chat.php on line 137
+[07-Dec-2017 11:16:56 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 1167
+[07-Dec-2017 11:16:56 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 1167
+[07-Dec-2017 11:17:16 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 1167
+[07-Dec-2017 11:17:16 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 1167
+[07-Dec-2017 11:21:15 UTC] PHP Warning:  Unterminated comment starting line 359 in /home/applau8/reusable.applaurels.com/application/modules/api/controllers/Managefriends.php on line 359
+[07-Dec-2017 11:21:15 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/applau8/reusable.applaurels.com/application/modules/api/controllers/Managefriends.php on line 361
+[07-Dec-2017 11:21:15 UTC] PHP Warning:  Unterminated comment starting line 359 in /home/applau8/reusable.applaurels.com/application/modules/api/controllers/Managefriends.php on line 359
+[07-Dec-2017 11:21:15 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/applau8/reusable.applaurels.com/application/modules/api/controllers/Managefriends.php on line 361
+[07-Dec-2017 11:35:29 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Follow_model.php on line 33
+[07-Dec-2017 11:41:38 UTC] PHP Fatal error:  Call to undefined method Chat::checkheader() in /home/applau8/reusable.applaurels.com/application/modules/api/controllers/Chat.php on line 23
+[07-Dec-2017 11:49:20 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 36
+[07-Dec-2017 11:49:25 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 36
+[07-Dec-2017 12:18:38 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/applau8/reusable.applaurels.com/application/modules/api/controllers/Managefollow.php on line 367
+[07-Dec-2017 12:31:15 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 34
+[07-Dec-2017 12:32:04 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 35
+[07-Dec-2017 12:32:06 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 35
+[07-Dec-2017 12:32:08 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 35
+[07-Dec-2017 12:32:11 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 35
+[07-Dec-2017 12:32:36 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 35
+[07-Dec-2017 12:32:39 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 35
+[07-Dec-2017 12:34:26 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 35
+[07-Dec-2017 12:34:36 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 35
+[07-Dec-2017 12:34:56 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 35
+[07-Dec-2017 12:35:35 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 35
+[07-Dec-2017 12:35:36 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 35
+[07-Dec-2017 12:35:38 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 35
+[07-Dec-2017 12:39:11 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 142
+[07-Dec-2017 12:39:14 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 142
+[07-Dec-2017 12:41:11 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 142
+[07-Dec-2017 12:41:13 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 142
+[07-Dec-2017 12:41:18 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 142
+[07-Dec-2017 12:41:51 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 142
+[07-Dec-2017 12:41:52 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 142
+[07-Dec-2017 12:43:01 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 142
+[07-Dec-2017 12:43:02 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 142
+[07-Dec-2017 12:43:05 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 142
+[07-Dec-2017 12:43:44 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 142
+[07-Dec-2017 12:43:56 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 142
+[07-Dec-2017 12:44:42 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 142
+[07-Dec-2017 12:44:44 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 142
+[07-Dec-2017 12:46:32 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 142
+[07-Dec-2017 12:46:35 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 142
+[07-Dec-2017 12:51:53 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 142
+[07-Dec-2017 13:05:26 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 141
+[07-Dec-2017 13:05:28 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 141
+[07-Dec-2017 13:05:30 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 141
+[07-Dec-2017 13:05:37 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 141
+[07-Dec-2017 13:08:52 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 141
+[07-Dec-2017 13:11:07 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 141
+[07-Dec-2017 13:11:09 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 141
+[07-Dec-2017 13:11:47 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 141
+[07-Dec-2017 13:12:30 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 141
+[07-Dec-2017 13:14:31 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 142
+[07-Dec-2017 13:14:33 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 142
+[07-Dec-2017 13:15:59 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 141
+[07-Dec-2017 13:17:09 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 141
+[07-Dec-2017 13:17:10 UTC] PHP Fatal error:  Call to a member function row_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 141
+[07-Dec-2017 13:43:01 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 74
+[07-Dec-2017 13:46:36 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 72
+[07-Dec-2017 13:46:37 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 72
+[07-Dec-2017 13:47:27 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 72
+[07-Dec-2017 13:47:29 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 72
+[07-Dec-2017 13:47:52 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 72
+[07-Dec-2017 13:47:54 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 72
+[07-Dec-2017 13:48:29 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 72
+[07-Dec-2017 13:48:30 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 72
+[07-Dec-2017 13:48:55 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 72
+[07-Dec-2017 13:48:56 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 72
+[07-Dec-2017 13:50:36 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 72
+[07-Dec-2017 13:50:37 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 72
+[07-Dec-2017 13:50:39 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 72
+[07-Dec-2017 13:51:11 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 72
+[07-Dec-2017 13:51:12 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 72
+[07-Dec-2017 13:53:26 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 72
+[07-Dec-2017 13:57:59 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 72
+[07-Dec-2017 13:58:03 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 72
+[07-Dec-2017 14:09:29 UTC] PHP Fatal error:  Call to undefined method Chat::checkParamater() in /home/applau8/reusable.applaurels.com/application/modules/api/controllers/Chat.php on line 191
+[07-Dec-2017 14:10:52 UTC] PHP Fatal error:  Call to undefined method Chat::checkParamater() in /home/applau8/reusable.applaurels.com/application/modules/api/controllers/Chat.php on line 191
+[07-Dec-2017 14:12:09 UTC] PHP Fatal error:  Call to undefined method Chat::checkParamater() in /home/applau8/reusable.applaurels.com/application/modules/api/controllers/Chat.php on line 191
+[07-Dec-2017 14:12:13 UTC] PHP Fatal error:  Call to undefined method Chat::checkParamater() in /home/applau8/reusable.applaurels.com/application/modules/api/controllers/Chat.php on line 191
+[07-Dec-2017 14:12:30 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 102
+[07-Dec-2017 14:13:17 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 102
+[07-Dec-2017 14:13:47 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 102
+[07-Dec-2017 14:18:04 UTC] PHP Fatal error:  Call to undefined method Chat::checkParamater() in /home/applau8/reusable.applaurels.com/application/modules/api/controllers/Chat.php on line 124
+[07-Dec-2017 14:18:36 UTC] PHP Fatal error:  Call to undefined method Chat::checkParamater() in /home/applau8/reusable.applaurels.com/application/modules/api/controllers/Chat.php on line 124
+[07-Dec-2017 14:18:59 UTC] PHP Fatal error:  Call to undefined method Chat::checkParamater() in /home/applau8/reusable.applaurels.com/application/modules/api/controllers/Chat.php on line 124
+[07-Dec-2017 14:32:41 UTC] PHP Fatal error:  Call to undefined method Chat::checkParamater() in /home/applau8/reusable.applaurels.com/application/modules/api/controllers/Chat.php on line 134
+[07-Dec-2017 14:59:45 UTC] PHP Fatal error:  Class 'Chat_model' not found in /home/applau8/reusable.applaurels.com/application/third_party/MX/Loader.php on line 211
+[08-Dec-2017 06:10:12 UTC] PHP Fatal error:  Call to a member function real_escape_string() on boolean in /home/applau8/reusable.applaurels.com/system/database/drivers/mysqli/mysqli_driver.php on line 391
+[08-Dec-2017 06:10:48 UTC] PHP Fatal error:  Call to a member function real_escape_string() on boolean in /home/applau8/reusable.applaurels.com/system/database/drivers/mysqli/mysqli_driver.php on line 391
+[08-Dec-2017 06:18:24 UTC] PHP Fatal error:  Call to a member function real_escape_string() on boolean in /home/applau8/reusable.applaurels.com/system/database/drivers/mysqli/mysqli_driver.php on line 391
+[08-Dec-2017 06:18:24 UTC] PHP Fatal error:  Call to a member function real_escape_string() on boolean in /home/applau8/reusable.applaurels.com/system/database/drivers/mysqli/mysqli_driver.php on line 391
+[08-Dec-2017 06:18:25 UTC] PHP Fatal error:  Call to a member function real_escape_string() on boolean in /home/applau8/reusable.applaurels.com/system/database/drivers/mysqli/mysqli_driver.php on line 391
+[08-Dec-2017 06:18:25 UTC] PHP Fatal error:  Call to a member function real_escape_string() on boolean in /home/applau8/reusable.applaurels.com/system/database/drivers/mysqli/mysqli_driver.php on line 391
+[08-Dec-2017 06:18:25 UTC] PHP Fatal error:  Call to a member function real_escape_string() on boolean in /home/applau8/reusable.applaurels.com/system/database/drivers/mysqli/mysqli_driver.php on line 391
+[08-Dec-2017 06:57:40 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 1198
+[08-Dec-2017 06:57:44 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 1198
+[08-Dec-2017 06:57:45 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 1198
+[08-Dec-2017 06:57:46 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 1198
+[08-Dec-2017 06:57:46 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 1198
+[08-Dec-2017 06:57:46 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 1198
+[08-Dec-2017 07:39:18 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 1198
+[08-Dec-2017 07:39:20 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 1198
+[08-Dec-2017 07:39:26 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 1198
+[08-Dec-2017 07:39:26 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 1198
+[08-Dec-2017 07:39:29 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Favorite_model.php on line 28
+[08-Dec-2017 07:39:47 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 1198
+[08-Dec-2017 07:42:21 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 1198
+[08-Dec-2017 07:42:24 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 1198
+[08-Dec-2017 07:42:24 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Common_model.php on line 1198
+[08-Dec-2017 07:43:36 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Favorite_model.php on line 28
+[08-Dec-2017 12:47:16 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/admin/models/Subadmin_model.php on line 39
+[08-Dec-2017 12:49:23 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 27
+[08-Dec-2017 12:50:26 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 27
+[08-Dec-2017 12:50:27 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 26
+[08-Dec-2017 12:50:28 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 26
+[08-Dec-2017 12:50:29 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 26
+[08-Dec-2017 12:50:30 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 26
+[08-Dec-2017 12:50:46 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 26
+[08-Dec-2017 12:50:48 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 26
+[08-Dec-2017 12:52:26 UTC] PHP Fatal error:  Class 'Chat_model' not found in /home/applau8/reusable.applaurels.com/application/third_party/MX/Loader.php on line 211
+[08-Dec-2017 12:58:42 UTC] PHP Fatal error:  Class 'Chat_model' not found in /home/applau8/reusable.applaurels.com/application/third_party/MX/Loader.php on line 211
+[08-Dec-2017 13:00:04 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 27
+[08-Dec-2017 13:00:18 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 27
+[08-Dec-2017 13:00:22 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 27
+[08-Dec-2017 13:00:50 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 27
+[08-Dec-2017 13:00:52 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 27
+[08-Dec-2017 13:02:28 UTC] PHP Fatal error:  Class 'Chat_model' not found in /home/applau8/reusable.applaurels.com/application/third_party/MX/Loader.php on line 211
+[08-Dec-2017 13:02:30 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 26
+[08-Dec-2017 13:04:18 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 26
+[08-Dec-2017 13:04:21 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 26
+[08-Dec-2017 13:04:24 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 26
+[08-Dec-2017 13:05:37 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 26
+[08-Dec-2017 13:05:40 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 26
+[08-Dec-2017 13:05:41 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 26
+[08-Dec-2017 13:11:21 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 27
+[08-Dec-2017 13:11:22 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 27
+[08-Dec-2017 13:11:33 UTC] PHP Fatal error:  Class 'Chat_model' not found in /home/applau8/reusable.applaurels.com/application/third_party/MX/Loader.php on line 211
+[11-Dec-2017 04:46:04 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/admin/models/Subadmin_model.php on line 39
+[11-Dec-2017 05:25:26 UTC] PHP Fatal error:  Call to undefined method Chat_model::check_readmsg() in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 113
+[11-Dec-2017 05:34:54 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/admin/models/Subadmin_model.php on line 39
+[11-Dec-2017 06:18:40 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 61
+[11-Dec-2017 06:20:24 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 61
+[11-Dec-2017 06:24:20 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 61
+[11-Dec-2017 06:27:17 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 61
+[11-Dec-2017 07:40:43 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 61
+[11-Dec-2017 07:41:07 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 61
+[11-Dec-2017 07:42:13 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 61
+[11-Dec-2017 07:42:54 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 61
+[11-Dec-2017 07:44:11 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 61
+[11-Dec-2017 07:44:17 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 61
+[11-Dec-2017 07:44:41 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 61
+[11-Dec-2017 07:44:42 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 61
+[11-Dec-2017 07:57:07 UTC] PHP Fatal error:  Class 'Chat_model' not found in /home/applau8/reusable.applaurels.com/application/third_party/MX/Loader.php on line 211
+[11-Dec-2017 07:59:33 UTC] PHP Fatal error:  Class 'Chat_model' not found in /home/applau8/reusable.applaurels.com/application/third_party/MX/Loader.php on line 211
+[11-Dec-2017 08:23:18 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 32
+[11-Dec-2017 08:23:21 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/api/models/Chat_model.php on line 32
+[11-Dec-2017 08:23:34 UTC] PHP Fatal error:  Class 'Chat_model' not found in /home/applau8/reusable.applaurels.com/application/third_party/MX/Loader.php on line 211
+[11-Dec-2017 08:25:40 UTC] PHP Fatal error:  Class 'Chat_model' not found in /home/applau8/reusable.applaurels.com/application/third_party/MX/Loader.php on line 211
+[11-Dec-2017 08:28:32 UTC] PHP Fatal error:  Class 'Chat_model' not found in /home/applau8/reusable.applaurels.com/application/third_party/MX/Loader.php on line 211
+[11-Dec-2017 08:29:43 UTC] PHP Fatal error:  Class 'Chat_model' not found in /home/applau8/reusable.applaurels.com/application/third_party/MX/Loader.php on line 211
+[11-Dec-2017 08:54:04 UTC] PHP Fatal error:  Call to a member function result_array() on boolean in /home/applau8/reusable.applaurels.com/application/modules/admin/models/Subadmin_model.php on line 39
+[12-Dec-2017 15:16:11 UTC] PHP Fatal error:  Call to a member function set_rules() on null in /home/applau8/reusable.applaurels.com/application/modules/api/controllers/Changepassword.php on line 29
+[12-Dec-2017 15:31:56 UTC] PHP Fatal error:  Call to undefined method Commonfn::response() in /home/applau8/reusable.applaurels.com/application/libraries/Commonfn.php on line 356
+[12-Dec-2017 15:31:58 UTC] PHP Fatal error:  Call to undefined method Commonfn::response() in /home/applau8/reusable.applaurels.com/application/libraries/Commonfn.php on line 356
+[12-Dec-2017 15:32:07 UTC] PHP Fatal error:  Call to undefined method Commonfn::response() in /home/applau8/reusable.applaurels.com/application/libraries/Commonfn.php on line 356
+[12-Dec-2017 15:33:27 UTC] PHP Fatal error:  Call to undefined method CI::response() in /home/applau8/reusable.applaurels.com/application/libraries/Commonfn.php on line 356
+[12-Dec-2017 15:36:02 UTC] PHP Fatal error:  Call to a member function line() on null in /home/applau8/reusable.applaurels.com/application/libraries/Commonfn.php on line 357
+[12-Dec-2017 21:20:42 Asia/Kolkata] PHP Notice:  Constant PASSWORD_MISMATCH already defined in /home/applau8/reusable.applaurels.com/application/config/constants.php on line 103
+[12-Dec-2017 21:20:59 Asia/Kolkata] PHP Notice:  Constant PASSWORD_MISMATCH already defined in /home/applau8/reusable.applaurels.com/application/config/constants.php on line 103
+[14-Dec-2017 09:30:03 UTC] PHP Fatal error:  Function name must be a string in /home/applau8/reusable.applaurels.com/application/modules/api/controllers/Forgot.php on line 70
+[18-Dec-2017 10:12:25 UTC] PHP Fatal error:  Call to a member function set_data() on null in /home/applau8/reusable.applaurels.com/application/modules/api/controllers/Logout.php on line 73
+[19-Dec-2017 06:29:11 UTC] PHP Fatal error:  Call to undefined method Signup::isValidDateTimeString() in /home/applau8/reusable.applaurels.com/application/modules/api/controllers/Signup.php on line 306
+[19-Dec-2017 06:44:34 UTC] PHP Fatal error:  Call to undefined function base_url() in /home/applau8/reusable.applaurels.com/application/modules/api/controllers/Signup.php on line 290
+[22-Dec-2017 06:12:45 UTC] PHP Fatal error:  Call to undefined method Commonfn::sendPush() in /home/applau8/reusable.applaurels.com/application/modules/api/controllers/Managefollow.php on line 134
+[22-Dec-2017 06:13:45 UTC] PHP Fatal error:  Call to undefined method Commonfn::sendPush() in /home/applau8/reusable.applaurels.com/application/modules/api/controllers/Managefollow.php on line 134

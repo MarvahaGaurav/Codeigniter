@@ -1,0 +1,106 @@
+.form-group label {
+    color: rgba(0, 0, 0, 0.54);
+    font-family: 'Roboto-Light';
+    font-size: 14px;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
+select,
+textarea {
+    border-radius: 0;
+    box-shadow: none;
+    outline: none;
+    height: 40px;
+    margin: 0 0 0 0;
+    background: rgba(42, 166, 222, 0.1);
+    border: 1px solid rgba(42, 166, 222, 0.1);
+}
+
+.form-group label mark {
+    background: transparent;
+    color: #dc0a0a;
+}
+
+a.form-hyperlink {
+    color: #0088ff;
+}
+
+.btn-center {
+    text-align: center;
+}
+
+.btn {
+    min-width: 90px;
+    height: 36px;
+    border-radius: 0;
+    box-shadow: none;
+    outline: none;
+    font-size: 16px;
+    color: #fff;
+}
+
+.btn-success {
+    background: #2da7df;
+    border-color: #2da7df;
+}
+
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active,
+.btn-success:active:focus {
+    outline: none;
+    box-shadow: none;
+    background: #1f92c7;
+    border-color: #1f92c7;
+}
+
+.btn-cancel:hover,
+.btn-cancel:focus,
+.btn-cancel:active,
+.btn-cancel:active:focus {
+    outline: none;
+    box-shadow: none;
+    color: #fff;
+}
+
+.form-btn-group {
+    margin: 45px 0 0 0;
+}
+
+.btn-circular {
+    border-radius: 50%;
+}
+
+.btn-iconed {
+    width: 40px;
+    height: 40px;
+    background-color: #2da7df;
+    min-width: auto;
+    display: inline-block;
+    margin: 0 10px;
+    font-size: 18px;
+    color: #fff;
+    position: relative;
+}
+
+.btn-iconed i.fa {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+}
+
+.btn-iconed:hover,
+.btn-iconed:focus,
+.btn-iconed:active {
+    background-color: #1f92c7;
+    color: #fff;
+}
+
+.page-data-action {
+    padding: 10px 0 10px 0px;
+}

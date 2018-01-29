@@ -1,0 +1,35 @@
+[28-Oct-2017 01:01:17 America/Los_Angeles] PHP Fatal error:  Call to undefined function strlent() in /home/applau8/reusable.applaurels.com/dev/appcomponents/application/controllers/api/Signup.php on line 108
+[28-Oct-2017 02:20:32 America/Los_Angeles] PHP Warning:  Unknown: Input variables exceeded 1000. To increase the limit change max_input_vars in php.ini. in Unknown on line 0
+[28-Oct-2017 02:22:51 America/Los_Angeles] PHP Warning:  Unknown: Input variables exceeded 1000. To increase the limit change max_input_vars in php.ini. in Unknown on line 0
+[28-Oct-2017 02:23:20 America/Los_Angeles] PHP Warning:  Unknown: Input variables exceeded 1000. To increase the limit change max_input_vars in php.ini. in Unknown on line 0
+[28-Oct-2017 02:23:43 America/Los_Angeles] PHP Warning:  Unknown: Input variables exceeded 1000. To increase the limit change max_input_vars in php.ini. in Unknown on line 0
+[28-Oct-2017 02:24:55 America/Los_Angeles] PHP Warning:  Unknown: Input variables exceeded 1000. To increase the limit change max_input_vars in php.ini. in Unknown on line 0
+[28-Oct-2017 02:26:34 America/Los_Angeles] PHP Warning:  Missing boundary in multipart/form-data POST data in Unknown on line 0
+[28-Oct-2017 02:27:08 America/Los_Angeles] PHP Warning:  Missing boundary in multipart/form-data POST data in Unknown on line 0
+[28-Oct-2017 02:30:57 America/Los_Angeles] PHP Warning:  Missing boundary in multipart/form-data POST data in Unknown on line 0
+[28-Oct-2017 02:31:34 America/Los_Angeles] PHP Warning:  Missing boundary in multipart/form-data POST data in Unknown on line 0
+[28-Oct-2017 02:32:18 America/Los_Angeles] PHP Warning:  Missing boundary in multipart/form-data POST data in Unknown on line 0
+[28-Oct-2017 02:38:51 America/Los_Angeles] PHP Fatal error:  Call to undefined function base_url() in /home/applau8/reusable.applaurels.com/dev/appcomponents/application/config/constants.php on line 95
+[28-Oct-2017 02:40:24 America/Los_Angeles] PHP Fatal error:  Call to undefined function base_url() in /home/applau8/reusable.applaurels.com/dev/appcomponents/application/config/constants.php on line 95
+[28-Oct-2017 03:14:30 America/Los_Angeles] PHP Parse error:  syntax error, unexpected ';' in /home/applau8/reusable.applaurels.com/dev/appcomponents/application/controllers/api/Signup.php on line 40
+[28-Oct-2017 03:25:41 America/Los_Angeles] PHP Parse error:  syntax error, unexpected '.' in /home/applau8/reusable.applaurels.com/dev/appcomponents/application/language/api/api_lang.php on line 74
+[28-Oct-2017 03:29:23 America/Los_Angeles] PHP Parse error:  syntax error, unexpected '.' in /home/applau8/reusable.applaurels.com/dev/appcomponents/application/language/api/api_lang.php on line 73
+[28-Oct-2017 05:17:16 America/Los_Angeles] PHP Fatal error:  Cannot redeclare class Common_model in /home/applau8/reusable.applaurels.com/dev/appcomponents/application/models/User_model.php on line 83
+[31-Oct-2017 06:35:59 America/Los_Angeles] PHP Fatal error:  Call to undefined method Signup::checkvalidationcustom() in /home/applau8/reusable.applaurels.com/dev/appcomponents/application/controllers/api/Signup.php on line 63
+[01-Nov-2017 08:09:58 America/Los_Angeles] PHP Fatal error:  Class 'MX_Controller' not found in /home/applau8/reusable.applaurels.com/dev/appcomponents/application/controllers/api/Forgotpass.php on line 5
+[06-Nov-2017 03:58:31 America/Los_Angeles] PHP Parse error:  syntax error, unexpected 'private' (T_PRIVATE) in /home/applau8/reusable.applaurels.com/dev/appcomponents/application/controllers/api/Signup.php on line 180
+[06-Nov-2017 06:56:34 America/Los_Angeles] PHP Fatal error:  Call to a member function from() on null in /home/applau8/reusable.applaurels.com/dev/appcomponents/application/libraries/Commonfn.php on line 225
+[07-Nov-2017 00:10:21 America/Los_Angeles] PHP Fatal error:  Call to a member function fetch_data() on null in /home/applau8/reusable.applaurels.com/dev/appcomponents/application/controllers/Reset.php on line 15
+[08-Nov-2017 01:44:00 America/Los_Angeles] PHP Fatal error:  Call to undefined function base_url() in /home/applau8/reusable.applaurels.com/dev/appcomponents/application/controllers/api/Forgot.php on line 54
+[08-Nov-2017 01:45:06 America/Los_Angeles] PHP Fatal error:  Call to undefined function base_url() in /home/applau8/reusable.applaurels.com/dev/appcomponents/application/controllers/api/Forgot.php on line 54
+[08-Nov-2017 01:45:37 America/Los_Angeles] PHP Fatal error:  Call to undefined function base_url() in /home/applau8/reusable.applaurels.com/dev/appcomponents/application/controllers/api/Forgot.php on line 54
+[08-Nov-2017 01:46:48 America/Los_Angeles] PHP Fatal error:  Call to undefined function base_url() in /home/applau8/reusable.applaurels.com/dev/appcomponents/application/controllers/api/Forgot.php on line 54
+[08-Nov-2017 01:47:24 America/Los_Angeles] PHP Fatal error:  Call to undefined function base_url() in /home/applau8/reusable.applaurels.com/dev/appcomponents/application/controllers/api/Forgot.php on line 54
+[08-Nov-2017 01:47:56 America/Los_Angeles] PHP Fatal error:  Call to undefined function base_url() in /home/applau8/reusable.applaurels.com/dev/appcomponents/application/controllers/api/Forgot.php on line 54
+[08-Nov-2017 01:48:53 America/Los_Angeles] PHP Fatal error:  Call to undefined function base_url() in /home/applau8/reusable.applaurels.com/dev/appcomponents/application/controllers/api/Forgot.php on line 54
+[08-Nov-2017 01:50:42 America/Los_Angeles] PHP Fatal error:  Call to undefined function base_url() in /home/applau8/reusable.applaurels.com/dev/appcomponents/application/controllers/api/Forgot.php on line 54
+[08-Nov-2017 01:50:42 America/Los_Angeles] PHP Fatal error:  Call to undefined function base_url() in /home/applau8/reusable.applaurels.com/dev/appcomponents/application/controllers/api/Forgot.php on line 54
+[08-Nov-2017 03:43:23 America/Los_Angeles] PHP Fatal error:  Call to undefined function base_url() in /home/applau8/reusable.applaurels.com/dev/appcomponents/application/controllers/api/Forgot.php on line 54
+[08-Nov-2017 05:30:52 America/Los_Angeles] PHP Fatal error:  Call to undefined function base_url() in /home/applau8/reusable.applaurels.com/dev/appcomponents/application/controllers/api/Forgot.php on line 54
+[08-Nov-2017 05:30:54 America/Los_Angeles] PHP Fatal error:  Call to undefined function base_url() in /home/applau8/reusable.applaurels.com/dev/appcomponents/application/controllers/api/Forgot.php on line 54
+[08-Nov-2017 05:49:35 America/Los_Angeles] PHP Fatal error:  Call to undefined function base_url() in /home/applau8/reusable.applaurels.com/dev/appcomponents/application/controllers/api/Forgot.php on line 54
