@@ -19,16 +19,9 @@ class Resetpass extends REST_Controller {
      *   tags={"User"},
      *   summary="Reset Password",
      *   description="Reset Password",
-     *   operationId="index_post",
+     *   operationId="reset_post",
      *   consumes ={"multipart/form-data"},
      *   produces={"application/json"},
-     *   @SWG\Parameter(
-     *     name="Authorization",
-     *     in="header",
-     *     description="",
-     *     required=true,
-     *     type="string"
-     *   ),
      *   @SWG\Parameter(
      *     name="user_id",
      *     in="formData",

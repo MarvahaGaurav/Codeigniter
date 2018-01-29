@@ -16,15 +16,8 @@ class Address extends REST_Controller
      *   tags={"Address"},
      *   summary="Get address information",
      *   description="Get country,state and city list",
-     *   operationId="index_get",
+     *   operationId="address_get",
      *   produces={"application/json"},
-     *   @SWG\Parameter(
-     *     name="Authorization",
-     *     in="header",
-     *     description="",
-     *     required=true,
-     *     type="string"
-     *   ),
      *   @SWG\Parameter(
      *     name="country_code",
      *     in="query",

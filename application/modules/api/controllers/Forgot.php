@@ -23,13 +23,6 @@ class Forgot extends REST_Controller {
      *   consumes ={"multipart/form-data"},
      *   produces={"application/json"},
      *   @SWG\Parameter(
-     *     name="Authorization",
-     *     in="header",
-     *     description="",
-     *     required=true,
-     *     type="string"
-     *   ),
-     *   @SWG\Parameter(
      *     name="email",
      *     in="formData",
      *     description="Email",
@@ -121,6 +114,37 @@ class Forgot extends REST_Controller {
         }
     }
 
+    /**
+     * @SWG\Post(path="/Forgot/verifyotp",
+     *   tags={"User"},
+     *   summary="Verify OTP",
+     *   description="Verify OTP",
+     *   operationId="verifyotp_post",
+     *   consumes ={"multipart/form-data"},
+     *   produces={"application/json"},
+     *   @SWG\Parameter(
+     *     name="otp",
+     *     in="formData",
+     *     description="863666",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *   @SWG\Parameter(
+     *     name="User_id",
+     *     in="formData",
+     *     description="1",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *   @SWG\Response(response=200, description="OTP Verify Success"),
+     *   @SWG\Response(response=206, description="Unauthorized request"),     
+     *   @SWG\Response(response=207, description="Header is missing"),   
+     *   @SWG\Response(response=211, description="Email Send failed"),   
+     *   @SWG\Response(response=424, description="OTP Expired/Invalid OTP"),       
+     *   @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
+     * )
+     */
+
     public function verifyotp_post() {
 
         $post_data = $this->post();
@@ -185,6 +209,27 @@ class Forgot extends REST_Controller {
         }
     }
     
+    /**
+     * @SWG\Post(path="/Forgot/resendotp",
+     *   tags={"User"},
+     *   summary="Resend OTP",
+     *   description="Resend OTP",
+     *   operationId="resendotp_post",
+     *   consumes ={"multipart/form-data"},
+     *   produces={"application/json"},
+     *   @SWG\Parameter(
+     *     name="User_id",
+     *     in="formData",
+     *     description="1",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *   @SWG\Response(response=200, description="OTP Sent Success"),
+     *   @SWG\Response(response=206, description="Unauthorized request"),     
+     *   @SWG\Response(response=207, description="Header is missing"),   
+     *   @SWG\Response(response=424, description="Invalid OTP"),       
+     * )
+     */
     public function resendotp_post() {
 
         $post_data = $this->post();        

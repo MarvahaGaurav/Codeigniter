@@ -18,113 +18,161 @@ class Signup extends REST_Controller {
      *   tags={"User"},
      *   summary="Singup Information",
      *   description="Singup Information",
-     *   operationId="index_post",
+     *   operationId="signup_post",
      *   consumes ={"multipart/form-data"},
      *   produces={"application/json"},
      *   @SWG\Parameter(
-     *     name="Authorization",
-     *     in="header",
-     *     description="",
-     *     required=true,
-     *     type="string"
-     *   ),
-     *   @SWG\Parameter(
      *     name="first_name",
      *     in="formData",
-     *     description="Users first name",
+     *     description="Architech",
      *     required=true,
      *     type="string"
      *   ),
      *   @SWG\Parameter(
      *     name="last_name",
      *     in="formData",
-     *     description="Users last name",
+     *     description="employe",
+     *     required=true,
      *     type="string"
      *   ),
      *   @SWG\Parameter(
      *     name="email",
      *     in="formData",
-     *     description="Email",
+     *     description="architectemployee@yopmail.com",
      *     required=true,
      *     type="string"
      *   ),
      *   @SWG\Parameter(
      *     name="password",
      *     in="formData",
-     *     description="Password",
+     *     description="123456",
      *     required=true,
-     *     type="string"
-     *   ),
-     *   @SWG\Parameter(
-     *     name="gender",
-     *     in="formData",
-     *     description="1: Male, 2: Female",
-     *     type="string"
-     *   ),
-     *   @SWG\Parameter(
-     *     name="phone",
-     *     in="formData",
-     *     description="Phone Number",
-     *     type="string"
-     *   ),
-     *   @SWG\Parameter(
-     *     name="dob",
-     *     in="formData",
-     *     description="Date of Birth m/d/Y",
-     *     type="string"
-     *   ),
-     *   @SWG\Parameter(
-     *     name="address",
-     *     in="formData",
-     *     description="Address",
-     *     type="string"
-     *   ),
-     *   @SWG\Parameter(
-     *     name="user_lat",
-     *     in="formData",
-     *     description="Lattitude",
-     *     type="string"
-     *   ),
-     *   @SWG\Parameter(
-     *     name="user_long",
-     *     in="formData",
-     *     description="Longitude",
-     *     type="string"
-     *   ),
-     *   @SWG\Parameter(
-     *     name="country_id",
-     *     in="formData",
-     *     description="country Id",
-     *     type="string"
-     *   ),
-     *   @SWG\Parameter(
-     *     name="state_id",
-     *     in="formData",
-     *     description="State Id",
-     *     type="string"
-     *   ),
-     *   @SWG\Parameter(
-     *     name="city_id",
-     *     in="formData",
-     *     description="City Id",
      *     type="string"
      *   ),
      *   @SWG\Parameter(
      *     name="device_id",
      *     in="formData",
-     *     description="Unique Device Id",
+     *     description="6516516265265",
+     *     required=true,
      *     type="string"
      *   ),
      *   @SWG\Parameter(
      *     name="device_token",
      *     in="formData",
-     *     description="Device Token required to send push",
+     *     description="sdvdsdsfsdadc wv zsd zv56z5s ad ad ad35165a1 6as asv5as1v6asd5 1",
+     *     required=true,
      *     type="string"
      *   ),
      *   @SWG\Parameter(
-     *     name="platform",
+     *     name="Platform",
      *     in="formData",
-     *     description="1: Android and 2: iOS",
+     *     description="1 //1=Android, 2=IOS, 3-Web",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *   @SWG\Parameter(
+     *     name="User_type",
+     *     in="formData",
+     *     description="3 //1=Private User, 2=Technician, 3=Architect, 4=Electrical Planner, 5=Wholesaler,6=Business User",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *   @SWG\Parameter(
+     *     name="Is_owner",
+     *     in="formData",
+     *     description="1 //0=user, 1 =  employee , 2 = owner",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *   @SWG\Parameter(
+     *     name="profile_image",
+     *     in="formData",
+     *     description="image",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *   @SWG\Parameter(
+     *     name="company_name",
+     *     in="formData",
+     *     description="Architech Company",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *   @SWG\Parameter(
+     *     name="company_reg_number",
+     *     in="formData",
+     *     description="IT51651651",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *   @SWG\Parameter(
+     *     name="company_image",
+     *     in="formData",
+     *     description="company image",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *   @SWG\Parameter(
+     *     name="prm_user_countrycode",
+     *     in="formData",
+     *     description="91",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *   @SWG\Parameter(
+     *     name="phone",
+     *     in="formData",
+     *     description="9015417310",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *   @SWG\Parameter(
+     *     name="alt_user_countrycode",
+     *     in="formData",
+     *     description="91",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *   @SWG\Parameter(
+     *     name="alt_userphone",
+     *     in="formData",
+     *     description="9654379323",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *   @SWG\Parameter(
+     *     name="country",
+     *     in="formData",
+     *     description="DK, NL, SW, NO, etc..",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *   @SWG\Parameter(
+     *     name="state",
+     *     in="formData",
+     *     description="2184",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *   @SWG\Parameter(
+     *     name="city",
+     *     in="formData",
+     *     description="1210455",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *   @SWG\Parameter(
+     *     name="zipcode",
+     *     in="formData",
+     *     description="22215",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *   @SWG\Parameter(
+     *     name="company_id",
+     *     in="formData",
+     *     description="4",
+     *     required=true,
      *     type="string"
      *   ),
      *   @SWG\Response(response=200, description="Signup Success"),

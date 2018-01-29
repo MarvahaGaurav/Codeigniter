@@ -15,16 +15,9 @@ class Notification extends REST_Controller {
      *   tags={"Notification"},
      *   summary="Notification List",
      *   description="Notification List",
-     *   operationId="index_post",
+     *   operationId="notification_post",
      *   consumes ={"multipart/form-data"},
      *   produces={"application/json"},
-     *   @SWG\Parameter(
-     *     name="Authorization",
-     *     in="header",
-     *     description="",
-     *     required=true,
-     *     type="string"
-     *   ),
      *   @SWG\Parameter(
      *     name="accesstoken",
      *     in="formData",

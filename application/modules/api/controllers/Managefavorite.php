@@ -17,16 +17,9 @@ class Managefavorite extends REST_Controller {
      *   tags={"Favorite"},
      *   summary="Make a post favorite",
      *   description="Make a post favorite",
-     *   operationId="index_post",
+     *   operationId="favorite_post",
      *   consumes ={"multipart/form-data"},
      *   produces={"application/json"},
-     *   @SWG\Parameter(
-     *     name="Authorization",
-     *     in="header",
-     *     description="",
-     *     required=true,
-     *     type="string"
-     *   ),
      *  @SWG\Parameter(
      *     name="accesstoken",
      *     in="query",
@@ -157,15 +150,8 @@ class Managefavorite extends REST_Controller {
      *   tags={"Favorite"},
      *   summary="View the favorite Company of a user",
      *   description="View the favorite Company of a user",
-     *   operationId="index_get",
+     *   operationId="favorite_get",
      *   produces={"application/json"},
-     *   @SWG\Parameter(
-     *     name="Authorization",
-     *     in="header",
-     *     description="",
-     *     required=true,
-     *     type="string"
-     *   ),
      *   @SWG\Parameter(
      *     name="accesstoken",
      *     in="query",
@@ -284,19 +270,12 @@ class Managefavorite extends REST_Controller {
 
     /**
      * @SWG\Delete(path="/managefavorite",
-     *   tags={"Comments"},
+     *   tags={"Favorite"},
      *   summary="Unfavorite the post",
      *   description="Unfavorite the post",
-     *   operationId="index_delete",
+     *   operationId="favorite_delete",
      *   consumes ={"multipart/form-data"},
      *   produces={"application/json"},
-     *   @SWG\Parameter(
-     *     name="Authorization",
-     *     in="header",
-     *     description="",
-     *     required=true,
-     *     type="string"
-     *   ),
      *     @SWG\Parameter(
      *     name="accesstoken",
      *     in="query",

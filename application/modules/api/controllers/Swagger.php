@@ -3,15 +3,14 @@
 /** 
  * @SWG\Swagger(
  *   @SWG\Info(
- *      description = "Reusable Components Api Docs",
- *      title = "Reusable Components",
+ *      description = "Smart Guide APIs",
+ *      title = "Smart Guide",
  *      version = "1"       
  *   ),
  *   schemes={"http"},  
- *   host="reusable.local",
+ *   host="smartguide-dev.applaurels.com",
  *   basePath = "/api",
  *   
- *
  * @SWG\SecurityScheme(
  *   securityDefinition="basicAuth",
  *   type="basic",

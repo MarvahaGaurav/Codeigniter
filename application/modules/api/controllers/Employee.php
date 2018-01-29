@@ -10,6 +10,27 @@ class Employee extends REST_Controller {
         $this->load->library('form_validation');
     }
 
+    /**
+     * @SWG\Post(path="/Employee",
+     *   tags={"Employee"},
+     *   summary="Employee List",
+     *   description="Employee List",
+     *   operationId="employee_post",
+     *   consumes ={"multipart/form-data"},
+     *   produces={"application/json"},
+     *  @SWG\Parameter(
+     *     name="accesstoken",
+     *     in="formData",
+     *     description="Access token received during signup or login",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *   @SWG\Response(response=200, description="Employee List"),
+     *   @SWG\Response(response=101, description="Account Blocked"),     
+     *   @SWG\Response(response=201, description="Header is missing"),        
+     *   @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
+     * )
+     */
     public function index_post() {
         $postDataArr = $this->post();
         $config = [];
@@ -96,7 +117,27 @@ class Employee extends REST_Controller {
         }
     }
     
-    
+    /**
+     * @SWG\Post(path="/Employee/myemployeereuestlist",
+     *   tags={"Employee"},
+     *   summary="My Employee List",
+     *   description="My Employee List",
+     *   operationId="myemployeereuestlist_post",
+     *   consumes ={"multipart/form-data"},
+     *   produces={"application/json"},
+     *  @SWG\Parameter(
+     *     name="accesstoken",
+     *     in="formData",
+     *     description="Access token received during signup or login",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *   @SWG\Response(response=200, description="Employee List"),
+     *   @SWG\Response(response=101, description="Account Blocked"),     
+     *   @SWG\Response(response=201, description="Header is missing"),        
+     *   @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
+     * )
+     */
     public function myemployeereuestlist_post() {
         $postDataArr = $this->post();
         $config = [];
@@ -174,7 +215,49 @@ class Employee extends REST_Controller {
             $this->response(array('code' => PARAM_REQ, 'msg' => $arr[0], 'result' => (object)[]));
         }
     }
-    
+
+    /**
+     * @SWG\Post(path="/Employee/actiononemployee",
+     *   tags={"Employee"},
+     *   summary="My Employee List",
+     *   description="My Employee List",
+     *   operationId="actiononemployee_post",
+     *   consumes ={"multipart/form-data"},
+     *   produces={"application/json"},
+     *  @SWG\Parameter(
+     *     name="accesstoken",
+     *     in="formData",
+     *     description="Access token received during signup or login",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *  @SWG\Parameter(
+     *     name="employee_id",
+     *     in="formData",
+     *     description="Employee Id",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *  @SWG\Parameter(
+     *     name="action",
+     *     in="formData",
+     *     description="action",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *  @SWG\Parameter(
+     *     name="er_id",
+     *     in="formData",
+     *     description="er_id",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *   @SWG\Response(response=200, description="Employee List"),
+     *   @SWG\Response(response=101, description="Account Blocked"),     
+     *   @SWG\Response(response=201, description="Header is missing"),        
+     *   @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
+     * )
+     */
     public function actiononemployee_post() {
         $postDataArr = $this->post();
         $config = [];

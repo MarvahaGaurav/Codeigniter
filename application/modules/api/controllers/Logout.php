@@ -12,20 +12,13 @@ class Logout extends REST_Controller {
     }
 
     /**
-     * @SWG\Put(path="/Managefriends",
+     * @SWG\Put(path="/Logout",
      *   tags={"Friends"},
-     *   summary="Manage friend request",
-     *   description="Manage friend request",
-     *   operationId="index_put",
+     *   summary="User logout",
+     *   description="User logout",
+     *   operationId="logout_put",
      *   consumes ={"multipart/form-data"},
      *   produces={"application/json"},
-     *   @SWG\Parameter(
-     *     name="Authorization",
-     *     in="header",
-     *     description="",
-     *     required=true,
-     *     type="string"
-     *   ),
      *  @SWG\Parameter(
      *     name="accesstoken",
      *     in="query",

@@ -17,16 +17,9 @@ class Login extends REST_Controller {
      *   tags={"User"},
      *   summary="Login Information",
      *   description="Login Information",
-     *   operationId="index_post",
+     *   operationId="login_post",
      *   consumes ={"multipart/form-data"},
      *   produces={"application/json"},
-     *   @SWG\Parameter(
-     *     name="Authorization",
-     *     in="header",
-     *     description="",
-     *     required=true,
-     *     type="string"
-     *   ),
      *   @SWG\Parameter(
      *     name="email",
      *     in="formData",

@@ -15,16 +15,9 @@ class Changepassword extends REST_Controller {
      *   tags={"User"},
      *   summary="Change Password",
      *   description="Change Password",
-     *   operationId="index_post",
+     *   operationId="changepassword_post",
      *   consumes ={"multipart/form-data"},
      *   produces={"application/json"},
-     *   @SWG\Parameter(
-     *     name="Authorization",
-     *     in="header",
-     *     description="",
-     *     required=true,
-     *     type="string"
-     *   ),
      *   @SWG\Parameter(
      *     name="oldpassword",
      *     in="formData",

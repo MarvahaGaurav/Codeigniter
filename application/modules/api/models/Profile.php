@@ -10,36 +10,6 @@ class Profile extends REST_Controller {
         $this->load->library('form_validation');
     }
 
-    /**
-     * @SWG\Post(path="/Profile",
-     *   tags={"User"},
-     *   summary="Profile Detail",
-     *   description="Profile Detail",
-     *   operationId="index_post",
-     *   consumes ={"multipart/form-data"},
-     *   produces={"application/json"},
-     *   @SWG\Parameter(
-     *     name="Authorization",
-     *     in="header",
-     *     description="",
-     *     required=true,
-     *     type="string"
-     *   ),
-     *   @SWG\Parameter(
-     *     name="accesstoken",
-     *     in="formData",
-     *     description="Access Token",
-     *     required=true,
-     *     type="string"
-     *   ),  
-     *   @SWG\Response(response=200, description="Profile Update Success"),
-     *   @SWG\Response(response=206, description="Unauthorized request"),     
-     *   @SWG\Response(response=207, description="Header is missing"),        
-     *   @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
-     *   @SWG\Response(response=490, description="Invalid User"),
-     *   @SWG\Response(response=501, description="Please try again"),
-     * )
-     */
     public function index_post() {
         $postDataArr = $this->post();
         $config = [];
