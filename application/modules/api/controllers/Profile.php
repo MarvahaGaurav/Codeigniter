@@ -11,7 +11,7 @@ class Profile extends REST_Controller {
     }
 
     /**
-     * @SWG\Post(path="/Profile",
+     * @SWG\Post(path="/user/profile",
      *   tags={"User"},
      *   summary="Profile Detail",
      *   description="Profile Detail",
@@ -148,6 +148,21 @@ class Profile extends REST_Controller {
         }
     }
 
+    /**
+     * @SWG\Get(path="/company",
+     *   tags={"Company"},
+     *   summary="Fetches comapny list",
+     *   description="fetches comapny list",
+     *   operationId="companylist_get",
+     *   produces={"application/json"},
+     *   @SWG\Response(response=200, description="Success"),
+     *   @SWG\Response(response=201, description="Please try again"),       
+     *   @SWG\Response(response=202, description="No data found"), 
+     *   @SWG\Response(response=206, description="Unauthorized request"),     
+     *   @SWG\Response(response=207, description="Header is missing"),             
+     *   @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
+     * )
+     */
     public function companylist_get() {
 
         $getDataArr = $this->input->get();

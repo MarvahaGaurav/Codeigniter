@@ -9,7 +9,7 @@
  *   ),
  *   schemes={"http"},  
  *   host="smartguide-dev.applaurels.com",
- *   basePath = "/api",
+ *   basePath = "/api/v1",
  *   
  * @SWG\SecurityScheme(
  *   securityDefinition="basicAuth",

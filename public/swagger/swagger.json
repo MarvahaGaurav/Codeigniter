@@ -6,7 +6,7 @@
         "version": "1"
     },
     "host": "smartguide-dev.applaurels.com",
-    "basePath": "/api",
+    "basePath": "/api/v1",
     "schemes": [
         "http"
     ],
@@ -110,6 +110,48 @@
                     },
                     "501": {
                         "description": "Please try again"
+                    }
+                }
+            }
+        },
+        "/company": {
+            "get": {
+                "tags": [
+                    "Company"
+                ],
+                "summary": "Company",
+                "description": "",
+                "operationId": "company_get",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "accesstoken",
+                        "in": "header",
+                        "description": "Access token received during signup or login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "favorite",
+                        "in": "query",
+                        "description": "favorite = 1 to retrive favorite company",
+                        "type": "string"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "return the offset in response, if offset in response is -1 there are no further results",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "404": {
+                        "description": "No data found"
                     }
                 }
             }
@@ -248,6 +290,220 @@
                     },
                     "418": {
                         "description": "Required Parameter Missing or Invalid"
+                    }
+                }
+            }
+        },
+        "/Employee/employeedetail": {
+            "post": {
+                "tags": [
+                    "Employee"
+                ],
+                "summary": "Employee Detail",
+                "description": "Employee Detail",
+                "operationId": "employeedetail_post",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "accesstoken",
+                        "in": "formData",
+                        "description": "Access token received during signup or login",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Employee List"
+                    },
+                    "101": {
+                        "description": "Account Blocked"
+                    },
+                    "201": {
+                        "description": "Header is missing"
+                    },
+                    "418": {
+                        "description": "Required Parameter Missing or Invalid"
+                    }
+                }
+            }
+        },
+        "/Employee/setpermissopnforemp": {
+            "post": {
+                "tags": [
+                    "Employee"
+                ],
+                "summary": "Set Employee Permissions",
+                "description": "Set Employee Permissions",
+                "operationId": "setpermissopnforemp_post",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "accesstoken",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "employee_id",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "quote_view",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "quote_add",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "quote_edit",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "quote_delete",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "insp_view",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "insp_delete",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "insp_add",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "insp_edit",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "project_view",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "project_add",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "project_edit",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "project_delete",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Employee List"
+                    },
+                    "101": {
+                        "description": "Account Blocked"
+                    },
+                    "201": {
+                        "description": "Header is missing"
+                    },
+                    "418": {
+                        "description": "Required Parameter Missing or Invalid"
+                    }
+                }
+            }
+        },
+        "/company/favorite": {
+            "get": {
+                "tags": [
+                    "Company"
+                ],
+                "summary": "Favorite and unfavorite a company",
+                "description": "",
+                "operationId": "favorite_post",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "accesstoken",
+                        "in": "header",
+                        "description": "Access token received during signup or login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "is_favorite",
+                        "in": "query",
+                        "description": "is_favorite = 1 to favorite, is_favorite = 2 to unfavorite",
+                        "type": "string"
+                    },
+                    {
+                        "name": "company_id",
+                        "in": "query",
+                        "description": "company id",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "422": {
+                        "description": "missing parameter/invalid parameter"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
                     }
                 }
             }
@@ -684,7 +940,7 @@
                 }
             }
         },
-        "/Profile": {
+        "/user/profile": {
             "post": {
                 "tags": [
                     "User"

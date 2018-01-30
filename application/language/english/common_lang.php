@@ -158,6 +158,10 @@ $lang['account_blocked'] = 'Your account is blocked';
 $lang['reset_success'] = 'Password successfully reseted';
 $lang['password_already_reset'] = 'You have already reset your password';
 
+$lang['no_records_found'] = "No records found";
+$lang['internal_server_error'] = "Internal Server Error";
+$lang['favorite_list_updated'] = "favorite updated successfully";
+
 
 
 

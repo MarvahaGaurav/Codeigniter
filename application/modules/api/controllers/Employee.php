@@ -345,7 +345,28 @@ class Employee extends REST_Controller {
             $this->response(array('code' => PARAM_REQ, 'msg' => $arr[0], 'result' => (object)[]));
         }
     }
-    
+
+    /**
+     * @SWG\Post(path="/Employee/employeedetail",
+     *   tags={"Employee"},
+     *   summary="Employee Detail",
+     *   description="Employee Detail",
+     *   operationId="employeedetail_post",
+     *   consumes ={"multipart/form-data"},
+     *   produces={"application/json"},
+     *  @SWG\Parameter(
+     *     name="accesstoken",
+     *     in="formData",
+     *     description="Access token received during signup or login",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *   @SWG\Response(response=200, description="Employee List"),
+     *   @SWG\Response(response=101, description="Account Blocked"),     
+     *   @SWG\Response(response=201, description="Header is missing"),        
+     *   @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
+     * )
+     */
     public function employeedetail_post() {
         $postDataArr = $this->post();
         $config = [];
@@ -420,7 +441,118 @@ class Employee extends REST_Controller {
     }
     
 
-        
+    /**
+     * @SWG\Post(path="/Employee/setpermissopnforemp",
+     *   tags={"Employee"},
+     *   summary="Set Employee Permissions",
+     *   description="Set Employee Permissions",
+     *   operationId="setpermissopnforemp_post",
+     *   consumes ={"multipart/form-data"},
+     *   produces={"application/json"},
+     *  @SWG\Parameter(
+     *     name="accesstoken",
+     *     in="formData",
+     *     description="",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *  @SWG\Parameter(
+     *     name="employee_id",
+     *     in="formData",
+     *     description="",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *  @SWG\Parameter(
+     *     name="quote_view",
+     *     in="formData",
+     *     description="",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *  @SWG\Parameter(
+     *     name="quote_add",
+     *     in="formData",
+     *     description="",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *  @SWG\Parameter(
+     *     name="quote_edit",
+     *     in="formData",
+     *     description="",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *  @SWG\Parameter(
+     *     name="quote_delete",
+     *     in="formData",
+     *     description="",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *  @SWG\Parameter(
+     *     name="insp_view",
+     *     in="formData",
+     *     description="",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *  @SWG\Parameter(
+     *     name="insp_delete",
+     *     in="formData",
+     *     description="",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *  @SWG\Parameter(
+     *     name="insp_add",
+     *     in="formData",
+     *     description="",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *  @SWG\Parameter(
+     *     name="insp_edit",
+     *     in="formData",
+     *     description="",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *  @SWG\Parameter(
+     *     name="project_view",
+     *     in="formData",
+     *     description="",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *  @SWG\Parameter(
+     *     name="project_add",
+     *     in="formData",
+     *     description="",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *  @SWG\Parameter(
+     *     name="project_edit",
+     *     in="formData",
+     *     description="",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *  @SWG\Parameter(
+     *     name="project_delete",
+     *     in="formData",
+     *     description="",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *   @SWG\Response(response=200, description="Employee List"),
+     *   @SWG\Response(response=101, description="Account Blocked"),     
+     *   @SWG\Response(response=201, description="Header is missing"),        
+     *   @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
+     * )
+     */
     public function setpermissopnforemp_post() {
         $postDataArr = $this->post();
         $config = [];
