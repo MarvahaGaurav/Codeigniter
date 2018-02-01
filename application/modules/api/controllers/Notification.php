@@ -10,7 +10,7 @@ class Notification extends REST_Controller {
         $this->load->library('form_validation');
     }
 
-    /**
+    /*
      * @SWG\Post(path="/Notification",
      *   tags={"Notification"},
      *   summary="Notification List",

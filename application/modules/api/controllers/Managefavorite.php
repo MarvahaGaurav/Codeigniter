@@ -12,35 +12,6 @@ class Managefavorite extends REST_Controller {
         $this->load->library('form_validation');
     }
 
-    /**
-     * @SWG\Post(path="/managefavorite",
-     *   tags={"Favorite"},
-     *   summary="Make a post favorite",
-     *   description="Make a post favorite",
-     *   operationId="favorite_post",
-     *   consumes ={"multipart/form-data"},
-     *   produces={"application/json"},
-     *  @SWG\Parameter(
-     *     name="accesstoken",
-     *     in="query",
-     *     description="Access token received during signup or login",
-     *     required=true,
-     *     type="string"
-     *   ),
-     *   @SWG\Parameter(
-     *     name="company_id",
-     *     in="formData",
-     *     description="Company Id",
-     *     required=true,
-     *     type="string"
-     *   ),
-     *   @SWG\Response(response=200, description="Success"),
-     *   @SWG\Response(response=206, description="Unauthorized request"),     
-     *   @SWG\Response(response=207, description="Header is missing"),       
-     *   @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
-     *   @SWG\Response(response=507, description="Already favorite")
-     * )
-     */
     public function index_post() {
 
         $postDataArr = $this->post();
@@ -145,40 +116,6 @@ class Managefavorite extends REST_Controller {
         }
     }
 
-    /**
-     * @SWG\Get(path="/managefavorite",
-     *   tags={"Favorite"},
-     *   summary="View the favorite Company of a user",
-     *   description="View the favorite Company of a user",
-     *   operationId="favorite_get",
-     *   produces={"application/json"},
-     *   @SWG\Parameter(
-     *     name="accesstoken",
-     *     in="query",
-     *     description="Access token received during signup or login",
-     *     required=true,
-     *     type="string"
-     *   ),
-     *   @SWG\Parameter(
-     *     name="page",
-     *     in="query",
-     *     description="page no.",
-     *     type="string"
-     *   ),
-     *   @SWG\Parameter(
-     *     name="searchlike",
-     *     in="query",
-     *     description="Search key parameter",
-     *     type="string"
-     *   ),
-     *   @SWG\Response(response=200, description="Success"),
-     *   @SWG\Response(response=201, description="Please try again"),       
-     *   @SWG\Response(response=202, description="No data found"), 
-     *   @SWG\Response(response=206, description="Unauthorized request"),     
-     *   @SWG\Response(response=207, description="Header is missing"),             
-     *   @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
-     * )
-     */
     public function index_get() {
 
         $getDataArr = $this->input->get();
@@ -268,34 +205,6 @@ class Managefavorite extends REST_Controller {
         }
     }
 
-    /**
-     * @SWG\Delete(path="/managefavorite",
-     *   tags={"Favorite"},
-     *   summary="Unfavorite the post",
-     *   description="Unfavorite the post",
-     *   operationId="favorite_delete",
-     *   consumes ={"multipart/form-data"},
-     *   produces={"application/json"},
-     *     @SWG\Parameter(
-     *     name="accesstoken",
-     *     in="query",
-     *     description="Access token received during signup or login",
-     *     required=true,
-     *     type="string"
-     *   ),
-     *   @SWG\Parameter(
-     *     name="company_id",
-     *     in="formData",
-     *     description="company_id which we want to unfavorite",
-     *     required=true,
-     *     type="string"
-     *   ),
-     *   @SWG\Response(response=200, description="Success"),
-     *   @SWG\Response(response=206, description="Unauthorized request"),     
-     *   @SWG\Response(response=207, description="Header is missing"),       
-     *   @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
-     * )
-     */
     public function index_delete() {
         $deleteDataArr = $this->delete();
         $config = [];

@@ -1208,7 +1208,6 @@ class Common_model extends CI_Model {
         $this->db->from('ai_session as a');
         $this->db->join('ai_user as u', 'u.user_id=a.user_id', 'LEFT');
         $this->db->join('country_list as cl', 'cl.country_code1=u.country_id', 'LEFT');
-        $this->db->join('state_list as sl', 'sl.id = u.state_id', 'LEFT');
         $this->db->join('city_list as cyl', 'cyl.id=u.city_id', 'LEFT');
         $this->db->where($where);
         $query = $this->db->get();
@@ -1237,7 +1236,7 @@ class Common_model extends CI_Model {
         $respArr = [];
         $accessTokenArr = explode("||", $accessToken);
         if (count($accessTokenArr) != 2) {
-            $respArr = array('code' => INVALID_ACCESS_TOKEN, 'msg' => 'Invalid Access Token', 'result' => []);
+            $respArr = array('code' => HTTP_UNAUTHORIZED, 'msg' => 'Invalid Access Token', 'result' => []);
         }
         $whereArr = [];
         $whereArr = ['public_key' => $accessTokenArr[0], 'private_key' => $accessTokenArr[1], 'login_status' => 1];
@@ -1245,7 +1244,7 @@ class Common_model extends CI_Model {
         if (!empty($userInfo)) {
             $respArr = array('code' => SUCCESS_CODE, 'userinfo' => $userInfo);
         } else {
-            $respArr = array('code' => ACCESS_TOKEN_EXPIRED, 'msg' => 'Access Token Expired', 'result' => []);
+            $respArr = array('code' => HTTP_UNAUTHORIZED, 'msg' => 'Access Token Expired', 'result' => []);
         }
         return $respArr;
     }
@@ -1277,8 +1276,9 @@ class Common_model extends CI_Model {
         //print_r($rows); die;
         return $rows;
     }
+    
 
-    public function getMyEmployeesList($fields = 'erm.*,u.*', $userid, $companyid = false) {
+    public function getMyEmployeesList($fields = 'erm.*,u.*', $userid, $companyid = false, $offset=0) {
         $this->db->select($fields);
         $this->db->from('ai_user as u');
         $this->db->join('employee_request_master as erm', 'erm.requested_by=u.user_id', 'left');
@@ -1286,14 +1286,20 @@ class Common_model extends CI_Model {
         $this->db->where('u.status', 1);
         $this->db->where('erm.status!=', 0);
         $this->db->where('erm.status!=', 2);
+        $this->db->limit(RECORDS_PER_PAGE);
+        if ( ! empty($offset) ) {
+            $this->db->offset($offset);
+        }
+
         if ($companyid) {
             $this->db->where('u.company_id', $companyid);
         }
         $query = $this->db->get();
-        $rows = $query->result();
+        $result['result'] = $query->result();
+        $result['count'] = $this->db->query('SELECT FOUND_ROWS() count;')->row()->count;
         //echo  $this->db->last_query();
         //print_r($rows); die;
-        return $rows;
+        return $result;
     }
 
     public function Randomstring($length = 6) {

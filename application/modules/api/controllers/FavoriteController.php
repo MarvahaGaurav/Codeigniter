@@ -12,11 +12,12 @@ class FavoriteController extends BaseController
     }
 
     /**
-     * @SWG\Get(path="/company/favorite",
+     * @SWG\Post(path="/company/favorite",
      *   tags={"Company"},
      *   summary="Favorite and unfavorite a company",
      *   description="",
      *   operationId="favorite_post",
+     *   consumes ={"multipart/form-data"},
      *   produces={"application/json"},
      *   @SWG\Parameter(
      *     name="accesstoken",
@@ -27,13 +28,13 @@ class FavoriteController extends BaseController
      *   ),
      *   @SWG\Parameter(
      *     name="is_favorite",
-     *     in="query",
+     *     in="formData",
      *     description="is_favorite = 1 to favorite, is_favorite = 2 to unfavorite",
      *     type="string"
      *   ),
      *   @SWG\Parameter(
      *     name="company_id",
-     *     in="query",
+     *     in="formData",
      *     description="company id",
      *     type="string"
      *   ),
@@ -56,8 +57,10 @@ class FavoriteController extends BaseController
                 'code' => HTTP_UNPROCESSABLE_ENTITY,
                 'api_code_result' => 'UNPROCESSABLE_ENTITY',
                 'msg' => $this->lang->line('missing_parameter'),
-                'extra_info' => $check['parameter']
-            ], HTTP_UNPROCESSABLE_ENTITY);
+                'extra_info' => [
+                    "missing_parameter" => $check['parameter']
+                ]
+            ]);
         }
 
         if (!in_array($postData['is_favorite'], $validFavorite)) {
@@ -66,7 +69,7 @@ class FavoriteController extends BaseController
                 'api_code_result' => 'UNPROCESSABLE_ENTITY',
                 'msg' => $this->lang->line('invalid_parameter'),
                 'extra_info' => "is_favorite"
-            ], HTTP_UNPROCESSABLE_ENTITY);
+            ]);
         }
         $isFavorite = (int)$postData['is_favorite'] === 1 ? 1 : 0;
 
@@ -103,7 +106,7 @@ class FavoriteController extends BaseController
                 'code' => HTTP_INTERNAL_SERVER_ERROR,
                 'api_code_result' => 'INTERNAL_SERVER_ERROR',
                 'msg' => $this->lang->line('internal_server_error'),
-            ], HTTP_INTERNAL_SERVER_ERROR);
+            ]);
         }
     }
 }

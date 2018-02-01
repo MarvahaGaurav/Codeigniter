@@ -12,8 +12,8 @@ class Logout extends REST_Controller {
     }
 
     /**
-     * @SWG\Put(path="/Logout",
-     *   tags={"Friends"},
+     * @SWG\Put(path="/user/logout",
+     *   tags={"User"},
      *   summary="User logout",
      *   description="User logout",
      *   operationId="logout_put",
@@ -35,50 +35,54 @@ class Logout extends REST_Controller {
     public function index_put() {
 
         $putDataArr = $this->put();
-
+        $head = $this->head();
+        if ( (!isset($head['accesstoken']) || empty(trim($head['accesstoken']))) && (!isset($head['Accesstoken']) || empty(trim($head['Accesstoken']))) ) {
+            $this->response([
+                "code" => HTTP_UNAUTHORIZED,
+                "api_code_result" => "UNAUTHORIZED",
+                "msg" => $this->lang->line("invalid_access_token")
+            ], HTTP_UNAUTHORIZED);
+        }
+        if ( isset($head['Accesstoken']) && !empty($head['Accesstoken']) ) {
+            $head['accesstoken'] = $head['Accesstoken'];
+        }
         $config = [];
-
-        $config = array(
+        
+        /* $config = array(
             array(
                 'field' => 'accesstoken',
                 'label' => 'Access Token',
                 'rules' => 'required'
             )
-        );
+        ); */
 
-        $set_data = array(
-            'accesstoken' => $this->put('accesstoken')
-        );
+        // $set_data = array(
+        //     'accesstoken' => $this->put('accesstoken')
+        // );
 
-        $this->form_validation->set_data($set_data);
-        $this->form_validation->set_rules($config);
-        /*
-         * Setting Error Messages for rules
-         */
-        $this->form_validation->set_message('required', 'Please enter the %s');
+        // $this->form_validation->set_data($set_data);
+        // $this->form_validation->set_rules($config);
+        // /*
+        //  * Setting Error Messages for rules
+        //  */
+        // $this->form_validation->set_message('required', 'Please enter the %s');
 
-        if ($this->form_validation->run()) {
-            try {
-                $accessToken = $putDataArr['accesstoken'];
-                $accessTokenArr = explode("||", $accessToken);
-                $whereArr = [];
-                $whereArr['where'] = ['public_key' => $accessTokenArr[0], 'private_key' => $accessTokenArr[1]];
+        try {
+            $accessToken = $head['accesstoken'];
+            $accessTokenArr = explode("||", $accessToken);
+            $whereArr = [];
+            $whereArr['where'] = ['public_key' => $accessTokenArr[0], 'private_key' => $accessTokenArr[1]];
 //                pr($whereArr);
-                $isSuccess = $this->Common_model->update_single('ai_session', ['login_status' => 0], $whereArr);
-                if ($isSuccess) {
-                    $this->response(array('code' => SUCCESS_CODE, 'msg' => $this->lang->line('logout_successful'), 'result' => (object)[]));
-                } else {
-                    $this->response(array('code' => TRY_AGAIN_CODE, 'msg' => $this->lang->line('try_again'), 'result' => (object)[]));
-                }
-            } catch (Exception $e) {
-                $error = $e->getMessage();
-                list($msg, $code) = explode(" || ", $error);
-                $this->response(array('code' => $code, 'msg' => $msg, 'result' => (object)[]));
+            $isSuccess = $this->Common_model->update_single('ai_session', ['login_status' => 0], $whereArr);
+            if ($isSuccess) {
+                $this->response(array('code' => SUCCESS_CODE, 'msg' => $this->lang->line('logout_successful'), 'result' => (object)[]));
+            } else {
+                $this->response(array('code' => TRY_AGAIN_CODE, 'msg' => $this->lang->line('try_again'), 'result' => (object)[]));
             }
-        } else {
-            $err = $this->form_validation->error_array();
-            $arr = array_values($err);
-            $this->response(array('code' => PARAM_REQ, 'msg' => $arr[0], 'result' => (object)[]));
+        } catch (Exception $e) {
+            $error = $e->getMessage();
+            list($msg, $code) = explode(" || ", $error);
+            $this->response(array('code' => $code, 'msg' => $msg, 'result' => (object)[]));
         }
     }
 

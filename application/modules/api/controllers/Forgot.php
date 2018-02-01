@@ -15,7 +15,7 @@ class Forgot extends REST_Controller {
     }
 
     /**
-     * @SWG\Post(path="/Forgot",
+     * @SWG\Post(path="/user/password/forgot",
      *   tags={"User"},
      *   summary="Forgot Password",
      *   description="Forgot Password",
@@ -115,7 +115,7 @@ class Forgot extends REST_Controller {
     }
 
     /**
-     * @SWG\Post(path="/Forgot/verifyotp",
+     * @SWG\Post(path="/user/otp/verify",
      *   tags={"User"},
      *   summary="Verify OTP",
      *   description="Verify OTP",
@@ -210,7 +210,7 @@ class Forgot extends REST_Controller {
     }
     
     /**
-     * @SWG\Post(path="/Forgot/resendotp",
+     * @SWG\Post(path="/user/otp/resend",
      *   tags={"User"},
      *   summary="Resend OTP",
      *   description="Resend OTP",

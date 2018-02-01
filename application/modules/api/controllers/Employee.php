@@ -10,27 +10,6 @@ class Employee extends REST_Controller {
         $this->load->library('form_validation');
     }
 
-    /**
-     * @SWG\Post(path="/Employee",
-     *   tags={"Employee"},
-     *   summary="Employee List",
-     *   description="Employee List",
-     *   operationId="employee_post",
-     *   consumes ={"multipart/form-data"},
-     *   produces={"application/json"},
-     *  @SWG\Parameter(
-     *     name="accesstoken",
-     *     in="formData",
-     *     description="Access token received during signup or login",
-     *     required=true,
-     *     type="string"
-     *   ),
-     *   @SWG\Response(response=200, description="Employee List"),
-     *   @SWG\Response(response=101, description="Account Blocked"),     
-     *   @SWG\Response(response=201, description="Header is missing"),        
-     *   @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
-     * )
-     */
     public function index_post() {
         $postDataArr = $this->post();
         $config = [];
@@ -40,7 +19,7 @@ class Employee extends REST_Controller {
                 'field' => 'accesstoken',
                 'label' => 'Access Token',
                 'rules' => 'required'
-            ),                       
+            )                       
         );
         
         $this->form_validation->set_rules($config);
@@ -50,7 +29,6 @@ class Employee extends REST_Controller {
         $this->form_validation->set_message('required', 'Please enter the %s');
 
         if ($this->form_validation->run()) {
-
             try {
                 $this->load->library('commonfn');
                 $respArr = $this->Common_model->getUserInfo($postDataArr['accesstoken'], ['u.user_id','company_id','is_owner','user_type','status']);
@@ -74,7 +52,6 @@ class Employee extends REST_Controller {
                 if ($this->db->trans_status() === TRUE) {
                     $this->db->trans_commit(); 
                     if($user_info['company_id'] > 0 && $user_info['is_owner'] == '2'){
-                        
                         $fields = 'erm.er_id,erm.requested_by,u.user_id';
                         $myemployeerequests = $this->Common_model->EemployeeRequestsbyUser($fields,$user_info['user_id'], $user_info['company_id'],'0');
                         //pr($myemployeerequests);
@@ -117,27 +94,6 @@ class Employee extends REST_Controller {
         }
     }
     
-    /**
-     * @SWG\Post(path="/Employee/myemployeereuestlist",
-     *   tags={"Employee"},
-     *   summary="My Employee List",
-     *   description="My Employee List",
-     *   operationId="myemployeereuestlist_post",
-     *   consumes ={"multipart/form-data"},
-     *   produces={"application/json"},
-     *  @SWG\Parameter(
-     *     name="accesstoken",
-     *     in="formData",
-     *     description="Access token received during signup or login",
-     *     required=true,
-     *     type="string"
-     *   ),
-     *   @SWG\Response(response=200, description="Employee List"),
-     *   @SWG\Response(response=101, description="Account Blocked"),     
-     *   @SWG\Response(response=201, description="Header is missing"),        
-     *   @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
-     * )
-     */
     public function myemployeereuestlist_post() {
         $postDataArr = $this->post();
         $config = [];
@@ -180,7 +136,7 @@ class Employee extends REST_Controller {
                 }
                 if ($this->db->trans_status() === TRUE) {
                     $this->db->trans_commit(); 
-                    if($user_info['company_id'] > 0 && $user_info['is_owner'] == '2'){
+                    if($user_info['company_id'] > 0 && $user_info['is_owner'] == '2') {
                         $fields = 'erm.*,u.user_id,u.first_name,u.middle_name,u.last_name,email,user_type,is_owner,IF(image !="",image,"") as image,IF(image_thumb !="",image_thumb,"") as image_thumb';
                         $myemployeerequests = $this->Common_model->EemployeeRequestsbyUser($fields,$user_info['user_id'], $user_info['company_id'],'0');
                         //echo $this->db->last_query(); die;
@@ -197,7 +153,7 @@ class Employee extends REST_Controller {
                             $myemployeerequests = [];
                             $this->response(array('code' => NO_DATA_FOUND, 'msg' => $this->lang->line('no_data_found'), 'result' => $myemployeerequests));
                         }
-                    }else{
+                    } else {
                         $myemployeerequests = [];
                         $this->response(array('code' => NO_DATA_FOUND, 'msg' => $this->lang->line('no_data_found'), 'result' =>  $myemployeerequests));
                     }
@@ -217,10 +173,10 @@ class Employee extends REST_Controller {
     }
 
     /**
-     * @SWG\Post(path="/Employee/actiononemployee",
+     * @SWG\Post(path="/employee/request",
      *   tags={"Employee"},
-     *   summary="My Employee List",
-     *   description="My Employee List",
+     *   summary="Accept reject employee requests",
+     *   description="Accept reject employee requests",
      *   operationId="actiononemployee_post",
      *   consumes ={"multipart/form-data"},
      *   produces={"application/json"},
@@ -261,13 +217,18 @@ class Employee extends REST_Controller {
     public function actiononemployee_post() {
         $postDataArr = $this->post();
         $config = [];
-
+        $head = $this->head();
+        if ( (!isset($head['accesstoken']) || empty(trim($head['accesstoken']))) && (!isset($head['Accesstoken']) || empty(trim($head['Accesstoken']))) ) {
+            $this->response([
+                "code" => HTTP_UNAUTHORIZED,
+                "api_code_result" => "UNAUTHORIZED",
+                "msg" => $this->lang->line("invalid_access_token")
+            ], HTTP_UNAUTHORIZED);
+        }
+        if ( isset($head['Accesstoken']) && !empty($head['Accesstoken']) ) {
+            $head['accesstoken'] = $head['Accesstoken'];
+        }
         $config = array(
-            array(
-                'field' => 'accesstoken',
-                'label' => 'Access Token',
-                'rules' => 'required'
-            ),  
             array(
                 'field' => 'employee_id',
                 'label' => 'Employee ID',
@@ -295,7 +256,7 @@ class Employee extends REST_Controller {
 
             try {
                 $this->load->library('commonfn');
-                $respArr = $this->Common_model->getUserInfo($postDataArr['accesstoken'], ['u.user_id','company_id','is_owner','user_type','status']);                
+                $respArr = $this->Common_model->getUserInfo($head['accesstoken'], ['u.user_id','company_id','is_owner','user_type','status']);                
                 $user_info = [];
                 
                 /*
@@ -346,37 +307,11 @@ class Employee extends REST_Controller {
         }
     }
 
-    /**
-     * @SWG\Post(path="/Employee/employeedetail",
-     *   tags={"Employee"},
-     *   summary="Employee Detail",
-     *   description="Employee Detail",
-     *   operationId="employeedetail_post",
-     *   consumes ={"multipart/form-data"},
-     *   produces={"application/json"},
-     *  @SWG\Parameter(
-     *     name="accesstoken",
-     *     in="formData",
-     *     description="Access token received during signup or login",
-     *     required=true,
-     *     type="string"
-     *   ),
-     *   @SWG\Response(response=200, description="Employee List"),
-     *   @SWG\Response(response=101, description="Account Blocked"),     
-     *   @SWG\Response(response=201, description="Header is missing"),        
-     *   @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
-     * )
-     */
     public function employeedetail_post() {
         $postDataArr = $this->post();
         $config = [];
 
         $config = array(
-            array(
-                'field' => 'accesstoken',
-                'label' => 'Access Token',
-                'rules' => 'required'
-            ), 
             array(
                 'field' => 'employee_id',
                 'label' => 'Employee ID',
@@ -442,7 +377,7 @@ class Employee extends REST_Controller {
     
 
     /**
-     * @SWG\Post(path="/Employee/setpermissopnforemp",
+     * @SWG\Post(path="/employee/permission",
      *   tags={"Employee"},
      *   summary="Set Employee Permissions",
      *   description="Set Employee Permissions",
@@ -556,13 +491,18 @@ class Employee extends REST_Controller {
     public function setpermissopnforemp_post() {
         $postDataArr = $this->post();
         $config = [];
-
+        $head = $this->head();
+        if ( (!isset($head['accesstoken']) || empty(trim($head['accesstoken']))) && (!isset($head['Accesstoken']) || empty(trim($head['Accesstoken']))) ) {
+            $this->response([
+                "code" => HTTP_UNAUTHORIZED,
+                "api_code_result" => "UNAUTHORIZED",
+                "msg" => $this->lang->line("invalid_access_token")
+            ], HTTP_UNAUTHORIZED);
+        }
+        if ( isset($head['Accesstoken']) && !empty($head['Accesstoken']) ) {
+            $head['accesstoken'] = $head['Accesstoken'];
+        }
         $config = array(
-            array(
-                'field' => 'accesstoken',
-                'label' => 'Access Token',
-                'rules' => 'required'
-            ),  
             array(
                 'field' => 'employee_id',
                 'label' => 'Employee ID',
@@ -580,7 +520,7 @@ class Employee extends REST_Controller {
 
             try {
                 $this->load->library('commonfn');
-                $respArr = $this->Common_model->getUserInfo($postDataArr['accesstoken'], ['u.user_id','company_id','is_owner','user_type','status']);                
+                $respArr = $this->Common_model->getUserInfo($head['accesstoken'], ['u.user_id','company_id','is_owner','user_type','status']);                
                 $user_info = [];
                 
                 /*

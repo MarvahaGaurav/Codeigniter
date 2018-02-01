@@ -14,7 +14,7 @@ class Resetpass extends REST_Controller {
     }
 
     /**
-     * @SWG\Post(path="/Resetpass",
+     * @SWG\Post(path="/user/password/reset",
      *   tags={"User"},
      *   summary="Reset Password",
      *   description="Reset Password",
@@ -89,7 +89,7 @@ class Resetpass extends REST_Controller {
                 if ($issuccess) {
                     $resparr = array('code' => SUCCESS_CODE, 'msg' => $this->lang->line('password_reset_success'), 'result' => (object)[]);
                 } else {
-                    $resparr = array('code' => TRY_AGAIN_CODE, 'msg' => $this->lang->line('try_again'), 'result' => (object)[]);
+                    $resparr = array('code' => TRY_AGAIN_CODE, 'msg' => $this->lang->line('password_exist'), 'result' => (object)[]);
                 }
             } else {
                 $resparr = array('code' => OTP_NOT_VERIFIED, 'msg' => $this->lang->line('otp_not_verified'), 'result' => (object)[]);

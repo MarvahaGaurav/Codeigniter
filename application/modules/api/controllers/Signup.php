@@ -14,7 +14,7 @@ class Signup extends REST_Controller {
     }
 
     /**
-     * @SWG\Post(path="/Signup",
+     * @SWG\Post(path="/user/signup",
      *   tags={"User"},
      *   summary="Singup Information",
      *   description="Singup Information",
@@ -227,7 +227,7 @@ class Signup extends REST_Controller {
                 //$required_fields_arr[] = array('field' => 'latitude','label' => 'Latitude','rules' => 'trim|required');
                 //$required_fields_arr[] = array('field' => 'longitude','label' => 'Longitude','rules' => 'trim|required');
                 $required_fields_arr[] = array('field' => 'country','label' => 'Country','rules' => 'trim|required');
-                $required_fields_arr[] = array('field' => 'state','label' => 'State','rules' => 'trim|required');
+                // $required_fields_arr[] = array('field' => 'state','label' => 'State','rules' => 'trim|required');
                 $required_fields_arr[] = array('field' => 'city','label' => 'City','rules' => 'trim|required');
                 $required_fields_arr[] = array('field' => 'zipcode','label' => 'Zipcode','rules' => 'trim|required');
             }/*else{
@@ -286,7 +286,7 @@ class Signup extends REST_Controller {
                 //$signupArr["user_lat"] = isset($postDataArr["user_lat"]) ? $postDataArr["user_lat"] : "";
                 //$signupArr["user_long"] = isset($postDataArr["user_long"]) ? $postDataArr["user_long"] : "";
                 $signupArr["country_id"] = isset($postDataArr['country']) ? $postDataArr['country'] : "";
-                $signupArr["state_id"] = isset($postDataArr['state']) ? $postDataArr['state'] : "";
+                // $signupArr["state_id"] = isset($postDataArr['state']) ? $postDataArr['state'] : "";
                 $signupArr["city_id"] = isset($postDataArr['city']) ? $postDataArr['city'] : "";
                 $signupArr["zipcode"] = isset($postDataArr['zipcode']) ? $postDataArr['zipcode'] : "";
                 $signupArr["password"] = encrypt($postDataArr["password"]);
@@ -334,7 +334,7 @@ class Signup extends REST_Controller {
                     //$companyArr['latitude'] = isset($postDataArr['latitude']) ? $postDataArr['latitude'] : "";
                     //$companyArr['longitude'] = isset($postDataArr['longitude']) ? $postDataArr['longitude'] : "";
                     $companyArr['country'] = isset($postDataArr['country']) ? $postDataArr['country'] : "";
-                    $companyArr['state'] = isset($postDataArr['state']) ? $postDataArr['state'] : "";
+                    // $companyArr['state'] = isset($postDataArr['state']) ? $postDataArr['state'] : "";
                     $companyArr['city'] = isset($postDataArr['city']) ? $postDataArr['city'] : "";
                     $companyArr['zipcode'] = isset($postDataArr['zipcode']) ? $postDataArr['zipcode'] : "";
                     $companyArr['company_image'] = isset($postDataArr['company_image']) ? $postDataArr['company_image'] : "";

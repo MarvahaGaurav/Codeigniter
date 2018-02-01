@@ -52,7 +52,7 @@
                 }
             }
         },
-        "/Changepassword": {
+        "/user/password/change": {
             "post": {
                 "tags": [
                     "User"
@@ -130,13 +130,24 @@
                         "name": "accesstoken",
                         "in": "header",
                         "description": "Access token received during signup or login",
-                        "required": true,
                         "type": "string"
                     },
                     {
                         "name": "favorite",
                         "in": "query",
                         "description": "favorite = 1 to retrive favorite company",
+                        "type": "string"
+                    },
+                    {
+                        "name": "paginate",
+                        "in": "query",
+                        "description": "paginate = 1 to paginate",
+                        "type": "string"
+                    },
+                    {
+                        "name": "company_id",
+                        "in": "query",
+                        "description": "pass company id to fetch company detail",
                         "type": "string"
                     },
                     {
@@ -150,30 +161,30 @@
                     "200": {
                         "description": "OK"
                     },
-                    "404": {
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "202": {
                         "description": "No data found"
                     }
                 }
             }
         },
-        "/Employee": {
-            "post": {
+        "/employee/request": {
+            "get": {
                 "tags": [
                     "Employee"
                 ],
-                "summary": "Employee List",
-                "description": "Employee List",
-                "operationId": "employee_post",
-                "consumes": [
-                    "multipart/form-data"
-                ],
+                "summary": "List all employee requests",
+                "description": "List all employee requests",
+                "operationId": "employee_get",
                 "produces": [
                     "application/json"
                 ],
                 "parameters": [
                     {
                         "name": "accesstoken",
-                        "in": "formData",
+                        "in": "header",
                         "description": "Access token received during signup or login",
                         "required": true,
                         "type": "string"
@@ -193,54 +204,13 @@
                         "description": "Required Parameter Missing or Invalid"
                     }
                 }
-            }
-        },
-        "/Employee/myemployeereuestlist": {
+            },
             "post": {
                 "tags": [
                     "Employee"
                 ],
-                "summary": "My Employee List",
-                "description": "My Employee List",
-                "operationId": "myemployeereuestlist_post",
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "accesstoken",
-                        "in": "formData",
-                        "description": "Access token received during signup or login",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Employee List"
-                    },
-                    "101": {
-                        "description": "Account Blocked"
-                    },
-                    "201": {
-                        "description": "Header is missing"
-                    },
-                    "418": {
-                        "description": "Required Parameter Missing or Invalid"
-                    }
-                }
-            }
-        },
-        "/Employee/actiononemployee": {
-            "post": {
-                "tags": [
-                    "Employee"
-                ],
-                "summary": "My Employee List",
-                "description": "My Employee List",
+                "summary": "Accept reject employee requests",
+                "description": "Accept reject employee requests",
                 "operationId": "actiononemployee_post",
                 "consumes": [
                     "multipart/form-data"
@@ -294,25 +264,29 @@
                 }
             }
         },
-        "/Employee/employeedetail": {
-            "post": {
+        "/employee/permission": {
+            "get": {
                 "tags": [
                     "Employee"
                 ],
-                "summary": "Employee Detail",
-                "description": "Employee Detail",
-                "operationId": "employeedetail_post",
-                "consumes": [
-                    "multipart/form-data"
-                ],
+                "summary": "List Employee permissions",
+                "description": "List Employee permissions",
+                "operationId": "employeePermissions_get",
                 "produces": [
                     "application/json"
                 ],
                 "parameters": [
                     {
                         "name": "accesstoken",
-                        "in": "formData",
+                        "in": "header",
                         "description": "Access token received during signup or login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "employee_id",
+                        "in": "query",
+                        "description": "Employee Id",
                         "required": true,
                         "type": "string"
                     }
@@ -331,9 +305,7 @@
                         "description": "Required Parameter Missing or Invalid"
                     }
                 }
-            }
-        },
-        "/Employee/setpermissopnforemp": {
+            },
             "post": {
                 "tags": [
                     "Employee"
@@ -463,14 +435,59 @@
                 }
             }
         },
-        "/company/favorite": {
+        "/employee": {
             "get": {
+                "tags": [
+                    "Employee"
+                ],
+                "summary": "Employee List",
+                "description": "Employee List",
+                "operationId": "employee_get",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "accesstoken",
+                        "in": "header",
+                        "description": "Access token received during signup or login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "employee_id",
+                        "in": "query",
+                        "description": "passing employee Id will fetch employee details",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Employee List"
+                    },
+                    "101": {
+                        "description": "Account Blocked"
+                    },
+                    "201": {
+                        "description": "Header is missing"
+                    },
+                    "418": {
+                        "description": "Required Parameter Missing or Invalid"
+                    }
+                }
+            }
+        },
+        "/company/favorite": {
+            "post": {
                 "tags": [
                     "Company"
                 ],
                 "summary": "Favorite and unfavorite a company",
                 "description": "",
                 "operationId": "favorite_post",
+                "consumes": [
+                    "multipart/form-data"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -484,13 +501,13 @@
                     },
                     {
                         "name": "is_favorite",
-                        "in": "query",
+                        "in": "formData",
                         "description": "is_favorite = 1 to favorite, is_favorite = 2 to unfavorite",
                         "type": "string"
                     },
                     {
                         "name": "company_id",
-                        "in": "query",
+                        "in": "formData",
                         "description": "company id",
                         "type": "string"
                     }
@@ -508,7 +525,7 @@
                 }
             }
         },
-        "/Forgot": {
+        "/user/password/forgot": {
             "post": {
                 "tags": [
                     "User"
@@ -553,7 +570,7 @@
                 }
             }
         },
-        "/Forgot/verifyotp": {
+        "/user/otp/verify": {
             "post": {
                 "tags": [
                     "User"
@@ -605,7 +622,7 @@
                 }
             }
         },
-        "/Forgot/resendotp": {
+        "/user/otp/resend": {
             "post": {
                 "tags": [
                     "User"
@@ -644,7 +661,219 @@
                 }
             }
         },
-        "/Login": {
+        "/company/inspiration": {
+            "put": {
+                "tags": [
+                    "Company"
+                ],
+                "summary": "Put inspiration",
+                "description": "Put inspiration",
+                "operationId": "inspiration_put",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "accesstoken",
+                        "in": "header",
+                        "description": "Access token received during signup or login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "inspiration_id",
+                        "in": "formData",
+                        "description": "Inspiration Id",
+                        "type": "string"
+                    },
+                    {
+                        "name": "title",
+                        "in": "formData",
+                        "description": "Title",
+                        "type": "string"
+                    },
+                    {
+                        "name": "description",
+                        "in": "formData",
+                        "description": "",
+                        "type": "string"
+                    },
+                    {
+                        "name": "product_ids",
+                        "in": "formData",
+                        "description": "array of ids",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "422": {
+                        "description": "Missing parameters/Nothing to update"
+                    },
+                    "200": {
+                        "description": "Inspiration updated"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Company"
+                ],
+                "summary": "Post inspiration",
+                "description": "Post inspiration",
+                "operationId": "inspiration_post",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "accesstoken",
+                        "in": "header",
+                        "description": "Access token received during signup or login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "company_id",
+                        "in": "formData",
+                        "description": "Company Id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "title",
+                        "in": "formData",
+                        "description": "Title",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "description",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "product_ids",
+                        "in": "formData",
+                        "description": "array of ids",
+                        "type": "string"
+                    },
+                    {
+                        "name": "media",
+                        "in": "formData",
+                        "description": "json array [{'media':'http//image/url', 'type':1}, {'media':'http//image/url', 'type':1}] 1-image, 2-video, 3-pdf",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "422": {
+                        "description": "Missing parameters"
+                    },
+                    "200": {
+                        "description": "Inspiration added"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Company"
+                ],
+                "summary": "Delete inspiration",
+                "description": "Delete inspiration",
+                "operationId": "inspiration_delete",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "accesstoken",
+                        "in": "header",
+                        "description": "Access token received during signup or login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "inspiration_id",
+                        "in": "formData",
+                        "description": "Inspiration Id",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "422": {
+                        "description": "Missing parameters/Nothing to update"
+                    },
+                    "200": {
+                        "description": "Inspiration updated"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/company/inspiration/{company_id}/{inspiration_id}": {
+            "get": {
+                "tags": [
+                    "Company"
+                ],
+                "summary": "Inspiration List and detail",
+                "description": "Inspiration List and detail",
+                "operationId": "employee_get",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "accesstoken",
+                        "in": "header",
+                        "description": "Access token received during signup or login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "inspiration_id",
+                        "in": "query",
+                        "description": "Inspiration id is optional and can be passed to fetch inspiration details",
+                        "type": "string"
+                    },
+                    {
+                        "name": "company_id",
+                        "in": "query",
+                        "description": "if company Id is given it will fetch based on company Id",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "No data found"
+                    },
+                    "200": {
+                        "description": "Inspiration added"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/user/login": {
             "post": {
                 "tags": [
                     "User"
@@ -711,10 +940,10 @@
                 }
             }
         },
-        "/Logout": {
+        "/user/logout": {
             "put": {
                 "tags": [
-                    "Friends"
+                    "User"
                 ],
                 "summary": "User logout",
                 "description": "User logout",
@@ -750,198 +979,8 @@
                 }
             }
         },
-        "/managefavorite": {
-            "get": {
-                "tags": [
-                    "Favorite"
-                ],
-                "summary": "View the favorite Company of a user",
-                "description": "View the favorite Company of a user",
-                "operationId": "favorite_get",
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "accesstoken",
-                        "in": "query",
-                        "description": "Access token received during signup or login",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "page no.",
-                        "type": "string"
-                    },
-                    {
-                        "name": "searchlike",
-                        "in": "query",
-                        "description": "Search key parameter",
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    },
-                    "201": {
-                        "description": "Please try again"
-                    },
-                    "202": {
-                        "description": "No data found"
-                    },
-                    "206": {
-                        "description": "Unauthorized request"
-                    },
-                    "207": {
-                        "description": "Header is missing"
-                    },
-                    "418": {
-                        "description": "Required Parameter Missing or Invalid"
-                    }
-                }
-            },
-            "post": {
-                "tags": [
-                    "Favorite"
-                ],
-                "summary": "Make a post favorite",
-                "description": "Make a post favorite",
-                "operationId": "favorite_post",
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "accesstoken",
-                        "in": "query",
-                        "description": "Access token received during signup or login",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "company_id",
-                        "in": "formData",
-                        "description": "Company Id",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    },
-                    "206": {
-                        "description": "Unauthorized request"
-                    },
-                    "207": {
-                        "description": "Header is missing"
-                    },
-                    "418": {
-                        "description": "Required Parameter Missing or Invalid"
-                    },
-                    "507": {
-                        "description": "Already favorite"
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "Favorite"
-                ],
-                "summary": "Unfavorite the post",
-                "description": "Unfavorite the post",
-                "operationId": "favorite_delete",
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "accesstoken",
-                        "in": "query",
-                        "description": "Access token received during signup or login",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "company_id",
-                        "in": "formData",
-                        "description": "company_id which we want to unfavorite",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    },
-                    "206": {
-                        "description": "Unauthorized request"
-                    },
-                    "207": {
-                        "description": "Header is missing"
-                    },
-                    "418": {
-                        "description": "Required Parameter Missing or Invalid"
-                    }
-                }
-            }
-        },
-        "/Notification": {
-            "post": {
-                "tags": [
-                    "Notification"
-                ],
-                "summary": "Notification List",
-                "description": "Notification List",
-                "operationId": "notification_post",
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "accesstoken",
-                        "in": "formData",
-                        "description": "Access Token",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Profile Update Success"
-                    },
-                    "206": {
-                        "description": "Unauthorized request"
-                    },
-                    "207": {
-                        "description": "Header is missing"
-                    },
-                    "418": {
-                        "description": "Required Parameter Missing or Invalid"
-                    },
-                    "490": {
-                        "description": "Invalid User"
-                    },
-                    "501": {
-                        "description": "Please try again"
-                    }
-                }
-            }
-        },
         "/user/profile": {
-            "post": {
+            "get": {
                 "tags": [
                     "User"
                 ],
@@ -957,7 +996,7 @@
                 "parameters": [
                     {
                         "name": "accesstoken",
-                        "in": "formData",
+                        "in": "header",
                         "description": "Access Token",
                         "required": true,
                         "type": "string"
@@ -983,9 +1022,160 @@
                         "description": "Please try again"
                     }
                 }
+            },
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Profile Update",
+                "description": "Profile Update",
+                "operationId": "profile_post",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "accesstoken",
+                        "in": "header",
+                        "description": "Access Token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "first_name",
+                        "in": "formData",
+                        "description": "First name",
+                        "type": "string"
+                    },
+                    {
+                        "name": "prm_user_countrycode",
+                        "in": "formData",
+                        "description": "Prm user countrycode",
+                        "type": "string"
+                    },
+                    {
+                        "name": "phone",
+                        "in": "formData",
+                        "description": "Phone",
+                        "type": "string"
+                    },
+                    {
+                        "name": "alt_user_countrycode",
+                        "in": "formData",
+                        "description": "Alt user countrycode",
+                        "type": "string"
+                    },
+                    {
+                        "name": "alt_userphone",
+                        "in": "formData",
+                        "description": "Alt userphone",
+                        "type": "string"
+                    },
+                    {
+                        "name": "image",
+                        "in": "formData",
+                        "description": "Image",
+                        "type": "string"
+                    },
+                    {
+                        "name": "image_thumb",
+                        "in": "formData",
+                        "description": "Image thumb",
+                        "type": "string"
+                    },
+                    {
+                        "name": "country",
+                        "in": "formData",
+                        "description": "Country",
+                        "type": "string"
+                    },
+                    {
+                        "name": "country",
+                        "in": "formData",
+                        "description": "Country",
+                        "type": "string"
+                    },
+                    {
+                        "name": "state",
+                        "in": "formData",
+                        "description": "State",
+                        "type": "string"
+                    },
+                    {
+                        "name": "state",
+                        "in": "formData",
+                        "description": "State",
+                        "type": "string"
+                    },
+                    {
+                        "name": "city",
+                        "in": "formData",
+                        "description": "City",
+                        "type": "string"
+                    },
+                    {
+                        "name": "city",
+                        "in": "formData",
+                        "description": "City",
+                        "type": "string"
+                    },
+                    {
+                        "name": "zipcode",
+                        "in": "formData",
+                        "description": "Zipcode",
+                        "type": "string"
+                    },
+                    {
+                        "name": "zipcode",
+                        "in": "formData",
+                        "description": "Zipcode",
+                        "type": "string"
+                    },
+                    {
+                        "name": "company_id",
+                        "in": "formData",
+                        "description": "Company id",
+                        "type": "string"
+                    },
+                    {
+                        "name": "company_name",
+                        "in": "formData",
+                        "description": "Company name",
+                        "type": "string"
+                    },
+                    {
+                        "name": "company_image",
+                        "in": "formData",
+                        "description": "Company image",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Profile Update Success"
+                    },
+                    "206": {
+                        "description": "Unauthorized request"
+                    },
+                    "207": {
+                        "description": "Header is missing"
+                    },
+                    "418": {
+                        "description": "Required Parameter Missing or Invalid"
+                    },
+                    "490": {
+                        "description": "Invalid User"
+                    },
+                    "501": {
+                        "description": "Please try again"
+                    }
+                }
             }
         },
-        "/Resetpass": {
+        "/user/password/reset": {
             "post": {
                 "tags": [
                     "User"
@@ -1037,7 +1227,7 @@
                 }
             }
         },
-        "/Signup": {
+        "/user/signup": {
             "post": {
                 "tags": [
                     "User"

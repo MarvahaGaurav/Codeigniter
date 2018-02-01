@@ -136,6 +136,12 @@ define("UPLOAD_THUMB_IMAGE_PATH", getcwd() . UPLOAD_PATH . "thumbs/");
 define("THUMB_IMAGE_PATH", 'http://' . $_SERVER['HTTP_HOST'] . UPLOAD_PATH . "thumbs/");
 define("DEFAULT_IMAGE", '/public/images/default.png');
 define("TIMEZONE", 'UTC');
+/* AWS S3  */
+defined("AWS_ACCESSKEY") or define('AWS_ACCESSKEY', 'AKIAIGTT2CNXI3KAGXSQ');
+defined('AWS_SECRET_KEY') or define('AWS_SECRET_KEY', '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');
+
+/* image constants */
+defined("AMAZONS3_BUCKET") or define("AMAZONS3_BUCKET", "appinventiv-development");
 
 //----------------ERROR MESSAGE CODE FOR CLIENT SIDE VALIDATIONS ---------------------------//
 

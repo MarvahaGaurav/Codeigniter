@@ -13,17 +13,28 @@ class Company_model extends CI_Model {
      * @return array
      */
     public function getCompanyList($params) {
-
-        $this->db->select('SQL_CALC_FOUND_ROWS c.company_id,company_name,company_reg_number,'.
-        'company_image,company_image_thumb,IF(f.id is null,0,1) as is_favorited,'.
-        'IF(cl.name IS NULL,"",cl.name) as country_name,if(sl.name IS NULL,"",sl.name) as name,'.
-        'IF(cyl.name IS NULL,"",cyl.name) as city_name', false);
+        $queryString = "";
+        $userId = isset($params['user_id']) && !empty($params['user_id'])?$params['user_id']:false;
+        if ( $userId ) {
+            $query = 'SQL_CALC_FOUND_ROWS c.company_id,company_name,company_reg_number,' .
+                'company_image,company_image_thumb,IF(f.is_favorite is null,0,f.is_favorite) as is_favorited,' .
+                'IF(cl.name IS NULL,"",cl.name) as country_name,user.phone as company_phone,' .
+                'IF(cyl.name IS NULL,"",cyl.name) as city_name, user.email as company_email, user.first_name as owner_name';
+        } else {
+            $query = 'SQL_CALC_FOUND_ROWS c.company_id,company_name,company_reg_number,' .
+                'company_image,company_image_thumb, user.phone as company_phone,' .
+                'IF(cl.name IS NULL,"",cl.name) as country_name,user.email as company_email,' .
+                'IF(cyl.name IS NULL,"",cyl.name) as city_name, user.first_name as owner_name';
+        }
+        $this->db->select($query, false);
         $this->db->from('company_master as c');
-        $this->db->join('ai_favorite as f', 'c.company_id = f.company_id AND f.user_id=' . $params['user_id'] . '', 'left');
+        if ( $userId ) {
+            $this->db->join('ai_favorite as f', 'c.company_id = f.company_id AND f.user_id=' . $params['user_id'] . '', 'left');
+        }
         $this->db->join('country_list as cl', 'cl.country_code1=c.country', 'LEFT');
-        $this->db->join('state_list as sl', 'sl.id = c.state', 'LEFT');
         $this->db->join('city_list as cyl', 'cyl.id=c.city', 'LEFT');
-        $this->db->where(['owner_type !=' => '1', 'status' => '1']);
+        $this->db->join('ai_user as user', 'user.company_id=c.company_id AND is_owner=2', 'left');
+        $this->db->where(['owner_type !=' => '1', 'c.status' => '1']);
         if (!empty($params['limit']) && !empty($params['offset'])) {
             $this->db->limit($params['limit'], $params['offset']);
         }

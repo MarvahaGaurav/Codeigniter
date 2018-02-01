@@ -78,7 +78,7 @@ $lang["invalid_gender_value"] = "Invalid gender value";
 $lang["invalid_credentials"] = "Invalid Credentials";
 $lang["invalid_usertype"] = "Invalid User Type, Requires user_type Parameter";
 $lang["invalid_user_id"] = "Invalid User Id format";
-$lang["invalid_access_token"] = "Invalid Access Token";
+$lang["invalid_access_token"] = "Your session has expired please login again to continue";
 /* IMAGES */
 $lang['invalid_image_format'] = 'Please select valid image format';
 
@@ -161,7 +161,13 @@ $lang['password_already_reset'] = 'You have already reset your password';
 $lang['no_records_found'] = "No records found";
 $lang['internal_server_error'] = "Internal Server Error";
 $lang['favorite_list_updated'] = "favorite updated successfully";
+$lang['favorite_company_found'] = "Favorite companies found";
+$lang['company_records_found'] = "Company records found";
 
-
-
+/* INSPIRATION */
+$lang['inspiration_added'] = "Your inspiration has been added successfully";
+$lang['inspiration_updated'] = "Your inspiration has been updated successfully";
+$lang['inspiration_removed'] = "Your inspiration has been removed successfully";
+$lang['inspiration_fetched'] = "Your inspiration has been fetched successfully";
+$lang['nothing_to_update'] = "Nothing to update";
 

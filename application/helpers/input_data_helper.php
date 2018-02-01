@@ -38,7 +38,7 @@ if ( ! function_exists('trim_input_parameters') ) {
             }
             return is_array($value)?trim_input_parameters($value):htmlentities(trim($value));
 		}, $data);
-        
+
         if ( $unsetEmptyValue ) {
             $output = array_filter($output, function($value){
                 if ( (! is_array($value) && empty(trim($value))) || ( is_array($value) && empty($value) ) ) {
@@ -53,3 +53,4 @@ if ( ! function_exists('trim_input_parameters') ) {
 	
 
 }
+

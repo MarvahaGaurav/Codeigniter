@@ -87,5 +87,12 @@ $route['req/change-user-status'] = 'admin/AjaxUtil/changeUserStatus';
 $route['req/manage-sidebar'] = 'admin/AjaxUtil/manageSideBar';
 
 /*Api Routes*/
-
+$route['api/v1/user/profile']['GET'] = 'api/Profile'; //update swagger
+$route['api/v1/user/profile']['put'] = 'api/Profile/profileupdate'; //update swagger
 $route['api/manage-friend'] = 'api/managefriends';
+$route['api/v1/employee/request']["GET"] = 'api/EmployeeController/request'; //update swagger
+$route['api/v1/employee/request']["POST"] = 'api/Employee/actiononemployee'; //update swagger
+$route['api/v1/employee/permission']["POST"] = 'api/Employee/setpermissopnforemp'; 
+$route['api/v1/employee/permission']["GET"] = 'api/EmployeeController/employeePermissions'; 
+
+$route['warranty'] = 'website/warranty';

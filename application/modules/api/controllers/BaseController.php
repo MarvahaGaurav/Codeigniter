@@ -27,7 +27,14 @@ class BaseController extends REST_Controller
      */
     protected function accessTokenCheck($additionalParams = "", $options=[])
     {
-        $accessToken = isset($this->header["access-token"])?$this->header["access-token"]:"";
+        $accessToken = "";
+        if ( isset($this->header["accesstoken"]) ) {
+            $accessToken = $this->header["accesstoken"];
+        } else if ( isset($this->header["Accesstoken"]) ) {
+            $accessToken = $this->header["Accesstoken"];
+        } else {
+            $accessToken = "";
+        }
         $accessToken = trim($accessToken);
         $additionalParams = !empty(trim($additionalParams))?"," . trim($additionalParams):"";
 

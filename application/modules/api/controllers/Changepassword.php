@@ -11,7 +11,7 @@ class Changepassword extends REST_Controller {
     }
 
     /**
-     * @SWG\Post(path="/Changepassword",
+     * @SWG\Post(path="/user/password/change",
      *   tags={"User"},
      *   summary="Change Password",
      *   description="Change Password",
@@ -51,13 +51,18 @@ class Changepassword extends REST_Controller {
     public function index_post() {
         $postDataArr = $this->post();
         $config = [];
-
+        $head = $this->head();
+        if ( (!isset($head['accesstoken']) || empty(trim($head['accesstoken']))) && (!isset($head['Accesstoken']) || empty(trim($head['Accesstoken']))) ) {
+            $this->response([
+                "code" => HTTP_UNAUTHORIZED,
+                "api_code_result" => "UNAUTHORIZED",
+                "msg" => $this->lang->line("invalid_access_token")
+            ], HTTP_UNAUTHORIZED);
+        }
+        if ( isset($head['Accesstoken']) && !empty($head['Accesstoken']) ) {
+            $head['accesstoken'] = $head['Accesstoken'];
+        }
         $config = array(
-            array(
-                'field' => 'accesstoken',
-                'label' => 'Access Token',
-                'rules' => 'required'
-            ),
             array(
                 'field' => 'password',
                 'label' => 'Password',
@@ -80,7 +85,7 @@ class Changepassword extends REST_Controller {
 
             try {
                 $this->load->library('commonfn');
-                $respArr = $this->Common_model->getUserInfo($postDataArr['accesstoken'], ['u.user_id', 'password', 'status']);
+                $respArr = $this->Common_model->getUserInfo($head['accesstoken'], ['u.user_id', 'password', 'status']);
                 $user_info = [];
                 /*
                  * Response is not success if session expired or invalid access token

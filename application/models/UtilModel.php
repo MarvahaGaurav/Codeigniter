@@ -125,6 +125,18 @@ class UtilModel extends CI_Model
                 $this->db->order_by($options["order_by"]);
             }
         }
+
+        if ( isset($options['where_in']) && is_array($options['where_in']) ) {
+            foreach ($options["where_in"] as $key => $value) {
+                $this->db->where_in($key, $value);
+            }
+        } 
+        
+        if ( isset($options['where_not_in']) && is_array($options['where_not_in']) ) {
+            foreach ($options["where_not_in"] as $key => $value) {
+                $this->db->where_not_in($key, $value);
+            }
+        }
     }
 
     /**
