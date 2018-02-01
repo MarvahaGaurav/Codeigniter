@@ -34,7 +34,7 @@ class Inspiration extends BaseModel {
         ->limit(RECORDS_PER_PAGE)
         ->order_by("i.id", "desc");
         if ( isset($options['company_id']) && !empty($options['company_id']) ) {
-            $this->db->where('company_id', $options['company_id']);
+            $this->db->where('i.company_id', $options['company_id']);
         }
         
         if ( isset($options['offset']) && !empty($options['offset']) ) {

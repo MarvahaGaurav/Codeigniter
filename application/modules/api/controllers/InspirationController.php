@@ -92,6 +92,7 @@ class InspirationController extends BaseController
 
         // print_r($request_data['media']);die;
         if ( isset($request_data['media']) && !empty($request_data['media']) ) {
+            $request_data['media'] = trim($this->post("media"));
             $this->load->model("InspirationMedia");
             $media = json_decode($request_data['media'], true);
         }
@@ -109,8 +110,8 @@ class InspirationController extends BaseController
                 foreach ( $media as $key => $value ) {
                     $this->InspirationMedia->batch_data[] = [
                         "inspiration_id" => $inspirationId,
-                        "media_type" => $media['type'],
-                        "media" => $media['media']
+                        "media_type" => $value['type'],
+                        "media" => $value['media']
                     ];
                 }
                 $this->InspirationMedia->batch_save();
@@ -208,6 +209,7 @@ class InspirationController extends BaseController
                 "msg" => $this->lang->line("no_records_found")
             ]);
         }
+
         if ( $is_single_row ) {
             $data['media'] = array_filter(explode(",", $inspiration['media']));
         } else {
@@ -398,8 +400,10 @@ class InspirationController extends BaseController
         }
 
         $where = [
-            "inspiration_id" => $request_data['inspiration_id']
+            "id" => $request_data['inspiration_id']
         ];
+
+        $media = $this->inspirationMedia->get($request_data['inspiration_id']);
         
         try {
             $this->Inspiration->delete($where);
