@@ -17,10 +17,13 @@ class Inspiration extends BaseModel {
     {
         $media = "";
         if ( isset($options['media']) && !empty($options['media']) ) {
-            $media = ",IFNULL(GROUP_CONCAT(media.media), '') as media";
+            $media = ",IFNULL(GROUP_CONCAT(media.media), '') as media,".
+                "IFNULL(GROUP_CONCAT(media.id), '') as media_id,".
+                "IFNULL(GROUP_CONCAT(media.media_type), '') as media_type";
             $this->db->join("inspiration_media as media", "media.inspiration_id=i.id", "left");
             $this->db->group_by("i.id");
         }
+
         if ( isset($options['inspiration_id']) && !empty($options['inspiration_id']) ) {
             $this->db->select("i.id as inspiration_id, company.company_name, company.company_address, i.company_id, title, description, i.status" . $media);
         } else {

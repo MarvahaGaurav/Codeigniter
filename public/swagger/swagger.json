@@ -772,6 +772,7 @@
                         "name": "media",
                         "in": "formData",
                         "description": "json array [{'media':'http//image/url', 'type':1}, {'media':'http//image/url', 'type':1}] 1-image, 2-video, 3-pdf",
+                        "required": true,
                         "type": "string"
                     }
                 ],
@@ -841,13 +842,6 @@
                 ],
                 "parameters": [
                     {
-                        "name": "accesstoken",
-                        "in": "header",
-                        "description": "Access token received during signup or login",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
                         "name": "inspiration_id",
                         "in": "query",
                         "description": "Inspiration id is optional and can be passed to fetch inspiration details",
@@ -857,6 +851,12 @@
                         "name": "company_id",
                         "in": "query",
                         "description": "if company Id is given it will fetch based on company Id",
+                        "type": "string"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "offset value to be passed back to paginate, if offset is -1, there is no further data",
                         "type": "string"
                     }
                 ],

@@ -168,6 +168,9 @@ $lang['company_records_found'] = "Company records found";
 $lang['inspiration_added'] = "Your inspiration has been added successfully";
 $lang['inspiration_updated'] = "Your inspiration has been updated successfully";
 $lang['inspiration_removed'] = "Your inspiration has been removed successfully";
-$lang['inspiration_fetched'] = "Your inspiration has been fetched successfully";
+$lang['inspiration_fetched'] = "Inspirations found";
 $lang['nothing_to_update'] = "Nothing to update";
+
+$lang['invalid_url'] = "Requested resource could not be found";
+$lang['cannot_delete_inspiration'] = "Cannot delete inspirations posted by another company";
 

@@ -1,6 +1,6 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
-require APPPATH.'helpers/vendor/autoload_helper.php';
+require APPPATH.'composer/vendor/autoload.php';
 use Aws\S3\S3Client;
 
 function s3_get_client () {
@@ -116,12 +116,18 @@ if ( ! function_exists("s3_delete_image") ) {
         $s3 = s3_get_client();
         $imageKeyArray = [];
         if ( is_string($imageKey) ) {
+            $image = explode("/", $imageKey);
+            $image_last_index = count($image) - 1;
+            $image = $image[$image_last_index - 1] . "/" . $image[$image_last_index];
             $imageKeyArray = [
-                ['Key'  => preg_replace("/^.*s3.amazonaws.com\//", "", $imageKey)],
+                ['Key'  => $image],
             ];
         } else if ( is_array($imageKey) ) {
             $imageKeyArray = array_map(function($image){
-                return ['Key'  => preg_replace("/^.*s3.amazonaws.com\//", "", $image)];
+                $image = explode("/", $image);
+                $image_last_index = count($image) - 1;
+                $image = $image[$image_last_index - 1] . "/" . $image[$image_last_index];
+                return  ['Key'  => $image];
             }, $imageKey);
         } else {
             return false;

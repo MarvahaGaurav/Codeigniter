@@ -50,7 +50,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 if (isset($_SERVER["REQUEST_URI"]) && preg_match('/.*\/(api)\/.*/', $_SERVER["REQUEST_URI"] ) == TRUE) {
-    //$route['404_override'] = 'api/Page404';
+    $route['404_override'] = 'api/NotFound404';
 } else if (isset($_SERVER["REQUEST_URI"]) && preg_match('/.*\/admin\/.*/', $_SERVER["REQUEST_URI"] ) == TRUE) {
    // $route['404_override'] = 'admin/Page404';    
 } else {

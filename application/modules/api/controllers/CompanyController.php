@@ -79,11 +79,12 @@ class CompanyController extends BaseController
         if ( $accessTokenSet && isset($getData['favorite']) && (int)$getData['favorite'] === 1) {
             $this->load->model("Favorite_model");
             $lang = "favorite_company_found";
-            if ( $paginate ) {
-                $params['offset'] = 0;
-                $params['limit'] = 0;
-                $params['paginate'] = $paginate;
-            }
+            // if ( ! $paginate ) {
+            //     $params['offset'] = 0;
+            //     $params['limit'] = 0;
+            // } else {
+            //     $params['paginate'] = $paginate;
+            // }
             $result = $this->Favorite_model->getFavorites($params);
             $offset = $offset + RECORDS_PER_PAGE;
             if ( (int)$result['count'] <= $offset ) {
@@ -99,18 +100,24 @@ class CompanyController extends BaseController
                 $params['limit'] = 0;
                 $offsetFlag = false;
             }
+            if ( ! $paginate ) {
+                $params['offset'] = 0;
+                $params['limit'] = 0;
+            } else {
+                $params['paginate'] = $paginate;
+            }
 
             $this->load->model("Company_model");
             $result = $this->Company_model->getCompanyList($params);
             $lang = "company_records_found";
 
-            $result = $result['result'];
             if ( $offsetFlag ) {
                 $offset = $offset + RECORDS_PER_PAGE;
-                if ( (int)$result['count'] < $offset ) {
+                if ( (int)$result['count'] <= $offset ) {
                     $offset = -1;
                 }
             }
+            $result = $result['result'];
         }
 
         if ( ! $result ) {

@@ -34,9 +34,9 @@ if ( ! function_exists('trim_input_parameters') ) {
     function trim_input_parameters($data, $unsetEmptyValue = true) {
         $output = array_map(function($value) use ($unsetEmptyValue){
             if ( ! $unsetEmptyValue ) {
-                return is_array($value)?trim_input_parameters($value, false):htmlentities(trim($value));
+                return is_array($value)?trim_input_parameters($value, false):htmlentities(trim($value), ENT_NOQUOTES);
             }
-            return is_array($value)?trim_input_parameters($value):htmlentities(trim($value));
+            return is_array($value)?trim_input_parameters($value):htmlentities(trim($value), ENT_NOQUOTES);
 		}, $data);
 
         if ( $unsetEmptyValue ) {

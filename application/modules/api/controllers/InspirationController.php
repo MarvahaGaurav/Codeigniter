@@ -7,6 +7,7 @@ use DatabaseExceptions\UpdateException;
 use DatabaseExceptions\SelectException;
 use DatabaseExceptions\InsertException;
 use DatabaseExceptions\DeleteException;
+use GuzzleHttp\Client as GuzzleClient;
 
 class InspirationController extends BaseController
 {
@@ -62,7 +63,8 @@ class InspirationController extends BaseController
      *     name="media",
      *     in="formData",
      *     description="json array [{'media':'http//image/url', 'type':1}, {'media':'http//image/url', 'type':1}] 1-image, 2-video, 3-pdf",
-     *     type="string"
+     *     type="string",
+     *     required=true
      *   ),
      *   @SWG\Response(response=422, description="Missing parameters"),
      *   @SWG\Response(response=200, description="Inspiration added"),     
@@ -75,7 +77,7 @@ class InspirationController extends BaseController
         $request_data = $this->post();
         $request_data = trim_input_parameters($request_data);
 
-        $mandatoryFields = ["company_id", "title", "description"];
+        $mandatoryFields = ["company_id", "title", "description", "media"];
 
         $check = check_empty_parameters($request_data, $mandatoryFields);
 
@@ -90,9 +92,8 @@ class InspirationController extends BaseController
             ]);
         }
 
-        // print_r($request_data['media']);die;
         if ( isset($request_data['media']) && !empty($request_data['media']) ) {
-            $request_data['media'] = trim($this->post("media"));
+            // $request_data['media'] = trim($this->post("media"));
             $this->load->model("InspirationMedia");
             $media = json_decode($request_data['media'], true);
         }
@@ -129,8 +130,16 @@ class InspirationController extends BaseController
                 'api_code_result' => 'INTERNAL_SERVER_ERROR',
                 'msg' => $this->lang->line('internal_server_error'),
                 'debug' => [
-                    'info' => 'Insert Error'
+                    'info' => 'Insert Error',
+                    'query' => $error->getMessage()
                 ]
+            ]);
+        }  catch (\Exception $error) {
+            $this->db->trans_rollback();
+            $this->response([
+                'code' => HTTP_INTERNAL_SERVER_ERROR,
+                'api_code_result' => 'INTERNAL_SERVER_ERROR',
+                'msg' => $this->lang->line('internal_server_error')
             ]);
         }
         
@@ -144,23 +153,22 @@ class InspirationController extends BaseController
      *   description="Inspiration List and detail",
      *   operationId="employee_get",
      *   produces={"application/json"},
-     *  @SWG\Parameter(
-     *     name="accesstoken",
-     *     in="header",
-     *     description="Access token received during signup or login",
-     *     required=true,
-     *     type="string"
-     *   ),
-     *  @SWG\Parameter(
+     *   @SWG\Parameter(
      *     name="inspiration_id",
      *     in="query",
      *     description="Inspiration id is optional and can be passed to fetch inspiration details",
      *     type="string"
      *   ),
-     *  @SWG\Parameter(
+     *   @SWG\Parameter(
      *     name="company_id",
      *     in="query",
      *     description="if company Id is given it will fetch based on company Id",
+     *     type="string"
+     *   ),
+     *   @SWG\Parameter(
+     *     name="offset",
+     *     in="query",
+     *     description="offset value to be passed back to paginate, if offset is -1, there is no further data",
      *     type="string"
      *   ),
      *   @SWG\Response(response=202, description="No data found"),
@@ -170,7 +178,7 @@ class InspirationController extends BaseController
      */
     public function inspiration_get()
     {
-        $userData = $this->accessTokenCheck("company_id");
+        // $userData = $this->accessTokenCheck("company_id");
         $request_data = $this->get();
         $request_data = trim_input_parameters($request_data);
 
@@ -211,19 +219,42 @@ class InspirationController extends BaseController
         }
 
         if ( $is_single_row ) {
-            $data['media'] = array_filter(explode(",", $inspiration['media']));
+            $media_image = array_filter(explode(",", $data['media']));
+            $media_ids = array_filter(explode(",", $data['media_id']));
+            $media_type = array_filter(explode(",", $data['media_type']));
+            $data['media'] = array_map(function($med, $ids, $type) {
+                $media_data = [];
+                $media_data['media_data'] = $med;
+                $media_data['media_id'] = (int)$ids;
+                $media_data['media_type'] = (int)$type;
+                return $media_data;
+            }, $media_image, $media_ids, $media_type);
+            unset($data['media_id']);
+            unset($data['media_type']);
         } else {
-            $data = array_map(function($inspiration){
-                $inspiration['media'] = array_filter(explode(",", $inspiration['media']));
+            $data = array_map(function($inspiration) {
+                $media_image = array_filter(explode(",", $inspiration['media']));
+                $media_ids = array_filter(explode(",", $inspiration['media_id']));
+                $media_type = array_filter(explode(",", $inspiration['media_type']));
+                $inspiration['media'] = array_map(function($med, $ids, $type){
+                    $media_data = [];
+                    $media_data['media_data'] = $med;
+                    $media_data['media_id'] = (int)$ids;
+                    $media_data['media_type'] = (int)$type;
+                    return $media_data;
+                }, $media_image, $media_ids, $media_type);
+                // unset($inspiration['media']);
+                unset($inspiration['media_id']);
+                unset($inspiration['media_type']);
                 return $inspiration;
             }, $data);
         }
 
         $response = [
             "code" => HTTP_OK,
-           "api_code_result" => "OK",
-           "msg" => $this->lang->line("inspiration_fetched"),
-           "data" => $data
+            "api_code_result" => "OK",
+            "msg" => $this->lang->line("inspiration_fetched"),
+            "data" => $data
         ];
         if ( ! $is_single_row ) {
             $response['offset'] = $offset;
@@ -346,10 +377,17 @@ class InspirationController extends BaseController
                     'api_code_result' => 'INTERNAL_SERVER_ERROR',
                     'msg' => $this->lang->line('internal_server_error'),
                     'debug' => [
-                        'info' => 'Update Error'
+                        'info' => 'Update Error',
+                        'query' => $error->getMessage()
                     ]
                 ]);
             }
+        }  catch (\Exception $error) {
+            $this->response([
+                'code' => HTTP_INTERNAL_SERVER_ERROR,
+                'api_code_result' => 'INTERNAL_SERVER_ERROR',
+                'msg' => $this->lang->line('internal_server_error')
+            ]);
         }
     }
 
@@ -380,45 +418,116 @@ class InspirationController extends BaseController
      * )
      */
     public function inspiration_delete()
-    {
-        $request_data = $this->delete();
-        $request_data = trim_input_parameters($request_data);
+    {   
+        $userData = $this->accessTokenCheck('company_id');
+        try {
+            $request_data = $this->delete();
+            $request_data = trim_input_parameters($request_data);
 
-        $mandatory = ['inspiration_id'];
+            $mandatory = ['inspiration_id'];
 
-        $check = check_empty_parameters($request_data, $mandatory);
+            $check = check_empty_parameters($request_data, $mandatory);
 
-        if ( $check['error'] ) {
-            $this->response([
-                'code' => HTTP_UNPROCESSABLE_ENTITY,
-                'api_code_result' => 'UNPROCESSABLE_ENTITY',
-                'msg' => $this->lang->line('missing_parameter'),
-                'extra_info' => [
-                    "missing_parameter" => $check['parameter']
+            if ( $check['error'] ) {
+                $this->response([
+                    'code' => HTTP_UNPROCESSABLE_ENTITY,
+                    'api_code_result' => 'UNPROCESSABLE_ENTITY',
+                    'msg' => $this->lang->line('missing_parameter'),
+                    'extra_info' => [
+                        "missing_parameter" => $check['parameter']
+                    ]
+                ]);
+            }
+
+            $inspirationData = $this->UtilModel->selectQuery(
+                'company_id',
+                'inspirations',
+                [
+                    "where" => ['id' => $request_data['inspiration_id']],
+                    "single_row" => true
+                ]
+            );
+
+            if ( ! $inspirationData ) {
+                $this->response([
+                    "code" => NO_DATA_FOUND,
+                    "api_code_result" => "NO_DATA_FOUND",
+                    "msg" => $this->lang->line("no_records_found")
+                ]);
+            }
+            // print_r((int)$inspirationData);
+            // print_r((int)$userData);die;
+            if ( (int)$inspirationData['company_id'] !== (int)$userData['company_id'] ) {
+                $this->response([
+                    "code" => HTTP_FORBIDDEN,
+                    "api_code_result" => "FORBIDDEN",
+                    "msg" => $this->lang->line("cannot_delete_inspiration")
+                ], HTTP_FORBIDDEN);
+            }
+
+            $where = [
+                "id" => $request_data['inspiration_id']
+            ];
+            $this->load->model("InspirationMedia");
+            $media = $this->InspirationMedia->get($request_data['inspiration_id']);
+
+            $media_to_delete = array_map(function($data){
+                return $data['media'];
+            }, $media);
+        
+            $this->db->trans_begin();
+            $this->Inspiration->delete($where);
+            $this->InspirationMedia->delete([
+                "inspiration_id" => $request_data['inspiration_id']
+            ]);
+
+            $this->load->helper(['url']);
+            
+            $this->db->trans_commit();
+            //
+            $http_client = new GuzzleClient([
+                'base_uri' => base_url("api/")
+            ]);
+            
+            $response = $http_client->request('POST', 'UtilityController/delete_media', [
+                'auth' => [ AUTH_USER, AUTH_PASS ],
+                'form_params' => [
+                    'media' => $media_to_delete,
+                    'single_traverse' => true
                 ]
             ]);
-        }
+            
+            if ( $response->getStatusCode() == 200 ) {
+                $body = $response->getBody();
+                $content = $body->getContents();
+                // print_r($content);die;
+            } else {
 
-        $where = [
-            "id" => $request_data['inspiration_id']
-        ];
-
-        $media = $this->inspirationMedia->get($request_data['inspiration_id']);
-        
-        try {
-            $this->Inspiration->delete($where);
+            }
             $this->response([
                 'code' => HTTP_OK,
                 'api_code_result' => 'OK',
-                'msg' => $this->lang->line("inspiration_updated")
+                'msg' => $this->lang->line("inspiration_removed")
             ]);
-        } catch ( Exception $error ) {
+        } catch ( DeleteException $error ) {
+            $this->db->trans_rollback();
             $this->response([
                 'code' => HTTP_INTERNAL_SERVER_ERROR,
                 'api_code_result' => 'INTERNAL_SERVER_ERROR',
                 'msg' => $this->lang->line('internal_server_error'),
                 'debug' => [
-                    'info' => 'Delete Error'
+                    'info' => 'Delete Error',
+                    'query' => $error->getMessage()
+                ]
+            ]);
+        } catch (\Exception $error) {
+            $this->db->trans_rollback();
+            $this->response([
+                'code' => HTTP_INTERNAL_SERVER_ERROR,
+                'api_code_result' => 'INTERNAL_SERVER_ERROR',
+                'msg' => $this->lang->line('internal_server_error'),
+                'debug' => [
+                    'info' => $error->getMessage()
                 ]
             ]);
         }
