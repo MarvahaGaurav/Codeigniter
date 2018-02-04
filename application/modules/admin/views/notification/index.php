@@ -1,3 +1,5 @@
+<link href="<?php echo base_url()?>public/css/plugin/datepicker.css" rel='stylesheet'>
+
 <?php 
 $filterArr = $this->input->get();
 $filterArr = (object) $filterArr;
@@ -5,7 +7,7 @@ $controller = $this->router->fetch_class();
 $method = $this->router->fetch_method();
 $module = $this->router->fetch_module();
 ?>
-<link href="<?php echo base_url()?>public/css/datepicker.min.css" rel='stylesheet'>
+
 <input type="hidden" id="filterVal" value='<?php echo json_encode($filterArr); ?>'>
 <input type="hidden" id="pageUrl" value='<?php echo base_url().$module.'/'.strtolower($controller).'/'.$method; ?>'>
 
@@ -21,46 +23,48 @@ $module = $this->router->fetch_module();
     <!--breadcrumb wrap close-->
 
     <!--Filter Section -->
-    <div class="white-wrapper">    
-        <div class="fltr-srch-wrap clearfix">
-            <div class="row">
-                <div class="col-lg-2 col-sm-2">
-                    <div class="display">
-                        <select class="selectpicker dispLimit">
-                            <option <?php echo ($limit == 10)?'Selected':'' ?> value="10">Display 10</option>
-                            <option <?php echo ($limit == 20)?'Selected':'' ?> value="20">Display 20</option>
-                            <option <?php echo ($limit == 50)?'Selected':'' ?> value="50">Display 50</option>
-                            <option <?php echo ($limit == 100)?'Selected':'' ?> value="100">Display 100</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-4">
-                    <div class="srch-wrap">
-                        <button class="srch search-icon" style="cursor:default"></button>
-                        <a href="javascript:void(0)"> <span class="srch-close-icon searchCloseBtn"></span></a>
-                        <input type="text" value="<?php echo (isset($searchlike) && !empty($searchlike))? $searchlike:''?>" class="search-box searchlike" placeholder="Search by name" id="searchuser" name="search">
-                    </div>
-                </div>
-
-                <div class="col-lg-6 col-sm-6">
-                    <div class="top-opt-wrap text-right">
-                        <ul>
-                            <li>
-                                <a href="javascripit:void(0)" title="File Export" class="icon_filter" id="filter-side-wrapper"><img src="public/adminpanel/images/filter.svg"></a>
-                            </li>
-                            <?php if($accesspermission['addp']) { ?>
-                            <li>
-                                <a href="<?php echo base_url() . 'admin/notification/add'; ?>" title="Filter" id="filter-side-wrapper" class="icon_filter">
-                                    <img src="public/adminpanel/images/add.svg">
-                                </a>
-                            </li>
-                            <?php } ?>
-                        </ul>
-                    </div>
+    <div class="section filter-section clearfix">
+        <div class="row">
+            <div class="col-lg-2 col-sm-3">
+                <div class="display col-sm-space">
+                    <select class="selectpicker dispLimit">
+                        <option <?php echo ($limit == 10)?'Selected':'' ?> value="10">Display 10</option>
+                        <option <?php echo ($limit == 20)?'Selected':'' ?> value="20">Display 20</option>
+                        <option <?php echo ($limit == 50)?'Selected':'' ?> value="50">Display 50</option>
+                        <option <?php echo ($limit == 100)?'Selected':'' ?> value="100">Display 100</option>
+                    </select>
                 </div>
             </div>
+            <div class="col-lg-6 col-sm-6">
+                <div class="srch-wrap fawe-icon-position col-sm-space">
+                    <!-- <button class="srch search-icon" style="cursor:default"></button>
+                    <a href="javascript:void(0)"> <span class="srch-close-icon searchCloseBtn"></span></a> -->
+                    <span class="fawe-icon fawe-icon-position-left search-ico"><i class="fa fa-search"></i></span>
+                    <span class="fawe-icon fawe-icon-position-right close-ico"><i class="fa fa-times-circle"></i></span>
+                    <input type="text" value="<?php echo (isset($searchlike) && !empty($searchlike))? $searchlike:''?>" class="search-box searchlike" placeholder="Search by name" id="searchuser" name="search">
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-sm-3">
+                <div class="circle-btn-wrap col-sm-nospace">
+                    <a href="javascript:void(0)" id="filter-side-wrapper" class="tooltip-p">
+                        <div class="circle-btn animate-btn">
+                            <i class="fa fa-filter" aria-hidden="true"></i>
+                        </div>
+                        <span class="tooltiptext">Filter</span>
+                    </a>
+                    <a href="<?php echo base_url() . 'admin/notification/add'; ?>" class="tooltip-p">
+                        <div class="circle-btn animate-btn">
+                            <i class="fa fa-plus"></i>
+                        </div>
+                        <span class="tooltiptext">Add Notification</span>
+                    </a>
+                </div>
+            </div>
+
         </div>
-    </div>  
+    </div>
+ 
     <!--Filter Section Close-->
     <?php
     if ($this->session->flashdata('message') != '') {
@@ -102,6 +106,8 @@ $module = $this->router->fetch_module();
                 <label class="admin-label">Push Date</label>
                 <div class="inputfield-wrap">
                     <input type="text" value="<?php echo !empty($startDate)?date('m/d/Y',strtotime($startDate)):"" ?>" class="form-date_wrap startDate" data-provide="datepicker" id="from_date" placeholder="From">
+                </div>
+                <div class="inputfield-wrap">
                     <input type="text" value="<?php echo !empty($endDate)?date('m/d/Y',strtotime($endDate)):"" ?>" class="form-date_wrap endDate" data-provide="datepicker" id="to_date" placeholder="To">
                 </div>
 
@@ -114,23 +120,26 @@ $module = $this->router->fetch_module();
     </div>
     <!--Filter Wrapper Close-->
     <div class="row">
-        <div class="col-lg-6">Total Notifications <?php echo $totalrows ?></div>
+        <div class="col-lg-6">
+            
+        </div>
     </div>
     <!--Table-->
-    <div class="white-wrapper">
-        <div class="table-responsive custom-tbl">
+    <div class="section">
+        <p class="tt-count">Total Notifications <?php echo $totalrows ?></p>
+        <div class="table-responsive table-wrapper">
             <!--table div-->
-            <table id="example" class="list-table table table-striped sortable" cellspacing="0" width="100%">
+            <table cellspacing="0" id="example" class="table-custom sortable">
                 <thead>
                     <tr>
-                        <th width="50px">S.No</th>
+                        <th>S.No</th>
                         <th>Push Title</th>
                         <th>Platform</th>
-                        <th>Gender</th>
+                        <th>Send Notification</th>
                         <th>User's Sent Count</th>
                         <th>Added On</th>
                         <?php if($accesspermission['deletep'] || $accesspermission['editp']) { ?>
-                            <th width="100px">Action</th>
+                            <th>Action</th>
                         <?php } ?>
                     </tr>
                 </thead>
@@ -150,16 +159,18 @@ $module = $this->router->fetch_module();
                                     <?php echo $list['title'] ?>
                                 </td>
                                 <td><?php echo ($list['platform'] == 1)?'All':(($list['platform'] == 2)?'Android':'iOS'); ?></td>
-                                <td><?php echo ($list['gender'] == 0)?'All':(($list['gender'] == 1)?'Male':'Female'); ?></td>
+                                <td><a href="javascript:void(0)">Resend</td>
                                 <td><?php echo $list['total_sents'] ?></td>
                                 <td><?php echo date('d-m-Y',strtotime($list['created_at'])) ?></td>
                                 <?php if($accesspermission['deletep'] || $accesspermission['editp']) { ?>
-                                <td>
+                                <td class="text-nowrap table-action">
                                     <?php if($accesspermission['editp']) { ?>
-                                        <a href="javascript:void(0);" aria-hidden="true" data-toggle="modal" data-target="#editModal" onclick="$('#notiToken').val('<?php echo encryptDecrypt($list['id']);?>')"><i class="fa fa-paper-plane" aria-hidden="true"></i></a>
+                                        <a href="javascript:void(0);" class="f-plane" data-toggle="modal" data-target="#editModal" onclick="$('#notiToken').val('<?php echo encryptDecrypt($list['id']);?>')">
+                                            <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                        </a>
                                     <?php } ?>
                                     <?php if($accesspermission['deletep']) { ?>    
-                                        <a href="javascript:void(0);" class="table_icon"><i class="fa fa-trash" aria-hidden="true" onclick="deleteUser('notification',<?php echo DELETED;?>,'<?php echo encryptDecrypt($list['id']);?>','req/change-user-status','Do you really want to delete this notification ?');"></i></a>                      
+                                        <a href="javascript:void(0);" class="f-delete"><i class="fa fa-trash" aria-hidden="true" onclick="deleteUser('notification',<?php echo DELETED;?>,'<?php echo encryptDecrypt($list['id']);?>','req/change-user-status','Do you really want to delete this notification ?');"></i></a>                      
                                     <?php } ?>
                                 </td>
                                 <?php } ?>
@@ -204,47 +215,44 @@ $module = $this->router->fetch_module();
         </div>
     </div>
 <!--Edit Modal Close-->
-<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script src="<?php echo base_url()?>public/js/datepicker.min.js"></script>
+
+<script src="<?php echo base_url()?>public/js/plugin/datepicker.min.js"></script>
 <script>
     $(document).ready(function(){
         
+        // Date Picker
         var nowTemp = new Date();
         var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
-    
-        var checkin = $('#from_date').datepicker({
+
+        // =============== Linked Datepicker =============== //
+        var add_start = $('#from_date').datepicker({
+            format: 'dd/mm/yyyy',
+            todayHighlight:'TRUE',
+            autoclose: true,
             onRender: function(date) {
                 return date.valueOf() > now.valueOf() ? 'disabled' : '';
             }
         }).on('changeDate', function(ev) {
-            if (ev.date.valueOf() < checkout.date.valueOf()) {
+            if (ev.date.valueOf() < add_end.date.valueOf()) {
                 var newDate = new Date(ev.date)
                 newDate.setDate(newDate.getDate());
-                checkout.setValue(newDate);
+                add_end.setValue(newDate);
+                add_start.hide();
             }
-            checkin.hide();
+            add_start.hide();
             $('#to_date')[0].focus();
         }).data('datepicker');
-        var checkout = $('#to_date').datepicker({
+
+        var add_end = $('#to_date').datepicker({
+            format: 'dd/mm/yyyy',
+            todayHighlight:'TRUE',
+            autoclose: true,
             onRender: function(date) {
-                return date.valueOf() < checkin.date.valueOf() || date.valueOf() > now.valueOf() ? 'disabled' : '';
+                return date.valueOf() > now.valueOf() ? 'disabled' : '';
             }
         }).on('changeDate', function(ev) {
-            checkout.hide();
+            add_end.hide();
         }).data('datepicker');
-    
-    
-        //on datepicker 2 focus
-        $('#to_date').focus(function() {
-            if ($('#from_date').val() == '') {
-                checkout.hide();
-            }
-        });
-        //prevent typing datepicker's input
-        $('#to_date, #from_date').keydown(function(e) {
-            e.preventDefault();
-            return false;
-        });
 
     });
 </script>

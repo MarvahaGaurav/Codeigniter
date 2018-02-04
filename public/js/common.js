@@ -700,11 +700,11 @@ function logoutUser() {
  */
 
 function changeStatusToBlock(type, status, id, url) {
-
+    var csrf = $('#csrf').val();
     $.ajax({
         method: "POST",
         url: baseUrl + url,
-        data: {type: type, new_status: status, id: id, csrf_token: csrf_token},
+        data: {type: type, new_status: status, id: id, csrf_token: csrf},
         beforeSend: function () {
             $('#pre-page-loader').fadeIn();
             $('#myModal-block').modal('hide');
@@ -712,27 +712,22 @@ function changeStatusToBlock(type, status, id, url) {
         success: function (res) {
             $('#pre-page-loader').fadeOut();
             res = JSON.parse(res);
-            csrf_token = res.csrf_token;
-            console.log(res);
+            var csrf = $('#csrf').val(res.csrf_token);
             if (res.code === 200) {
+
                 if (status == 2) {
-                    $('.alertText').text(string.block_success);
-                    $('.alertType').text(string.success);
+                    $('#error').empty().append(string.successPrefix + string.block_success + string.successSuffix);
                     $('#unblock_' + res.id).show();
                     $('#block_' + res.id).hide();
                     $('#status_' + res.id).empty().text('Blocked');
                 } else {
-                    $('.alertText').text(string.unblock_success);
-                    $('.alertType').text(string.success);
+                    $('#error').empty().append(string.successPrefix + string.unblock_success + string.successSuffix);
                     $('#block_' + res.id).show();
                     $('#unblock_' + res.id).hide();
                     $('#status_' + res.id).empty().text('Active');
                 }
-            } else if (res.code === 202) {
-                $('.alertText').text(res.msg.text);
-                $('.alertType').text(res.msg.type);
+                $('.alert-success').fadeOut(5000);
             }
-            $('.alert-success').fadeIn().fadeOut(5000);
         },
         error: function (xhr) {
             alert("Error occured.please try again");
@@ -1027,49 +1022,12 @@ $(document).ready(function () {
         }
     });
 
-    /*
-     * Add Subadmin
-     */
-    $("#subadmin_add").validate({
-        errorClass: "alert-danger",
-        rules: {
-            name: {
-                required: true,
-
-            },
-            password: {
-                required: true,
-                minlength: 8,
-                maxlength: 16
-            },
-            email: {
-                required: true,
-                email: true
-            },
-            status: {
-                required: true
-            }
-        },
-        messages: {
-            required: string.requiredErr,
-            email: {
-                required: string.requiredErr,
-                email: string.emailErr
-            },
-            minlength: string.passwordErr,
-            maxlength: string.passwordErr,
-            status: string.statusErr
-        },
-        submitHandler: function (form) {
-            form.submit();
-        }
-    });
 });
 
 function checkNotiValidation() {
     var title = $('#title').val();
     var platform = $(".platform option:selected").val();
-
+    console.log(platform);
     if (title.length == 0) {
         $('.titleErr').text('Please enter title');
         return false;

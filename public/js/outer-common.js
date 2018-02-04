@@ -5,8 +5,22 @@
  * 
  */
 $(document).ready(function () {
-    
-    $('.alert-success').fadeOut(5000);
+
+//    $.each($.validator.methods, function (key, value) {
+//        $.validator.methods[key] = function () {
+//            if (arguments.length > 0) {
+//                arguments[0] = $.trim(arguments[0]);
+//            }
+//
+//            return value.apply(this, arguments);
+//        };
+//    });
+
+//    $.validator.addMethod("noSpace", function (value, element) {
+//        return value == '' || value.trim().length != 0;
+//    }, "");
+
+
     /**
      * @name validate add app version form
      * @description This method is used to validate add app version form.

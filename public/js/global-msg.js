@@ -14,9 +14,6 @@ var string = {
     , 'loginpassword': 'Password field can not be left empty.'
     , 'passwordMinLength': 'Password should be minimum 8 character'
     , 'cnfPassowrdErr': 'Please enter confirm password same as password'
-    , 'passwordErr': 'Please enter a password between 8 to 16 character'
-    , 'requiredErr': 'This field is required'
-    , 'emailErr': 'Please enter a valid email'
-    , 'success': 'Success!'
+    , 'passwordErr': 'Please enter new password of minimum 8 character'
 
 };
