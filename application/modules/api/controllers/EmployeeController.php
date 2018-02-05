@@ -196,7 +196,7 @@ class EmployeeController extends BaseController
      */
     public function employeePermissions_get()
     {
-        $userData = $this->accessTokenCheck();
+        $userData = $this->accessTokenCheck('company_id');
 
         $requestData = $this->get();
         $requestData = trim_input_parameters($requestData);
@@ -215,7 +215,8 @@ class EmployeeController extends BaseController
 
         $this->load->model("Permission");
         $options['employee_id'] = $requestData['employee_id'];
-        $options['user_id'] = $userData['user_id'];
+        // $options['user_id'] = $userData['user_id'];
+        $options['company_id'] = $userData['company_id'];
 
         $data = $this->Permission->get($options);
 
