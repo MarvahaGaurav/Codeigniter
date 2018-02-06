@@ -12,7 +12,7 @@ class BaseController extends REST_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->helper(['external_api']);
+        $this->load->helper(['external_api', 'debuging', 'text']);
         $this->language_code = ["en", "da", "nb", "sv", "fi", "fr", "nl", "de"];
         $this->datetime = date("Y-m-d H:i:s");
     }

@@ -310,7 +310,7 @@ class InspirationController extends BaseController
      */
     public function inspiration_put()
     {
-        $user_data = $this->accessTokenCheck();
+        $user_data = $this->accessTokenCheck('company_id');
         $request_data = $this->put();
         $request_data = trim_input_parameters($request_data);
 
@@ -338,6 +338,33 @@ class InspirationController extends BaseController
                 'msg' => $this->lang->line('nothing_to_update')
             ]);
         }
+
+        $inspirationData = $this->UtilModel->selectQuery(
+            'company_id',
+            'inspirations',
+            [
+                "where" => ['id' => $request_data['inspiration_id']],
+                "single_row" => true
+            ]
+        );
+
+        if ( ! $inspirationData ) {
+            $this->response([
+                "code" => NO_DATA_FOUND,
+                "api_code_result" => "NO_DATA_FOUND",
+                "msg" => $this->lang->line("no_records_found")
+            ]);
+        }
+        // print_r((int)$inspirationData);
+        // print_r((int)$userData);die;
+        if ( $inspirationData['company_id'] != $user_data['company_id'] ) {
+            $this->response([
+                "code" => HTTP_FORBIDDEN,
+                "api_code_result" => "FORBIDDEN",
+                "msg" => $this->lang->line("cannot_update_inspiration")
+            ], HTTP_FORBIDDEN);
+        }
+
 
         $inspiration_update_map = [
             "title" => "title",

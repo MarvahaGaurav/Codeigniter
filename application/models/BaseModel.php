@@ -61,4 +61,16 @@ class BaseModel extends CI_Model {
             throw new InsertException($this->db->last_query(), 101);
         }
     }
+
+    public function fetch() 
+    {
+        $this->db->select("*")
+        ->from($this->tableName);
+
+        $query = $this->db->get();
+
+        $result_array = $query->result_array();
+
+        return $result_array;
+    }
 }
