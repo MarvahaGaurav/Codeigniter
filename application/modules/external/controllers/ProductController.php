@@ -25,15 +25,15 @@ class ProductController extends BaseController
         $application_data = $this->Application->fetch();
 
         foreach ($application_data as $application) {
-                $response = get_request_handler("{$application['language_code']}/applications/{$application['application_id']}/products");
-                $response = json_decode($response, true);
-                $language = $application['language_code'];
-                $response = array_map(function($data) use ($language) {
-                    $data['language_code'] = $language;
-                    return $data;
-                }, $response);
+            $response = get_request_handler("{$application['language_code']}/applications/{$application['application_id']}/products");
+            $response = json_decode($response, true);
+            $language = $application['language_code'];
+            $response = array_map(function($data) use ($language) {
+                $data['language_code'] = $language;
+                return $data;
+            }, $response);
 
-                $final_array = array_merge($final_array, $response);
+            $final_array = array_merge($final_array, $response);
         }
         $output = [];
         foreach ($final_array as $key => $data) {
@@ -54,7 +54,7 @@ class ProductController extends BaseController
         foreach ( $output as $data ) {
             $this->Product->batch_data[] = $data;
         }
-        
+
         $this->Product->batch_save();
 
         pd($output);

@@ -17,6 +17,8 @@ class ApplicationController extends BaseController
         parent::__construct();
         $this->load->model("Application");
         $this->load->model("Product");
+        $this->load->model("ProductTechicalData");
+        $this->load->model("ProductSpecification");
     }
 
     /**
@@ -32,37 +34,73 @@ class ApplicationController extends BaseController
             foreach ( $language_code as $language ) {
                 $response = get_request_handler("{$language}/applications");
                 $response = json_decode($response, true);
+
                 $response = array_map(function($data) use ($language) {
                     $data['language_code'] = $language;
                     return $data;
                 }, $response);
-                $final_array = array_merge($final_array, $response);
-            }
 
-            $final_array = array_map(function($data){
-                $data['image'] = $data['image']['url'];
-                if ( $data['type'] == 'residential' ) {
-                    $data['type'] = 1;
-                } else if ($data['type'] == 'proffesional') {
-                    $data['type'] = 2;
-                } else {
-                    $data['type'] = 0;
+                foreach ( $response as $data ) {
+                    $this->Application->image = $data['image']['url'];
+                    if ( $data['type'] == 'residential' ) {
+                        $this->Application->type = 1;
+                    } else if ($data['type'] == 'proffesional') {
+                        $this->Application->type = 2;
+                    } else {
+                        $this->Application->type = 0;
+                    }
+                    $this->Application->title = $data['title'];
+                    $this->Application->language_code = $data['language_code'];
+                    $this->Application->slug = preg_replace("/\s+/", "-" ,strtolower(convert_accented_characters($data['title']))) . "-" . $data['language_code'];
+                    $this->Application->subtitle = $data['subTitle'];
+                    $this->Application->created_at = $this->datetime;
+                    $this->Application->updated_at = $this->datetime;
+                    $this->Application->application_id = $data['id'];
+
+                    $application_id = $this->Application->save();
+
+                    $product_response = get_request_handler("{$data['language_code']}/applications/{$application_id}/products");
+                    $product_response = json_decode($product_response, true);
+
+                    $product_data = $this->Product->fetch();
+
+                    $product_ids = array_map(function($data) {
+                        return $data['product_id'];
+                    }, $product_data);
+
+                    $batch_data = [];
+                    foreach( $product_response as $product ) {
+                        if ( in_array($product['id'], $product_ids) ) {
+                            continue;
+                        }
+
+                        $product_details = get_request_handler("{$data['language_code']}/product/{$product['id']}");
+                        $product_details = json_decode($product_details, true);
+
+                        $this->Product->product_id = $product['id'];
+                        $this->Product->title = $product['title'];
+                        $this->Product->subtitle = $product['subTitle'];
+                        $this->Product->slug = preg_replace("/\s+/", "-" ,strtolower(convert_accented_characters($product['title']))) . "-" . $data['language_code'];;
+                        $this->Product->product_id = $product['id'];
+                        $this->Product->image = $product['image'];
+
+                        $product_technical_data = $product_details["technicalData"];
+
+                        $product_technical_data = array_map(function($data){
+                            $data['slug'] = preg_replace("/\s+/", "-" ,strtolower(convert_accented_characters($data['title']))) . "-" . $data['language_code'];
+                            $data['created_at'] = $this->datetime;
+                            $data['updated_at'] = $this->datetime;
+                            return $data;
+                        }, $product_technical_data);
+
+                        $this->ProductTechicalData->batch_data = $product_technical_data;
+
+                        $this->ProductTechicalData->batch_save();
+
+                    }
                 }
-                $data['slug'] = preg_replace("/\s+/", "-" ,strtolower(convert_accented_characters($data['title']))) . "-" . $data['language_code'];
-                $data['subtitle'] = $data['subTitle'];
-                $data['created_at'] = $this->datetime;
-                $data['updated_at'] = $this->datetime;
-                $data['application_id'] = $data['id'];
-                unset($data['subTitle']);
-                unset($data['id']);
-                return $data;
-            }, $final_array);
 
-            foreach ( $final_array as $data ) {
-                $this->Application->batch_data[] = $data;
             }
-
-            $this->Application->batch_save();
 
             $this->db->trans_commit();
             $this->output
