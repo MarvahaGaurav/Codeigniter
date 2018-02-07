@@ -15,6 +15,7 @@ class BaseController extends REST_Controller
         $this->load->helper(['external_api', 'debuging', 'text']);
         $this->language_code = ["en", "da", "nb", "sv", "fi", "fr", "nl", "de"];
         $this->datetime = date("Y-m-d H:i:s");
+        $this->load->model("UtilModel");
     }
 
 }

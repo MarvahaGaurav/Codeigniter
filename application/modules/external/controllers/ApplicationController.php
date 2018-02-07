@@ -111,7 +111,7 @@ class ApplicationController extends BaseController
                             unset($technical['text']);
                             return $technical;
                         }, $product_technical_data);
-
+                        
                         $this->ProductTechnicalData->batch_data = $product_technical_data;
                         $this->ProductTechnicalData->batch_save();
 
