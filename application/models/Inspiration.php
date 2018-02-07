@@ -1,7 +1,7 @@
 <?php
 defined("BASEPATH") OR exit("No direct script access allowed");
 
-require_once 'BaseModel.php';
+require_once 'BaseModel.php';   
 
 use DatabaseExceptions\SelectException;
 
@@ -17,17 +17,22 @@ class Inspiration extends BaseModel {
     {
         $media = "";
         if ( isset($options['media']) && !empty($options['media']) ) {
-            $media = ",IFNULL(GROUP_CONCAT(media.media), '') as media,".
-                "IFNULL(GROUP_CONCAT(media.id), '') as media_id,".
+            $media = ",IFNULL(GROUP_CONCAT(media.media), '') as media," .
+                "IFNULL(GROUP_CONCAT(media.id), '') as media_id," .
+                "IFNULL(GROUP_CONCAT(media.video_thumbnail), '') as video_thumbnail," .
                 "IFNULL(GROUP_CONCAT(media.media_type), '') as media_type";
             $this->db->join("inspiration_media as media", "media.inspiration_id=i.id", "left");
             $this->db->group_by("i.id");
         }
 
         if ( isset($options['inspiration_id']) && !empty($options['inspiration_id']) ) {
-            $this->db->select("i.id as inspiration_id, company.company_name, user.address, company.company_address, i.company_id, title, description, i.status" . $media);
+            $this->db->select("i.id as inspiration_id, company.company_name, cl.id as city_id, cl.name as city_name,".
+            "country.country_code1 as country_code, country.name as country_name," .
+            "i.company_id, title, description" . $media);
         } else {
-            $this->db->select("SQL_CALC_FOUND_ROWS i.id as inspiration_id, user.address, company.company_name, company.company_address, i.company_id, title, description, i.status" . $media , FALSE);
+            $this->db->select("SQL_CALC_FOUND_ROWS i.id as inspiration_id, cl.id as city_id, cl.name as city_name,".
+            "country.country_code1 as country_code, country.name as country_name," .
+            "company.company_name, i.company_id, title, description" . $media , FALSE);
         }
         
         $this->db->from($this->tableName . " as i")
@@ -35,8 +40,8 @@ class Inspiration extends BaseModel {
         ->where('i.is_deleted', 0)
         ->join("company_master as company", "company.company_id=i.company_id")
         ->join('ai_user as user', 'user.company_id=company.company_id AND user.is_owner = 2')
-        ->join('city_list as cl', 'cl.')
-        ->join('')
+        ->join('city_list as cl', 'cl.id=user.city_id', 'left')
+        ->join('country_list as country', 'country.country_code1=user.country_id', 'left')
         ->limit(RECORDS_PER_PAGE)
         ->order_by("i.id", "desc");
         if ( isset($options['company_id']) && !empty($options['company_id']) ) {

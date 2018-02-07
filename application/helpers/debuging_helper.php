@@ -2,14 +2,18 @@
 defined("BASEPATH") OR exit("No direct script access allowed");
 
 if ( ! function_exists( "dd" ) ) {
-    function dd($mixed) {
+    function dd($mixed, $exit = true) {
         var_dump($mixed);
-        exit; 
+        if ( $exit ) {
+            exit; 
+        }
     }
 }
 if ( ! function_exists( "pd" ) ) {
-    function pd($mixed) {
+    function pd($mixed, $exit = true) {
         print_r($mixed);
-        exit;
+        if ( $exit ) {
+            exit; 
+        }
     }
 }

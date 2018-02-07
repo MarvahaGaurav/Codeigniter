@@ -13,7 +13,7 @@ class BaseController extends REST_Controller
     public function __construct() 
     {
         parent::__construct();
-        $this->load->helper(["input_data"]);
+        $this->load->helper(["input_data", "debuging"]);
         $this->load->language("common");
         $this->load->model("UtilModel");
         $this->datetime = date("Y-m-d H:i:s");

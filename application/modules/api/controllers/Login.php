@@ -86,7 +86,7 @@ class Login extends REST_Controller {
             try {
                 $encrypt_pass = encrypt($postDataArr["password"]);
                 $email = $postDataArr['email'];
-                $userInfo = $this->Common_model->fetch_data('ai_user', 'company_id, user_id,first_name,email,IF(image !="",CONCAT("' . IMAGE_PATH . '","",image),"") as image,IF(image_thumb !="",CONCAT("' . THUMB_IMAGE_PATH . '","",image_thumb),"") as image_thumb,status,user_type,is_owner', array('where' => array('email' => $email, 'password' => $encrypt_pass)), true);
+                $userInfo = $this->User->get();
                 if (!empty($userInfo)) {
                     /*
                      * Check if user is not blocksed

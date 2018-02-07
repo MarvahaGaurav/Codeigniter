@@ -143,6 +143,11 @@ defined('AWS_SECRET_KEY') or define('AWS_SECRET_KEY', '22omXosExOVht2jJX00jvZa9s
 /* image constants */
 defined("AMAZONS3_BUCKET") or define("AMAZONS3_BUCKET", "appinventiv-development");
 
+/* Content Type */
+defined("CONTENT_TYPE_IMAGE") OR define("CONTENT_TYPE_IMAGE", 1);
+defined("CONTENT_TYPE_VIDEO") OR define("CONTENT_TYPE_VIDEO", 2);
+defined("CONTENT_TYPE_PDF") OR define("CONTENT_TYPE_PDF", 3);
+
 //----------------ERROR MESSAGE CODE FOR CLIENT SIDE VALIDATIONS ---------------------------//
 
 define('SUCCESS_CODE', 200);

@@ -25,8 +25,9 @@ if ( ! function_exists('check_empty_parameters') ) {
 }
 
 /**
- * Trim input parameters
+ * Trim input parameters 
  * @param array $data
+ * @param boolean $unsetEmptyValue (default:true) - removes empty value
  * @return array trimmed $data array 
  */
 if ( ! function_exists('trim_input_parameters') ) {

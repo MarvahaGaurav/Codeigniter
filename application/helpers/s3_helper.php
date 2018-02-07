@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 require APPPATH.'composer/vendor/autoload.php';
 use Aws\S3\S3Client;
 
+
 function s3_get_client () {
     $s3 = S3Client::factory([
         "credentials" => [

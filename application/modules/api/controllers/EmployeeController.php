@@ -64,7 +64,7 @@ class EmployeeController extends BaseController
 
         if ( isset($getData['employee_id']) && !empty((int)$getData['employee_id']) ) {
             $whereArr['where'] = ['user_id'=>$getData['employee_id'],'is_owner'=>'1'];
-            $myEmployeeDetail =  $this->Common_model->fetch_data('ai_user', 'user_id,first_name,middle_name,last_name,email,company_id,IF(image !="",CONCAT("' . IMAGE_PATH . '","",image),"") as image,IF(image_thumb !="",CONCAT("' . THUMB_IMAGE_PATH . '","",image_thumb),"") as image_thumb', $whereArr, true);             
+            $myEmployeeDetail =  $this->Common_model->fetch_data('ai_user', 'user_id,first_name as full_name,email,company_id,IF(image !="",CONCAT("' . IMAGE_PATH . '","",image),"") as image,IF(image_thumb !="",CONCAT("' . THUMB_IMAGE_PATH . '","",image_thumb),"") as image_thumb', $whereArr, true);             
             if($userData['company_id'] > 0 && $userData['is_owner'] == '2' && $userData['company_id'] == $myEmployeeDetail['company_id']){
                 $this->response([
                     'code' => HTTP_OK,
@@ -82,12 +82,12 @@ class EmployeeController extends BaseController
              }
         } else {
             $offset = isset($getData['offset'])&&!empty((int)$getData['offset'])?$getData['offset']:0;
-            $myEmployeeList = $this->Common_model->getMyEmployeesList('u.user_id,u.first_name,u.middle_name,u.last_name,u.email,u.user_type,u.is_owner,IF(u.image !="",u.image,"") as image,IF(u.image_thumb !="",u.image_thumb,"") as image_thumb',$userData['user_id'],$userData['company_id'], $offset);
+            $myEmployeeList = $this->Common_model->getMyEmployeesList('u.user_id,u.first_name as full_name, u.email,u.user_type,u.is_owner,IF(u.image !="",u.image,"") as image,IF(u.image_thumb !="",u.image_thumb,"") as image_thumb',$userData['user_id'],$userData['company_id'], $offset);
             $offset = $myEmployeeList['count'] + RECORDS_PER_PAGE;
             if ( (int)$myEmployeeList['count'] <= (int) $offset ) {
                 $offset = -1;
             }
-            if(!$myEmployeeList['result']){
+            if(!$myEmployeeList['result']) {
                 $this->response([
                     'code' => NO_DATA_FOUND,
                     'api_code_result' => 'NO_DATA_FOUND',
@@ -139,6 +139,8 @@ class EmployeeController extends BaseController
             ], HTTP_FORBIDDEN);
         }
 
+        
+
         if((int)$userData['company_id'] <= 0 && (int)$userData['is_owner'] !== 2){
             $this->response([
                 'code' => NO_DATA_FOUND,
@@ -149,8 +151,17 @@ class EmployeeController extends BaseController
 
         $this->load->model('Common_model');
 
-        $fields = 'erm.*,u.user_id,u.first_name,u.middle_name,u.last_name,email,user_type,is_owner,IF(image !="",image,"") as image,IF(image_thumb !="",image_thumb,"") as image_thumb';
-        $myemployeerequests = $this->Common_model->EemployeeRequestsbyUser($fields,$userData['user_id'], $userData['company_id']);
+        $offset = isset($getData['offset'])&&!empty((int)$getData['offset'])?$getData['offset']:0;
+        
+        
+
+        $fields = 'SQL_CALC_FOUND_ROWS erm.*,u.user_id,u.first_name as full_name,email,user_type,is_owner,IF(image !="",image,"") as image,IF(image_thumb !="",image_thumb,"") as image_thumb';
+        $myemployeerequests = $this->Common_model->EemployeeRequestsbyUser($fields,$userData['user_id'], $userData['company_id'], 0, $offset);
+        $offset = $myemployeerequests['count'] + RECORDS_PER_PAGE;
+        if ( (int)$myemployeerequests['count'] <= (int) $offset ) {
+            $offset = -1;
+        }
+
 
         if ( empty($myemployeerequests) ) {
             $this->response([
@@ -163,7 +174,8 @@ class EmployeeController extends BaseController
         $this->response([
             'code' => HTTP_OK,
             'api_code_result' => "OK", 
-            'data' =>  $myemployeerequests
+            'data' =>  $myemployeerequests['result'],
+            'offset' => $offset
         ]);
         
     }

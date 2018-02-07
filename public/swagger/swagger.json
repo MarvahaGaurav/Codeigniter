@@ -706,6 +706,18 @@
                         "in": "formData",
                         "description": "array of ids",
                         "type": "string"
+                    },
+                    {
+                        "name": "media_to_delete",
+                        "in": "formData",
+                        "description": "JSON array string of media ids [1,2,3]",
+                        "type": "string"
+                    },
+                    {
+                        "name": "media",
+                        "in": "formData",
+                        "description": "json array [{'media':'http//image/url', 'type':1}, {'media':'http//image/url', 'type':1}] 1-image, 2-video, 3-pdf",
+                        "type": "string"
                     }
                 ],
                 "responses": {

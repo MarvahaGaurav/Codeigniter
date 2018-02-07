@@ -1259,8 +1259,8 @@ class Common_model extends CI_Model {
         return $query->row_array();
     }
 
-    public function EemployeeRequestsbyUser($fields = 'erm.*,u.*', $userid, $companyid = false, $reueststatus = 0) {
-        $this->db->select($fields);
+    public function EemployeeRequestsbyUser($fields = 'erm.*,u.*', $userid, $companyid = false, $reueststatus = 0, $offset) {
+        $this->db->select($fields, false);
         $this->db->from('employee_request_master as erm');
         $this->db->join('ai_user as u', 'u.user_id=erm.requested_by', 'left');
         $this->db->where('erm.requested_to', $userid);
@@ -1271,10 +1271,11 @@ class Common_model extends CI_Model {
         }
         $query = $this->db->get();
 
-        $rows = $query->result();
+        $result['result'] = $query->result();
+        $result['count'] = $this->db->query('SELECT FOUND_ROWS() count;')->row()->count;
         //echo  $this->db->last_query();
         //print_r($rows); die;
-        return $rows;
+        return $result;
     }
     
 

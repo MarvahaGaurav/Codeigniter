@@ -31,7 +31,8 @@ class ApplicationController extends BaseController
             $final_array = [];
             $language_code = $this->language_code;
             
-            
+            $product_technical_data = [];
+            $product_gallery = [];
             foreach ( $language_code as $language ) {
                 $response = get_request_handler("{$language}/applications");
                 $response = json_decode($response, true);
@@ -90,19 +91,19 @@ class ApplicationController extends BaseController
                         $this->Product->updated_at = $this->datetime;
 
                         $product_id = $this->Product->save();
-                        $product_technical_data = $product_details["technicalData"];
-                        $product_gallery = $product_details['images'];
+                        $technical_data = $product_details["technicalData"];
+                        $gallery = $product_details['images'];
                         
-                        $product_gallery = array_map(function($gallery) use($product_id){
+                        $gallery = array_map(function($gallery) use($product_id){
                             $gallery['product_id'] = $product_id;
                             $gallery['image'] = $gallery['url'];
                             $gallery['created_at'] = $this->datetime;
                             $gallery['updated_at'] = $this->datetime;
                             unset($gallery['url']);
                             return $gallery;
-                        }, $product_gallery);
+                        }, $gallery);
                         
-                        $product_technical_data = array_map(function($technical) use ($product_id, $data) {
+                        $technical_data = array_map(function($technical) use ($product_id, $data) {
                             $technical['info'] = $technical['text'];
                             $technical['product_id'] = $product_id;
                             $technical['slug'] = preg_replace("/\s+/", "-" ,trim(strtolower(convert_accented_characters($technical['title'])))). "-" . $data['language_code'];
@@ -110,20 +111,24 @@ class ApplicationController extends BaseController
                             $technical['updated_at'] = $this->datetime;
                             unset($technical['text']);
                             return $technical;
-                        }, $product_technical_data);
+                        }, $technical_data);
                         
-                        $this->ProductTechnicalData->batch_data = $product_technical_data;
-                        $this->ProductTechnicalData->batch_save();
-
-                        $this->ProductGallery->batch_data = $product_gallery;
-                        $this->ProductGallery->batch_save();
+                        $product_gallery = array_merge($product_gallery, $gallery);
+                        $product_technical_data = array_merge($product_technical_data, $technical_data);
 
                     }
-                    $this->db->trans_commit();
+                    
                 }
 
             }
+            pd($product_technical_data);
+            $this->ProductTechnicalData->batch_data = $product_technical_data;
+            $this->ProductTechnicalData->batch_save();
 
+            $this->ProductGallery->batch_data = $product_gallery;
+            $this->ProductGallery->batch_save();
+
+            $this->db->trans_commit();
             $this->output
                 ->set_content_type('application/json')
                 ->set_output(json_encode(['code' => 200, 'code_result' => 'OK']));

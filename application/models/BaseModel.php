@@ -43,9 +43,13 @@ class BaseModel extends CI_Model {
         }
     }
 
-    public function delete($where) {
+    public function delete($where, $where_in = false) {
         foreach( $where as $key => $value ) {
-            $this->db->where($key, $value);
+            if ( $where_in ) {
+                $this->db->where_in($key, $value);
+            } else {
+                $this->db->where($key, $value);
+            }
         }
         $status = $this->db->delete($this->tableName);
 
@@ -56,6 +60,7 @@ class BaseModel extends CI_Model {
 
     public function batch_save() 
     {
+        $this->db->reset_query();
         $status = $this->db->insert_batch($this->tableName, $this->batch_data);
         if ( ! $status ) {
             throw new InsertException($this->db->last_query(), 101);
