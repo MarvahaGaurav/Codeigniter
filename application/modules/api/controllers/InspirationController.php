@@ -156,14 +156,14 @@ class InspirationController extends BaseController
                     'info' => 'Insert Error',
                     'query' => $error->getMessage()
                 ]
-            ]);
+                ], HTTP_INTERNAL_SERVER_ERROR);
         }  catch (\Exception $error) {
             $this->db->trans_rollback();
             $this->response([
                 'code' => HTTP_INTERNAL_SERVER_ERROR,
                 'api_code_result' => 'INTERNAL_SERVER_ERROR',
                 'msg' => $this->lang->line('internal_server_error')
-            ]);
+            ], HTTP_INTERNAL_SERVER_ERROR);
         }
         
         
@@ -358,7 +358,6 @@ class InspirationController extends BaseController
         $media_remove_list = [];
         $add_media_data = [];
 
-        
         if ( isset( $request_data['media_to_delete'] ) ) {
             $media_remove_list = json_decode($request_data['media_to_delete']);
             if ( ! empty($media_remove_list) ) {
@@ -471,8 +470,8 @@ class InspirationController extends BaseController
                 $this->InspirationMedia->batch_data[] = $content;
             }
         }
-        dd($add_media_data, false);
-        dd($add_media);
+        // dd($add_media_data, false);
+        // dd($add_media);
         $where = [
             'id' => $request_data['inspiration_id']
         ];
