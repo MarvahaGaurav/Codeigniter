@@ -43,14 +43,15 @@ class BaseModel extends CI_Model {
         }
     }
 
-    public function delete($where, $where_in = false) {
+    public function delete($where, $where_in=[]) {
         foreach( $where as $key => $value ) {
-            if ( $where_in ) {
-                $this->db->where_in($key, $value);
-            } else {
-                $this->db->where($key, $value);
-            }
+            $this->db->where($key, $value);
         }
+        
+        foreach ($where_in as $key => $value) {
+            $this->db->where_in($key, $value);
+        }
+
         $status = $this->db->delete($this->tableName);
 
         if ( ! $status ) {

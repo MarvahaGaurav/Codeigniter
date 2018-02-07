@@ -97,6 +97,7 @@ class InspirationController extends BaseController
             // $request_data['media'] = trim($this->post("media"));
             $this->load->model("InspirationMedia");
             $media = json_decode($request_data['media'], true);
+            // pd($media);
         }
 
         $this->Inspiration->company_id = $request_data['company_id'];
@@ -131,11 +132,12 @@ class InspirationController extends BaseController
                     $content =  [
                         "inspiration_id" => $inspirationId,
                         "media_type" => $value['type'],
-                        "media" => $value['media']
+                        "media" => $value['media'],
+                        "video_thumbnail" => ""
                     ];
                     if ( CONTENT_TYPE_VIDEO === (int)$value['type'] ) {
                         $content['video_thumbnail'] = generate_video_thumbnail($value['media']);
-                    }
+                    } 
                     $this->InspirationMedia->batch_data[] = $content;
                 }
                 $this->InspirationMedia->batch_save();
@@ -359,14 +361,14 @@ class InspirationController extends BaseController
         $add_media_data = [];
 
         if ( isset( $request_data['media_to_delete'] ) ) {
-            $media_remove_list = json_decode($request_data['media_to_delete']);
+            $media_remove_list = json_decode($request_data['media_to_delete'], true);
             if ( ! empty($media_remove_list) ) {
                 $remove_media = true;
             }
         }
 
         if ( isset( $request_data['media'] ) ) {
-            $add_media_data = json_decode($request_data['media']);
+            $add_media_data = json_decode($request_data['media'], true);
             if ( ! empty($add_media_data) ) {
                 $add_media = true;
             }
@@ -435,15 +437,18 @@ class InspirationController extends BaseController
             }
         }
 
+        $this->load->model("InspirationMedia");
         if ( $remove_media ) {
             $remove_media_where = ['id' => $media_remove_list];
         }
 
         if ( $add_media ) {
+            
             foreach ( $add_media_data as $key => $value ) {
                 if ( ! is_array($value) ) {
                     $value = [];
                 }
+
                 $value = trim_input_parameters($value);
                 $mandatory_json = ["type", "media"];
                 $check_json = check_empty_parameters($value, $mandatory_json);
@@ -457,21 +462,22 @@ class InspirationController extends BaseController
                         ]
                     ]);
                 }
-                
+
                 $this->load->helper("images");
                 $content =  [
                     "inspiration_id" => $request_data['inspiration_id'],
                     "media_type" => $value['type'],
-                    "media" => $value['media']
+                    "media" => $value['media'],
+                    "video_thumbnail" => ""
                 ];
                 if ( CONTENT_TYPE_VIDEO === (int)$value['type'] ) {
-                    $content['video_thumbnail'] = generate_video_thumbnail($value['media']);
+                    // $content['video_thumbnail'] = generate_video_thumbnail($value['media']);
                 }
+                
                 $this->InspirationMedia->batch_data[] = $content;
             }
         }
-        // dd($add_media_data, false);
-        // dd($add_media);
+
         $where = [
             'id' => $request_data['inspiration_id']
         ];
@@ -486,7 +492,7 @@ class InspirationController extends BaseController
             }
 
             if ( $remove_media ) {
-                $this->InspirationMedia->delete($remove_media_where, true);
+                $this->InspirationMedia->delete(['inspiration_id' => $request_data['inspiration_id']], $remove_media_where);
             }
             $this->db->trans_commit();
             $this->response([
