@@ -38,9 +38,9 @@ class BaseModel extends CI_Model {
         if ( ! $status ) {
             throw new UpdateException($this->db->last_query(), 102);
         }
-        if ( $this->db->affected_rows() == 0 ) {
+        /* if ( $this->db->affected_rows() == 0 ) {
             throw new UpdateException("Zero rows affected", 101);
-        }
+        } */
     }
 
     public function delete($where, $where_in=[]) {

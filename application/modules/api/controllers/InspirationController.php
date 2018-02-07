@@ -490,7 +490,7 @@ class InspirationController extends BaseController
             if ( $add_media ) {
                 $this->InspirationMedia->batch_save();
             }
-
+            
             if ( $remove_media ) {
                 $this->InspirationMedia->delete(['inspiration_id' => $request_data['inspiration_id']], $remove_media_where);
             }
