@@ -29,6 +29,7 @@ class CategoriesController extends BaseController
                     $data['category_id'] = $data['id'];
                     $data['image'] = $data['image']['url'];
                     $data['language_code'] = $language;
+                    $data['slug'] = preg_replace("/\s+/", "-" ,trim(strtolower(convert_accented_characters($data['title'])))). "-" . $data['language_code'];
                     if ( $data['type'] == 'residential' ) {
                         $data['type'] = 1;
                     } else if ($data['type'] == 'proffesional') {

@@ -1,4 +1,4 @@
-<link href="<?php echo base_url()?>public/css/plugin/datepicker.css">
+<link href="<?php echo base_url()?>public/css/datepicker.css">
 
 <!-- alert -->
 <?php if ( null !== $this->session->flashdata("greetings")) { ?>
@@ -13,141 +13,146 @@
         <!-- //alert -->
 
 <div class="inner-right-panel">
-
+    
     <!-- totalwrapper-section-->
     <div class="totalwrapper-section">
         <div class="row">
-            <div class="col-lg-12">
-                <h3 class="section-heading ts-numberof-heading">Total Number Of</h3>
-            </div>
-            <div class="col-lg-4 col-md-4">
-                <div class="ts-wrapper purple clearfix">
-                    <div class="ts-content">
-                        <div class="ts-numbers">509
-                            <span class="ts-userstxt">Users</span>
-                            <!-- <span class="total-userstxt"><?php //echo $userCount ?></span> -->
-                        </div>
-                        <p class="ts-description">
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                        </p>
+            <a href="<?php echo base_url().'admin/users'?>">
+            <div class="col-lg-4">
+                <div class="total-status-wrapper green clearfix">
+                    <div class="total-usersicon"><i class="fa fa-users"></i></div>
+                    <div class="total-numbers">Users
+                        <span class="total-userstxt"><?php echo $userCount ?></span>
                     </div>
-                    <div class="ts-thumbnail" style="background:url('public/images/ts-img1.jpg')"></div>
+                    <!--<div class="total-newusers-status green">
+                        <p class="total-newusers">New Users</p>
+                        <p class="total-userscount">385</p>
+                    </div>-->
                 </div>
             </div>
-
-            <div class="col-lg-4 col-md-4">
-                <div class="ts-wrapper yellow clearfix">
-                    <div class="ts-content">
-                        <div class="ts-numbers">200
-                            <span class="ts-userstxt">Technician</span>
-                        </div>
-                        <p class="ts-description">
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                        </p>
+            </a>
+            <a href="<?php echo base_url().'admin/technician'?>">
+            <div class="col-lg-4">
+                <div class="total-status-wrapper green clearfix">
+                    <div class="total-usersicon"><i class="fa fa-users"></i></div>
+                    <div class="total-numbers">Technicians
+                        <span class="total-userstxt"><?php echo $technicianCount ?></span>
                     </div>
-                    <div class="ts-thumbnail" style="background:url('public/images/ts-img1.jpg')"></div>
+                    <!--<div class="total-newusers-status green">
+                        <p class="total-newusers">New Merchants</p>
+                        <p class="total-userscount">100</p>
+                    </div>-->
                 </div>
             </div>
-
-            <div class="col-lg-4 col-md-4">
-                <div class="ts-wrapper red clearfix">
-                    <div class="ts-content">
-                        <div class="ts-numbers">999+
-                            <span class="ts-userstxt">Projects</span>
-                        </div>
-                        <p class="ts-description">
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                        </p>
+            </a>
+            <a href="javascript:void(0)">
+            <div class="col-lg-4">
+                <div class="total-status-wrapper green clearfix">
+                    <div class="total-usersicon"><i class="fa fa-users"></i></div>
+                    <div class="total-numbers">Projects
+                        <span class="total-userstxt"><?php echo $projectCount ?></span>
                     </div>
-                    <div class="ts-thumbnail" style="background:url('public/images/ts-img1.jpg')"></div>
+                    <!--<div class="total-newusers-status green">
+                        <p class="total-newusers">New Merchants</p>
+                        <p class="total-userscount">100</p>
+                    </div>-->
                 </div>
             </div>
+            </a>
         </div>
     </div>
     <!-- //totalwrapper-section-->
 
-    <!-- totalwrapper-section-->
-    <div class="totalwrapper-section">
+    <!-- Graph Section -->
+    <?php /* ?>
+    <div class="graph-section">
         <div class="row">
-            <div class="col-lg-12">
-                <div class="section-wrapper">
-                    <form>
-                        <div class="clearfix">
-                            <div class="col-lg-4 col-md-4 col-sm-6">
-                                <div class="form-group">
-                                    <label class="label-txt" for="email">Start Date:</label>
-                                    <div class="form-blk">
-                                        <!-- calendar -->
-                                        <input type="text" placeholder="From" id="dpd1" name="dpd1" value="" class="form-field">
-                                        <label class="ficon ficon-right" for="dpd1"><i class="fa fa-calendar"></i></label>
-                                        <!-- //calendar -->
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-4 col-sm-6">
-                                <div class="form-group">
-                                    <label class="label-txt" for="email">End Date:</label>
-                                    <div class="form-blk">
-                                        <!-- calendar -->
-                                        <input type="text" placeholder="To" id="dpd2" name="dpd2" value="" class="form-field">
-                                        <label class="ficon ficon-right" for="dpd2"><i class="fa fa-calendar"></i></label>
-                                        <!-- //calendar -->
-                                    </div>
-                                </div>
+
+            <div class="col-lg-6">
+                <div class="number-ofusers-wrapper">
+                    <label class="label-txt">Number of Users</label>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-blk selector">
+                                <!-- calendar -->
+                                <input type="text" placeholder="From" id="dpd1" name="dpd1" value="" class="form-control form-field">
+                                <label class="ficon ficon-right" for="dpd1"><i class="fa fa-calendar"></i></label>
+                                <!-- //calendar -->
                             </div>
                         </div>
-                    </form>
+                        <div class="col-lg-4">
+                            <div class="form-blk selector">
+                                <!-- calendar -->
+                                <input type="text" placeholder="To" id="dpd2" name="dpd2" value="" class="form-control form-field">
+                                <label class="ficon ficon-right" for="dpd2"><i class="fa fa-calendar"></i></label>
+                                <!-- //calendar -->
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-blk selector">
+                                <!-- Select Picker -->
+                                <select placeholder="Select" class="selectpicker form-control">
+                                    <option>Select</option>
+                                    <option>Daily</option>
+                                    <option>Weekly</option>
+                                    <option>Monthly</option>
+                                    <option>Yearly</option>
+                                </select>
+                                <!-- //Select Picker -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="graph">
+                        <div id="chart1" style="min-width:250px; height: 400px; margin: 0 auto"></div>
+                    </div>
                 </div>
             </div>
-            <div class="col-lg-12">
-                <h3 class="section-heading ts-numberof-heading">Total Number Of</h3>
-            </div>
-            <div class="col-lg-4 col-md-4">
-                <div class="ts-wrapper purple clearfix">
-                    <div class="ts-content">
-                        <div class="ts-numbers">10
-                            <span class="ts-userstxt">Users</span>
+            <div class="col-lg-6">
+                <div class="number-ofusers-wrapper">
+                    <label class="label-txt">Number of Merchant</label>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-blk selector">
+                                <!-- calendar -->
+                                <input type="text" placeholder="From" id="dpd3" name="dpd3" value="" class="form-control form-field">
+                                <label class="ficon ficon-right" for="dpd3"><i class="fa fa-calendar"></i></label>
+                                <!-- //calendar -->
+                            </div>
                         </div>
-                        <p class="ts-description">
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                        </p>
-                    </div>
-                    <div class="ts-thumbnail" style="background:url('public/images/ts-img1.jpg')"></div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-4">
-                <div class="ts-wrapper yellow clearfix">
-                    <div class="ts-content">
-                        <div class="ts-numbers">3
-                            <span class="ts-userstxt">Technician</span>
+                        <div class="col-lg-4">
+                            <div class="form-blk selector">
+                                <!-- calendar -->
+                                <input type="text" placeholder="To" id="dpd4" name="dpd4" value="" class="form-control form-field">
+                                <label class="ficon ficon-right" for="dpd4"><i class="fa fa-calendar"></i></label>
+                                <!-- //calendar -->
+                            </div>
                         </div>
-                        <p class="ts-description">
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                        </p>
-                    </div>
-                    <div class="ts-thumbnail" style="background:url('public/images/ts-img1.jpg')"></div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-4">
-                <div class="ts-wrapper red clearfix">
-                    <div class="ts-content">
-                        <div class="ts-numbers">105
-                            <span class="ts-userstxt">Projects</span>
+                        <div class="col-lg-4">
+                            <div class="form-blk selector">
+                                <!-- Select Picker -->
+                                <select placeholder="Select" class="selectpicker form-control">
+                                    <option>Select</option>
+                                    <option>Daily</option>
+                                    <option>Weekly</option>
+                                    <option>Monthly</option>
+                                    <option>Yearly</option>
+                                </select>
+                                <!-- //Select Picker -->
+                            </div>
                         </div>
-                        <p class="ts-description">
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                        </p>
                     </div>
-                    <div class="ts-thumbnail" style="background:url('public/images/ts-img1.jpg')"></div>
+                    <div class="graph">
+                        <div id="chart2" style="min-width:250px; height: 400px; margin: 0 auto"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- //totalwrapper-section-->
+    <?php */ ?>
+    <!-- //Graph Section -->
 
 </div>
 
-<script src="<?php echo base_url()?>public/js/plugin/datepicker.min.js"></script>
-<script src="<?php echo base_url()?>public/js/custom-dashboard.js"></script>
+<script src="<?php echo base_url()?>public/js/datepicker.min.js"></script>
+<!--<script src="<?php //echo base_url()?>public/js/highcharts.js"></script>
+<script src="<?php //echo base_url()?>public/js/custom-dashboard.js"></script>-->

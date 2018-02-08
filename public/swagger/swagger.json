@@ -151,6 +151,12 @@
                         "type": "string"
                     },
                     {
+                        "name": "search",
+                        "in": "query",
+                        "description": "search string",
+                        "type": "string"
+                    },
+                    {
                         "name": "offset",
                         "in": "query",
                         "description": "return the offset in response, if offset in response is -1 there are no further results",

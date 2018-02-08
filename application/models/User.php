@@ -12,15 +12,31 @@ class User extends BaseModel
         $this->load->database();
     }
     
-    public function login()
+    public function login($email, $password)
     {
-        $this->db->select('company_id, user_id,first_name,email,'.
-        'IF(image !="",CONCAT("' . IMAGE_PATH . '","",image),"") as image,'.
-        'IF(image_thumb !="",CONCAT("' . THUMB_IMAGE_PATH . '","",image_thumb),"") as image_thumb,status,user_type,is_owner')
-            ->from("ai_user");
+        $this->db->select('company_id, ai_user.user_id,first_name as full_name,email,'.
+        'image, image_thumb,'.
+        'ai_user.status,user_type,is_owner,'.
+        'IFNULL(quote_view, 0) as quote_view, IFNULL(quote_add, 0) as quote_add,'.
+        'IFNULL(quote_edit, 0) as quote_edit, IFNULL(quote_delete, 0) as quote_delete,'.
+        'IFNULL(insp_view, 0) as insp_view,'.
+        'IFNULL(insp_add, 0) as insp_add, IFNULL(insp_edit, 0) as insp_edit,'.
+        'IFNULL(insp_delete, 0) as insp_delete, IFNULL(project_view, 0) as project_view,'.
+        'IFNULL(project_add, 0) as project_add, IFNULL(project_edit, 0) as project_edit, IFNULL(project_delete, 0) as project_delete')
+            ->from("ai_user")   
+            ->join("user_employee_permission as uep", "uep.employee_id=ai_user.user_id", 'left')
+            ->where('email', $email)
+            ->where('password', $password)
+            ->where('ai_user.status !=', 3);
+
+        $query = $this->db->get();
+
+        $result = $query->row_array();
+
+        return $result;
     }
 
 }
 
 
-$userInfo = $this->Common_model->fetch_data('ai_user', '', array('where' => array('email' => $email, 'password' => $encrypt_pass)), true);
+$userInfo = $this->Common_model->fetch_data('ai_user', '', array('where' => array()), true);

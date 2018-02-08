@@ -1,20 +1,29 @@
 
 <div class="inner-right-panel">
 
-    <!--breadcrumb wrap-->
-    <div class="breadcrumb-wrap">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="<?php echo base_url()?>admin/dashboard">Dashboard</a></li>
-            <li class="breadcrumb-item active">Change Password</li>
-        </ol>
-    </div>
-    <!--breadcrumb wrap close-->
 
+<!--breadcrumb wrap-->
+<div class="breadcrumb-wrap">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="<?php echo base_url()?>admin/dashboard">Dashboard</a></li>
+        <li class="breadcrumb-item active">Change Password</li>
+    </ol>
+</div>
+<!--breadcrumb wrap close-->
+
+
+    <!--Filter Section -->
     <?php echo form_open('',array('id'=>'password_change_form'));?>
+        <div class="white-wrapper">
+            <div class="form-item-title clearfix">
+                <h3 class="title">Admin Change Password</h3>
+            </div>
 
-        <!-- form -->
-        <div class="section clearfix">
-            <div class="user-detail-panel">
+            <!-- title and form upper action end-->
+            <div class="form-ele-wrapper clearfix">
+
+
+
                 <div class="row">
                     <div class="col-sm-5 col-xs-12">
                         <div class="form-group">
@@ -27,7 +36,6 @@
                         </div>
                     </div>
                     <div class="clearfix"></div>
-
                     <div class="col-sm-5 col-xs-12">
                         <div class="form-group">
                             <label class="admin-label">* New Password</label>
@@ -39,7 +47,6 @@
                         </div>
                     </div>
                     <div class="clearfix"></div>
-
                     <div class="col-sm-5 col-xs-12">
                         <div class="form-group">
                             <label class="admin-label">* Confirm Password</label>
@@ -50,20 +57,21 @@
                             </div>
                         </div>
                     </div>
-                    <div class="clearfix"></div>
-
-                    <div class="col-xs-12">
-                        <div class="button-wrap">
-                            <button type="button"  onclick="window.location.href='<?php echo base_url()?>admin/profile'"class="commn-btn cancel">Cancel</button>
-                            <button type="submit" class="commn-btn save">Save</button>
-                        </div>
-                    </div>
-
                 </div>
+                <div class="form-ele-action-bottom-wrap btns-center clearfix">
+                    <div class="button-wrap text-center">
+                        <button type="button"  onclick="window.location.href='<?php echo base_url()?>admin/profile'"class="commn-btn cancel">Cancel</button>
+                        <button type="submit" class="commn-btn save">Save</button>
+                    </div>
+                </div>
+                <!--form ele wrapper end-->
             </div>
+            <!--form element wrapper end-->
+
         </div>
-        <!-- form -->
+        <!--close form view   -->
 
     <?php echo form_close();?>
+    <!--Filter Section Close-->
 </div>
-
+<!--Table listing-->

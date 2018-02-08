@@ -409,8 +409,8 @@ class Signup extends REST_Controller {
 
                 $signupArr['accesstoken'] = $accessToken['public_key'] . '||' . $accessToken['private_key'];
 
-                $signupArr["image"] = isset($signupArr['image']) ? IMAGE_PATH . $signupArr['image'] : "";
-                $signupArr["image_thumb"] = isset($signupArr['image_thumb']) ? THUMB_IMAGE_PATH . $signupArr['image_thumb'] : "";
+                $signupArr["image"] = isset($signupArr['image']) ? $signupArr['image'] : "";
+                $signupArr["image_thumb"] = isset($signupArr['image_thumb']) ? $signupArr['image_thumb'] : "";
                 /*
                  * 
                  */
@@ -473,10 +473,26 @@ class Signup extends REST_Controller {
                     
                     if (!empty($sessionId) && !empty($userId)) {
                         unset($signupArr['password']);
+                        $signupArr['full_name'] = $signupArr['first_name'];
+                        unset($signupArr['first_name']);
+                        unset($signupArr['middle_name']);
+                        unset($signupArr['last_name']);
                         $mailData = [];
-                        $mailData['name'] = $postDataArr['first_name'] . ' ' . $postDataArr['last_name'];
+                        $mailData['name'] = $postDataArr['full_name'] ;
                         $mailData['email'] = $postDataArr['email'];
                         $this->sendWelcomeMail($mailData);
+                        $signupArr['quote_view'] = 0;
+                        $signupArr['quote_add'] = 0;
+                        $signupArr['quote_edit'] = 0;
+                        $signupArr['quote_delete'] = 0;
+                        $signupArr['insp_view'] = 0;
+                        $signupArr['insp_add'] = 0;
+                        $signupArr['insp_edit'] = 0;
+                        $signupArr['insp_delete'] = 0;
+                        $signupArr['project_view'] = 0;
+                        $signupArr['project_add'] = 0;
+                        $signupArr['project_edit'] = 0;
+                        $signupArr['project_delete'] = 0;
                         $this->response(array('code' => SUCCESS_CODE, 'msg' => $this->lang->line('registration_success'), 'result' => $signupArr));
                     }
                 }

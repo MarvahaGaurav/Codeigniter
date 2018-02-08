@@ -20,14 +20,14 @@ class Company_model extends CI_Model {
                 'company_image,company_image_thumb,IF(f.is_favorite is null,0,f.is_favorite) as is_favorite,' .
                 'IF(cl.name IS NULL,"",cl.name) as country_name,user.phone as company_phone,user.alt_userphone as alt_company_phone,' .
                 'IF(cyl.name IS NULL,"",cyl.name) as city_name, user.email as company_email, user.first_name as owner_name,'.
-                'user.country_id, user.city_id, user.image as user_image, c.prm_country_code, user.user_type,'.
+                'user.country_id, user.city_id, user.image as user_image, user.prm_user_countrycode as prm_country_code, user.user_type,'.
                 'user.is_owner as owner_type, user.alt_user_countrycode, c.alt_country_code as company_alt_country_code';
         } else {
             $query = 'SQL_CALC_FOUND_ROWS c.company_id,company_name,company_reg_number,user.zipcode as company_zipcode,' .
                 'company_image,company_image_thumb, user.phone as company_phone,' .
                 'IF(cl.name IS NULL,"",cl.name) as country_name,user.email as company_email,user.alt_userphone as alt_company_phone,' .
                 'IF(cyl.name IS NULL,"",cyl.name) as city_name, user.first_name as owner_name,'.
-                'user.country_id, user.city_id, user.image as user_image, c.prm_country_code, user.user_type,'.
+                'user.country_id, user.city_id, user.image as user_image, user.prm_user_countrycode as prm_country_code, user.user_type,'.
                 'user.is_owner as owner_type, user.alt_user_countrycode , c.alt_country_code as company_alt_country_code';
         }
         $this->db->select($query, false);
@@ -48,8 +48,11 @@ class Company_model extends CI_Model {
         if ( isset($params['company_id']) && !empty((int)$params['company_id']) ) {
             $this->db->where('c.company_id', $params['company_id']);
         }
+        if ( isset($params['search']) && !empty($params['search']) ) {
+            $this->db->like('c.company_name', $params['search']);
+        }
         $query = $this->db->get();
-//        echo $this->db->last_query();die;
+    //    echo $this->db->last_query();die;
         $resArr = [];
         if ( isset($params['company_id']) && !empty((int)$params['company_id']) ) {
             $resArr['result'] = $query->row_array();

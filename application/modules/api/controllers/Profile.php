@@ -68,8 +68,8 @@ class Profile extends REST_Controller {
                 */
             //echo $this->db->last_query();
             //pr($user_info);
-            if ($user_info['status'] == 2) {
-                $this->response(array('code' => ACCOUNT_BLOCKED, 'msg' => $this->lang->line('account_blocked'), 'result' => (object) []));
+            if ($user_info['status'] == BLOCKED) {
+                $this->response(array('code' => HTTP_FORBIDDEN, 'msg' => $this->lang->line('account_blocked'), 'result' => (object) []));
             }
             if ($this->db->trans_status() === TRUE) {
                 $this->db->trans_commit();
@@ -360,8 +360,8 @@ class Profile extends REST_Controller {
             /*
                 * Validate if user is not blocked
                 */
-            if ($user_info['status'] == 2) {
-                $this->response(array('code' => ACCOUNT_BLOCKED, 'msg' => $this->lang->line('account_blocked'), 'result' => (object) []));
+            if ($user_info['status'] == BLOCKED) {
+                $this->response(array('code' => HTTP_FORBIDDEN, 'msg' => $this->lang->line('account_blocked'), 'result' => (object) []));
             }
             //pr($user_info);
             if (isset($postDataArr['first_name']) && !empty($postDataArr['first_name'])) {
@@ -397,6 +397,9 @@ class Profile extends REST_Controller {
                 $updateArr['city_id'] = $postDataArr['city'];
                 $compupdateArr['city'] = $postDataArr['city'];
             }
+            if (isset($postDataArr['prm_country_code']) && !empty($postDataArr['prm_country_code'])) {
+                $updateArr['prm_user_countrycode'] = $postDataArr['prm_country_code'];
+            }
             if (isset($postDataArr['zipcode']) && !empty($postDataArr['zipcode'])) {
                 $updateArr['zipcode'] = $postDataArr['zipcode'];
                 $compupdateArr['zipcode'] = $postDataArr['zipcode'];
@@ -411,12 +414,13 @@ class Profile extends REST_Controller {
                 if (isset($postDataArr['company_image']) && !empty($postDataArr['company_image'])) {
                     $compupdateArr['company_image'] = $postDataArr['company_image'];
                 }
+                
+                // pr($compupdateArr);
                 if ($compupdateArr) {
                     $comwhereArr['where'] = ['company_id' => $postDataArr['company_id']];
                     $updaterequesr = $this->Common_model->update_single('company_master', $compupdateArr, $comwhereArr);
                 }
             }
-            //pr($updateArr);
 
             $whereArr['where'] = ['user_id' => $user_info['user_id']];
             $updaterequesr = $this->Common_model->update_single('ai_user', $updateArr, $whereArr);

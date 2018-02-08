@@ -28,9 +28,17 @@ class ProductApplicationController extends BaseController
             $response = get_request_handler("{$application['language_code']}/applications/{$application['application_id']}/products");
             $response = json_decode($response, true);
             $language = $application['language_code'];
+             
             $response = array_map(function ($data) use ($application) {
-                $data['application_id'] = $application['application_id'];
-                $data['product_id'] = $data['id'];
+                $product_data = $this->UtilModel->selectQuery(
+                    "id",
+                    "products",
+                    ["single_row" => true, "where" => ['product_id' => $data['id']]]
+                );
+                $data['application_id'] = $application['id'];
+                $data['product_id'] = $product_data['id'];
+                $data['primary_application_id'] = $application['application_id'];
+                $data['primary_product_id'] = $data['id'];
                 $data['created_at'] = $this->datetime;
                 $data['updated_at'] = $this->datetime;
                 unset($data['id']);

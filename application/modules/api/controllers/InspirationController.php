@@ -362,14 +362,14 @@ class InspirationController extends BaseController
 
         if ( isset( $request_data['media_to_delete'] ) ) {
             $media_remove_list = json_decode($request_data['media_to_delete'], true);
-            if ( ! empty($media_remove_list) ) {
+            if ( isset($media_remove_list) && ! empty($media_remove_list) ) {
                 $remove_media = true;
             }
         }
 
         if ( isset( $request_data['media'] ) ) {
             $add_media_data = json_decode($request_data['media'], true);
-            if ( ! empty($add_media_data) ) {
+            if ( isset($add_media_data) && ! empty($add_media_data) ) {
                 $add_media = true;
             }
         }
@@ -415,8 +415,7 @@ class InspirationController extends BaseController
                 "msg" => $this->lang->line("no_records_found")
             ]);
         }
-        // print_r((int)$inspirationData);
-        // print_r((int)$userData);die;
+
         if ( $inspirationData['company_id'] != $user_data['company_id'] ) {
             $this->response([
                 "code" => HTTP_FORBIDDEN,
@@ -424,7 +423,6 @@ class InspirationController extends BaseController
                 "msg" => $this->lang->line("cannot_update_inspiration")
             ], HTTP_FORBIDDEN);
         }
-
 
         $inspiration_update_map = [
             "title" => "title",
@@ -437,6 +435,10 @@ class InspirationController extends BaseController
             }
         }
 
+        pd($request_data, false);
+        dd($add_media, false);
+        dd($remove_media);
+
         $this->load->model("InspirationMedia");
         if ( $remove_media ) {
             $remove_media_where = ['id' => $media_remove_list];
@@ -448,7 +450,7 @@ class InspirationController extends BaseController
                 if ( ! is_array($value) ) {
                     $value = [];
                 }
-
+                
                 $value = trim_input_parameters($value);
                 $mandatory_json = ["type", "media"];
                 $check_json = check_empty_parameters($value, $mandatory_json);
@@ -471,7 +473,7 @@ class InspirationController extends BaseController
                     "video_thumbnail" => ""
                 ];
                 if ( CONTENT_TYPE_VIDEO === (int)$value['type'] ) {
-                    // $content['video_thumbnail'] = generate_video_thumbnail($value['media']);
+                    $content['video_thumbnail'] = generate_video_thumbnail($value['media']);
                 }
                 
                 $this->InspirationMedia->batch_data[] = $content;

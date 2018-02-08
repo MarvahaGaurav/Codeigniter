@@ -42,6 +42,12 @@ class CompanyController extends BaseController
      *     type="string"
      *   ),
      *   @SWG\Parameter(
+     *     name="search",
+     *     in="query",
+     *     description="search string",
+     *     type="string"
+     *   ),
+     *   @SWG\Parameter(
      *     name="offset",
      *     in="query",
      *     description="return the offset in response, if offset in response is -1 there are no further results",
@@ -75,6 +81,10 @@ class CompanyController extends BaseController
         $result = [];
         $params["offset"] = $offset;
         $params["limit"] = RECORDS_PER_PAGE;
+
+        if ( isset($getData['search']) ) {
+            $params['search'] = $getData['search'];
+        }
         
         if ( $accessTokenSet && isset($getData['favorite']) && (int)$getData['favorite'] === 1) {
             $this->load->model("Favorite_model");

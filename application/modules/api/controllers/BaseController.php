@@ -57,10 +57,10 @@ class BaseController extends REST_Controller
 
         try {
             $userData = $this->UtilModel->selectQuery(
-                "u.user_id" . $additionalParams,
+                "u.user_id, u.status as user_status" . $additionalParams,
                 "ai_session as a",
                 [
-                    "where" => ["public_key" => $accessToken[0], "private_key" => $accessToken[1], "login_status" => 1],
+                    "where" => ["public_key" => $accessToken[0], "private_key" => $accessToken[1], "login_status" => 1, "u.status !=" => DELETED],
                     "join" => [
                         "ai_user as u" => "u.user_id=a.user_id"
                     ],
@@ -83,7 +83,17 @@ class BaseController extends REST_Controller
             ], HTTP_UNAUTHORIZED);
         }
 
+
+
         if ( $userData ) {
+            if ( $userData['user_status'] == BLOCKED) {
+                $this->response([
+                    "code" => HTTP_FORBIDDEN,
+                    "api_code_result" => "FORBIDDEN",
+                    "msg" => $this->lang->line("account_blocked")
+                ], HTTP_FORBIDDEN);
+            }
+    
             return $userData;
         } else {
             $this->response([

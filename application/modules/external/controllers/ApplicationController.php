@@ -20,6 +20,7 @@ class ApplicationController extends BaseController
         $this->load->model("ProductTechnicalData");
         $this->load->model("ProductGallery");
         $this->load->model("ProductSpecification");
+        $this->load->model('Common_model');
     }
 
     /**
@@ -30,7 +31,7 @@ class ApplicationController extends BaseController
         try {
             $final_array = [];
             $language_code = $this->language_code;
-            
+            $this->db->trans_begin();
             $product_technical_data = [];
             $product_gallery = [];
             foreach ( $language_code as $language ) {
@@ -43,7 +44,7 @@ class ApplicationController extends BaseController
                 }, $response);
 
                 foreach ( $response as $data ) {
-                    $this->db->trans_begin();
+                    
                     $this->Application->image = $data['image']['url'];
                     if ( $data['type'] == 'residential' ) {
                         $this->Application->type = 1;
@@ -80,6 +81,12 @@ class ApplicationController extends BaseController
                         $product_details = get_request_handler("{$data['language_code']}/products/{$product['id']}");
                         $product_details = json_decode($product_details, true);
 
+                        if ( empty($product_details) ) {
+                            log_message(json_encode($product));
+                            log_message("\n-------------------------------------------------\n");
+                            continue;
+                        }
+
                         $this->Product->title = $product_details['title'];
                         $this->Product->language_code = $data['language_code'];
                         $this->Product->subtitle = $product_details['subTitle'];
@@ -94,7 +101,7 @@ class ApplicationController extends BaseController
                         $technical_data = $product_details["technicalData"];
                         $gallery = $product_details['images'];
                         
-                        $gallery = array_map(function($gallery) use($product_id){
+                        $gallery = array_map(function($gallery) use ($product_id) {
                             $gallery['product_id'] = $product_id;
                             $gallery['image'] = $gallery['url'];
                             $gallery['created_at'] = $this->datetime;
@@ -113,20 +120,27 @@ class ApplicationController extends BaseController
                             return $technical;
                         }, $technical_data);
                         
-                        $product_gallery = array_merge($product_gallery, $gallery);
-                        $product_technical_data = array_merge($product_technical_data, $technical_data);
+                        // $product_gallery = array_merge($product_gallery, $gallery);
+                        // $product_technical_data = array_merge($product_technical_data, $technical_data);
+                        // pd($technical_data);
+                        // $this->ProductTechnicalData->batch_data = $technical_data;
+                        // pd($this->ProductTechnicalData->batch_data);
+                        // $this->ProductTechnicalData->batch_save();
 
+                        // $this->ProductGallery->batch_data = $gallery;
+                        // $this->ProductGallery->batch_save();
+                        $this->Common_model->insert_batch("product_technical_data", [], $technical_data);
+                        $this->Common_model->insert_batch("product_gallery", [], $gallery);
                     }
-                    
                 }
-
+                
             }
-            pd($product_technical_data);
-            $this->ProductTechnicalData->batch_data = $product_technical_data;
-            $this->ProductTechnicalData->batch_save();
 
-            $this->ProductGallery->batch_data = $product_gallery;
-            $this->ProductGallery->batch_save();
+            // $this->ProductTechnicalData->batch_data = $product_technical_data;
+            // $this->ProductTechnicalData->batch_save();
+
+            // $this->ProductGallery->batch_data = $product_gallery;
+            // $this->ProductGallery->batch_save();
 
             $this->db->trans_commit();
             $this->output

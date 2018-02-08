@@ -5,92 +5,135 @@ $notiPermission = isset($permission[3])?$permission[3]:array();
 ?>
 <body>
     <!-- Content -->
-    <section class="inner-right-panel clearfix">
-
-        <!--breadcrumb wrap-->
-        <div class="breadcrumb-wrap">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="admin/subadmin">Sub Admins</a></li>
-                <li class="active">Sub-Admin Profile</li>
-            </ol>
+    <section class="content-wrapper clearfix">
+        <div class="upper-head-panel m-b-lg clearfix">
+            <ul class="breadcrumb reward-breadcrumb">
+                <li><a href="admin/subadmin">Sub Admins</a></li>
+                <li class="active">Update Sub-admin</li>
+            </ul>
         </div>	
         <div class="clear"></div>
-
-        <div class="section">
-            <div class="row">
-                <div class="col-sm-3 col-xs-12">
-                    <!-- Thumb Wrapper -->
-                    <div class="image-view-wrapper img-view200p img-viewbdr-radius4p img-mb">
-                        <div class="profile-pic image-view img-view200" style="background-image:url('<?php echo (!empty($editdata['admin_profile_pic'])) ? IMAGE_PATH . $editdata['admin_profile_pic'] : DEFAULT_IMAGE ?>');"></div>
+        <div class="col-sm-12">
+            <div class="adminRoles-wrapper">
+            <div class="form-item-title clearfix">
+                <h3 class="title">Sub-admin detail</h3>
+            </div>
+            <!-- title and form upper action end-->
+            <div class="form-ele-wrapper clearfix">
+                <div class="row">
+                    <div class="col-sm-6 col-xs-6">
+                        <div class="form-group">
+                            <label class="admin-label">Admin Name</label>
+                            <div class="input-holder">
+                                <label><?php echo $admindetail['admin_name'] ?></label>
+                            </div>
+                        </div>
                     </div>
-                    <!-- //Thumb Wrapper -->
-                </div>
-                <div class="col-sm-9 col-xs-12">
-                    <div class="row">
-                        <!-- form-->
-                        <div class="user-detail-panel">
-                            <div class="col-lg-6 col-sm-6 col-xs-12">
-                                <div class="form-group">
-                                    <label class="admin-label">Name</label>
-                                    <div class="input-holder">
-                                        <span class="text-detail">Robert Lewandowski</span>
-                                    </div>
-                                </div>
+                    <div class="col-sm-6 col-xs-6">
+                        <div class="form-group">
+                            <label class="admin-label">Email</label>
+                            <div class="input-holder">
+                                <label><?php echo $admindetail['admin_email'] ?></label>
                             </div>
-                            <div class="col-lg-6 col-sm-6 col-xs-12">
-                                <div class="form-group">
-                                    <label class="admin-label">Mobile Number</label>
-                                    <div class="input-holder">
-                                        <span class="text-detail">91+ 9988787960</span>
-                                    </div>
-                                </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xs-6">
+                        <div class="form-group">
+                            <label class="admin-label">Status</label>
+                            <div class="commn-select-wrap">
+                                <label><?php echo ($admindetail['status'] == 1)?'Active':'Blocked' ?></label>
                             </div>
-                            <div class="col-lg-6 col-sm-6 col-xs-12">
-                                <div class="form-group">
-                                    <label class="admin-label">Email ID</label>
-                                    <div class="input-holder">
-                                        <span class="text-detail">robert_lewandowsi@gmail.com</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-sm-6 col-xs-12">
-                                <div class="form-group">
-                                    <label class="admin-label">Registered On</label>
-                                    <div class="input-holder">
-                                        <span class="text-detail">12-11-2018</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-sm-6 col-xs-12">
-                                <div class="form-group">
-                                    <label class="admin-label">Access To</label>
-                                    <div class="input-holder accessTo">
-                                        <span class="text-detail">- User Management</span>
-                                        <span class="text-detail">- Project Management</span>
-                                        <span class="text-detail">- Content Management</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-sm-6 col-xs-12">
-                                <div class="form-group">
-                                    <label class="admin-label">Password</label>
-                                    <div class="input-holder">
-                                        <span class="text-detail">xxxxxxxxxxxx</span>
-                                    </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="adminRoles-wrapper p-md m-b-lg">
+                            <div class="form-ele-wrapper clearfix">
+                                <div class="row">
+                                    <div class="col-lg-12"><h2 class="title-box m-t-n p-t-20">Sub-admin Roles :</h2></div>
+                                    <div class="col-lg-12">
+                                        <div class="custom-check main-check">
+                                            <input id="main-check1" name="user" disabled="true"  value="1" <?php echo (!empty($userPermission))?'checked':'' ?> type="checkbox">
+                                            <label for="main-check1"><span></span>Manage User </label>
+                                            <ul class="check-column">
+                                                <li>
+                                                    <div class="custom-check">
+                                                        <input id="subcheck1-1" <?php echo (!empty($userPermission['viewp']))?'checked':'' ?> disabled="true" value="1" class="user" type="checkbox" >
+                                                        <label for="subcheck1-1"><span></span>View </label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="custom-check">
+                                                        <input id="subcheck1-2" <?php echo (!empty($userPermission['blockp']))?'checked':'' ?> value="1"  disabled="true" class="user" type="checkbox" >
+                                                        <label for="subcheck1-2"><span></span>Block  </label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="custom-check">
+                                                        <input id="subcheck1-3" <?php echo (!empty($userPermission['deletep']))?'checked':'' ?> value="1" class="user" disabled="true" type="checkbox" >
+                                                        <label for="subcheck1-3"><span></span>Delete</label>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>			
+                                        <div class="clear"></div>
+                                        <div class="custom-check main-check">
+                                            <input id="main-check2" name="version" <?php echo (!empty($versionPermission))?'checked':'' ?> disabled="true" value="1" type="checkbox">
+                                            <label for="main-check2"><span></span>Manage Version</label>
+                                            <ul class="check-column">
+                                                <li>
+                                                    <div class="custom-check">
+                                                        <input id="subcheck2-4" <?php echo (!empty($versionPermission['addp']))?'checked':'' ?> value="1"  disabled="true" class="Version" type="checkbox">
+                                                        <label for="subcheck2-4"><span></span>Add New</label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="custom-check">
+                                                        <input id="subcheck2-2" <?php echo (!empty($versionPermission['editp']))?'checked':'' ?> value="1" disabled="true" class="Version" type="checkbox">
+                                                        <label for="subcheck2-2"><span></span>Edit </label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="custom-check">
+                                                        <input id="subcheck2-3" <?php echo (!empty($versionPermission['deletep']))?'checked':'' ?> value="1" disabled="true" class="Version" type="checkbox">
+                                                        <label for="subcheck2-3"><span></span>Delete </label>
+                                                    </div>
+                                                </li>
+
+                                            </ul>
+                                        </div>			
+                                        <div class="clear"></div>
+                                        <div class="custom-check main-check">
+                                            <input id="main-check3" name="portfolio"  <?php echo (!empty($notiPermission))?'checked':'' ?> value="3" disabled="true" type="checkbox">
+                                            <label for="main-check3"><span></span>Manage Notifications </label>
+                                            <ul class="check-column">
+                                                <li>
+                                                    <div class="custom-check">
+                                                        <input id="subcheck3-1" disabled="true" <?php echo (!empty($notiPermission['addp']))?'checked':'' ?> value="1"  class="Notification"  type="checkbox">
+                                                        <label for="subcheck3-1"><span></span>Add </label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="custom-check">
+                                                        <input id="subcheck3-2" disabled="true" <?php echo (!empty($notiPermission['editp']))?'checked':'' ?> value="1" class="Notification"  type="checkbox">
+                                                        <label for="subcheck3-2"><span></span>Edit or Resend</label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="custom-check">
+                                                        <input id="subcheck3-4" disabled="true"  <?php echo (!empty($notiPermission['deletep']))?'checked':'' ?> value="1" class="Notification"  type="checkbox">
+                                                        <label for="subcheck3-4"><span></span>Delete</label>
+                                                    </div>
+                                                </li>				
+                                            </ul>
+                                        </div>			
+                                    </div>			
                                 </div>
                             </div>
                         </div>
-                        <!-- //form-->
                     </div>
                 </div>
-                <div class="col-xs-12">
-                    <div class="button-wrap text-center">
-                        <button type="button" class="commn-btn cancel" onclick="window.location.href = '<?php echo base_url() ?>admin/subadmin/edit'">Edit Profile</button>
-                        <button type="submit" class="commn-btn save">Block Sub-Admin</button>
-                    </div>
-                </div>
-            </div>
         </div>
-
+        <!--form ele wrapper end-->
     </section>
 </body>

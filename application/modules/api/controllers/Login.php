@@ -7,6 +7,7 @@ class Login extends REST_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('Common_model');
+        $this->load->model('User');
         $this->load->helper('email');
         $this->load->library('form_validation');
     }
@@ -86,7 +87,7 @@ class Login extends REST_Controller {
             try {
                 $encrypt_pass = encrypt($postDataArr["password"]);
                 $email = $postDataArr['email'];
-                $userInfo = $this->User->get();
+                $userInfo = $this->User->login($email, $encrypt_pass);
                 if (!empty($userInfo)) {
                     /*
                      * Check if user is not blocksed
