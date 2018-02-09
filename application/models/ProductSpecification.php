@@ -9,7 +9,7 @@ class ProductSpecification extends BaseModel
     public function __construct()
     {
         parent::__construct();
-        $this->tableName = "product_specifications";
+        $this->tableName = "product_gallery";
     }
 
     public function get()
