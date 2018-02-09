@@ -244,3 +244,10 @@ define('CHAT_PUSH', 7);
  * Encrypt Key
  */
 defined("OPEN_SSL_KEY") OR define('OPEN_SSL_KEY', '011b519a043dcb915314695e1ce560dd4e29dae06867cdb701ffc96350e18caf');
+
+defined("PRIVATE_USER") OR define("PRIVATE_USER", 1);
+defined("TECHNICIAN") OR define("TECHNICIAN", 2);
+defined("ARCHITECT") OR define("ARCHITECT", 3);
+defined("ELECTRICAL_PLANNER") OR define("ELECTRICAL_PLANNER", 4);
+defined("WHOLESALER") OR define("WHOLESALER", 5);
+defined("USINESS_USER") OR define("USINESS_USER", 6);

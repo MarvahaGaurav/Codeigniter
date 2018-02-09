@@ -14,9 +14,20 @@ class Application extends BaseModel
         $this->tableName = 'applications';
     }
 
-    public function get()
+    public function get($params)
     {
+        $this->db->select("id, type, title, subtitle, image")
+        ->from("applications as app")
+        ->where("app.language_code", $params['language_code']);
+        if ( isset($params['type']) && !empty($params['type']) ) {
+            $this->db->where("app.type", $params["type"]);
+        }
 
-    }
+        $query = $this->db->get();
+
+        $result = $query->result_array();
+
+        return $result;
+}
 
 }

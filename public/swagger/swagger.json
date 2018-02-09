@@ -52,6 +52,44 @@
                 }
             }
         },
+        "/applications": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Application",
+                "description": "",
+                "operationId": "application_get",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Language-Code",
+                        "in": "header",
+                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+                        "type": "string"
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "1-Residential and 2-Professional",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "202": {
+                        "description": "No data found"
+                    }
+                }
+            }
+        },
         "/user/password/change": {
             "post": {
                 "tags": [

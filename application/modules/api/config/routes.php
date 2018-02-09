@@ -20,3 +20,5 @@ $route['api/v1/company/inspiration/(:num)/(:num)'] = 'InspirationController/insp
 $route['api/v1/address'] = 'Address';
 $route['api/v1/company'] = 'CompanyController/company'; //update swagger
 $route['api/v1/company/favorite'] = 'FavoriteController/favorite'; //update swagger
+
+$route['api/v1/applications'] = 'ApplicationController/application';

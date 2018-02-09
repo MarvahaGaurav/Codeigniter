@@ -174,3 +174,5 @@ $lang['nothing_to_update'] = "Nothing to update";
 $lang['invalid_url'] = "Requested resource could not be found";
 $lang['cannot_delete_inspiration'] = "Cannot delete inspirations posted by another company";
 
+$lang['application_data_fetched'] = "Application data fetched";
+

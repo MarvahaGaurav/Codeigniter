@@ -435,7 +435,6 @@ class Signup extends REST_Controller {
                 }
                 if ($this->db->trans_status() === TRUE) {
                     $this->db->trans_commit();
-                    
                     if($postDataArr['is_owner'] == '1'){
                         $whereArr['where'] = ['is_owner' => 2, 'company_id' => $postDataArr['company_id']];
                         $companyowner_info = $this->Common_model->fetch_data('ai_user', ['user_id'], $whereArr, true);
@@ -478,7 +477,7 @@ class Signup extends REST_Controller {
                         unset($signupArr['middle_name']);
                         unset($signupArr['last_name']);
                         $mailData = [];
-                        $mailData['name'] = $postDataArr['full_name'] ;
+                        $mailData['name'] = $postDataArr['full_name'];
                         $mailData['email'] = $postDataArr['email'];
                         $this->sendWelcomeMail($mailData);
                         $signupArr['quote_view'] = 0;
@@ -493,6 +492,55 @@ class Signup extends REST_Controller {
                         $signupArr['project_add'] = 0;
                         $signupArr['project_edit'] = 0;
                         $signupArr['project_delete'] = 0;
+
+                        if ( TECHNICIAN === (int)$signupArr['user_type'] ) {
+                            $this->load->library("PushNotification");
+                            $this->load->model("UtilModel");
+                            
+                            $user_data = $this->UtilModel->selectQuery(
+                                "device_token, platform, ai_user.user_id",
+                                "ai_user",
+                                [
+                                    "where" => ["ai_user.company_id" => $signupArr["company_id"], "is_owner" => 2, "user_type" => WHOLESALER, "ai_user.status" => 1],
+                                    "join" => ["ai_session" => "ai_user.user_id=ai_session.user_id"]
+                                ]
+                            );
+                            $ios_user_data = array_filter($user_data, function($data){
+                                return IPHONE === (int)$data["platform"]?true:false;
+                            });
+                            $android_user_data = array_filter($user_data, function($data){
+                                return ANDROID === (int)$data["platform"]?true:false;
+                            });
+
+                            $android_tokens = array_map(function($data){
+                                return $data['device_token'];
+                            }, $android_user_data);
+
+                            if ( $android_tokens ) {
+                                $android_payload_data = [
+                                    'badge' => 1,
+                                    'sound' => 'default',
+                                    'status' => 1,
+                                    'type' => "new_employee_request",
+                                    'message' => "{$signupArr['full_name']} has requested your approval",
+                                    'time' => strtotime('now')
+                                ];
+                                $this->pushnotification->androidMultiplePush($android_tokens, $android_payload_data);
+                            }
+                            if ( $ios_user_data ) {
+                                $ios_payload_data = [
+                                    'badge' => 1,
+                                    'alert' => "New Employee Request",
+                                    'sound' => 'default',
+                                    'status' => 1,
+                                    'type' => "new_employee_request",
+                                    'message' => "{$signupArr['full_name']} has requested your approval",
+                                    'time' => strtotime('now')
+                                ];
+
+                                $this->pushnotification->sendMultipleIphonePush($ios_user_data, $ios_payload_data);
+                            }
+                        }
                         $this->response(array('code' => SUCCESS_CODE, 'msg' => $this->lang->line('registration_success'), 'result' => $signupArr));
                     }
                 }
