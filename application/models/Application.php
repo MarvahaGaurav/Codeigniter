@@ -16,7 +16,7 @@ class Application extends BaseModel
 
     public function get($params)
     {
-        $this->db->select("id, type, title, subtitle, image")
+        $this->db->select("id as application_id, type, title, subtitle, image")
         ->from("applications as app")
         ->where("app.language_code", $params['language_code']);
         if ( isset($params['type']) && !empty($params['type']) ) {

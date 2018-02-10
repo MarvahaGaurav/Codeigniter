@@ -117,6 +117,25 @@ class BaseController extends REST_Controller
             ], HTTP_UNAUTHORIZED);
         }
     }
+
+    protected function langcode_validate()
+    {
+        $language_code = $this->head("X-Language-Code");
+        $language_code = trim($language_code);
+
+        if ( ! isset($language_code) || empty($language_code) ) {
+            $this->response([
+                'code' => HTTP_UNPROCESSABLE_ENTITY,
+                'api_code_result' => 'UNPROCESSABLE_ENTITY',
+                'msg' => $this->lang->line('header_missing'),
+                'extra_info' => [
+                    "missing_parameter" => "language_code"
+                ]
+            ]);
+        }
+
+        return $language_code;
+    }
     
     
 

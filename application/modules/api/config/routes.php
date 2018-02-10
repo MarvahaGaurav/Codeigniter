@@ -21,4 +21,7 @@ $route['api/v1/address'] = 'Address';
 $route['api/v1/company'] = 'CompanyController/company'; //update swagger
 $route['api/v1/company/favorite'] = 'FavoriteController/favorite'; //update swagger
 
+//Products Route
 $route['api/v1/applications'] = 'ApplicationController/application';
+$route['api/v1/applications/(:num)/products'] = 'ProductController/application_products/application_id/$1';
+$route['api/v1/products/(:num)'] = 'ProductController/products/product_id/$1';

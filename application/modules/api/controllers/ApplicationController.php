@@ -37,19 +37,8 @@ class ApplicationController extends BaseController
      */
     public function application_get()
     {
-        $language_code = $this->head("X-Language-Code");
-        $language_code = trim($language_code);
-
-        if ( ! isset($language_code) || empty($language_code) ) {
-            $this->response([
-                'code' => HTTP_UNPROCESSABLE_ENTITY,
-                'api_code_result' => 'UNPROCESSABLE_ENTITY',
-                'msg' => $this->lang->line('header_missing'),
-                'extra_info' => [
-                    "missing_parameter" => "language_code"
-                ]
-            ]);
-        }
+        $language_code = $this->langcode_validate();
+        
         $request_data = $this->get();
         $request_data = trim_input_parameters($request_data);
 

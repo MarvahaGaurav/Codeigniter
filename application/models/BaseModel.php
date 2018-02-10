@@ -9,19 +9,11 @@ use DatabaseExceptions\DeleteException;
 class BaseModel extends CI_Model {
 
     protected $tableName;
-    private $batch_data;
+    public $batch_data;
 
     public function __construct() {
         parent::__construct();
         $this->load->database();
-    }
-
-    public function __get($property) {
-        return $this->$property;
-    }
-
-    public function __set($property, $value) {
-        $this->$property = $value;
     }
 
     public function save() 

@@ -176,3 +176,5 @@ $lang['cannot_delete_inspiration'] = "Cannot delete inspirations posted by anoth
 
 $lang['application_data_fetched'] = "Application data fetched";
 
+$lang['products_found'] = "Products Found";
+

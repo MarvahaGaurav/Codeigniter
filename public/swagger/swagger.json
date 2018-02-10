@@ -1035,6 +1035,90 @@
                 }
             }
         },
+        "/applications/{application_id}/products": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Product Lists according to application",
+                "description": "",
+                "operationId": "application_products_get",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Language-Code",
+                        "in": "header",
+                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+                        "type": "string"
+                    },
+                    {
+                        "name": "application_id",
+                        "in": "query",
+                        "description": "1-Residential and 2-Professional",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "offset paramters to paginate",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "202": {
+                        "description": "No data found"
+                    }
+                }
+            }
+        },
+        "/products/{product_id}": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Application",
+                "description": "",
+                "operationId": "products_get",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Language-Code",
+                        "in": "header",
+                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+                        "type": "string"
+                    },
+                    {
+                        "name": "product_id",
+                        "in": "query",
+                        "description": "Product id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "202": {
+                        "description": "No data found"
+                    }
+                }
+            }
+        },
         "/user/profile": {
             "get": {
                 "tags": [
