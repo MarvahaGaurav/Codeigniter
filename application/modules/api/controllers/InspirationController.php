@@ -135,9 +135,11 @@ class InspirationController extends BaseController
                         "media" => $value['media'],
                         "video_thumbnail" => ""
                     ];
-                    if ( CONTENT_TYPE_VIDEO === (int)$value['type'] ) {
+                    if ( CONTENT_TYPE_VIDEO === (int)$value['type'] && !isset($value['video_thumbnail'])  ) {
                         $content['video_thumbnail'] = generate_video_thumbnail($value['media']);
-                    } 
+                    } else if ( CONTENT_TYPE_VIDEO === (int)$value['type'] && isset($value['video_thumbnail']) ) {
+                        $content['video_thumbnail'] = $value['video_thumbnail'];
+                    }
                     $this->InspirationMedia->batch_data[] = $content;
                 }
                 $this->InspirationMedia->batch_save();
@@ -435,10 +437,6 @@ class InspirationController extends BaseController
             }
         }
 
-        pd($request_data, false);
-        dd($add_media, false);
-        dd($remove_media);
-
         $this->load->model("InspirationMedia");
         if ( $remove_media ) {
             $remove_media_where = ['id' => $media_remove_list];
@@ -472,8 +470,10 @@ class InspirationController extends BaseController
                     "media" => $value['media'],
                     "video_thumbnail" => ""
                 ];
-                if ( CONTENT_TYPE_VIDEO === (int)$value['type'] ) {
+                if ( CONTENT_TYPE_VIDEO === (int)$value['type'] && !isset($value['video_thumbnail'])  ) {
                     $content['video_thumbnail'] = generate_video_thumbnail($value['media']);
+                } else if ( CONTENT_TYPE_VIDEO === (int)$value['type'] && isset($value['video_thumbnail']) ) {
+                    $content['video_thumbnail'] = $value['video_thumbnail'];
                 }
                 
                 $this->InspirationMedia->batch_data[] = $content;

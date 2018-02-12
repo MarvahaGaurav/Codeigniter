@@ -93,8 +93,8 @@ class ApplicationController extends BaseController
                         $product_details = json_decode($product_details, true);
 
                         if ( empty($product_details) ) {
-                            log_message(json_encode($product));
-                            log_message("\n-------------------------------------------------\n");
+                            log_message('error', json_encode($product));
+                            log_message('error', "\n-------------------------------------------------\n");
                             continue;
                         }
 

@@ -139,8 +139,6 @@ class EmployeeController extends BaseController
             ], HTTP_FORBIDDEN);
         }
 
-        
-
         if((int)$userData['company_id'] <= 0 && (int)$userData['is_owner'] !== 2){
             $this->response([
                 'code' => NO_DATA_FOUND,
@@ -162,8 +160,7 @@ class EmployeeController extends BaseController
             $offset = -1;
         }
 
-
-        if ( empty($myemployeerequests) ) {
+        if ( empty($myemployeerequests['result']) ) {
             $this->response([
                 'code' => NO_DATA_FOUND,
                 'api_code_result' => 'NO_DATA_FOUND',

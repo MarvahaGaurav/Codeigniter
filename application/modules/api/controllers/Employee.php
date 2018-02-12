@@ -297,7 +297,7 @@ class Employee extends REST_Controller {
                             $message = "Your Employee request has been rejected";
                             $alert = "Employee request rejected";
                         }
-
+                        $this->load->model("UtilModel");
                         $user_data = $this->UtilModel->selectQuery(
                             "device_token, platform, ai_user.user_id",
                             "ai_user",
@@ -576,7 +576,7 @@ class Employee extends REST_Controller {
 
             try {
                 $this->load->library('commonfn');
-                $respArr = $this->Common_model->getUserInfo($head['accesstoken'], ['u.user_id','company_id','is_owner','user_type','status']);                
+                $respArr = $this->Common_model->getUserInfo($head['accesstoken'], ['u.user_id','company_id','is_owner','user_type','status']);
                 $user_info = [];
                 
                 /*
@@ -622,6 +622,8 @@ class Employee extends REST_Controller {
                 }
                 if ($this->db->trans_status() === TRUE) {
                     $this->db->trans_commit(); 
+
+                    $this->load->model("UtilModel");
                     $user_data = $this->UtilModel->selectQuery(
                         "device_token, platform, ai_user.user_id",
                         "ai_user",

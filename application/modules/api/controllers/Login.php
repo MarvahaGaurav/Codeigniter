@@ -122,6 +122,7 @@ class Login extends REST_Controller {
                              */
                             $this->db->trans_begin();
                             $sessionArr['login_status'] = '1';
+                            $sessionArr['device_token'] = isset($postDataArr['device_token'])&&!empty(trim($postDataArr['device_token']))?$postDataArr['device_token']:"";
                             if (!empty($isExist)) {
                                 $isSuccess = $this->Common_model->update_single('ai_session', $sessionArr, $whereArr);
                             } else {
