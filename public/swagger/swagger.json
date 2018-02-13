@@ -2,7 +2,7 @@
     "swagger": "2.0",
     "info": {
         "title": "Smart Guide",
-        "description": "Smart Guide APIs",
+        "description": "Smart Guide APIs, valid lanuage code's\n *          en : English\n *          da : Danish\n *          nb : Norwegian\n *          sv : Swedish\n *          fi : Finnish\n *          fr : French\n *          nl : Dutch\n *          de : German",
         "version": "1"
     },
     "host": "smartguide-dev.applaurels.com",

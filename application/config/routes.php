@@ -57,7 +57,7 @@ if (isset($_SERVER["REQUEST_URI"]) && preg_match('/.*\/(api)\/.*/', $_SERVER["RE
     //$route['404_override'] = 'website/Page404';
 }
 
-$route['default_controller'] = 'admin/Admin';
+$route['default_controller'] = 'web/home';
 $route['translate_uri_dashes'] = FALSE;
 
 /*Route for Admin*/

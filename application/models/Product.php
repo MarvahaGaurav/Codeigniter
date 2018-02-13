@@ -33,11 +33,11 @@ class Product extends BaseModel
                 } else {
                     $this->db->like('products.title', $params['search']);
                 }
-                if ( isset($params['offset']) && !empty((int)$params['offset']) && ! $search) {
+                if ( isset($params['offset']) && !empty((int)$params['offset']) && ! $search ) {
                     $this->db->offset((int)$params['offset']);
                 }
             } else {
-                $query = "products.id as product_id, products.title, products.image, productTechnicalData(products.id) as technical_data," .
+                $query = "products.id as product_id, products.title, how_to_specity as description, products.image, productTechnicalData(products.id) as technical_data," .
                 "IFNULL(GROUP_CONCAT(gallery.image), '') as images";
                 $single_row = true;
                 
@@ -66,6 +66,11 @@ class Product extends BaseModel
             $result['technical_data'] = json_decode($result['technical_data'], true);
             if ( json_last_error() > 0 ) {
                 $result['technical_data'] = $technical_data;
+            } else {
+                $result['technical_data'] = array_map(function($data){
+                    $data['info'] = strip_tags($data['info']);
+                    return $data;
+                }, $result['technical_data']);
             }
             $result['images'] = explode(",", $result['images']);
         } else {

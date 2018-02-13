@@ -1,9 +1,10 @@
 <!--main wrapper close-->
 </div>
 <footer>
-    &copy; RCC 2017
+    &copy; Smart Guide 2017
 </footer>
 <script src="<?php echo base_url()?>public/js/bootstrap.min.js"></script>
+<script src="<?php echo base_url()?>public/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="<?php echo base_url()?>public/js/bootstrap-select.js"></script>
 <script src="<?php echo base_url()?>public/js/jquery.validate.min.js"></script>
 <script src="<?php echo base_url()?>public/js/global-msg.js"></script>
@@ -28,7 +29,7 @@
                     <h4 class="modal-title modal-heading">Delete </h4>
                 </div>
                 <div class="modal-body">
-                    <p class="modal-para">Are you sure want to delete this user?</p>
+                    <p class="modal-para" id="deletemsginpopup">Are you sure want to delete this user?</p>
                 </div>
                 
                 <input type="hidden" id="new_status" name="new_status">
@@ -108,6 +109,8 @@
     
     <script>
     $(document).ready(function(){
+        $('.side-panel').mCustomScrollbar();
+        
         $('.alert-success').fadeOut(5000);
     });    
     </script>

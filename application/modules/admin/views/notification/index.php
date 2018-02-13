@@ -21,46 +21,57 @@ $module = $this->router->fetch_module();
     <!--breadcrumb wrap close-->
 
     <!--Filter Section -->
-    <div class="white-wrapper">    
-        <div class="fltr-srch-wrap clearfix">
-            <div class="row">
-                <div class="col-lg-2 col-sm-2">
-                    <div class="display">
-                        <select class="selectpicker dispLimit">
-                            <option <?php echo ($limit == 10)?'Selected':'' ?> value="10">Display 10</option>
-                            <option <?php echo ($limit == 20)?'Selected':'' ?> value="20">Display 20</option>
-                            <option <?php echo ($limit == 50)?'Selected':'' ?> value="50">Display 50</option>
-                            <option <?php echo ($limit == 100)?'Selected':'' ?> value="100">Display 100</option>
-                        </select>
-                    </div>
+    <div class="section filter-section clearfix">
+        <div class="row">
+            <div class="col-lg-2 col-sm-3">
+                <div class="display col-sm-space">
+                    <select class="selectpicker dispLimit">
+                        <option <?php echo ($limit == 10)?'Selected':'' ?> value="10">Display 10</option>
+                        <option <?php echo ($limit == 20)?'Selected':'' ?> value="20">Display 20</option>
+                        <option <?php echo ($limit == 50)?'Selected':'' ?> value="50">Display 50</option>
+                        <option <?php echo ($limit == 100)?'Selected':'' ?> value="100">Display 100</option>
+                    </select>
                 </div>
-                <div class="col-lg-4 col-sm-4">
-                    <div class="srch-wrap">
-                        <button class="srch search-icon" style="cursor:default"></button>
-                        <a href="javascript:void(0)"> <span class="srch-close-icon searchCloseBtn"></span></a>
-                        <input type="text" value="<?php echo (isset($searchlike) && !empty($searchlike))? $searchlike:''?>" class="search-box searchlike" placeholder="Search by name" id="searchuser" name="search">
-                    </div>
-                </div>
+            </div>
 
-                <div class="col-lg-6 col-sm-6">
-                    <div class="top-opt-wrap text-right">
-                        <ul>
-                            <li>
-                                <a href="javascripit:void(0)" title="File Export" class="icon_filter" id="filter-side-wrapper"><img src="public/adminpanel/images/filter.svg"></a>
-                            </li>
-                            <?php if($accesspermission['addp']) { ?>
-                            <li>
-                                <a href="<?php echo base_url() . 'admin/notification/add'; ?>" title="Filter" id="filter-side-wrapper" class="icon_filter">
-                                    <img src="public/adminpanel/images/add.svg">
-                                </a>
-                            </li>
-                            <?php } ?>
-                        </ul>
-                    </div>
+            <div class="col-lg-6 col-sm-6">
+                <div class="srch-wrap fawe-icon-position col-sm-space">
+                    <span class="fawe-icon fawe-icon-position-left search-ico"><i class="fa fa-search"></i></span>
+                    <span class="fawe-icon fawe-icon-position-right close-ico"><i class="fa fa-times-circle"></i></span>
+                    <input type="text" value="<?php echo (isset($searchlike) && !empty($searchlike))? $searchlike:''?>" class="search-box searchlike" placeholder="Search by name" id="searchuser" name="search">
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-sm-3">
+                <div class="circle-btn-wrap col-sm-space">
+                    <a href="javascripit:void(0)" title="Filter" id="filter-side-wrapper" class="tooltip-p">
+                        <div class="circle-btn animate-btn">
+                            <i class="fa fa-filter"></i>
+                        </div>
+                        <span class="tooltiptext">Filter</span>
+                    </a>
+                    <a href="admin/notification/add" title="Add" id="filter-side-wrapper" class="tooltip-p">
+                        <div class="circle-btn animate-btn">
+                            <i class="fa fa-plus"></i>
+                        </div>
+                        <span class="tooltiptext">Add</span>
+                    </a>
+                    <!-- <ul>
+                        <li>
+                            <a href="javascripit:void(0)" title="File Export" class="icon_filter" id="filter-side-wrapper"><img src="public/adminpanel/images/filter.svg"></a>
+                        </li>
+                        <?php //if($accesspermission['addp']) { ?>
+                        <li>
+                            <a href="<?php //echo base_url() . 'admin/notification/add'; ?>" title="Filter" id="filter-side-wrapper" class="icon_filter">
+                                <img src="public/adminpanel/images/add.svg">
+                            </a>
+                        </li>
+                        <?//php } ?>
+                    </ul> -->
                 </div>
             </div>
         </div>
-    </div>  
+    </div> 
     <!--Filter Section Close-->
     <?php
     if ($this->session->flashdata('message') != '') {
@@ -77,6 +88,7 @@ $module = $this->router->fetch_module();
             <span class="alertText"><?php echo (isset($alertMsg) && !empty($alertMsg))?$alertMsg['text']:"" ?></span>
         </div>
     </label>
+
     <!--Filter Wrapper-->
     <div class="filter-wrap">
         <div class="filter_hd clearfix">
@@ -102,7 +114,11 @@ $module = $this->router->fetch_module();
                 <label class="admin-label">Push Date</label>
                 <div class="inputfield-wrap">
                     <input type="text" value="<?php echo !empty($startDate)?date('m/d/Y',strtotime($startDate)):"" ?>" class="form-date_wrap startDate" data-provide="datepicker" id="from_date" placeholder="From">
+                    <label class="ficon ficon-right" for="from_date"><i class="fa fa-calendar"></i></label>
+                </div>
+                <div class="inputfield-wrap">
                     <input type="text" value="<?php echo !empty($endDate)?date('m/d/Y',strtotime($endDate)):"" ?>" class="form-date_wrap endDate" data-provide="datepicker" id="to_date" placeholder="To">
+                    <label class="ficon ficon-right" for="to_date"><i class="fa fa-calendar"></i></label>
                 </div>
 
             </div>
@@ -113,24 +129,21 @@ $module = $this->router->fetch_module();
         </div>
     </div>
     <!--Filter Wrapper Close-->
-    <div class="row">
-        <div class="col-lg-6">Total Notifications <?php echo $totalrows ?></div>
-    </div>
-    <!--Table-->
-    <div class="white-wrapper">
-        <div class="table-responsive custom-tbl">
-            <!--table div-->
-            <table id="example" class="list-table table table-striped sortable" cellspacing="0" width="100%">
+
+    <div class="section">
+        <p class="tt-count">Total Notifications <?php echo $totalrows ?></p>
+        <div class="table-responsive table-wrapper">
+            <table cellspacing="0" class="table-custom">
                 <thead>
                     <tr>
-                        <th width="50px">S.No</th>
+                        <th>S.No</th>
                         <th>Push Title</th>
                         <th>Platform</th>
                         <th>Gender</th>
                         <th>User's Sent Count</th>
                         <th>Added On</th>
                         <?php if($accesspermission['deletep'] || $accesspermission['editp']) { ?>
-                            <th width="100px">Action</th>
+                            <th>Action</th>
                         <?php } ?>
                     </tr>
                 </thead>
@@ -154,12 +167,12 @@ $module = $this->router->fetch_module();
                                 <td><?php echo $list['total_sents'] ?></td>
                                 <td><?php echo date('d-m-Y',strtotime($list['created_at'])) ?></td>
                                 <?php if($accesspermission['deletep'] || $accesspermission['editp']) { ?>
-                                <td>
+                                <td class="text-nowrap table-action">
                                     <?php if($accesspermission['editp']) { ?>
-                                        <a href="javascript:void(0);" aria-hidden="true" data-toggle="modal" data-target="#editModal" onclick="$('#notiToken').val('<?php echo encryptDecrypt($list['id']);?>')"><i class="fa fa-paper-plane" aria-hidden="true"></i></a>
+                                        <a class="f-plane" href="javascript:void(0);" aria-hidden="true" data-toggle="modal" data-target="#editModal" onclick="$('#notiToken').val('<?php echo encryptDecrypt($list['id']);?>')"><i class="fa fa-paper-plane" title="Modal" aria-hidden="true"></i></a>
                                     <?php } ?>
                                     <?php if($accesspermission['deletep']) { ?>    
-                                        <a href="javascript:void(0);" class="table_icon"><i class="fa fa-trash" aria-hidden="true" onclick="deleteUser('notification',<?php echo DELETED;?>,'<?php echo encryptDecrypt($list['id']);?>','req/change-user-status','Do you really want to delete this notification ?');"></i></a>                      
+                                        <a class="f-delete" href="javascript:void(0);"><i class="fa fa-trash" title="Delete" aria-hidden="true" onclick="deleteUser('notification',<?php echo DELETED;?>,'<?php echo encryptDecrypt($list['id']);?>','req/change-user-status','Do you really want to delete this notification ?');"></i></a>                      
                                     <?php } ?>
                                 </td>
                                 <?php } ?>

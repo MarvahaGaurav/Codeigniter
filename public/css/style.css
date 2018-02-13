@@ -3,7 +3,6 @@ blockquote {
 }
 
 .section,
-.section-heading,
 .section-wrapper {
     -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.12);
     -moz-box-shadow: 0 0 8px rgba(0, 0, 0, 0.12);
@@ -21,7 +20,12 @@ blockquote {
     padding-bottom:30px !important;
 }
 
-.section-heading,
+.section-heading {
+    padding:15px 10px 9px 0;
+    margin: 0 0 15px 0;
+    border-bottom: 1px solid #e0cece;
+}
+
 .section-wrapper {
     background: #fff;
     padding:15px 10px;
@@ -192,6 +196,9 @@ blockquote {
 .totalwrapper-section {
     margin: 0 0 10px 0;
 }
+.totalwrapper-section a {
+    text-decoration: none;
+}
 .ts-wrapper {
     min-height: 150px;
     -webkit-transition: all 0.1s ease-in;
@@ -216,7 +223,6 @@ blockquote {
 
 .ts-numberof-heading {
     font-size: 15px;
-    background: #fff;
     border-radius: 4px;
 }
 
@@ -254,6 +260,7 @@ blockquote {
     font-size: 13px;
     line-height: 1.3;
     margin:22px 0 8px 0;
+    color: #2e2e2e;
 }
 
 .ts-thumbnail {
@@ -716,34 +723,15 @@ blockquote {
 
 /* filter */
 
-.bootstrap-select .btn {
-    z-index: 2;
-}
-
 .inner-filter-wrap {
     padding: 15px 16px;
-    overflow-y: auto;
-    max-height: 600px;
+    /* overflow-y: auto;
+    max-height: 600px; */
 }
 
 .fltr-field-wrap {
     margin: 0 0 20px 0;
-}
-
-.commn-select-wrap {
-    position: relative;
-}
-
-.sp-label {
-    position: absolute;
-    top: 1px;
-    right: 1px;
-    z-index: 1;
-    font-size: 14px;
-    background: #f8f8f8;
-    padding: 8px 23px 10px 14px;
-    color: #2c2c2c;
-}
+} 
 
 .fltr-srch-wrap {
     margin: 0 0 12px;
@@ -751,6 +739,7 @@ blockquote {
 
 .fltr-field-wrap .inputfield-wrap {
     margin: 0 0 7px 0;
+    position: relative;
 }
 
 .filter-wrap.active {
@@ -765,7 +754,7 @@ blockquote {
     border-radius: 0;
     position: fixed;
     right: 0;
-    z-index: 9999;
+    z-index: 1000;
     top: 71px;
     width: 325px;
     transform-origin: right top;
@@ -878,7 +867,7 @@ span.close.flt_cl {
 
 .button-wrap {
     border-top:1px solid #f7f7f7;
-    margin: 25px 0 0 0;
+    margin: 25px 0 15px 0;
     padding: 25px 0 0 0;
     text-align:center;
 }
@@ -965,10 +954,10 @@ span.close.flt_cl {
 
 /* modal */
 .modal {
-    z-index: 8500;
+    z-index: 1200;
 }
 .modal-backdrop {
-    z-index: 8400;
+    z-index: 1100;
 }
 .modal-header .close {
     margin-top: -2px;

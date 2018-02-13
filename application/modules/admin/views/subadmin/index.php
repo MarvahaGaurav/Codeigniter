@@ -9,17 +9,19 @@ $module = $this->router->fetch_module();
 <input type="hidden" id="filterVal" value='<?php echo json_encode($filterArr); ?>'>
 <input type="hidden" id="pageUrl" value='<?php echo base_url().$module.'/'.strtolower($controller).'/'.$method; ?>'>
 <div class="inner-right-panel">
+
     <!--breadcrumb wrap-->
     <div class="breadcrumb-wrap">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">Sub-admin</li>
         </ol>
     </div>
+    
     <!--Filter Section -->
-    <div class="fltr-srch-wrap white-wrapper clearfix">
+    <div class="section filter-section clearfix">
         <div class="row">
-            <div class="col-lg-2 col-sm-2">
-                <div class="display">
+            <div class="col-lg-2 col-sm-3">
+                <div class="display col-sm-space">
                     <select class="selectpicker dispLimit">
                         <option <?php echo ($limit == 10)?'Selected':'' ?> value="10">Display 10</option>
                         <option <?php echo ($limit == 20)?'Selected':'' ?> value="20">Display 20</option>
@@ -28,30 +30,30 @@ $module = $this->router->fetch_module();
                     </select>
                 </div>
             </div>
-            <div class="col-lg-4 col-sm-4">
-                <div class="srch-wrap">
-                    <button class="srch search-icon" style="cursor:default"></button>
-                    <a href="javascript:void(0)"> <span class="srch-close-icon searchCloseBtn"></span></a>
-                    <input type="text" maxlength="15" value="<?php echo (isset($searchlike) && !empty($searchlike))? $searchlike:''?>" class="search-box searchlike" placeholder="Search by name,email" id="searchuser" name="search">
+
+            <div class="col-lg-6 col-sm-6">
+                <div class="srch-wrap fawe-icon-position col-sm-space">
+                    <span class="fawe-icon fawe-icon-position-left search-ico"><i class="fa fa-search"></i></span>
+                    <span class="fawe-icon fawe-icon-position-right close-ico"><i class="fa fa-times-circle"></i></span>
+                    <input type="text" maxlength="15" value="<?php echo (isset($searchlike) && !empty($searchlike))? $searchlike:''?>" class="search-box searchlike" placeholder="Search by name, email" id="searchuser" name="search">
                 </div>
             </div>
 
-            <div class="col-lg-6 col-sm-6">
-                <div class="top-opt-wrap text-right">
-                    <ul>
-                        <li>
-                            <a href="admin/subadmin/add" title="Add admin" class="icon_filter"><img src="<?php echo base_url()?>public/images/add.svg"></a>
-                        </li>
-                    </ul>
+            <div class="col-lg-4 col-sm-3">
+                <div class="circle-btn-wrap col-sm-space">
+                    <a href="admin/subadmin/add" class="tooltip-p">
+                        <div class="circle-btn animate-btn">
+                            <i class="fa fa-plus"></i>
+                        </div>
+                        <span class="tooltiptext">Create Sub Admin</span>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
     <!--Filter Section Close-->
-    <div class="row">
-        <div class="col-lg-6">Total Sub-admin: <?php echo $totalrows ?></div>
-    </div>
-    <!--Table-->
+
+    
     <label id="error">
         <?php $alertMsg = $this->session->flashdata('alertMsg'); ?>
         <div class="alert alert-success" <?php echo (!(isset($alertMsg) && !empty($alertMsg)))?"style='display:none'":"" ?> role="alert">
@@ -64,76 +66,75 @@ $module = $this->router->fetch_module();
     </label>
     <!-- Content -->
     <input type="hidden" id="filterparams" value='<?php echo json_encode($queryString) ;?>'>
-    <section class="content-wrapper clearfix">	
 
-        <div class="col-lg-6 col-sm-6 hide-mobile"></div>
-        <div class="clear"></div>
-        <!-- Content section -->
-        <div class="white-wrapper p-md">
-            <div class="table-responsive custom-tbl">
-                <table class="table outlet-table table-striped m-n">
-                    <thead>
+    <div class="col-lg-6 col-sm-6 hide-mobile"></div>
+    <div class="clear"></div>
+    <!-- Content section -->
+    <div class="section">
+        <p class="tt-count">Total Sub-admin: <?php echo $totalrows ?></p>
+        <div class="table-responsive table-wrapper">
+            <table cellspacing="0" class="table-custom">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th style="cursor:pointer">Name<a  href="javascript:void(0);" class="th-icon"><i class=""></i></a></th>
+                        <th>Email </th> 
+                        <th>Status </th>
+                        <th style="cursor:pointer">Added On<a  href="javascript:void(0);" class="th-icon"><i class=""></i></a> </th>
+
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $pagecount = 10;
+                    $i = (($page * $pagecount) - $pagecount) + 1;
+                    ?>
+                    <?php if(!empty($data)) {
+                        foreach ($data as $key => $data) { ?>
                         <tr>
-                            <th>S.No</th>
-                            <th style="cursor:pointer">Name<a  href="javascript:void(0);" class="th-icon"><i class=""></i></a></th>
-                            <th>Email </th> 
-                            <th>Status </th>
-                            <th style="cursor:pointer">Added On<a  href="javascript:void(0);" class="th-icon"><i class=""></i></a> </th>
-
-                            <th>Actions</th>
+                            <td><?php echo $i ;?></td>
+                            <td align="left">
+                                <a href="admin/subadmin/view?id=<?php echo encryptDecrypt($data['admin_id']); ?>">
+                                <?php echo $data['admin_name'] ?>
+                                </a>
+                            </td>
+                            <td>
+                                <?php echo $data['admin_email']?>
+                            </td>
+                            <td>
+                                <?php echo ($data['status'] == 1)?'Active':'Blocked' ?>
+                            </td>
+                            <td>
+                                <?php echo date('d-M-Y', strtotime($data['create_date'])); ?>
+                            </td>
+                            <td class="text-nowrap table-action">
+                                <a class="f-pencil" href="admin/subadmin/edit?id=<?php echo encryptDecrypt($data['admin_id']);?>"><i class="fa fa-pencil" title="Edit" aria-hidden="true"></i></a>
+                                <a class="f-block" href="javascript:void(0);" id="block_<?php echo $data['admin_id'];?>"><i class="fa fa-ban" title="Block" aria-hidden="true" onclick="blockUser('subadmin',2,'<?php echo encryptDecrypt($data['admin_id']);?>','req/change-user-status','Do you really want to block this Sub-admin?','Block');"></i></a>
+                                <a class="f-unblock" href="javascript:void(0);" id="unblock_<?php echo $data['admin_id'];?>" style="display:none;"><i class="fa fa-unlock" title="Unblock" aria-hidden="true" onclick="blockUser('subadmin',1,'<?php echo encryptDecrypt($data['admin_id']);?>','req/change-user-status','Do you really want to unblock this Sub-admin?','Unblock');"></i></a>                                       
+                                <a class="f-delete" href="javascript:void(0);"><i class="fa fa-trash" title="Delete" aria-hidden="true" onclick="deleteUser('subadmin',3,'<?php echo encryptDecrypt($data['admin_id']);?>','req/change-user-status','Do you really want to delete this Sub-admin?');"></i></a>                       
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $pagecount = 10;
-                        $i = (($page * $pagecount) - $pagecount) + 1;
-                        ?>
-                        <?php if(!empty($data)) {
-                            foreach ($data as $key => $data) { ?>
+                        <?php $i++;}}  else { ?> 
                             <tr>
-                                <td><?php echo $i ;?></td>
-                                <td align="left">
-                                    <a href="admin/subadmin/view?id=<?php echo encryptDecrypt($data['admin_id']); ?>">
-                                    <?php echo $data['admin_name'] ?>
-                                    </a>
-                                </td>
-                                <td>
-                                    <?php echo $data['admin_email']?>
-                                </td>
-                                <td>
-                                    <?php echo ($data['status'] == 1)?'Active':'Blocked' ?>
-                                </td>
-                                <td>
-                                    <?php echo date('d-M-Y', strtotime($data['create_date'])); ?>
-                                </td>
-                                <td> 
-                                    <a class="table_icon" href="admin/subadmin/edit?id=<?php echo encryptDecrypt($data['admin_id']);?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                    <a href="javascript:void(0);" id="block_<?php echo $data['admin_id'];?>" class="table_icon"><i class="fa fa-ban" aria-hidden="true" onclick="blockUser('subadmin',2,'<?php echo encryptDecrypt($data['admin_id']);?>','req/change-user-status','Do you really want to block this Sub-admin?','Block');"></i></a>
-                                    <a href="javascript:void(0);" id="unblock_<?php echo $data['admin_id'];?>" style="display:none;" class="table_icon"><i class="fa fa-unlock" aria-hidden="true" onclick="blockUser('subadmin',1,'<?php echo encryptDecrypt($data['admin_id']);?>','req/change-user-status','Do you really want to unblock this Sub-admin?','Unblock');"></i></a>                                       
-                                    <a href="javascript:void(0);" class="table_icon"><i class="fa fa-trash" aria-hidden="true" onclick="deleteUser('subadmin',3,'<?php echo encryptDecrypt($data['admin_id']);?>','req/change-user-status','Do you really want to delete this Sub-admin?');"></i></a>                       
-                                </td>
+                                <td colspan="9" class="text-center">No Sub-admin exist</td>
                             </tr>
-                            <?php $i++;}}  else { ?> 
-                                <tr>
-                                    <td colspan="9" class="text-center">No Sub-admin exist</td>
-                                </tr>
-                            <?php }?>
-                    </tbody>
-                </table>
-            </div>   	
-            <div class="clear"></div>
-            <nav class="pagination-wrapper m-t-md">
-                <ul class="pagination">
-    <?php
-    if (isset($links)) {
-        echo $links;
-    }
-    ?>
-                </ul>
-            </nav>     
-        </div>
-        <!-- Content section End --> 
-    </section>
+                        <?php }?>
+                </tbody>
+            </table>
+        </div>   	
+        <div class="clear"></div>
+        <nav class="pagination-wrapper m-t-md">
+            <ul class="pagination">
+                <?php
+                if (isset($links)) {
+                    echo $links;
+                }
+                ?>
+            </ul>
+        </nav>     
+    </div>
+    <!-- Content section End --> 
 </div>
 
 <div class="modal fade modelbody bd-example-modal-sm" id="Deletemodal" role="dialog">

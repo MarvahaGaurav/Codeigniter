@@ -3,7 +3,15 @@
 /** 
  * @SWG\Swagger(
  *   @SWG\Info(
- *      description = "Smart Guide APIs",
+ *      description = "Smart Guide APIs, valid lanuage code's
+ *          en : English
+ *          da : Danish
+ *          nb : Norwegian
+ *          sv : Swedish
+ *          fi : Finnish
+ *          fr : French
+ *          nl : Dutch
+ *          de : German",
  *      title = "Smart Guide",
  *      version = "1"       
  *   ),

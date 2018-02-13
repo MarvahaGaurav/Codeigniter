@@ -32,7 +32,7 @@ class Inspiration extends BaseModel {
         } else {
             $this->db->select("SQL_CALC_FOUND_ROWS i.id as inspiration_id, cl.id as city_id, cl.name as city_name,".
             "country.country_code1 as country_code, country.name as country_name," .
-            "company.company_name, i.company_id, title, description" . $media , FALSE);
+            "company.company_name, i.company_id, title, description, created_at, updated_at" . $media , FALSE);
         }
         
         $this->db->from($this->tableName . " as i")
@@ -46,6 +46,10 @@ class Inspiration extends BaseModel {
         ->order_by("i.id", "desc");
         if ( isset($options['company_id']) && !empty($options['company_id']) ) {
             $this->db->where('i.company_id', $options['company_id']);
+        }
+
+        if ( isset($options['user_id']) && !empty($options['user_id']) ) {
+            $this->db->where('i.user_id', $options['user_id']);
         }
         
         if ( isset($options['offset']) && !empty($options['offset']) ) {

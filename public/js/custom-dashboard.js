@@ -64,4 +64,12 @@ $(document).ready(function(){
         add_end.hide();
     }).data('datepicker');
 
+    $("#dashboard-form").submit(function(){
+        if ( $("#dpd3").val().trim().length == 0 || $("#dpd4").val().trim().length == 0 ) {
+            return false;
+        }
+
+        return true;
+    });
+
 });

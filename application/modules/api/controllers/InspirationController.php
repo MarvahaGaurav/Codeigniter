@@ -75,6 +75,7 @@ class InspirationController extends BaseController
     public function inspiration_post()
     {
         $user_data = $this->accessTokenCheck();
+        $language_code = $this->langcode_validate();
         $request_data = $this->post();
         $request_data = trim_input_parameters($request_data);
 
@@ -101,6 +102,7 @@ class InspirationController extends BaseController
         }
 
         $this->Inspiration->company_id = $request_data['company_id'];
+        $this->Inspiration->user_id = $user_data['user_id'];
         $this->Inspiration->title = $request_data['title'];
         $this->Inspiration->description = $request_data['description'];
         $this->Inspiration->created_at = $this->datetime;
@@ -206,6 +208,7 @@ class InspirationController extends BaseController
     public function inspiration_get()
     {
         // $userData = $this->accessTokenCheck("company_id");
+        $language_code = $this->langcode_validate();
         $request_data = $this->get();
         $request_data = trim_input_parameters($request_data);
 
@@ -355,6 +358,7 @@ class InspirationController extends BaseController
     public function inspiration_put()
     {
         $user_data = $this->accessTokenCheck('company_id');
+        $language_code = $this->langcode_validate();
         $request_data = $this->put();
         $request_data = trim_input_parameters($request_data);
         $remove_media = false;
@@ -561,6 +565,7 @@ class InspirationController extends BaseController
     public function inspiration_delete()
     {   
         $userData = $this->accessTokenCheck('company_id');
+        $language_code = $this->langcode_validate();
         try {
             $request_data = $this->delete();
             $request_data = trim_input_parameters($request_data);

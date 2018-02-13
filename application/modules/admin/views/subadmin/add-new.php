@@ -1,173 +1,410 @@
+<link href="public/css/form-roles.css" rel='stylesheet'>
 <body>
+
     <!-- Content -->
-    <section class="content-wrapper clearfix">
-        <div class="upper-head-panel m-b-lg clearfix">
-            <ul class="breadcrumb reward-breadcrumb">
+    <section class="inner-right-panel clearfix">
+
+        <div class="breadcrumb-wrap">
+            <ol class="breadcrumb">
                 <li><a href="admin/subadmin">Sub Admins</a></li>
                 <li class="active">Add Sub-admin</li>
-            </ul>
+            </ol>
         </div>	
         <div class="clear"></div>
-        <div class="col-sm-12">
-            <div class="adminRoles-wrapper">
-            <div class="form-item-title clearfix">
-                <h3 class="title">Fill the below form</h3>
-            </div>
-            <!-- title and form upper action end-->
-            <?php echo form_open_multipart('',array('id'=>'subadmin_add'));?>
-            <div class="form-ele-wrapper clearfix">
-                <div class="row">
-                    <div class="col-sm-6 col-xs-6">
-                        <div class="form-group">
-                            <label class="admin-label">Admin Name</label>
-                            <div class="input-holder">
-                                <input type="text" class="form-control material-control" maxlength="30" name="name" placeholder="* Sub-admin Name" value="<?php echo set_value('name'); ?>">
-                                <?php echo form_error('name', '<label class="alert-danger">', '</label>'); ?>   
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-xs-6">
-                        <div class="form-group">
-                            <label class="admin-label">Email</label>
-                            <div class="input-holder">
-                                <input type="text" class="form-control material-control" maxlength="30" name="email" placeholder="* Sub-admin Email" value="<?php echo set_value('email'); ?>">
-                                <?php echo form_error('email', '<label class=" alert-danger">', '</label>'); ?>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-xs-6">
-                        <div class="form-group">
-                            <label class="admin-label">Password</label>
-                            <div class="input-holder">
-                                <input type="text" class="form-control material-control" maxlength="16" name="password" placeholder="* Sub-admin Password" value="<?php echo set_value('password'); ?>">
-                                <?php echo form_error('password', '<label class=" alert-danger">', '</label>'); ?>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-xs-6">
-                        <label class="admin-label">Status</label>
-                        <div class="commn-select-wrap">
-                            <select class="selectpicker" name="status">
-                                <option value="">Select</option>
-                                <option value="1">Active</option>
-                                <option value="2">Inactive</option>
-                            </select>
-                            <?php echo form_error('status', '<label class="alert-danger">', '</label>'); ?>
-                        </div>
-                    </div>
 
-                    <div class="col-sm-12">
-                        <div class="adminRoles-wrapper p-md m-b-lg">
-                            <div class="form-ele-wrapper clearfix">
-                                <div class="row">
-                                    <div class="col-lg-12"><h2 class="title-box m-t-n p-t-20">Sub-admin Roles :</h2></div>
-                                    <div class="col-lg-12">
-                                        <div class="custom-check main-check">
-                                            <input id="main-check1" name="user" onchange="permission('user')"  value="1"   type="checkbox">
-                                            <label for="main-check1"><span></span>Manage User </label>
-                                            <ul class="check-column">
-                                                <li>
-                                                    <div class="custom-check">
-                                                        <input id="subcheck1-1" disabled="true" name="permission[user][view]" value="1" class="user" type="checkbox">
-                                                        <label for="subcheck1-1"><span></span>View </label>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="custom-check">
-                                                        <input id="subcheck1-2" disabled="true" name="permission[user][block]" value="1"  class="user" type="checkbox">
-                                                        <label for="subcheck1-2"><span></span>Block  </label>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="custom-check">
-                                                        <input id="subcheck1-3" disabled="true" name="permission[user][delete]" value="1" class="user" type="checkbox">
-                                                        <label for="subcheck1-3"><span></span>Delete</label>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>			
-                                        <div class="clear"></div>
-                                        <div class="custom-check main-check">
-                                            <input id="main-check2" name="option" onchange="permission('Version')" value="2" type="checkbox">
-                                            <label for="main-check2"><span></span>Manage Version</label>
-                                            <ul class="check-column">
-                                                <li>
-                                                    <div class="custom-check">
-                                                        <input id="subcheck2-4" disabled="true" name="permission[version][add]" value="1"  class="Version" type="checkbox">
-                                                        <label for="subcheck2-4"><span></span>Add</label>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="custom-check">
-                                                        <input id="subcheck2-2" disabled="true" name="permission[version][edit]" value="1" class="Version" type="checkbox">
-                                                        <label for="subcheck2-2"><span></span>Edit </label>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="custom-check">
-                                                        <input id="subcheck2-3" disabled="true" name="permission[version][delete]" value="1" class="Version" type="checkbox">
-                                                        <label for="subcheck2-3"><span></span>Delete </label>
-                                                    </div>
-                                                </li>
-
-                                            </ul>
-                                        </div>			
-                                        <div class="clear"></div>
-                                        <div class="custom-check main-check">
-                                            <input id="main-check3" name="portfolio" onchange="permission('Notification')" value="3"  type="checkbox">
-                                            <label for="main-check3"><span></span>Manage Notifications </label>
-                                            <ul class="check-column">
-                                                <li>
-                                                    <div class="custom-check">
-                                                        <input id="subcheck3-1" disabled="true" name="permission[notification][add]" value="1"class="Notification"  type="checkbox">
-                                                        <label for="subcheck3-1"><span></span>Add </label>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="custom-check">
-                                                        <input id="subcheck3-3" disabled="true" name="permission[notification][edit]" value="1" class="Notification"  type="checkbox">
-                                                        <label for="subcheck3-3"><span></span>Edit or Resend</label>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="custom-check">
-                                                        <input id="subcheck3-4" disabled="true" name="permission[notification][delete]" value="1" class="Notification"  type="checkbox">
-                                                        <label for="subcheck3-4"><span></span>Delete</label>
-                                                    </div>
-                                                </li>				
-                                            </ul>
-                                        </div>			
-                                    </div>			
+        <div class="section">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-item-title clearfix">
+                        <h3 class="title">Fill the below form</h3>
+                    </div>
+                    <!-- title and form upper action end-->
+                    <?php echo form_open_multipart('',array('id'=>'subadmin_add'));?>
+                    <div class="row">
+                        <div class="user-detail-panel">
+                            <div class="col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="admin-label">Admin Name</label>
+                                    <div class="input-holder">
+                                        <input type="text" class="" maxlength="30" name="name" placeholder="* Sub-admin Name" value="<?php echo set_value('name'); ?>">
+                                        <?php echo form_error('name', '<label class="alert-danger">', '</label>'); ?>   
+                                    </div>
                                 </div>
                             </div>
+                            <div class="col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="admin-label">Email</label>
+                                    <div class="input-holder">
+                                        <input type="text" class="" maxlength="30" name="email" placeholder="* Sub-admin Email" value="<?php echo set_value('email'); ?>">
+                                        <?php echo form_error('email', '<label class=" alert-danger">', '</label>'); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="admin-label">Password</label>
+                                    <div class="input-holder">
+                                        <input type="password" class="" maxlength="16" name="password" placeholder="* Sub-admin Password" value="<?php echo set_value('password'); ?>">
+                                        <?php echo form_error('password', '<label class=" alert-danger">', '</label>'); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-xs-12">
+                                <label class="admin-label">Status</label>
+                                <div class="commn-select-wrap">
+                                    <select class="selectpicker" name="status">
+                                        <option value="">Select</option>
+                                        <option value="1">Active</option>
+                                        <option value="2">Inactive</option>
+                                    </select>
+                                    <?php echo form_error('status', '<label class="alert-danger">', '</label>'); ?>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="clearfix">
+                                        <div class="row">
+                                            <div class="col-lg-12"><h2 class="title-box m-t-n p-t-20">Sub-admin Roles :</h2></div>
+                                            <div class="col-lg-12">
+                                                <div class="custom-check main-check">
+                                                    <input id="main-check1" name="user" onchange="permission('user', 'main-check1')"  value="1"   type="checkbox">
+                                                    <label for="main-check1"><span></span>User Management</label>
+                                                    <ul class="check-column">
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck1-1" name="permission[user][view]" value="1" class="user" type="checkbox">
+                                                                <label for="subcheck1-1"><span></span>View </label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck1-2" name="permission[user][add]" value="1"  class="user" type="checkbox">
+                                                                <label for="subcheck1-2"><span></span>Add</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck1-3" name="permission[user][edit]" value="1" class="user" type="checkbox">
+                                                                <label for="subcheck1-3"><span></span>Edit</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck1-4" name="permission[user][block]" value="1" class="user" type="checkbox">
+                                                                <label for="subcheck1-4"><span></span>Block</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck1-5" name="permission[user][delete]" value="1" class="user" type="checkbox">
+                                                                <label for="subcheck1-5"><span></span>Delete</label>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>			
+                                                <div class="clear"></div>
+                                                <div class="custom-check main-check">
+                                                    <input id="main-check2" name="merchant" onchange="permission('merchant', 'main-check2')"  value="1"   type="checkbox">
+                                                    <label for="main-check2"><span></span>Merchant Management</label>
+                                                    <ul class="check-column">
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck2-1" name="permission[merchant][view]" value="1" class="merchant" type="checkbox">
+                                                                <label for="subcheck2-1"><span></span>View </label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck2-2" name="permission[merchant][add]" value="1"  class="merchant" type="checkbox">
+                                                                <label for="subcheck2-2"><span></span>Add</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck2-3" name="permission[merchant][edit]" value="1" class="merchant" type="checkbox">
+                                                                <label for="subcheck2-3"><span></span>Edit</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck2-4" name="permission[merchant][block]" value="1" class="merchant" type="checkbox">
+                                                                <label for="subcheck2-4"><span></span>Block</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck2-5" name="permission[merchant][delete]" value="1" class="merchant" type="checkbox">
+                                                                <label for="subcheck2-5"><span></span>Delete</label>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>			
+                                                <div class="clear"></div>
+                                                <div class="custom-check main-check">
+                                                    <input id="main-check3" name="product" onchange="permission('product', 'main-check3')"  value="1"   type="checkbox">
+                                                    <label for="main-check3"><span></span>Product Management</label>
+                                                    <ul class="check-column">
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck3-1" name="permission[product][view]" value="1" class="product" type="checkbox">
+                                                                <label for="subcheck3-1"><span></span>View </label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck3-2" name="permission[product][add]" value="1"  class="product" type="checkbox">
+                                                                <label for="subcheck3-2"><span></span>Add</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck3-3" name="permission[product][edit]" value="1" class="product" type="checkbox">
+                                                                <label for="subcheck3-3"><span></span>Edit</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck3-4" name="permission[product][block]" value="1" class="product" type="checkbox">
+                                                                <label for="subcheck3-4"><span></span>Block</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck3-5" name="permission[product][delete]" value="1" class="product" type="checkbox">
+                                                                <label for="subcheck3-5"><span></span>Delete</label>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>			
+                                                <div class="clear"></div>
+                                                <div class="custom-check main-check">
+                                                    <input id="main-check4" name="template" onchange="permission('template', 'main-check4')"  value="1"   type="checkbox">
+                                                    <label for="main-check4"><span></span>Template Management</label>
+                                                    <ul class="check-column">
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck4-1" name="permission[template][view]" value="1" class="template" type="checkbox">
+                                                                <label for="subcheck4-1"><span></span>View </label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck4-2" name="permission[template][add]" value="1"  class="template" type="checkbox">
+                                                                <label for="subcheck4-2"><span></span>Add</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck4-3" name="permission[template][edit]" value="1" class="template" type="checkbox">
+                                                                <label for="subcheck4-3"><span></span>Edit</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck4-4" name="permission[template][block]" value="1" class="template" type="checkbox">
+                                                                <label for="subcheck4-4"><span></span>Block</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck4-5" name="permission[template][delete]" value="1" class="template" type="checkbox">
+                                                                <label for="subcheck4-5"><span></span>Delete</label>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>			
+                                                <div class="clear"></div>
+                                                <div class="custom-check main-check">
+                                                    <input id="main-check5" name="content" onchange="permission('content', 'main-check5')"  value="1"   type="checkbox">
+                                                    <label for="main-check5"><span></span>Content Management</label>
+                                                    <ul class="check-column">
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck5-1" name="permission[content][view]" value="1" class="content" type="checkbox">
+                                                                <label for="subcheck5-1"><span></span>View </label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck5-2" name="permission[content][add]" value="1"  class="content" type="checkbox">
+                                                                <label for="subcheck5-2"><span></span>Add</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck5-3" name="permission[content][edit]" value="1" class="content" type="checkbox">
+                                                                <label for="subcheck5-3"><span></span>Edit</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck5-4" name="permission[content][block]" value="1" class="content" type="checkbox">
+                                                                <label for="subcheck5-4"><span></span>Block</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck5-5" name="permission[content][delete]" value="1" class="content" type="checkbox">
+                                                                <label for="subcheck5-5"><span></span>Delete</label>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>			
+                                                <div class="clear"></div>
+                                                <div class="custom-check main-check">
+                                                    <input id="main-check6" name="option" onchange="permission('Version', 'main-check6')" value="2" type="checkbox">
+                                                    <label for="main-check6"><span></span>Manage Version</label>
+                                                    <ul class="check-column">
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck6-1" name="permission[version][view]" value="1"  class="Version" type="checkbox">
+                                                                <label for="subcheck6-1"><span></span>View</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck6-4" name="permission[version][add]" value="1"  class="Version" type="checkbox">
+                                                                <label for="subcheck6-4"><span></span>Add</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck6-2" name="permission[version][edit]" value="1" class="Version" type="checkbox">
+                                                                <label for="subcheck6-2"><span></span>Edit </label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck6-5" name="permission[version][block]" value="1" class="Version" type="checkbox">
+                                                                <label for="subcheck6-5"><span></span>Block </label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck6-3" name="permission[version][delete]" value="1" class="Version" type="checkbox">
+                                                                <label for="subcheck6-3"><span></span>Delete </label>
+                                                            </div>
+                                                        </li>
+
+                                                    </ul>
+                                                </div>			
+                                                <div class="clear"></div>
+                                                <div class="custom-check main-check">
+                                                    <input id="main-check7" name="portfolio" onchange="permission('Notification', 'main-check7')" value="7"  type="checkbox">
+                                                    <label for="main-check7"><span></span>Manage Notifications </label>
+                                                    <ul class="check-column">
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck7-1" name="permission[notification][view]" value="1"class="Notification"  type="checkbox">
+                                                                <label for="subcheck7-1"><span></span>View </label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck7-2" name="permission[notification][add]" value="1"class="Notification"  type="checkbox">
+                                                                <label for="subcheck7-2"><span></span>Add </label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck7-3" name="permission[notification][edit]" value="1" class="Notification"  type="checkbox">
+                                                                <label for="subcheck7-3"><span></span>Edit or Resend</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck7-4" name="permission[notification][block]" value="1" class="Notification"  type="checkbox">
+                                                                <label for="subcheck7-4"><span></span>Block</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck7-5" name="permission[notification][delete]" value="1" class="Notification"  type="checkbox">
+                                                                <label for="subcheck7-5"><span></span>Delete</label>
+                                                            </div>
+                                                        </li>				
+                                                    </ul>
+                                                </div>
+                                                <div class="clear"></div>
+                                                <div class="custom-check main-check">
+                                                    <input id="main-check8" name="option" onchange="permission('messages', 'main-check8')" value="2" type="checkbox">
+                                                    <label for="main-check8"><span></span>Manage Messages</label>
+                                                    <ul class="check-column">
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck8-1" name="permission[messages][view]" value="1"  class="messages" type="checkbox">
+                                                                <label for="subcheck8-1"><span></span>View</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck8-4" name="permission[messages][add]" value="1"  class="messages" type="checkbox">
+                                                                <label for="subcheck8-4"><span></span>Add</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck8-2" name="permission[messages][edit]" value="1" class="messages" type="checkbox">
+                                                                <label for="subcheck8-2"><span></span>Edit </label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck8-5" name="permission[messages][block]" value="1" class="messages" type="checkbox">
+                                                                <label for="subcheck8-5"><span></span>Block </label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="custom-check">
+                                                                <input id="subcheck8-3" name="permission[messages][delete]" value="1" class="messages" type="checkbox">
+                                                                <label for="subcheck8-3"><span></span>Delete </label>
+                                                            </div>
+                                                        </li>
+
+                                                    </ul>
+                                                </div>			
+                                                			
+                                            </div>			
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-xs-12">
+                        <div class="form-ele-action-bottom-wrap btns-center clearfix">
+                            <div class="button-wrap text-center">
+                                <button type="button"  onclick="window.location.href = '<?php echo base_url() ?>admin/version'"class="commn-btn cancel">Cancel</button>
+                                <button type="submit" class="commn-btn save">Save</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-        </div>
-        <div class="col-sm-12 col-xs-12">
-            <div class="form-ele-action-bottom-wrap btns-center clearfix">
-                <div class="button-wrap text-center">
-                    <button type="button"  onclick="window.location.href = '<?php echo base_url() ?>admin/version'"class="commn-btn cancel">Cancel</button>
-                    <button type="submit" class="commn-btn save">Save</button>
-                </div>
             </div>
+            <!--close form view   -->
+            <?php echo form_close(); ?>
         </div>
-        <!--form ele wrapper end-->
-        <!--close form view   -->
-        <?php echo form_close(); ?>
+
     </section>
 </body>
 <script>
     //function for give the permission to subadmin
 
-    function permission(gettype) {
-        var isdiabled = $('.' + gettype).prop('disabled');
+    function permission(gettype, elementId) {
+        var checked = $("#" + elementId).prop('checked');
+        
+        $("."+gettype).prop("checked", checked);
 
-        if (isdiabled) {
-            $('.' + gettype).removeAttr('disabled', false);
-        } else {
-            $('.' + gettype).prop('disabled', true);
-            $('.' + gettype).attr('checked', false);
-        }
+        // var isdiabled = $('.' + gettype).prop('disabled');
+        // var class = gettype;
+        // if (isdiabled) {
+        //     $('.' + gettype).removeAttr('disabled', false);
+        // } else {
+        //     $('.' + gettype).prop('disabled', true);
+        //     $('.' + gettype).attr('checked', false);
+        // }
+
     }
 </script>

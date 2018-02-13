@@ -120,6 +120,7 @@ $(document).ready(function () {
 
         var status = $('.status').find(":selected").val();
         var country = $('.country').find(":selected").val();
+        var userType = $('.user_type').find(":selected").val();
         var startDate = $('.startDate').val();
         var endDate = $('.endDate').val();
 
@@ -134,6 +135,9 @@ $(document).ready(function () {
         }
         if (country != undefined && country.length != 0) {
             filter['country'] = country;
+        }
+        if (userType != undefined && userType.length != 0) {
+            filter['user_type'] = userType;
         }
 
         var filterLen = $.keyCount(filter);

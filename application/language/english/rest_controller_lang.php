@@ -111,4 +111,5 @@ $lang['message_sent'] = 'Message Sent';
 $lang['no_data_found'] = 'No Data Found.';
 $lang['success'] = 'Success.';
 $lang['account_exist'] = 'This email is already exist';
-
+$lang['invalid_header'] = "The header you have provided is invalid";
+$lang['invalid_language_code'] = "Provided language code is not valid";

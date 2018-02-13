@@ -3,6 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class User extends MY_Controller {
 
+    private $validUserTypes;
+    private $userTypes;
     function __construct() {
         parent::__construct();
         $this->load->helper(['url', 'custom_cookie', 'form', 'encrypt_openssl']);
@@ -19,7 +21,12 @@ class User extends MY_Controller {
             redirect(base_url() . 'admin/Admin');
         }
         $this->data = [];
+        $this->validUserTypes = [PRIVATE_USER, BUSINESS_USER];
         $this->data['admininfo'] = $this->admininfo;
+        $this->userTypes = [
+            PRIVATE_USER => "Individual User",
+            BUSINESS_USER => "Business User"
+        ];
     }
 
     /**
@@ -44,10 +51,16 @@ class User extends MY_Controller {
         $this->load->library('commonfn');
 
         /* Fetch List of users */
+        $reverseUserTypes = [
+            "individual_user" => PRIVATE_USER,
+            "business_user" => BUSINESS_USER
+        ];
 
         $get = $this->input->get();
         $get = is_array($get) ? $get : array();
         $validSortBy = ['asc', 'desc'];
+        $this->load->helper("input_data");
+        $get = trim_input_parameters($get);
 
         $limit = (isset($get['limit']) && !empty($get['limit'])) ? $get['limit'] : 10;
         $page = (isset($get['page']) && !empty($get['page'])) ? $get['page'] : 1;
@@ -57,6 +70,7 @@ class User extends MY_Controller {
         $status = (isset($get['status']) && !empty($get['status'])) ? (trim($get['status'])) : "";
         $country = (isset($get['country']) && !empty($get['country'])) ? $get['country'] : "";
         $isExport = (isset($get['export']) && !empty($get['export'])) ? $get['export'] : "";
+        $user_type = isset($get['user_type']) && in_array($get['user_type'], array_keys($reverseUserTypes)) ? $reverseUserTypes[$get['user_type']] : "";
 
         $params = [];
         $params['searchlike'] = $searchlike;
@@ -78,7 +92,11 @@ class User extends MY_Controller {
             $params['limit'] = $limit;
             $params['offset'] = $offset;
         }
-           $params['user_type'] = 1;
+           $params['user_type'] = '1,6';
+           if ( ! empty($user_type) ) {
+                $params['user_type'] = $user_type;
+                $user_type = $get['user_type'];
+           }
 
         $userInfo = $this->User_Model->userlist($params);
 //        pr($userInfo);die;
@@ -110,6 +128,7 @@ class User extends MY_Controller {
         $getQuery = http_build_query(array_filter($params));
 
         $this->data['get_query'] = !empty($getQuery) ? "&" . $getQuery : "";
+        
 
         /* CSRF token */
         $this->data["csrfName"] = $this->security->get_csrf_token_name();
@@ -120,7 +139,19 @@ class User extends MY_Controller {
         $this->data['endDate'] = $endDate;
         $this->data['status'] = $status;
         $this->data['limit'] = $limit;
+        $this->data['country'] = $country;
         $this->data['totalrows'] = $totalrows;
+        $this->data['user_type'] = $user_type;
+        
+        $this->data['userlist'] = array_map(function($data) {
+            if ( in_array((int)$data['user_type'], $this->validUserTypes) ) {
+                $data['user_type'] = $this->userTypes[(int)$data['user_type']];
+            } else {
+                $data['user_type'] = "Invalid user";
+            }
+            return $data;
+        }, $this->data['userlist']);
+        // pr($this->data['userlist']);die;
 
         $this->session->set_flashdata('message', $this->lang->line('success_prefix') . $this->lang->line('login_success') . $this->lang->line('success_suffix'));
         load_views("users/index", $this->data);
@@ -131,12 +162,19 @@ class User extends MY_Controller {
         $get = $this->input->get();
         $userId = (isset($get['id']) && !empty($get['id'])) ? encryptDecrypt($get['id'], 'decrypt') : show_404();
         $this->data['user_id'] = $userId;
-        $this->data['profile'] = $profile = $this->Common_model->fetch_data('ai_user', array(), ['where' => ['user_id' => $userId]], true);
-        //$this->data['companydetail'] = $this->Common_model->fetch_data('company_master', array(), ['where' => ['company_id' => $profile['company_id']]], true);
+        //$this->data['profile'] = $profile = $this->Common_model->fetch_data('ai_user', array(), ['where' => ['user_id' => $userId]], true);        
+        $profile = $this->User_Model->userdetail(['user_id' => $userId]);
+        $this->data['profile'] =  $profile[0];
+        //pr($profile['result'][0]);
         if (empty($this->data['profile'])) {
             show_404();
         }
         
+        if ( in_array((int)$this->data['profile']['user_type'], $this->validUserTypes) ) {
+            $this->data['profile']['user_type'] = $this->userTypes[(int)$this->data['profile']['user_type']];
+        } else {
+            $this->data['profile']['user_type'] = 'Invalid user';
+        }
         /* CSRF token */
         $this->data["csrfName"] = $this->security->get_csrf_token_name();
         $this->data["csrfToken"] = $this->security->get_csrf_hash();

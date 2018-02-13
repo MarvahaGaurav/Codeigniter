@@ -27,8 +27,10 @@ class User_Model extends CI_Model {
             "registered" => "u.user_id"
         ];
 
-        $this->db->select("SQL_CALC_FOUND_ROWS u.*", False);
+        $this->db->select("SQL_CALC_FOUND_ROWS u.*, cl.name, ccl.name as cityname", False);
         $this->db->from('ai_user as u');
+        $this->db->join('country_list as cl', 'cl.country_code1=u.country_id', 'left');
+        $this->db->join('city_list as ccl', 'ccl.country_code=u.country_id AND ccl.id = u.city_id', 'left');       
 
         if (!empty($params['searchlike'])) {
             $this->db->group_start();
@@ -59,7 +61,7 @@ class User_Model extends CI_Model {
             $this->db->where('country_id', $params['country']);
         }
         if (!empty($params['user_type'])) {
-            $this->db->where('user_type', $params['user_type']);
+            $this->db->where_in('user_type', explode(',',$params['user_type']));
         }
         if (!empty($params['startDate']) && !empty($params['endDate'])) {
             $startDate = date('Y-m-d', strtotime($params['startDate']));
@@ -117,4 +119,28 @@ class User_Model extends CI_Model {
         return $pagination;
     }
 
+    
+        //--------------------------------------------------------------------------
+    /**
+     * @name userdetail
+     * @description getting all user information by user id
+     * @param type $id
+     * @return array
+     */
+    public function userdetail($param) {        
+
+        $this->db->select("u.*, cl.name, ccl.name as cityname, cm.*", False);
+        $this->db->from('ai_user as u');
+        $this->db->join('country_list as cl', 'cl.country_code1=u.country_id', 'left');       
+        $this->db->join('city_list as ccl', 'ccl.country_code=u.country_id AND ccl.id = u.city_id', 'left');       
+        $this->db->join('company_master as cm', 'cm.company_id=u.company_id', 'left');       
+        $this->db->where('user_id', $param['user_id']);
+        
+        $query = $this->db->get();
+        //echo $this->db->last_query();die;
+        $res = $query->result_array();        
+        return $res;
+    }
+
+    
 }

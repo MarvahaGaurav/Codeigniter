@@ -11,34 +11,43 @@
 <input type="hidden" value="<?php echo $csrfToken; ?>" name="csrf" id="csrf">
 <div class="inner-right-panel">
     <!--breadcrumb wrap-->
-<div class="breadcrumb-wrap">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item">Content</li>
-    </ol>
-</div>
-<!--breadcrumb wrap close-->
+    <div class="breadcrumb-wrap">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">Content Management</li>
+        </ol>
+    </div>
+    <!--breadcrumb wrap close-->
+
     <!--Filter Section -->
-        <div class="fltr-srch-wrap white-wrapper clearfix">
-            <div class="row">
-                <div class="col-lg-4 col-sm-4">
-                    <div class="srch-wrap">
-                        <button class="srch search-icon" style="cursor:default"></button>
-                        <a href="javascript:void(0)"> <span class="srch-close-icon searchCloseBtn"></span></a>
-                        <input type="text" maxlength="15" value="<?php echo (isset($searchlike) && !empty($searchlike))? $searchlike:''?>" class="search-box searchlike" placeholder="Search by title" id="searchuser" name="search">
-                    </div>
+    <div class="section filter-section clearfix">
+        <div class="row">
+
+            <div class="col-lg-6 col-sm-6">
+                <div class="srch-wrap fawe-icon-position col-sm-space">
+                    <span class="fawe-icon fawe-icon-position-left search-ico"><i class="fa fa-search"></i></span>
+                    <span class="fawe-icon fawe-icon-position-right close-ico"><i class="fa fa-times-circle"></i></span>
+                    <input type="text" maxlength="15" value="<?php echo (isset($searchlike) && !empty($searchlike))? $searchlike:''?>" class="search-box searchlike" placeholder="Search by name, email" id="searchuser" name="search">
                 </div>
-                <div class="col-lg-8 col-sm-8">
-                    <div class="top-opt-wrap text-right">
-                        <ul>
-                            <li>
-                                <a href="<?php echo base_url()?>admin/cms/add" title="Add Content" class="icon_filter"><img src="<?php echo base_url()?>public/adminpanel/images/add.svg"> </a>
-                            </li>
-                        </ul>
-                    </div>
+            </div>
+            <div class="col-lg-6 col-sm-5">
+                <div class="circle-btn-wrap col-sm-space">
+                    <a href="admin/cms/add" title="Add" class="tooltip-p">
+                        <div class="circle-btn animate-btn">
+                            <i class="fa fa-plus"></i>
+                        </div>
+                        <span class="tooltiptext">Add</span>
+                    </a>
+                    <!-- <ul>
+                        <li>
+                            <a href="<?php //echo base_url()?>admin/cms/add" title="Add Content" class="icon_filter"><img src="<?php echo base_url()?>public/adminpanel/images/add.svg"> </a>
+                        </li>
+                    </ul> -->
                 </div>
             </div>
         </div>
+    </div>
     <!--Filter Section Close-->
+
     <!--Table-->
     <label id="error">
         <?php $alertMsg = $this->session->flashdata('alertMsg'); ?>
@@ -50,20 +59,18 @@
             <span class="alertText"><?php echo (isset($alertMsg) && !empty($alertMsg))?$alertMsg['text']:"" ?></span>
         </div>
     </label>
-    <div class="row">
-        <div class="col-lg-6">Total Pages <?php echo $totalrows ?></div>
-    </div>
-    <div class="white-wrapper">
-    <div class="table-responsive custom-tbl">
-        <!--table div-->
-        <table id="example" class="list-table table table-striped sortable" cellspacing="0" width="100%">
+
+    <div class="section">
+        <p class="tt-count">Total Pages <?php echo $totalrows ?></p>
+        <div class="table-responsive table-wrapper">
+            <table cellspacing="0" class="table-custom">
             <thead>
                 <tr>
-                    <th width="50px">S.No</th>
+                    <th>S.No</th>
                     <th>Page Title</th>
                     <th>Description</th>
-                    <th style="width:13%">Status</th>
-                    <th width="100px">Actions</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                 </tr>
 
             </thead>
@@ -76,9 +83,9 @@
                     <td><?php echo ucfirst($value['name']); ?></td>
                     <td><?php echo substr($value['content'],0,150);?></td>
                     <td><?php echo ($value['status']==ACTIVE)?"Active":"Inactive";?></td>
-                    <td>
-                        <a class="table_icon" href="<?php echo base_url()?>admin/cms/edit?id=<?php echo encryptDecrypt($value['id']);?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                        <a href="javascript:void(0);" class="table_icon"><i class="fa fa-trash" aria-hidden="true" onclick="deleteUser('cms',<?php echo DELETED;?>,'<?php echo encryptDecrypt($value['id']);?>','req/change-user-status','Do you really want to delete this page?');"></i></a>
+                    <td class="text-nowrap table-action">
+                        <a class="f-pencil" href="<?php echo base_url()?>admin/cms/edit?id=<?php echo encryptDecrypt($value['id']);?>"><i class="fa fa-pencil" title="Edit" aria-hidden="true"></i></a>
+                        <a class="f-delete" href="javascript:void(0);"><i class="fa fa-trash" title="Delete" aria-hidden="true" onclick="deleteUser('cms',<?php echo DELETED;?>,'<?php echo encryptDecrypt($value['id']);?>','req/change-user-status','Do you really want to delete this page?');"></i></a>
                     </td>
                 </tr>
           <?php

@@ -67,11 +67,26 @@ class Subadmin extends MY_Controller {
                                 case 'user':
                                     $perType = 1;
                                     break;
-                                case 'version':
+                                case 'merchant':
                                     $perType = 2;
                                     break;
-                                case 'notification':
+                                case 'product':
                                     $perType = 3;
+                                    break;
+                                case 'template':
+                                    $perType = 4;
+                                    break;
+                                case 'content':
+                                    $perType = 5;
+                                    break;
+                                case 'version':
+                                    $perType = 6;
+                                    break;
+                                case 'notification':
+                                    $perType = 7;
+                                    break;
+                                case 'messages':
+                                    $perType = 8;
                                     break;
                                 default:
                             }

@@ -250,4 +250,4 @@ defined("TECHNICIAN") OR define("TECHNICIAN", 2);
 defined("ARCHITECT") OR define("ARCHITECT", 3);
 defined("ELECTRICAL_PLANNER") OR define("ELECTRICAL_PLANNER", 4);
 defined("WHOLESALER") OR define("WHOLESALER", 5);
-defined("USINESS_USER") OR define("USINESS_USER", 6);
+defined("BUSINESS_USER") OR define("BUSINESS_USER", 6);

@@ -3,6 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Technician extends MY_Controller {
 
+    private $validUserTypes;
+    private $userTypes;
     function __construct() {
         parent::__construct();
         $this->load->helper(['url', 'custom_cookie', 'form', 'encrypt_openssl']);
@@ -20,6 +22,13 @@ class Technician extends MY_Controller {
         }
         $this->data = [];
         $this->data['admininfo'] = $this->admininfo;
+        $this->validUserTypes = [TECHNICIAN, ARCHITECT, ELECTRICAL_PLANNER, WHOLESALER];
+        $this->userTypes = [
+            TECHNICIAN => "Technician", 
+            ARCHITECT => "Architect",
+            ELECTRICAL_PLANNER => "Electrical Planner",
+            WHOLESALER => "Wholesaler"
+        ];
     }
 
     /**
@@ -47,7 +56,16 @@ class Technician extends MY_Controller {
 
         $get = $this->input->get();
         $get = is_array($get) ? $get : array();
+        $this->load->helper("input_data");
+        $get = trim_input_parameters($get);
         $validSortBy = ['asc', 'desc'];
+
+        $reverseUserTypes = [
+            "technician" => TECHNICIAN,
+            "architect" => ARCHITECT,
+            "electrical_planner" => ELECTRICAL_PLANNER,
+            "wholesaler" => WHOLESALER
+        ];
 
         $limit = (isset($get['limit']) && !empty($get['limit'])) ? $get['limit'] : 10;
         $page = (isset($get['page']) && !empty($get['page'])) ? $get['page'] : 1;
@@ -57,6 +75,8 @@ class Technician extends MY_Controller {
         $status = (isset($get['status']) && !empty($get['status'])) ? (trim($get['status'])) : "";
         $country = (isset($get['country']) && !empty($get['country'])) ? $get['country'] : "";
         $isExport = (isset($get['export']) && !empty($get['export'])) ? $get['export'] : "";
+        $user_type = isset($get['user_type']) && in_array($get['user_type'], array_keys($reverseUserTypes)) ? $reverseUserTypes[$get['user_type']] : "";
+        
 
         $params = [];
         $params['searchlike'] = $searchlike;
@@ -78,7 +98,11 @@ class Technician extends MY_Controller {
             $params['limit'] = $limit;
             $params['offset'] = $offset;
         }
-        $params['user_type'] = 2;   
+        $params['user_type'] = '2,3,4,5';   
+        if ( ! empty($user_type) ) {
+            $params['user_type'] = $user_type;
+            $user_type = $get['user_type'];
+        }
         $userInfo = $this->User_Model->userlist($params);
 //        pr($userInfo);die;
         /*
@@ -89,6 +113,15 @@ class Technician extends MY_Controller {
         }
         $totalrows = $userInfo['total'];
         $this->data['userlist'] = $userInfo['result'];
+
+        $this->data['userlist'] = array_map(function($data) {
+            if ( in_array((int)$data['user_type'], $this->validUserTypes) ) {
+                $data['user_type'] = $this->userTypes[(int)$data['user_type']];
+            } else {
+                $data['user_type'] = "Invalid user";
+            }
+            return $data;
+        }, $this->data['userlist']);
 
         /*
          * Manage Pagination
@@ -120,7 +153,8 @@ class Technician extends MY_Controller {
         $this->data['status'] = $status;
         $this->data['limit'] = $limit;
         $this->data['totalrows'] = $totalrows;
-
+        $this->data['user_type'] = $user_type;
+        // pr($this->data['user_type']);
         $this->session->set_flashdata('message', $this->lang->line('success_prefix') . $this->lang->line('login_success') . $this->lang->line('success_suffix'));
         load_views("technician/index", $this->data);
     }
@@ -130,10 +164,26 @@ class Technician extends MY_Controller {
         $get = $this->input->get();
         $userId = (isset($get['id']) && !empty($get['id'])) ? encryptDecrypt($get['id'], 'decrypt') : show_404();
         $this->data['user_id'] = $userId;
-        $this->data['profile'] = $profile = $this->Common_model->fetch_data('ai_user', array(), ['where' => ['user_id' => $userId]], true);
+        $inspiration_data = [];
+        //$this->data['profile'] = $profile = $this->Common_model->fetch_data('ai_user', array(), ['where' => ['user_id' => $userId]], true);
+        $profile = $this->User_Model->userdetail(['user_id' => $userId]);
+        $this->data['profile'] =  $profile[0];
         $this->data['companydetail'] = $this->Common_model->fetch_data('company_master', array(), ['where' => ['company_id' => $profile['company_id']]], true);
         if (empty($this->data['profile'])) {
             show_404();
+        }
+
+        if ( TECHNICIAN === (int)$this->data['profile']['user_type'] ) {
+            $this->load->model("Inspiration");
+            $params['user_id'] = $this->data['user_id'];
+            $data = $this->Inspiration->get($params);
+            $this->data['inspiration_list'] = $data['result'];
+        }
+        $this->data['profile']['user_type_num'] = $this->data['profile']['user_type'];
+        if ( in_array((int)$this->data['profile']['user_type'], $this->validUserTypes) ) {
+            $this->data['profile']['user_type'] = $this->userTypes[(int)$this->data['profile']['user_type']];
+        } else {
+            $this->data['profile']['user_type'] = 'Invalid user';
         }
         
         /* CSRF token */
