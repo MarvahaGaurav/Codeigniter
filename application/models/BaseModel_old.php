@@ -16,32 +16,6 @@ class BaseModel extends CI_Model {
         $this->load->database();
     }
 
-    /* public function __get($method)
-    {
-        $method = "get_" . $method;
-        if ( method_exists($method) ) {
-            return $this->$method();
-        }
-    }
-
-    public function __set($method, $value)
-    {
-        $method = "set_" . $method;
-        if ( method_exists($method) ) {
-            $this->$method($value);
-        }
-    }
-
-    private function set_batch_data($value)
-    {
-        $this->batch_data = $value;
-    }
-    
-    private function get_batch_data()
-    {
-        return $this->batch_data;
-    } */
-
     public function save() 
     {
         unset($this->batch_data);

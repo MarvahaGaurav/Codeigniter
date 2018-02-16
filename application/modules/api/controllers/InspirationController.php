@@ -78,7 +78,7 @@ class InspirationController extends BaseController
         $language_code = $this->langcode_validate();
         $request_data = $this->post();
         $request_data = trim_input_parameters($request_data);
-
+        
         $mandatoryFields = ["company_id", "title", "description", "media"];
 
         $check = check_empty_parameters($request_data, $mandatoryFields);
@@ -108,9 +108,30 @@ class InspirationController extends BaseController
         $this->Inspiration->created_at = $this->datetime;
         $this->Inspiration->updated_at = $this->datetime;
 
+
+        $add_products = false;
+        if ( isset($request_data['product_ids']) ) {
+            $request_data['product_ids'] = json_decode($request_data['product_ids']);
+            if ( is_array($request_data['product_ids']) ) {
+                $add_products = true;
+            }
+        }
+        
         try {
             $this->db->trans_begin();
             $inspirationId = $this->Inspiration->save();
+            if ($add_products) {
+                $this->load->model("InspirationProduct");
+                foreach($request_data['product_ids'] as $product_id) {
+                    $this->InspirationProduct->batch_data[] = [
+                        "inspiration_id" => $inspirationId,
+                        "product_id" => $product_id
+                    ];
+                }
+
+                $this->InspirationProduct->batch_save();
+            }
+            //if media data is available, prepare batch
             if ( ! empty($media) && is_array($media) ) {
                 foreach ( $media as $key => $value ) {
                     if ( ! is_array($value) ) {
@@ -219,7 +240,8 @@ class InspirationController extends BaseController
         $options = [
             "offset" => $offset,
             "company_id" => $companyId,
-            "media" => true
+            "media" => true,
+            "products" => true
         ];
 
         $is_single_row = false;
@@ -261,6 +283,8 @@ class InspirationController extends BaseController
                 $media_data['video_thumbnail'] = (string) $thumbnail;
                 return $media_data;
             }, $media_image, $media_ids, $media_type, $video_thumbnail);
+            $data['products'] = "[" . $data['products'] . "]";
+            $data['products'] = json_decode($data['products']);
             unset($data['media_id']);
             unset($data['media_type']);
             unset($data['video_thumbnail']);
@@ -278,6 +302,8 @@ class InspirationController extends BaseController
                     $media_data['video_thumbnail'] = (string) $thumbnail;
                     return $media_data;
                 }, $media_image, $media_ids, $media_type, $video_thumbnail);
+                $inspiration['products'] = "[" . $inspiration['products'] . "]";
+                $inspiration['products'] = json_decode($inspiration['products']);
                 // unset($inspiration['media']);
                 unset($inspiration['media_id']);
                 unset($inspiration['media_type']);
@@ -336,6 +362,12 @@ class InspirationController extends BaseController
      *     name="product_ids",
      *     in="formData",
      *     description="array of ids",
+     *     type="string"
+     *   ),
+     *   @SWG\Parameter(
+     *     name="remove_product_ids",
+     *     in="formData",
+     *     description="array of ids to remove",
      *     type="string"
      *   ),
      *   @SWG\Parameter(
@@ -487,6 +519,24 @@ class InspirationController extends BaseController
         $where = [
             'id' => $request_data['inspiration_id']
         ];
+
+        //add more products
+        $add_products = false;
+        if ( isset($request_data['product_ids']) ) {
+            $request_data['product_ids'] = json_decode($request_data['product_ids']);
+            if ( is_array($request_data['product_ids']) ) {
+                $add_products = true;
+            }
+        }
+
+         //add more products
+         $remove_products = false;
+         if ( isset($request_data['remove_product_ids']) ) {
+            $request_data['remove_product_ids'] = json_decode($request_data['remove_product_ids']);
+            if ( is_array($request_data['remove_product_ids']) ) {
+                $remove_products = true;
+            }
+         }
         
         try {
             $this->db->trans_begin();
@@ -495,6 +545,28 @@ class InspirationController extends BaseController
             }
             if ( $add_media ) {
                 $this->InspirationMedia->batch_save();
+            }
+
+            if ( $remove_products || $add_products ) {
+                $this->load->model("InspirationProduct");
+            }
+
+            if ( $remove_products ) {
+                $this->InspirationProduct->delete(
+                    ["inspiration_id" => $request_data['inspiration_id']], 
+                    ["product_id" => $request_data['remove_product_ids']]
+                );
+            }
+
+            if ($add_products) {
+                foreach($request_data['product_ids'] as $product_id) {
+                    $this->InspirationProduct->batch_data[] = [
+                        "inspiration_id" => $request_data['inspiration_id'],
+                        "product_id" => $product_id
+                    ];
+                }
+
+                $this->InspirationProduct->batch_save();
             }
             
             if ( $remove_media ) {

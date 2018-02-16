@@ -16,6 +16,7 @@ class User extends BaseModel
     {
         $this->db->select('company_id, ai_user.user_id,first_name as full_name,email,'.
         'image, image_thumb,'.
+        'ai_user.language, ai_user.currency,' .
         'ai_user.status,user_type,is_owner,'.
         'IFNULL(quote_view, 0) as quote_view, IFNULL(quote_add, 0) as quote_add,'.
         'IFNULL(quote_edit, 0) as quote_edit, IFNULL(quote_delete, 0) as quote_delete,'.

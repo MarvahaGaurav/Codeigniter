@@ -1,9 +1,14 @@
 <link href="public/css/form-roles.css" rel='stylesheet'>
 
 <?php
-$userPermission = isset($permission[1]) ? $permission[1] : array();
-$versionPermission = isset($permission[2]) ? $permission[2] : array();
-$notiPermission = isset($permission[3]) ? $permission[3] : array();
+$userPermission = isset($permission[1])?$permission[1]:array();
+$merchantPermission = isset($permission[2])?$permission[2]:array();
+$productPermission = isset($permission[3])?$permission[3]:array();
+$templatePermission = isset($permission[4])?$permission[4]:array();
+$contentPermission = isset($permission[5])?$permission[5]:array();
+$versionPermission = isset($permission[6])?$permission[6]:array();
+$notiPermission = isset($permission[7])?$permission[7]:array();
+$messagePermission = isset($permission[8])?$permission[8]:array();
 ?>
 <body>
 
@@ -28,135 +33,307 @@ $notiPermission = isset($permission[3]) ? $permission[3] : array();
                     <?php echo form_open_multipart('', array('id' => 'subadmin_add')); ?>
                     <input type='hidden' value='<?php echo encryptDecrypt($admin_id); ?>' name='token' >
                     <div class="form-ele-wrapper clearfix">
-                        <div class="row">
-                            <div class="col-sm-6 col-xs-6">
-                                <div class="form-group">
-                                    <label class="admin-label">Admin Name</label>
-                                    <div class="input-holder">
-                                        <input type="text" class="form-control material-control" maxlength="100" value="<?php echo $admindetail['admin_name'] ?>" name="name" placeholder="* Sub-admin Name" value="<?php echo set_value('name'); ?>">
-                                        <?php echo form_error('name', '<label class="alert-danger">', '</label>'); ?>   
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-xs-6">
-                                <div class="form-group">
-                                    <label class="admin-label">Email</label>
-                                    <div class="input-holder">
-                                        <input type="text" class="form-control material-control" maxlength="100" value="<?php echo $admindetail['admin_email'] ?>" name="email" placeholder="* Sub-admin Email" value="<?php echo set_value('email'); ?>">
-                                        <?php echo form_error('email', '<label class=" alert-danger">', '</label>'); ?>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-xs-6">
-                                <div class="form-group">
-                                    <label class="admin-label">Password</label>
-                                    <div class="input-holder">
-                                        <input type="text" class="form-control material-control" maxlength="16" name="newpassword" placeholder="* New Password">
-                                        <?php echo form_error('password', '<label class=" alert-danger">', '</label>'); ?>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-xs-6">
-                                <div class="form-group">
-                                    <label class="admin-label">Status</label>
-                                    <div class="commn-select-wrap">
-                                        <select class="selectpicker" name="status">
-                                            <option value="">Select</option>
-                                            <option <?php echo ($admindetail['status'] == 1) ? 'Selected' : '' ?> value="1">Active</option>
-                                            <option <?php echo ($admindetail['status'] == 2) ? 'Selected' : '' ?> value="2">Inactive</option>
-                                        </select>
-                                        <?php echo form_error('status', '<label class="alert-danger">', '</label>'); ?>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <div class="clearfix">
-                                        <div class="row">
-                                            <div class="col-lg-12"><h2 class="title-box m-t-n p-t-20">Sub-admin Roles :</h2></div>
-                                            <div class="col-lg-12">
-                                                <div class="custom-check main-check">
-                                                    <input id="main-check1" name="user" onchange="permission('user')"  value="1" <?php echo (!empty($userPermission)) ? 'checked' : '' ?> type="checkbox">
-                                                    <label for="main-check1"><span></span>Manage User </label>
-                                                    <ul class="check-column">
-                                                        <li>
-                                                            <div class="custom-check">
-                                                                <input id="subcheck1-1" name="permission[user][view]" <?php echo (!empty($userPermission['viewp'])) ? 'checked' : '' ?> <?php echo (!empty($userPermission)) ? '' : 'disabled="true"' ?> value="1" class="user" type="checkbox" >
-                                                                <label for="subcheck1-1"><span></span>View </label>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="custom-check">
-                                                                <input id="subcheck1-2" name="permission[user][block]" <?php echo (!empty($userPermission['blockp'])) ? 'checked' : '' ?> value="1"  <?php echo (!empty($userPermission)) ? '' : 'disabled="true"' ?> class="user" type="checkbox" >
-                                                                <label for="subcheck1-2"><span></span>Block  </label>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="custom-check">
-                                                                <input id="subcheck1-3" name="permission[user][delete]" <?php echo (!empty($userPermission['deletep'])) ? 'checked' : '' ?> value="1" class="user" <?php echo (!empty($userPermission)) ? '' : 'disabled="true"' ?> type="checkbox" >
-                                                                <label for="subcheck1-3"><span></span>Delete</label>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </div>			
-                                                <div class="clear"></div>
-                                                <div class="custom-check main-check">
-                                                    <input id="main-check2" name="version" <?php echo (!empty($versionPermission)) ? 'checked' : '' ?> onchange="permission('Version')" value="2" type="checkbox">
-                                                    <label for="main-check2"><span></span>Manage Version</label>
-                                                    <ul class="check-column">
-                                                        <li>
-                                                            <div class="custom-check">
-                                                                <input id="subcheck2-4" name="permission[version][add]" <?php echo (!empty($versionPermission['addp'])) ? 'checked' : '' ?> value="1"  <?php echo (!empty($versionPermission)) ? '' : 'disabled="true"' ?> class="Version" type="checkbox">
-                                                                <label for="subcheck2-4"><span></span>Add</label>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="custom-check">
-                                                                <input id="subcheck2-2" name="permission[version][edit]" <?php echo (!empty($versionPermission['editp'])) ? 'checked' : '' ?> value="1" <?php echo (!empty($versionPermission)) ? '' : 'disabled="true"' ?> class="Version" type="checkbox">
-                                                                <label for="subcheck2-2"><span></span>Edit </label>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="custom-check">
-                                                                <input id="subcheck2-3" name="permission[version][delete]" <?php echo (!empty($versionPermission['deletep'])) ? 'checked' : '' ?> value="1" <?php echo (!empty($versionPermission)) ? '' : 'disabled="true"' ?> class="Version" type="checkbox">
-                                                                <label for="subcheck2-3"><span></span>Delete </label>
-                                                            </div>
-                                                        </li>
-
-                                                    </ul>
-                                                </div>			
-                                                <div class="clear"></div>
-                                                <div class="custom-check main-check">
-                                                    <input id="main-check3" name="notification" onchange="permission('Notification')" <?php echo (!empty($notiPermission)) ? 'checked' : '' ?> value="3"  type="checkbox">
-                                                    <label for="main-check3"><span></span>Manage Notifications </label>
-                                                    <ul class="check-column">
-                                                        <li>
-                                                            <div class="custom-check">
-                                                                <input id="subcheck3-1"  name="permission[notification][add]" <?php echo (!empty($notiPermission['addp'])) ? 'checked' : '' ?> value="1" <?php echo (!empty($notiPermission)) ? '' : 'disabled="true"' ?> class="Notification"  type="checkbox">
-                                                                <label for="subcheck3-1"><span></span>Add </label>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="custom-check">
-                                                                <input id="subcheck3-3"  name="permission[notification][edit]" <?php echo (!empty($notiPermission['editp'])) ? 'checked' : '' ?> value="1" <?php echo (!empty($notiPermission)) ? '' : 'disabled="true"' ?> class="Notification"  type="checkbox">
-                                                                <label for="subcheck3-3"><span></span>Edit or Resend</label>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="custom-check">
-                                                                <input id="subcheck3-4"  name="permission[notification][delete]" <?php echo (!empty($notiPermission['deletep'])) ? 'checked' : '' ?> value="1" <?php echo (!empty($notiPermission)) ? '' : 'disabled="true"' ?> class="Notification"  type="checkbox">
-                                                                <label for="subcheck3-4"><span></span>Delete</label>
-                                                            </div>
-                                                        </li>				
-                                                    </ul>
-                                                </div>			
-                                            </div>			
+                    <div class="row">
+                        <div class="col-lg-12"><h2 class="title-box m-t-n p-t-20">Sub-admin Roles :</h2></div>
+                        <div class="col-lg-12">
+                            <div class="custom-check main-check">
+                                <input id="main-check1" onchange="permission('merchant', 'main-check1')" name="user"  value="1" <?php echo (!empty($userPermission))?'checked':'' ?> type="checkbox">
+                                <label for="main-check1"><span></span>Manage User </label>
+                                <ul class="check-column">
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck1-1" <?php echo (!empty($userPermission['viewp']))?'checked':'' ?> value="1" class="user" type="checkbox" >
+                                            <label for="subcheck1-1"><span></span>View </label>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck1-2" <?php echo (!empty($userPermission['addp']))?'checked':'' ?> value="1" class="user" type="checkbox" >
+                                            <label for="subcheck1-2"><span></span>Add </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck1-3" <?php echo (!empty($userPermission['editp']))?'checked':'' ?> value="1"  class="user" type="checkbox" >
+                                            <label for="subcheck1-3"><span></span>Edit  </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck1-4" <?php echo (!empty($userPermission['blockp']))?'checked':'' ?> value="1" class="user" type="checkbox" >
+                                            <label for="subcheck1-4"><span></span>Block</label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck1-5" <?php echo (!empty($userPermission['deletep']))?'checked':'' ?> value="1" class="user" type="checkbox" >
+                                            <label for="subcheck1-5"><span></span>Delete</label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>			
+                            <div class="clear"></div>
+                            <div class="custom-check main-check">
+                                <input id="main-check2" onchange="permission('merchant', 'main-check2')" name="merchant"  value="1" <?php echo (!empty($merchantPermission))?'checked':'' ?> type="checkbox">
+                                <label for="main-check2"><span></span>Manage Merchant </label>
+                                <ul class="check-column">
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck2-1" <?php echo (!empty($merchantPermission['viewp']))?'checked':'' ?> value="1" class="merchant" type="checkbox" >
+                                            <label for="subcheck2-1"><span></span>View </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck2-2" <?php echo (!empty($merchantPermission['addp']))?'checked':'' ?> value="1" class="merchant" type="checkbox" >
+                                            <label for="subcheck2-2"><span></span>Add </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck2-3" <?php echo (!empty($merchantPermission['editp']))?'checked':'' ?> value="1"  class="merchant" type="checkbox" >
+                                            <label for="subcheck2-3"><span></span>Edit  </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck2-4" <?php echo (!empty($merchantPermission['blockp']))?'checked':'' ?> value="1" class="merchant" type="checkbox" >
+                                            <label for="subcheck2-4"><span></span>Block</label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck2-5" <?php echo (!empty($merchantPermission['deletep']))?'checked':'' ?> value="1" class="merchant" type="checkbox" >
+                                            <label for="subcheck2-5"><span></span>Delete</label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>			
+                            <div class="clear"></div>
+                            <div class="custom-check main-check">
+                                <input id="main-check3" onchange="permission('merchant', 'main-check3')" name="product"  value="1" <?php echo (!empty($productPermission))?'checked':'' ?> type="checkbox">
+                                <label for="main-check3"><span></span>Manage product </label>
+                                <ul class="check-column">
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck3-1" <?php echo (!empty($productPermission['viewp']))?'checked':'' ?> value="1" class="product" type="checkbox" >
+                                            <label for="subcheck3-1"><span></span>View </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck3-2" <?php echo (!empty($productPermission['addp']))?'checked':'' ?> value="1" class="product" type="checkbox" >
+                                            <label for="subcheck3-2"><span></span>Add </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck3-3" <?php echo (!empty($productPermission['editp']))?'checked':'' ?> value="1"  class="product" type="checkbox" >
+                                            <label for="subcheck3-3"><span></span>Edit  </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck3-4" <?php echo (!empty($productPermission['blockp']))?'checked':'' ?> value="1" class="product" type="checkbox" >
+                                            <label for="subcheck3-4"><span></span>Block</label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck3-5" <?php echo (!empty($productPermission['deletep']))?'checked':'' ?> value="1" class="product" type="checkbox" >
+                                            <label for="subcheck3-5"><span></span>Delete</label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>			
+                            <div class="clear"></div>
+                            <div class="custom-check main-check">
+                                <input id="main-check4" onchange="permission('merchant', 'main-check4')" name="template"  value="1" <?php echo (!empty($templatePermission))?'checked':'' ?> type="checkbox">
+                                <label for="main-check4"><span></span>Manage Template </label>
+                                <ul class="check-column">
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck4-1" <?php echo (!empty($templatePermission['viewp']))?'checked':'' ?> disabled="true" value="1" class="template" type="checkbox" >
+                                            <label for="subcheck4-1"><span></span>View </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck4-2" <?php echo (!empty($templatePermission['addp']))?'checked':'' ?> disabled="true" value="1" class="template" type="checkbox" >
+                                            <label for="subcheck4-2"><span></span>Add </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck4-3" <?php echo (!empty($templatePermission['editp']))?'checked':'' ?> value="1"  disabled="true" class="template" type="checkbox" >
+                                            <label for="subcheck4-3"><span></span>Edit  </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck4-4" <?php echo (!empty($templatePermission['blockp']))?'checked':'' ?> value="1" class="template" disabled="true" type="checkbox" >
+                                            <label for="subcheck4-4"><span></span>Block</label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck4-5" <?php echo (!empty($templatePermission['deletep']))?'checked':'' ?> value="1" class="merchant" disabled="true" type="checkbox" >
+                                            <label for="subcheck4-5"><span></span>Delete</label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>			
+                            <div class="clear"></div>
+                            <div class="custom-check main-check">
+                                <input id="main-check5" onchange="permission('merchant', 'main-check5')" name="content" disabled="true"  value="1" <?php echo (!empty($contentPermission))?'checked':'' ?> type="checkbox">
+                                <label for="main-check5"><span></span>Manage Content </label>
+                                <ul class="check-column">
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck5-1" <?php echo (!empty($contentPermission['viewp']))?'checked':'' ?> disabled="true" value="1" class="content" type="checkbox" >
+                                            <label for="subcheck5-1"><span></span>View </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck5-2" <?php echo (!empty($contentPermission['addp']))?'checked':'' ?> disabled="true" value="1" class="content" type="checkbox" >
+                                            <label for="subcheck5-2"><span></span>Add </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck5-3" <?php echo (!empty($contentPermission['editp']))?'checked':'' ?> value="1"  disabled="true" class="content" type="checkbox" >
+                                            <label for="subcheck5-3"><span></span>Edit  </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck5-4" <?php echo (!empty($contentPermission['blockp']))?'checked':'' ?> value="1" class="content" disabled="true" type="checkbox" >
+                                            <label for="subcheck5-4"><span></span>Block</label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck5-5" <?php echo (!empty($contentPermission['deletep']))?'checked':'' ?> value="1" class="content" disabled="true" type="checkbox" >
+                                            <label for="subcheck5-5"><span></span>Delete</label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>			
+                            <div class="clear"></div>
+                            <div class="custom-check main-check">
+                                <input id="main-check6" onchange="permission('merchant', 'main-check6')" name="version" disabled="true"  value="1" <?php echo (!empty($versionPermission))?'checked':'' ?> type="checkbox">
+                                <label for="main-check6"><span></span>Manage Version </label>
+                                <ul class="check-column">
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck6-1" <?php echo (!empty($versionPermission['viewp']))?'checked':'' ?> disabled="true" value="1" class="version" type="checkbox" >
+                                            <label for="subcheck6-1"><span></span>View </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck6-2" <?php echo (!empty($versionPermission['addp']))?'checked':'' ?> disabled="true" value="1" class="version" type="checkbox" >
+                                            <label for="subcheck6-2"><span></span>Add </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck6-3" <?php echo (!empty($versionPermission['editp']))?'checked':'' ?> value="1"  disabled="true" class="version" type="checkbox" >
+                                            <label for="subcheck6-3"><span></span>Edit  </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck6-4" <?php echo (!empty($versionPermission['blockp']))?'checked':'' ?> value="1" class="version" disabled="true" type="checkbox" >
+                                            <label for="subcheck6-4"><span></span>Block</label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck6-5" <?php echo (!empty($versionPermission['deletep']))?'checked':'' ?> value="1" class="version" disabled="true" type="checkbox" >
+                                            <label for="subcheck6-5"><span></span>Delete</label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>			
+                            <div class="clear"></div>
+                            <div class="custom-check main-check">
+                                <input id="main-check7" onchange="permission('merchant', 'main-check7')" name="noti" disabled="true"  value="1" <?php echo (!empty($notiPermission))?'checked':'' ?> type="checkbox">
+                                <label for="main-check7"><span></span>Manage Notification </label>
+                                <ul class="check-column">
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck7-1" <?php echo (!empty($notiPermission['viewp']))?'checked':'' ?> disabled="true" value="1" class="noti" type="checkbox" >
+                                            <label for="subcheck7-1"><span></span>View </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck7-2" <?php echo (!empty($notiPermission['addp']))?'checked':'' ?> disabled="true" value="1" class="noti" type="checkbox" >
+                                            <label for="subcheck7-2"><span></span>Add </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck7-3" <?php echo (!empty($notiPermission['editp']))?'checked':'' ?> value="1"  disabled="true" class="noti" type="checkbox" >
+                                            <label for="subcheck7-3"><span></span>Edit  </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck7-4" <?php echo (!empty($notiPermission['blockp']))?'checked':'' ?> value="1" class="noti" disabled="true" type="checkbox" >
+                                            <label for="subcheck7-4"><span></span>Block</label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck7-5" <?php echo (!empty($notiPermission['deletep']))?'checked':'' ?> value="1" class="noti" disabled="true" type="checkbox" >
+                                            <label for="subcheck7-5"><span></span>Delete</label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>			
+                            <div class="clear"></div>
+                            <div class="custom-check main-check">
+                                <input id="main-check8" onchange="permission('merchant', 'main-check8')" name="message" disabled="true"  value="1" <?php echo (!empty($messagePermission))?'checked':'' ?> type="checkbox">
+                                <label for="main-check8"><span></span>Manage Messages </label>
+                                <ul class="check-column">
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck8-1" <?php echo (!empty($messagePermission['viewp']))?'checked':'' ?> disabled="true" value="1" class="message" type="checkbox" >
+                                            <label for="subcheck8-1"><span></span>View </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck8-2" <?php echo (!empty($messagePermission['addp']))?'checked':'' ?> disabled="true" value="1" class="message" type="checkbox" >
+                                            <label for="subcheck8-2"><span></span>Add </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck8-3" <?php echo (!empty($messagePermission['editp']))?'checked':'' ?> value="1"  disabled="true" class="message" type="checkbox" >
+                                            <label for="subcheck8-3"><span></span>Edit  </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck8-4" <?php echo (!empty($messagePermission['blockp']))?'checked':'' ?> value="1" class="message" disabled="true" type="checkbox" >
+                                            <label for="subcheck8-4"><span></span>Block</label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="custom-check">
+                                            <input id="subcheck8-5" <?php echo (!empty($messagePermission['deletep']))?'checked':'' ?> value="1" class="message" disabled="true" type="checkbox" >
+                                            <label for="subcheck8-5"><span></span>Delete</label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>			
+                            <div class="clear"></div>
+                        </div>			
+                    </div>
                     </div>
                     <div class="col-sm-12 col-xs-12">
                         <div class="form-ele-action-bottom-wrap btns-center clearfix">
@@ -178,13 +355,16 @@ $notiPermission = isset($permission[3]) ? $permission[3] : array();
     //function for give the permission to subadmin
 
     function permission(gettype) {
-        var isdiabled = $('.' + gettype).prop('disabled');
+        var checked = $("#" + elementId).prop('checked');
+        
+        $("."+gettype).prop("checked", checked);
+        // var isdiabled = $('.' + gettype).prop('disabled');
 
-        if (isdiabled) {
-            $('.' + gettype).removeAttr('disabled', false);
-        } else {
-            $('.' + gettype).prop('disabled', true);
-            $('.' + gettype).attr('checked', false);
-        }
+        // if (isdiabled) {
+        //     $('.' + gettype).removeAttr('disabled', false);
+        // } else {
+        //     $('.' + gettype).prop('disabled', true);
+        //     $('.' + gettype).attr('checked', false);
+        // }
     }
 </script>

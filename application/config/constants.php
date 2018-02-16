@@ -246,8 +246,13 @@ define('CHAT_PUSH', 7);
 defined("OPEN_SSL_KEY") OR define('OPEN_SSL_KEY', '011b519a043dcb915314695e1ce560dd4e29dae06867cdb701ffc96350e18caf');
 
 defined("PRIVATE_USER") OR define("PRIVATE_USER", 1);
-defined("TECHNICIAN") OR define("TECHNICIAN", 2);
+defined("INSTALLER") OR define("INSTALLER", 2);
 defined("ARCHITECT") OR define("ARCHITECT", 3);
 defined("ELECTRICAL_PLANNER") OR define("ELECTRICAL_PLANNER", 4);
 defined("WHOLESALER") OR define("WHOLESALER", 5);
 defined("BUSINESS_USER") OR define("BUSINESS_USER", 6);
+
+/* ROLES */
+defined("ROLE_USER") or define("ROLE_USER", 0);
+defined("ROLE_EMPLOYEE") or define("ROLE_EMPLOYEE", 1);
+defined("ROLE_OWNER") or define("ROLE_OWNER", 2);

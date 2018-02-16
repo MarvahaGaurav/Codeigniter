@@ -11,7 +11,9 @@ if ( ! function_exists( "dd" ) ) {
 }
 if ( ! function_exists( "pd" ) ) {
     function pd($mixed, $exit = true) {
+        echo "<pre>";
         print_r($mixed);
+        echo "</pre>";
         if ( $exit ) {
             exit; 
         }

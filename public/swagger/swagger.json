@@ -752,6 +752,12 @@
                         "type": "string"
                     },
                     {
+                        "name": "remove_product_ids",
+                        "in": "formData",
+                        "description": "array of ids to remove",
+                        "type": "string"
+                    },
+                    {
                         "name": "media_to_delete",
                         "in": "formData",
                         "description": "JSON array string of media ids [1,2,3]",

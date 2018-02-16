@@ -493,7 +493,7 @@ class Signup extends REST_Controller {
                         $signupArr['project_edit'] = 0;
                         $signupArr['project_delete'] = 0;
 
-                        if ( TECHNICIAN === (int)$signupArr['user_type'] ) {
+                        if ( ROLE_EMPLOYEE === (int)$signupArr["is_owner"] ) {
                             $this->load->library("PushNotification");
                             $this->load->model("UtilModel");
                             
@@ -501,7 +501,7 @@ class Signup extends REST_Controller {
                                 "device_token, platform, ai_user.user_id",
                                 "ai_user",
                                 [
-                                    "where" => ["ai_user.company_id" => $signupArr["company_id"], "is_owner" => 2, "user_type" => WHOLESALER, "ai_user.status" => 1],
+                                    "where" => ["ai_user.company_id" => $signupArr["company_id"], "is_owner" => ROLE_OWNER, "ai_user.status" => 1],
                                     "join" => ["ai_session" => "ai_user.user_id=ai_session.user_id"]
                                 ]
                             );

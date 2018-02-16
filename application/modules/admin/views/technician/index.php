@@ -206,7 +206,7 @@ $module = $this->router->fetch_module();
                         <td><?php echo !empty($value['name'])?$value['name']:"Not Available";?></td>
                         <td><?php echo date("d M Y H:i A",strtotime($value['registered_date']));?></td>
                         <td><?php echo $value['user_type']?></td>
-                        <td><?php if($value['user_type'] != 1 ){ echo ($value['is_owner'] == '2')?"Owner":"Employee";} ?></td>
+                        <td><?php if($value['user_type_num'] != 1 ){ echo ($value['is_owner'] == '2')?"Owner":"Employee";} ?></td>
                         <td id ="status_<?php echo $value['user_id'];?>"><?php echo ($value['status'] == ACTIVE)?"Active":"Blocked";?></td>
                         <?php if($accesspermission['deletep'] || $accesspermission['blockp']){ ?>
                         <td class="text-nowrap table-action">

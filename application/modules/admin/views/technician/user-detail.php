@@ -74,11 +74,20 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="clearfix"></div>
                         <div class="col-lg-6 col-sm-6 col-xs-6">
                             <div class="form-group">
                                 <label class="admin-label">User Type</label>
                                 <div class="input-holder">
                                     <span class="text-detail"><?php echo $profile['user_type'] ?></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 col-xs-6">
+                            <div class="form-group">
+                                <label class="admin-label">User Role</label>
+                                <div class="input-holder">
+                                    <span class="text-detail"><?php if($value['user_type_num'] != 1 ){ echo ($value['is_owner'] == '2')?"Owner":"Employee";} ?></span>
                                 </div>
                             </div>
                         </div>
@@ -157,42 +166,58 @@
                     </div>
                 </div>
             </div>
-            <?php
-            if ( TECHNICIAN === (int)$profile['user_type_num'] ) { ?>
-            <div class="section">
-                <p class="tt-count">Total Technicians: <?php echo $totalrows ?></p>
-                <div class="table-responsive table-wrapper">
-                    <table cellspacing="0" class="table-custom">
-                        <thead>
-                            <tr>
-                                <th>S.No</th>
-                            </tr>
-                        </thead>
-                        <tbody id="table_tr">
-                            
-                        <?php if(isset($inspiration_list) && count($inspiration_list)){
-                                foreach($inspiration_list as $value){ 
-                                //echo '<pre>'; print_r($value); echo '</pre>';
-                                ?>
+            <div class="col-lg-12 col-sm-12 col-xs-12">
+                <?php
+                if ( in_array((int)$profile['user_type_num'], $valid_inspiration_creators) ) { ?>
+                <div class="section clearfix">
+                    <p class="tt-count">Total Inspirations: <?php echo $total_inspirations ?></p>
+                    <div class="table-responsive table-wrapper">
+                        <table cellspacing="0" class="table-custom">
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th>Title</th>
+                                    <th>Posted By</th>
+                                    <th>Company Name</th>
+                                    <th>Created Date</th>
+                                    <th>Last Updated</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table_tr">
                                 
-                                <tr id ="remove_<?php echo $value['user_id'];?>" >
-                                <td><?php echo $i; ?></td>
+                            <?php if(isset($inspiration_list) && count($inspiration_list)){
+                                    foreach($inspiration_list as $value) : ?>
+                                    
+                                    <tr id ="remove_<?php echo $value['user_id'];?>" >
+                                    <td><?php echo $initial_count; ?></td>
+                                    <td><?php echo $value['title']; ?></td>
+                                    <td><?php echo $value['full_name']; ?></td>
+                                    <td><?php echo $value['company_name']; ?></td>
+                                    <td><?php echo $value['created_at']; ?></td>
+                                    <td><?php echo $value['updated_at']; ?></td>
+                                    <td>
+                                        <a class="f-delete" href="<?php echo base_url()?>admin/inspiration/detail?id=<?php echo $value['id'] ?>"><i class="fa fa-eye" title="View Detail" aria-hidden="true"></i></a>
+                                        <!-- <a class="f-block" href="javascript:void(0);"  id ="block_<?php echo $value['user_id'];?>" style=""><i class="fa fa-ban" title="block" aria-hidden="true" onclick="blockUser('user',<?php echo BLOCKED;?>,'<?php echo encryptDecrypt($value['user_id']);?>','req/change-user-status','Do you really want to block this user?','Block');"></i></a>
+                                        <a class="f-ublock" href="javascript:void(0);" id ="unblock_<?php echo $value['user_id'];?>" style="display:none;"><i class="fa fa-unlock" title="unblock" aria-hidden="true" onclick="blockUser('user',<?php echo ACTIVE;?>,'<?php echo $value['id'] ?>','','Do you really want to unblock this Inspiration?','Unblock');"></i></a>
+                                        <a class="f-delete" href="javascript:void(0);"><i class="fa fa-trash" title="Delete" aria-hidden="true" onclick="deleteUser('user',<?php echo DELETED;?>,'<?php echo $value['id'] ?>','','Do you really want to delete this Inspiration?');"></i></a> -->
+                                    </td>
+                                    <?php $initial_count++; ?>
+                                    <?php endforeach ?>
+                                </tr>
+                                <?php 
+                                $i++; 
+                                } } else { ?>
+                                <tr><td colspan="12">No result found.</td></tr
                                 <?php } ?>
-                            </tr>
-                            <?php 
-                            $i++; 
-                            } } else { ?>
-                            <tr><td colspan="12">No result found.</td></tr
-                            <?php } ?>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="pagination_wrap clearfix">
-                    <?php echo $link;?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination_wrap clearfix">
+                        <?php echo $link;?>
+                    </div>
                 </div>
             </div>
-          <?php   }
-            ?>
         </div>         
     </div>
     <!--Filter Section -->

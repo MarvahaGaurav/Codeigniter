@@ -22,9 +22,9 @@ class Technician extends MY_Controller {
         }
         $this->data = [];
         $this->data['admininfo'] = $this->admininfo;
-        $this->validUserTypes = [TECHNICIAN, ARCHITECT, ELECTRICAL_PLANNER, WHOLESALER];
+        $this->validUserTypes = [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER, WHOLESALER];
         $this->userTypes = [
-            TECHNICIAN => "Technician", 
+            INSTALLER => "Technician", 
             ARCHITECT => "Architect",
             ELECTRICAL_PLANNER => "Electrical Planner",
             WHOLESALER => "Wholesaler"
@@ -61,7 +61,7 @@ class Technician extends MY_Controller {
         $validSortBy = ['asc', 'desc'];
 
         $reverseUserTypes = [
-            "technician" => TECHNICIAN,
+            "technician" => INSTALLER,
             "architect" => ARCHITECT,
             "electrical_planner" => ELECTRICAL_PLANNER,
             "wholesaler" => WHOLESALER
@@ -115,6 +115,7 @@ class Technician extends MY_Controller {
         $this->data['userlist'] = $userInfo['result'];
 
         $this->data['userlist'] = array_map(function($data) {
+            $data['user_type_num'] = $data['user_type'];
             if ( in_array((int)$data['user_type'], $this->validUserTypes) ) {
                 $data['user_type'] = $this->userTypes[(int)$data['user_type']];
             } else {
@@ -162,8 +163,11 @@ class Technician extends MY_Controller {
     public function detail() {
 
         $get = $this->input->get();
+        $this->load->helper(['input_data', 'datetime']);
+        $get = trim_input_parameters($get);
         $userId = (isset($get['id']) && !empty($get['id'])) ? encryptDecrypt($get['id'], 'decrypt') : show_404();
         $this->data['user_id'] = $userId;
+        $this->load->library('commonfn');
         $inspiration_data = [];
         //$this->data['profile'] = $profile = $this->Common_model->fetch_data('ai_user', array(), ['where' => ['user_id' => $userId]], true);
         $profile = $this->User_Model->userdetail(['user_id' => $userId]);
@@ -172,13 +176,33 @@ class Technician extends MY_Controller {
         if (empty($this->data['profile'])) {
             show_404();
         }
-
-        if ( TECHNICIAN === (int)$this->data['profile']['user_type'] ) {
+        $this->data['valid_inspiration_creators'] = [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER];
+        if ( in_array((int)$this->data['profile']['user_type'], $this->data['valid_inspiration_creators']) ) {
             $this->load->model("Inspiration");
             $params['user_id'] = $this->data['user_id'];
+            $page = isset($get['page']) && !empty((int)$get['page'])? (int)$get['page'] : 1; 
+            $limit = isset($get['limit']) ? $get['limit'] : RECORDS_PER_PAGE;
+
+            $params['offset'] = ($page - 1) * $limit;
+            $params['limit'] = $limit;
+            $params['poster_details'] = true;
             $data = $this->Inspiration->get($params);
+            $this->data['initial_count'] = (int)(1 * (($page - 1) * $limit)+1);
+            $data['result'] = array_map(function($result) use ($page, $limit) {
+                $result['id'] = $result['inspiration_id'];
+                $result['id'] = encryptDecrypt($result['id']);
+                $result['created_at'] = convert_date_time_format("Y-m-d H:i:s", $result['created_at'], "d/m/Y g:i A");
+                $result['updated_at'] = convert_date_time_format("Y-m-d H:i:s", $result['updated_at'], "d/m/Y g:i A");
+                return $result;
+            }, $data['result']); 
+            $this->data['total_inspirations'] = (int)$data['count'];
+            $pageurl = "/admin/technician/detail?id=" . $get['id'];
+            $this->data["link"] = $this->commonfn->pagination($pageurl, $data['count'], $limit);
             $this->data['inspiration_list'] = $data['result'];
+            // pr($this->data['inspiration_list']);
+            
         }
+
         $this->data['profile']['user_type_num'] = $this->data['profile']['user_type'];
         if ( in_array((int)$this->data['profile']['user_type'], $this->validUserTypes) ) {
             $this->data['profile']['user_type'] = $this->userTypes[(int)$this->data['profile']['user_type']];
