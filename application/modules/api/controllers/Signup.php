@@ -275,6 +275,7 @@ class Signup extends REST_Controller {
                 $signupArr["middle_name"] = isset($postDataArr["middle_name"]) ? trim($postDataArr["middle_name"]) : "";
                 $signupArr["last_name"] = isset($postDataArr["last_name"]) ? trim($postDataArr["last_name"]) : "";
                 $signupArr["email"] = $postDataArr["email"];
+                $signupArr['language'] = isset($postDataArr['language'])&&preg_match('/^(en|da|nb|sv|fi|fr|nl|de)$/', $postDataArr['language'])?$postDataArr['language']:"en";
                 //$signupArr["gender"] = isset($postDataArr["gender"]) ? trim($postDataArr["gender"]) : 0;
                 //$signupArr["dob"] = isset($postDataArr["dob"]) ? date('Y-m-d', strtotime($postDataArr["dob"])) : "";
                 //$signupArr["age"] = isset($postDataArr["age"]) ? trim($postDataArr["age"]) : "";

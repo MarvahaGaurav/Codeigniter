@@ -24,7 +24,7 @@ class Product extends BaseModel
            
             $this->db->from("products");
             if ( isset($params['product_listing']) && !empty($params['product_listing']) ) {
-                $query = "SQL_CALC_FOUND_ROWS products.id as product_id, products.title, products.image";
+                $query = "SQL_CALC_FOUND_ROWS products.id as product_id, products.title as product_title, products.image";
                 $this->db->where("products.language_code", $params['language_code']);
                 $search = true;
                 if ( ! isset($params['search']) || empty($params['search']) ) {
@@ -37,7 +37,7 @@ class Product extends BaseModel
                     $this->db->offset((int)$params['offset']);
                 }
             } else {
-                $query = "products.id as product_id, products.title, how_to_specity as description, products.image, productTechnicalData(products.id) as technical_data," .
+                $query = "products.id as product_id, products.title as product_title, how_to_specity as description, products.image, productTechnicalData(products.id) as technical_data," .
                 "IFNULL(GROUP_CONCAT(gallery.image), '') as images";
                 $single_row = true;
                 
@@ -47,7 +47,7 @@ class Product extends BaseModel
                 ->limit(1);
             }
         } else {
-            $query = "SQL_CALC_FOUND_ROWS products.id as product_id, products.title, products.image";
+            $query = "SQL_CALC_FOUND_ROWS products.id as product_id, products.title as product_title, products.image";
             $this->db->limit(RECORDS_PER_PAGE)
                 ->from("product_applications as pa")
                 ->join("products", "products.id=pa.product_id")
@@ -78,5 +78,13 @@ class Product extends BaseModel
             $result["count"] = $this->db->query("SELECT FOUND_ROWS() as total_rows")->row()->total_rows;
         }
         return $result;
+    }
+
+    public function productOnTypes() 
+    {
+        $query = "SELECT distinct_products.*, products.id as prod_id, products.title FROM ".
+        "(SELECT DISTINCT product_applications.product_id, product_applications.application_id FROM product_applications) as distinct_products ".
+        "JOIN products ON products.id=distinct_products.product_id JOIN applications ON applications.id=distinct_products.application_id ".
+        "WHERE applications.type=" . isset($options['type'])?(int)$options['type']:1 . " LIMIT 10";
     }
 }

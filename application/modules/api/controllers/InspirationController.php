@@ -271,39 +271,19 @@ class InspirationController extends BaseController
         }
 
         if ( $is_single_row ) {
-            $media_image = array_filter(explode(",", $data['media']));
-            $media_ids = array_filter(explode(",", $data['media_id']));
-            $media_type = array_filter(explode(",", $data['media_type']));
-            $video_thumbnail = array_filter(explode(",", $data['video_thumbnail']));
-            $data['media'] = array_map(function($med, $ids, $type, $thumbnail) {
-                $media_data = [];
-                $media_data['media_data'] = $med;
-                $media_data['media_id'] = (int)$ids;
-                $media_data['media_type'] = (int)$type;
-                $media_data['video_thumbnail'] = (string) $thumbnail;
-                return $media_data;
-            }, $media_image, $media_ids, $media_type, $video_thumbnail);
+            $data['media'] = "[" . $data['media'] . "]";
+            $data['media'] = json_decode($data['media'], true);
             $data['products'] = "[" . $data['products'] . "]";
-            $data['products'] = json_decode($data['products']);
+            $data['products'] = json_decode($data['products'], true);
             unset($data['media_id']);
             unset($data['media_type']);
             unset($data['video_thumbnail']);
         } else {
             $data = array_map(function($inspiration) {
-                $media_image = array_filter(explode(",", $inspiration['media']));
-                $media_ids = array_filter(explode(",", $inspiration['media_id']));
-                $media_type = array_filter(explode(",", $inspiration['media_type']));
-                $video_thumbnail = array_filter(explode(",", $inspiration['video_thumbnail']));                
-                $inspiration['media'] = array_map(function($med, $ids, $type, $thumbnail) {
-                    $media_data = [];
-                    $media_data['media_data'] = $med;
-                    $media_data['media_id'] = (int)$ids;
-                    $media_data['media_type'] = (int)$type;
-                    $media_data['video_thumbnail'] = (string) $thumbnail;
-                    return $media_data;
-                }, $media_image, $media_ids, $media_type, $video_thumbnail);
+                $inspiration['media'] = "[" . $inspiration['media'] . "]";
+                $inspiration['media'] = json_decode($inspiration['media'], true);
                 $inspiration['products'] = "[" . $inspiration['products'] . "]";
-                $inspiration['products'] = json_decode($inspiration['products']);
+                $inspiration['products'] = json_decode($inspiration['products'], true);
                 // unset($inspiration['media']);
                 unset($inspiration['media_id']);
                 unset($inspiration['media_type']);
@@ -318,10 +298,12 @@ class InspirationController extends BaseController
             "msg" => $this->lang->line("inspiration_fetched"),
             "data" => $data
         ];
+
         if ( ! $is_single_row ) {
             $response['offset'] = $offset;
         }
-
+        
+        $this->load->helper("json");
         $this->response($response, HTTP_OK);
     }
 
@@ -686,6 +668,7 @@ class InspirationController extends BaseController
             $where = [
                 "id" => $request_data['inspiration_id']
             ];
+
             $this->load->model("InspirationMedia");
             $media = $this->InspirationMedia->get($request_data['inspiration_id']);
 
@@ -694,14 +677,12 @@ class InspirationController extends BaseController
             }, $media);
         
             $this->db->trans_begin();
-            $this->Inspiration->delete($where);
-            $this->InspirationMedia->delete([
-                "inspiration_id" => $request_data['inspiration_id']
-            ]);
 
-            $this->load->helper(['url']);
+            $this->Inspiration->delete($where);
             
             $this->db->trans_commit();
+
+            $this->load->helper(['url']);
             //
             $http_client = new GuzzleClient([
                 'base_uri' => base_url("api/")

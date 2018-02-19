@@ -1617,10 +1617,10 @@
                 ],
                 "responses": {
                     "422": {
-                        "description": "Missing parameters/Nothing to update"
+                        "description": "Missing parameters/Nothing to update/invalid parameters"
                     },
                     "200": {
-                        "description": "Inspiration updated"
+                        "description": "Settings update"
                     },
                     "500": {
                         "description": "Internal server error"

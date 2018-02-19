@@ -45,8 +45,8 @@ class UserController extends BaseController
      *     description="DKK - Danish Krone, NOK - Norwegian Krone, SEK - Swedish Krona, EUR - Euro",
      *     type="string"
      *   ),
-     *   @SWG\Response(response=422, description="Missing parameters/Nothing to update"),
-     *   @SWG\Response(response=200, description="Inspiration updated"),     
+     *   @SWG\Response(response=422, description="Missing parameters/Nothing to update/invalid parameters"),
+     *   @SWG\Response(response=200, description="Settings update"),     
      *   @SWG\Response(response=500, description="Internal server error")   
      * )
      */

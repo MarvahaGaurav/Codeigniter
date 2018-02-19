@@ -45,6 +45,7 @@ class FavoriteController extends BaseController
      */
     public function favorite_post()
     {
+        $language_code = $this->langcode_validate();
         $userData = $this->accessTokenCheck();
         $postData = $this->post();
         $postData = trim_input_parameters($postData);

@@ -39,6 +39,7 @@ class EmployeeController extends BaseController
      */
     public function employee_get()
     {
+        $language_code = $this->langcode_validate();
         $userData = $this->accessTokenCheck("company_id,is_owner,user_type,status");
 
         $getData = $this->get();
@@ -126,6 +127,7 @@ class EmployeeController extends BaseController
      */
     public function request_get()
     {
+        $language_code = $this->langcode_validate();
         $userData = $this->accessTokenCheck("company_id,is_owner,user_type,status");
 
         $getData = $this->get();
@@ -205,6 +207,7 @@ class EmployeeController extends BaseController
      */
     public function employeePermissions_get()
     {
+        $language_code = $this->langcode_validate();
         $userData = $this->accessTokenCheck('company_id');
 
         $requestData = $this->get();

@@ -60,6 +60,7 @@ class CompanyController extends BaseController
      */
     public function company_get()
     {
+        $language_code = $this->langcode_validate();
         $header = $this->head();
         $accessTokenSet = (isset($header['accesstoken']) && !empty(trim($header['accesstoken'])) || isset($header['Accesstoken']) && !empty(trim($header['Accesstoken']))) ? true: false;
         
