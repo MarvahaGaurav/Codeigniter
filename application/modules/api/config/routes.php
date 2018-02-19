@@ -9,6 +9,8 @@ $route['api/v1/user/otp/resend'] = 'Forgot/resendotp'; //needs update on swagger
 $route['api/v1/user/login'] = 'Login'; //update swagger
 $route['api/v1/user/signup'] = 'Signup';  //updatge swagger
 $route['api/v1/user/logout'] = 'Logout'; //update swagger
+$route['api/v1/user/settings'] = 'UserController/edit';
+
 // $route['api/v1/company'] = 'Profile/companylist'; //update swagger
 // $route['api/v1/company/favorite'] = 'managefavorite'; //update swagger
 $route['api/v1/employee'] = 'EmployeeController/employee'; //update swagger

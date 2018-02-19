@@ -1572,6 +1572,61 @@
                     }
                 }
             }
+        },
+        "/user/settings": {
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Edit settings",
+                "description": "Edit Settings",
+                "operationId": "edit_settings_put",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "accesstoken",
+                        "in": "header",
+                        "description": "Access token received during signup or login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "X-Language-Code",
+                        "in": "header",
+                        "description": "Language code",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "language",
+                        "in": "formData",
+                        "description": "valid languages as mentioned at the beginning of the docs",
+                        "type": "string"
+                    },
+                    {
+                        "name": "currency",
+                        "in": "formData",
+                        "description": "DKK - Danish Krone, NOK - Norwegian Krone, SEK - Swedish Krona, EUR - Euro",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "422": {
+                        "description": "Missing parameters/Nothing to update"
+                    },
+                    "200": {
+                        "description": "Inspiration updated"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
         }
     },
     "definitions": {},

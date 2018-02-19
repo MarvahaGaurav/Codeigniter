@@ -150,7 +150,7 @@ class ProductController extends BaseController
         $request_data = $this->get();
         $request_data = trim_input_parameters($request_data);
         // $mandatory_fields = ['product_id'];
-
+        
         // $check = check_empty_parameters($request_data, $mandatory_fields);
 
         // if ( $check['error'] ) {

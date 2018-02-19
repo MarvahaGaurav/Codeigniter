@@ -67,6 +67,7 @@ $lang["email_does_not_exist"] = "Email does not exist";
 $lang["mobile_does_not_exist"] = "Mobile Number does not exist";
 $lang["social_id_does_not_exist"] = "Social Id does not exist";
 $lang["user_does_not_exists"] = "User does not exist";
+$lang['settings_updated'] = "Your settings have been updated";
 /* INVALID PARAMS */
 $lang["invalid_email_format"] = "Invalid email format";
 $lang["invalid_parameter"] = "Entered parameter is invalid";
@@ -177,4 +178,3 @@ $lang['cannot_delete_inspiration'] = "Cannot delete inspirations posted by anoth
 $lang['application_data_fetched'] = "Application data fetched";
 
 $lang['products_found'] = "Products Found";
-

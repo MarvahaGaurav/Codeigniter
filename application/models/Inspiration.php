@@ -5,7 +5,8 @@ require_once 'BaseModel.php';
 
 use DatabaseExceptions\SelectException;
 
-class Inspiration extends BaseModel {
+class Inspiration extends BaseModel 
+{
 
     public function __construct()
     {

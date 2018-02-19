@@ -10,6 +10,7 @@ class User extends BaseModel
     public function __construct()
     {
         $this->load->database();
+        $this->tableName = "ai_user";
     }
     
     public function login($email, $password)
@@ -38,6 +39,3 @@ class User extends BaseModel
     }
 
 }
-
-
-$userInfo = $this->Common_model->fetch_data('ai_user', '', array('where' => array()), true);

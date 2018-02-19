@@ -103,7 +103,6 @@ class BaseController extends REST_Controller
             ], HTTP_INTERNAL_SERVER_ERROR);
         }
 
-
     }
 
     protected function apiKeyCheck()
