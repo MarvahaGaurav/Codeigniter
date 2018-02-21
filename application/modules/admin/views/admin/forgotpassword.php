@@ -18,7 +18,7 @@
                 <h1 class="form-heading">Forgot Password</h1>
                 <p class="form-desc">Forgot your password? Don’t worry, Enter us your registered email and we will send you steps to reset your password.</p>  
                 <div class="form-group clearfix">
-                    <span class="ad-password field-ico password-ico"></span>
+                    <span class="field-ico user-ico"></span>
                     <input type="text" class="form-field" maxlength="150" placeholder="* Email Id" name="email" id="email" value="<?php echo set_value('email'); ?>"> 
                     <?php echo isset($error) ? '<label class="alert-danger">' . $error . '</label>' : form_error('email', '<label class="alert-danger">', '</label>'); ?>
                 </div>

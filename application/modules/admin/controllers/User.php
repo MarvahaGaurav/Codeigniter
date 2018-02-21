@@ -23,6 +23,11 @@ class User extends MY_Controller {
         $this->data = [];
         $this->validUserTypes = [PRIVATE_USER, BUSINESS_USER];
         $this->data['admininfo'] = $this->admininfo;
+        if($this->admininfo['role_id'] == 2){
+            $whereArr = ['where'=>['admin_id'=>$this->admininfo['admin_id']]];
+            $access_detail = $this->Common_model->fetch_data('sub_admin', ['viewp', 'addp', 'editp', 'blockp', 'deletep', 'access_permission', 'admin_id', 'id'], $whereArr, false);
+            $this->data['admin_access_detail'] = $access_detail;
+        }
         $this->userTypes = [
             PRIVATE_USER => "Individual User",
             BUSINESS_USER => "Business User"
@@ -44,7 +49,7 @@ class User extends MY_Controller {
         if ($role_id != 1) {
             $whereArr = [];
             $whereArr['where'] = array('admin_id' => $this->admininfo['admin_id'], 'access_permission' => 1, 'status' => 1);
-            $access_detail = $this->Common_model->fetch_data('sub_admin', ['viewp', 'blockp', 'deletep'], $whereArr, true);
+            $access_detail = $this->Common_model->fetch_data('sub_admin', ['viewp', 'blockp', 'deletep','blockp','viewp'], $whereArr, true);
         }
 
         $this->data['accesspermission'] = ($role_id == 2) ? $access_detail : $defaultPermission;

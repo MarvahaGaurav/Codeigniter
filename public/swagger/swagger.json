@@ -1121,6 +1121,12 @@
                         "in": "query",
                         "description": "Search key",
                         "type": "string"
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "1-Residential, 2-Professional",
+                        "type": "string"
                     }
                 ],
                 "responses": {

@@ -166,7 +166,12 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-12 col-sm-12 col-xs-12">
+        </div>   
+        
+    </div>
+    <!--Filter Section -->
+    <div class="row">
+        <div class="col-lg-12 col-sm-12 col-xs-12">
                 <?php
                 if ( in_array((int)$profile['user_type_num'], $valid_inspiration_creators) ) { ?>
                 <div class="section clearfix">
@@ -207,8 +212,11 @@
                                 </tr>
                                 <?php 
                                 $i++; 
-                                } } else { ?>
-                                <tr><td colspan="12">No result found.</td></tr
+                                }else { ?>
+                                <tr><td colspan="7">No result found.</td></tr> 
+                                <?php } ?>
+                            <?php } else { ?>
+                                <tr><td colspan="7">No result found.</td></tr> 
                                 <?php } ?>
                             </tbody>
                         </table>
@@ -218,8 +226,7 @@
                     </div>
                 </div>
             </div>
-        </div>         
-    </div>
-    <!--Filter Section -->
+        </div>
+    <div class="clearfix"></div>
     
 </div>

@@ -1153,7 +1153,7 @@ class Common_model extends CI_Model {
         $this->db->where('s.login_status = 1');
         $this->db->group_by('s.device_id');
         $query = $this->db->get();
-
+        
         return $query->result_array();
     }
 
@@ -1169,8 +1169,14 @@ class Common_model extends CI_Model {
         }
 
         if (!empty($params['startDate']) && !empty($params['endDate'])) {
-            $pushStartDate = date('Y-m-d', strtotime($params['startDate']));
-            $pushEndDate = date('Y-m-d', strtotime($params['endDate']));
+            //$pushStartDate = date('Y-m-d', strtotime($params['startDate']));
+            //$pushEndDate = date('Y-m-d', strtotime($params['endDate']));
+            
+            list($day1,$month1,$year1) = explode('/',$params['startDate']);
+            $pushStartDate = $year1.'-'.$month1.'-'.$day1;
+            
+            list($day2,$month2,$year2) = explode('/',$params['endDate']);
+            $pushEndDate = $year2.'-'.$month2.'-'.$day2;
             $this->db->where("DATE(created_at) >= '" . $pushStartDate . "' AND DATE(created_at) <= '" . $pushEndDate . "' ");
         }
         $this->db->order_by('created_at','desc');

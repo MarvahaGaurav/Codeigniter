@@ -21,7 +21,7 @@
             <!-- title and form upper action end-->
             <div class="col-lg-3 col-sm-3">
                 <div class="form-profile-pic-wrapper image-view-wrapper img-view200p img-viewbdr-radius4p">
-                    <div class="profile-pic image-view img-view200" style="background-image:url('<?php echo (!empty($editdata['admin_profile_pic'])) ? IMAGE_PATH . $editdata['admin_profile_pic'] : DEFAULT_IMAGE ?>');">
+                    <div class="profile-pic image-view img-view200" style="background-image:url('<?php echo (!empty($editdata['admin_profile_pic'])) ? $editdata['admin_profile_pic'] : DEFAULT_IMAGE ?>');">
                     </div>
                 </div>
                 <span class="loder-wrraper-single"></span>

@@ -109,11 +109,18 @@ class UserController extends BaseController
                 "ai_user.user_id" => $user_data['user_id']
             ];
 
+            $message = "";
+            foreach ($updateMap as $key => $value) {
+                if ( isset($request_data[$key]) ) {
+                    $message = "_{$key}";
+                }
+            }
+
             $this->User->update($where);
             $this->response([
                 'code' => HTTP_OK,
                 'api_code_result' => 'OK',
-                'msg' => $this->lang->line("settings_updated")
+                'msg' => $this->lang->line("settings_updated" . $message)
             ]);
         } catch (DatabaseExceptions\UpdateException $error) {
             $this->response([

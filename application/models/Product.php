@@ -80,11 +80,24 @@ class Product extends BaseModel
         return $result;
     }
 
-    public function productOnTypes() 
+    public function productByType($options) 
     {
-        $query = "SELECT distinct_products.*, products.id as prod_id, products.title FROM ".
-        "(SELECT DISTINCT product_applications.product_id, product_applications.application_id FROM product_applications) as distinct_products ".
-        "JOIN products ON products.id=distinct_products.product_id JOIN applications ON applications.id=distinct_products.application_id ".
-        "WHERE applications.type=" . isset($options['type'])?(int)$options['type']:1 . " LIMIT 10";
+        $this->db->select("SQL_CALC_FOUND_ROWS products.id as product_id, products.title as product_title, products.image", false)
+        ->from("(SELECT product_applications.product_id, product_applications.application_id FROM product_applications ".
+        "GROUP BY product_applications.product_id) as distinct_products")
+        ->join("products", "products.id=distinct_products.product_id")
+        ->join("applications", "applications.id=distinct_products.application_id")
+        ->where("applications.type", isset($options['type'])?(int)$options['type']:APPLICATION_RESIDENTIAL)
+        ->where("products.language_code",isset($options['language_code'])?$options['language_code']:'en')
+        ->limit(isset($options['limit'])?(int)$options['limit']:RECORDS_PER_PAGE)
+        ->offset(isset($options['offset'])?(int)$options['offset']:0);
+
+        $query = $this->db->get();
+        $data['result'] = $query->result_array();
+        $data['count'] = $this->db->query("SELECT FOUND_ROWS() as count")->row()->count;
+        
+        return $data;
+
+        
     }
 }

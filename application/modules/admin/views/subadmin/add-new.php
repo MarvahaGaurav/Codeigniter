@@ -35,7 +35,7 @@
                                 <div class="form-group">
                                     <label class="admin-label">Email</label>
                                     <div class="input-holder">
-                                        <input type="text" class="" maxlength="30" name="email" placeholder="* Sub-admin Email" value="<?php echo set_value('email'); ?>">
+                                        <input type="text" class="" maxlength="50" name="email" placeholder="* Sub-admin Email" value="<?php echo set_value('email'); ?>">
                                         <?php echo form_error('email', '<label class=" alert-danger">', '</label>'); ?>
                                     </div>
                                 </div>
@@ -53,9 +53,9 @@
                                 <label class="admin-label">Status</label>
                                 <div class="commn-select-wrap">
                                     <select class="selectpicker" name="status">
-                                        <option value="">Select</option>
-                                        <option value="1">Active</option>
-                                        <option value="2">Inactive</option>
+                                        <option value="0">Inactive</option>
+                                        <option value="1" selected>Active</option>
+                                        <option value="2">Block</option>
                                     </select>
                                     <?php echo form_error('status', '<label class="alert-danger">', '</label>'); ?>
                                 </div>
@@ -66,7 +66,7 @@
                                     <div class="clearfix">
                                         <div class="row">
                                             <div class="col-lg-12"><h2 class="title-box m-t-n p-t-20">Sub-admin Roles :</h2></div>
-                                            <div class="col-lg-12">
+                                            <div class="col-lg-12" id="allcheckboxes">
                                                 <div class="custom-check main-check">
                                                     <input id="main-check1" name="user" onchange="permission('user', 'main-check1')"  value="1"   type="checkbox">
                                                     <label for="main-check1"><span></span>User Management</label>
@@ -105,7 +105,7 @@
                                                 </div>			
                                                 <div class="clear"></div>
                                                 <div class="custom-check main-check">
-                                                    <input id="main-check2" name="merchant" onchange="permission('merchant', 'main-check2')"  value="1"   type="checkbox">
+                                                    <input id="main-check2" name="merchant" onchange="permission('merchant', 'main-check2')"  value="2"   type="checkbox">
                                                     <label for="main-check2"><span></span>Merchant Management</label>
                                                     <ul class="check-column">
                                                         <li>
@@ -142,7 +142,7 @@
                                                 </div>			
                                                 <div class="clear"></div>
                                                 <div class="custom-check main-check">
-                                                    <input id="main-check3" name="product" onchange="permission('product', 'main-check3')"  value="1"   type="checkbox">
+                                                    <input id="main-check3" name="product" onchange="permission('product', 'main-check3')"  value="3"   type="checkbox">
                                                     <label for="main-check3"><span></span>Product Management</label>
                                                     <ul class="check-column">
                                                         <li>
@@ -179,7 +179,7 @@
                                                 </div>			
                                                 <div class="clear"></div>
                                                 <div class="custom-check main-check">
-                                                    <input id="main-check4" name="template" onchange="permission('template', 'main-check4')"  value="1"   type="checkbox">
+                                                    <input id="main-check4" name="template" onchange="permission('template', 'main-check4')"  value="4"   type="checkbox">
                                                     <label for="main-check4"><span></span>Template Management</label>
                                                     <ul class="check-column">
                                                         <li>
@@ -216,7 +216,7 @@
                                                 </div>			
                                                 <div class="clear"></div>
                                                 <div class="custom-check main-check">
-                                                    <input id="main-check5" name="content" onchange="permission('content', 'main-check5')"  value="1"   type="checkbox">
+                                                    <input id="main-check5" name="content" onchange="permission('content', 'main-check5')"  value="5"   type="checkbox">
                                                     <label for="main-check5"><span></span>Content Management</label>
                                                     <ul class="check-column">
                                                         <li>
@@ -253,7 +253,7 @@
                                                 </div>			
                                                 <div class="clear"></div>
                                                 <div class="custom-check main-check">
-                                                    <input id="main-check6" name="option" onchange="permission('Version', 'main-check6')" value="2" type="checkbox">
+                                                    <input id="main-check6" name="option" onchange="permission('Version', 'main-check6')" value="6" type="checkbox">
                                                     <label for="main-check6"><span></span>Manage Version</label>
                                                     <ul class="check-column">
                                                         <li>
@@ -328,7 +328,7 @@
                                                 </div>
                                                 <div class="clear"></div>
                                                 <div class="custom-check main-check">
-                                                    <input id="main-check8" name="option" onchange="permission('messages', 'main-check8')" value="2" type="checkbox">
+                                                    <input id="main-check8" name="option" onchange="permission('messages', 'main-check8')" value="8" type="checkbox">
                                                     <label for="main-check8"><span></span>Manage Messages</label>
                                                     <ul class="check-column">
                                                         <li>
@@ -391,20 +391,24 @@
 </body>
 <script>
     //function for give the permission to subadmin
-
     function permission(gettype, elementId) {
         var checked = $("#" + elementId).prop('checked');
-        
-        $("."+gettype).prop("checked", checked);
-
-        // var isdiabled = $('.' + gettype).prop('disabled');
-        // var class = gettype;
-        // if (isdiabled) {
-        //     $('.' + gettype).removeAttr('disabled', false);
-        // } else {
-        //     $('.' + gettype).prop('disabled', true);
-        //     $('.' + gettype).attr('checked', false);
-        // }
-
+        $("."+gettype).prop("checked", checked);       
     }
+    
+    //if inner checkboxes are checked then parent should be checked.
+    $('document').ready(function(){
+        $('#allcheckboxes .custom-check.main-check').each(function(){
+            var parthis = $(this);
+            $(this).find('ul.check-column li .custom-check input:checkbox').click(function(){
+                var checkcnt = $(parthis).find('ul.check-column li .custom-check input:checkbox:checked').length;
+                if(checkcnt == 0){
+                    $(parthis).find('> input:checkbox').removeAttr('checked');
+                }else if(checkcnt > 0){
+                    $(parthis).find('> input:checkbox').prop('checked', true);
+                }
+                console.log(checkcnt+' == ');  
+            });                     
+        });
+    });
 </script>

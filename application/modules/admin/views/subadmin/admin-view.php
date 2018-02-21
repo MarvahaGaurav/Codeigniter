@@ -36,24 +36,24 @@ $messagePermission = isset($permission[8])?$permission[8]:array();
                                 <div class="col-sm-6 col-xs-6">
                                     <div class="form-group">
                                         <label class="admin-label">Admin Name</label>
-                                        <div class="input-holder">
-                                            <label><?php echo $admindetail['admin_name'] ?></label>
+                                        <div class="input-holder text-detail">
+                                            <?php echo $admindetail['admin_name'] ?>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-xs-6">
                                     <div class="form-group">
                                         <label class="admin-label">Email</label>
-                                        <div class="input-holder">
-                                            <label><?php echo $admindetail['admin_email'] ?></label>
+                                        <div class="input-holder text-detail">
+                                            <?php echo $admindetail['admin_email'] ?>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-xs-6">
                                     <div class="form-group">
                                         <label class="admin-label">Status</label>
-                                        <div class="commn-select-wrap">
-                                            <label><?php echo ($admindetail['status'] == 1)?'Active':'Blocked' ?></label>
+                                        <div class="commn-select-wrap text-detail">
+                                            <?php echo ($admindetail['status'] == 1)?'Active':'Blocked' ?>
                                         </div>
                                     </div>
                                 </div>

@@ -1,4 +1,4 @@
-<link href="<?php echo base_url()?>public/css/datepicker.css">
+<link href="<?php echo base_url()?>public/css/datepicker.min.css">
 
 <!-- alert -->
 <?php if ( null !== $this->session->flashdata("greetings")) { ?>
@@ -18,7 +18,7 @@
             
             <div class="col-lg-12">
                 <div class="section-wrapper">
-                    <form method="GET" action="" id="dashboard-form">
+                    <form method="GET" action="/admin/dashboard" id="dashboard-form">
                         <div class="clearfix">
                             <div class="col-lg-4 col-md-4 col-sm-6">
                                 <div class="form-group">
@@ -42,9 +42,13 @@
                                      </div>
                                 </div>
                             </div>
-                            <div class="col-lg-2 col-md-2 col-sm-4">
-                                <div class="button-wrap text-center">
-                                    <input type="submit" class="commn-btn save" id="filter-button" name="" value="Apply">
+                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                <div class="form-group">
+                                    <label class="label-txt" for=""><?php echo "&nbsp;"?></label>
+                                    <div class="form-blk text-center">
+                                        <button  onclick="window.location.href='/admin/dashboard';" type="button" class="commn-btn cancel" id="resetbutton">Reset</button>
+                                        <input onclick="$('#dashboard-form').submit();" type="button" class="commn-btn save" id="filter-button" name="" value="Apply">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -57,11 +61,11 @@
     <div class="totalwrapper-section">
         <div class="row">
           
-            <!--<div class="col-lg-12">
+            <div class="col-lg-12">
                 <h3 class="section-heading ts-numberof-heading">Total Number Of</h3>
-            </div>-->
+            </div>
             <div class="col-lg-4 col-md-4">
-                <a href="<?php echo base_url().'admin/users'?>">
+                <a href="<?php echo base_url().'admin/users?startDate='.$start_date.'&endDate='.$end_date?>">
                     <div class="ts-wrapper purple clearfix">
                         <div class="ts-content">
                             <div class="ts-numbers"><?php echo $userCount ?>
@@ -78,7 +82,7 @@
             </div>
 
             <div class="col-lg-4 col-md-4">
-                <a href="<?php echo base_url().'admin/technician?user_type=technician'?>">
+                <a href="<?php echo base_url().'admin/technician?user_type=technician&startDate='.$start_date.'&endDate='.$end_date?>">
                     <div class="ts-wrapper yellow clearfix">
                         <div class="ts-content">
                             <div class="ts-numbers"><?php echo $technicianCount ?>
@@ -94,11 +98,11 @@
             </div>
             
             <div class="col-lg-4 col-md-4">
-                <a href="javascript:void(0)">
+                <a href="<?php echo base_url().'admin/technician?user_type=architect&startDate='.$start_date.'&endDate='.$end_date?>">
                     <div class="ts-wrapper red clearfix">
                         <div class="ts-content">
-                            <div class="ts-numbers"><?php echo $projectCount ?>
-                                <span class="ts-userstxt">Projects</span>
+                            <div class="ts-numbers"><?php echo $architectCount; ?>
+                                <span class="ts-userstxt">Architect</span>
                             </div>
                             <!--<p class="ts-description">
                                 Lorem Ipsum is simply dummy text of the printing and typesetting industry.
@@ -114,37 +118,41 @@
     <!-- //totalwrapper-section-->
 
     <!-- totalwrapper-section-->
-    <div class="totalwrapper-section">
-        
-            <!--<div class="col-lg-12">
+    <div class="totalwrapper-section"> 
+        <div class="row">
+        <div class="col-lg-12">
                 <h3 class="section-heading ts-numberof-heading">Total Number Of</h3>
             </div>
             <div class="col-lg-4 col-md-4">
+                <a href="<?php echo base_url().'admin/technician?user_type=wholesaler&startDate='.$start_date.'&endDate='.$end_date?>">
                 <div class="ts-wrapper purple clearfix">
                     <div class="ts-content">
-                        <div class="ts-numbers"><?php echo $userCount ?>
-                            <span class="ts-userstxt">Users</span>
-                        </div> -->
+                        <div class="ts-numbers"><?php echo $wholesellerCount; ?>
+                            <span class="ts-userstxt">Whole seller </span>
+                        </div>
                         <!--<p class="ts-description">
                             Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                         </p>-->
-                    <!-- </div>
+                    </div>
                     <div class="ts-thumbnail" style="background:url('public/images/ts-img1.jpg')"></div>
                 </div>
+                </a>
             </div>
 
             <div class="col-lg-4 col-md-4">
+                <a href="<?php echo base_url().'admin/technician?user_type=electrical_planner&startDate='.$start_date.'&endDate='.$end_date?>">
                 <div class="ts-wrapper yellow clearfix">
                     <div class="ts-content">
-                        <div class="ts-numbers"><?php echo $technicianCount ?>
-                            <span class="ts-userstxt">Technician</span>
-                        </div> -->
+                        <div class="ts-numbers"><?php echo $electricplannerCount; ?>
+                            <span class="ts-userstxt">Electric Planner</span>
+                        </div>
                         <!--<p class="ts-description">
                             Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                         </p>-->
-                   <!--  </div>
+                   </div>
                     <div class="ts-thumbnail" style="background:url('public/images/ts-img1.jpg')"></div>
                 </div>
+                </a>
             </div>
 
             <div class="col-lg-4 col-md-4">
@@ -152,15 +160,16 @@
                     <div class="ts-content">
                         <div class="ts-numbers"><?php echo $projectCount ?>
                             <span class="ts-userstxt">Projects</span>
-                        </div> -->
+                        </div>
                         <!--<p class="ts-description">
                             Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                         </p>-->
-                   <!--  </div>
+                   </div>
                     <div class="ts-thumbnail" style="background:url('public/images/ts-img1.jpg')"></div>
                 </div>
             </div>
-        </div>-->
+            </div>
+        </div>
     </div> 
     <!-- //totalwrapper-section-->
 
@@ -252,10 +261,9 @@
     <?php */ ?>
     <!-- //Graph Section -->
 
-</div>
-
-<script src="<?php echo base_url()?>public/js/plugin/datepicker.min.js"></script>
+<link rel="stylesheet" href="<?php echo base_url()?>public/css/bootstrap-datetimepicker.css">
+<script src="<?php echo base_url()?>public/js/moment-with-locales.js"></script>
+<script src="<?php echo base_url()?>public/js/bootstrap-datetimepicker.js"></script>
 <script src="<?php echo base_url()?>public/js/custom-dashboard.js"></script>
-<!-- <script src="<?php //echo base_url()?>public/js/datepicker.min.js"></script> -->
 <!--<script src="<?php //echo base_url()?>public/js/highcharts.js"></script>
 <script src="<?php //echo base_url()?>public/js/custom-dashboard.js"></script>-->

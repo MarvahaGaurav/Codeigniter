@@ -8,7 +8,7 @@
   
   <table cellpadding="0" cellspacing="0" border="0" style="margin:0 auto; min-width:320px; max-width:600px; border:2px solid #f16725;" width="100%">
   <tr style="background-color:rgba(245, 245, 245, 0.61);; padding:5px;">
-  <td align="center"><a href="javascript:void(0)"><img src="<?php echo base_url(); ?>public/images/logo.png" alt="<?php echo PROJECT_NAME ?>" ></a></td>
+  <td align="center"><a href="javascript:void(0)"><img style="height:100px;" src="<?php echo base_url(); ?>public/images/logo.png" alt="<?php echo PROJECT_NAME ?>" ></a></td>
   </tr>
   
   <tr><td>&nbsp; </td> </tr>

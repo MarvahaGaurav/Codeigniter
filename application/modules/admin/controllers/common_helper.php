@@ -96,7 +96,7 @@ function encrypt_with_openssl($string, $urlencode = true) {
 function show404($error = "", $url = 'admin') {
     $error = (empty($error)) ? 'Invalid Request' : $error;
     echo $error;
-    die('<a href="/admin/admin"><br>Click here to redirect</a>');
+    die('<a href="/admin/admin"><br>Click here to redirectss</a>');
 }
 
 function sendNotiViaCurl($pushData) {

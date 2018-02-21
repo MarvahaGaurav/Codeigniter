@@ -33,8 +33,12 @@ $module = $this->router->fetch_module();
             <div class="col-lg-6 col-sm-6">
                 <div class="srch-wrap fawe-icon-position col-sm-space">
                     <span class="fawe-icon fawe-icon-position-left search-ico"><i class="fa fa-search"></i></span>
+                    <?php if(isset($searchlike) && !empty($searchlike)){?>
+                    <span class="fawe-icon fawe-icon-position-right show-close-ico" onclick="jQuery('.searchCloseBtn').trigger('click');"><i class="fa fa-times-circle"></i></span>
+                    <?php }else{ ?>
                     <span class="fawe-icon fawe-icon-position-right close-ico"><i class="fa fa-times-circle"></i></span>
-                    <input type="text" maxlength="15" value="<?php echo (isset($searchlike) && !empty($searchlike))? $searchlike:''?>" class="search-box searchlike" placeholder="Search by name, email" id="searchuser" name="search">
+                    <?php } ?>
+                    <input type="text" maxlength="50" value="<?php echo (isset($searchlike) && !empty($searchlike))? $searchlike:''?>" <?php if(isset($searchlike) && !empty($searchlike)){ echo 'readonly';}?> class="search-box <?php if(isset($searchlike) && !empty($searchlike)){ echo 'searchCloseBtn'; }else{  echo 'searchlike'; }?>" placeholder="Search by name, email" id="searchuser" name="search">
                 </div>
             </div>
 
@@ -43,6 +47,9 @@ $module = $this->router->fetch_module();
                     <a href="javascript:void(0)" id="filter-side-wrapper" class="tooltip-p">
                         <div class="circle-btn animate-btn">
                             <i class="fa fa-filter" aria-hidden="true"></i>
+                            <?php if(!empty($status) || !empty($user_type) || !empty($startDate) || !empty($endDate) || !empty($country)){ ?>
+                            <i class="fa fa-close" aria-hidden="true"></i>
+                            <?php } ?>
                         </div>
                         <span class="tooltiptext">Filter</span>
                     </a>
@@ -228,35 +235,32 @@ $module = $this->router->fetch_module();
         
     </div>
 </div>
-
-<script src="<?php echo base_url()?>public/js/datepicker.min.js"></script>
+<link rel="stylesheet" href="<?php echo base_url()?>public/css/bootstrap-datetimepicker.css">
+<script src="<?php echo base_url()?>public/js/moment-with-locales.js"></script>
+<script src="<?php echo base_url()?>public/js/bootstrap-datetimepicker.js"></script>
+<script src="<?php echo base_url()?>public/js/custom-dashboard.js"></script>
 <script>
+$(function () {
+   $('#startDate,#endDate').datetimepicker({
+       viewMode: 'days',
+       //format: 'DD-MM-YYYY',
+       format: 'DD/MM/YYYY',
+       useCurrent: true,
+       maxDate: moment()
+   });
+   $('#startDate').datetimepicker().on('dp.change', function (e) {
+       var incrementDay = moment(new Date(e.date));
+       incrementDay.add(1, 'days');
+       $('#endDate').data('DateTimePicker').minDate(incrementDay);
+       $(this).data("DateTimePicker").hide();
+   });
 
-    $(document).ready(function(){
-        
-        var nowTemp = new Date();
-        var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
-
-        var checkin = $('#startDate').datepicker({
-            onRender: function(date) {
-                return date.valueOf() > now.valueOf() ? 'disabled' : '';
-            }
-        }).on('changeDate', function(ev) {
-            if (ev.date.valueOf() < checkout.date.valueOf()) {
-                var newDate = new Date(ev.date)
-                newDate.setDate(newDate.getDate());
-                checkout.setValue(newDate);
-            }
-            checkin.hide();
-            $('#endDate')[0].focus();
-        }).data('datepicker');
-        var checkout = $('#endDate').datepicker({
-            onRender: function(date) {
-                return date.valueOf() < checkin.date.valueOf() || date.valueOf() > now.valueOf() ? 'disabled' : '';
-            }
-        }).on('changeDate', function(ev) {
-            checkout.hide();
-        }).data('datepicker');
-
-    });
+   $('#endDate').datetimepicker().on('dp.change', function (e) {
+       var decrementDay = moment(new Date(e.date));
+       decrementDay.subtract(1, 'days');
+       $('#startDate').data('DateTimePicker').maxDate(decrementDay);
+       $(this).data("DateTimePicker").hide();
+   });
+   
+});
 </script>

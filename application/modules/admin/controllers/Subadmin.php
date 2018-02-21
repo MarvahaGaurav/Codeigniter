@@ -24,6 +24,11 @@ class Subadmin extends MY_Controller {
         }
         $this->data = [];
         $this->data['admininfo'] = $this->admininfo;
+        if($this->admininfo['role_id'] == 2){
+            $whereArr = ['where'=>['admin_id'=>$this->admininfo['admin_id']]];
+            $access_detail = $this->Common_model->fetch_data('sub_admin', ['viewp', 'addp', 'editp', 'blockp', 'deletep', 'access_permission', 'admin_id', 'id'], $whereArr, false);
+            $this->data['admin_access_detail'] = $access_detail;
+        }
     }
 
     public function add() {
@@ -235,86 +240,95 @@ class Subadmin extends MY_Controller {
         $getData = $this->input->get();
         $post = $this->input->post();
         if (isset($post) && !empty($post)) {
-            $admin_id = (isset($post['token']) && !empty($post['token'])) ? encryptDecrypt($post['token'], 'decrypt') : "";
+            $this->form_validation->set_rules('name', 'Admin Name', 'trim|required');
+            $this->form_validation->set_rules('email', 'Email', 'trim|required');            
+            $this->form_validation->set_rules('status', 'Status', 'trim|required');
 
-            $subAdminUpdateArr = [];
-            $subAdminUpdateArr = array(
-                'admin_name' => $post['name'],
-                'admin_email' => $post['email'],
-                'status' => $post['status'],
-            );
-            if (isset($post['newpassword']) && !empty($post['newpassword'])) {
-                $subAdminUpdateArr['admin_password'] = hash('sha256', trim($post['newpassword']));
-            }
+            if (!($this->form_validation->run())) {
+                $this->Common_model->load_views('/subadmin/add-new', $this->data);
+            } else {
+                $admin_id = (isset($post['token']) && !empty($post['token'])) ? encryptDecrypt($post['token'], 'decrypt') : "";
+                //echo $admin_id; die;
+                $subAdminUpdateArr = [];
+                $subAdminUpdateArr = array(
+                    'admin_name' => $post['name'],
+                    //'admin_email' => $post['email'],
+                    'status' => $post['status'],
+                );
+                if (isset($post['newpassword']) && !empty($post['newpassword'])) {
+                    $subAdminUpdateArr['admin_password'] = hash('sha256', trim($post['newpassword']));
+                }
 
-            $whereArr = [];
-            $whereArr['where'] = array('admin_id' => $admin_id);
-            $isSuccess = $this->Common_model->update_single('admin', $subAdminUpdateArr, $whereArr);
-            if ($post['status'] != 1) {
-                $this->Common_model->update_single('sub_admin', ['status' => 2], $whereArr);
-            }
-            $permission = array();
-            $this->Common_model->delete_data('sub_admin', $whereArr);
+                $whereArr = [];
+                $whereArr['where'] = array('admin_id' => $admin_id);
+                $isSuccess = $this->Common_model->update_single('admin', $subAdminUpdateArr, $whereArr);
+                if ($post['status'] != 1) {
+                    $this->Common_model->update_single('sub_admin', ['status' => 2], $whereArr);
+                }
+                $permission = array();
+                $this->Common_model->delete_data('sub_admin', $whereArr);
 
-            if (!empty($post['permission'])) {
-                foreach ($post['permission'] as $key => $value) {
-                    switch ($key) {
-                        case 'user':
-                            $perType = 1;
-                            break;
-                        case 'merchant':
-                            $perType = 2;
-                            break;
-                        case 'product':
-                            $perType = 3;
-                            break;
-                        case 'template':
-                            $perType = 4;
-                            break;
-                        case 'content':
-                            $perType = 5;
-                            break;
-                        case 'version':
-                            $perType = 6;
-                            break;
-                        case 'notification':
-                            $perType = 7;
-                            break;
-                        case 'messages':
-                            $perType = 8;
-                            break;
-                        default:
+                if (!empty($post['permission'])) {
+                    foreach ($post['permission'] as $key => $value) {
+                        switch ($key) {
+                            case 'user':
+                                $perType = 1;
+                                break;
+                            case 'merchant':
+                                $perType = 2;
+                                break;
+                            case 'product':
+                                $perType = 3;
+                                break;
+                            case 'template':
+                                $perType = 4;
+                                break;
+                            case 'content':
+                                $perType = 5;
+                                break;
+                            case 'version':
+                                $perType = 6;
+                                break;
+                            case 'notification':
+                                $perType = 7;
+                                break;
+                            case 'messages':
+                                $perType = 8;
+                                break;
+                            default:
+                        }
+
+                        $permArr = [];
+                        $permArr = array(
+                            'viewp' => isset($value['view']) ? $value['view'] : 0,
+                            'deletep' => isset($value['delete']) ? $value['delete'] : 0,
+                            'addp' => isset($value['add']) ? $value['add'] : 0,
+                            'editp' => isset($value['edit']) ? $value['edit'] : 0,
+                            'blockp' => isset($value['block']) ? $value['block'] : 0,
+                            'admin_id' => $admin_id,
+                            'access_permission' => $perType,
+                            'created_at' => datetime(),
+                        );
+
+                        /*
+                         * Save the permissions of subadmin to db view,delete,add,edit etc 
+                         */
+                        $response = $this->Common_model->insert_single('sub_admin', $permArr);
                     }
+                }
+                if ($isSuccess) {
 
-                    $permArr = [];
-                    $permArr = array(
-                        'viewp' => isset($value['view']) ? $value['view'] : 0,
-                        'deletep' => isset($value['delete']) ? $value['delete'] : 0,
-                        'addp' => isset($value['add']) ? $value['add'] : 0,
-                        'editp' => isset($value['edit']) ? $value['edit'] : 0,
-                        'blockp' => isset($value['block']) ? $value['block'] : 0,
-                        'admin_id' => $admin_id,
-                        'access_permission' => $perType,
-                        'created_at' => datetime(),
-                    );
-
-                    /*
-                     * Save the permissions of subadmin to db view,delete,add,edit etc 
-                     */
-                    $response = $this->Common_model->insert_single('sub_admin', $permArr);
+                    $alertMsg = [];
+                    $alertMsg['text'] = $this->lang->line('subadmin_updated');
+                    $alertMsg['type'] = 'Success!';
+                    $this->session->set_flashdata('alertMsg', $alertMsg);
+                    redirect('/admin/subadmin');
+                } else {
+                    $this->data['msg'] = 'Please try again';
+                    load_views("/subadmin/edit", $this->data);
                 }
             }
-            if ($isSuccess) {
-
-                $alertMsg = [];
-                $alertMsg['text'] = $this->lang->line('subadmin_updated');
-                $alertMsg['type'] = 'Success!';
-                $this->session->set_flashdata('alertMsg', $alertMsg);
-                redirect('/admin/subadmin');
-            } else {
-                $this->data['msg'] = 'Please try again';
-                load_views("/subadmin/edit", $this->data);
-            }
+            
         } else {
 
             $admin_id = (isset($getData['id']) && !empty($getData['id'])) ? encryptDecrypt($getData['id'], 'decrypt') : "";

@@ -1,15 +1,16 @@
 <?php
-
 defined('BASEPATH') OR exit('No direct script access allowed');
-
 class Notification extends MY_Controller {
 
     function __construct() {
         parent::__construct();
         $this->load->helper(['url', 'custom_cookie', 'encrypt_openssl']);
+        $this->load->helper(array('form', 'url', 'date'));
         $this->load->model('Common_model');
         $this->load->model('Admin_Model');
+        $this->load->library('form_validation');        
         $this->load->library('session');
+        $this->load->helper("images");
         $this->lang->load('common', "english");
         $sessionData = validate_admin_cookie('rcc_appinventiv', 'admin');
         if ($sessionData) {
@@ -21,6 +22,11 @@ class Notification extends MY_Controller {
         }
         $this->data = [];
         $this->data['admininfo'] = $this->admininfo;
+        if($this->admininfo['role_id'] == 2){
+            $whereArr = ['where'=>['admin_id'=>$this->admininfo['admin_id']]];
+            $access_detail = $this->Common_model->fetch_data('sub_admin', ['viewp', 'addp', 'editp', 'blockp', 'deletep', 'access_permission', 'admin_id', 'id'], $whereArr, false);
+            $this->data['admin_access_detail'] = $access_detail;
+        }
     }
 
     public function index() {
@@ -34,8 +40,8 @@ class Notification extends MY_Controller {
 
         if ($role_id != 1) {
             $whereArr = [];
-            $whereArr['where'] = array('admin_id' => $this->admininfo['admin_id'], 'access_permission' => 3, 'status' => 1);
-            $access_detail = $this->Common_model->fetch_data('sub_admin', ['addp', 'editp', 'deletep'], $whereArr, true);
+            $whereArr['where'] = array('admin_id' => $this->admininfo['admin_id'], 'access_permission' => 7, 'status' => 1);
+            $access_detail = $this->Common_model->fetch_data('sub_admin', ['addp', 'editp', 'deletep','blockp','viewp'], $whereArr, true);
         }
         $this->data['accesspermission'] = ($role_id == 2) ? $access_detail : $defaultPermission;
 
@@ -91,10 +97,24 @@ class Notification extends MY_Controller {
 
         $this->load->helper('form');
         $postDataArr = $this->input->post();
-        if (!empty($postDataArr)) {
+        if (!empty($postDataArr)) {            
+            if (isset($postDataArr['imgurl']) && !empty($postDataArr['imgurl'])) {
+                $this->load->library('commonfn');
+                try
+                {
+                    $postDataArr['image'] = $imageName=s3_image_uploader(ABS_PATH.$postDataArr['imgurl'],$postDataArr['imgurl']);
+                } catch (Exception $e) {
+                    $this->data['imageErr'] = $e->getMessage();
+                    $this->data['imageErr'] = strip_tags($this->upload->display_errors());
+                    $this->session->set_flashdata('message', $this->lang->line('error_prefix') .strip_tags($this->upload->display_errors()). $this->lang->line('error_suffix'));
+                    redirect(base_url() . "notification/add");
+                }                
+            }else{
+                $postDataArr['image'] = $imageName = '';
+            }
             $isSuccess = $this->sendNotification($postDataArr);
         }
-        load_views("notification/add", $this->data);
+        load_views_cropper("notification/add", $this->data);
     }
 
     public function edit() {
@@ -109,15 +129,32 @@ class Notification extends MY_Controller {
             if (!$access_detail['editp']) {
                 redirect('admin/notification');
             }
-        }
-        $this->load->helper('form');
+        }        
         $getDataArr = $this->input->get();
         $postDataArr = $this->input->post();
         $notiId = (isset($getDataArr['id']) && !empty($getDataArr['id'])) ? encryptDecrypt($getDataArr['id'], 'decrypt') : '';
         if (empty($notiId)) {
             show_404();
         }
-        if (!empty($postDataArr)) {
+        
+        if (!empty($postDataArr)) {    
+            // pr($postDataArr);
+            if (isset($postDataArr['imgurl']) && !empty($postDataArr['imgurl'])) {
+                $this->load->library('commonfn');
+                try
+                {
+                    $postDataArr['image'] = $imageName=s3_image_uploader(ABS_PATH.$postDataArr['imgurl'],$postDataArr['imgurl']);
+                } 
+                catch (Exception $e) {
+                    $this->data['imageErr'] = $e->getMessage();
+                    $this->data['imageErr'] = strip_tags($this->upload->display_errors());
+                    $this->session->set_flashdata('message', $this->lang->line('error_prefix') .strip_tags($this->upload->display_errors()). $this->lang->line('error_suffix'));
+                    redirect(base_url() . "notification/edit?id=".$notiId);
+                }                
+            }else{
+                $postDataArr['image'] = $imageName = '';
+            }
+            $postDataArr['id'] = $notiId;
             $this->sendNotification($postDataArr);
         } else if (!empty($notiId)) {
             $whereArr = [];
@@ -127,7 +164,8 @@ class Notification extends MY_Controller {
                 show_404();
             }
             $this->data['detail'] = $notiDetail;
-            load_views("notification/edit", $this->data);
+            $this->data['notification_id'] = encryptDecrypt($notiId);
+            load_views_cropper("notification/edit", $this->data);
         } else {
             show_404();
         }
@@ -176,6 +214,7 @@ class Notification extends MY_Controller {
         $payloadData['title'] = $title;
         $payloadData['link'] = $link;
         $payloadData['message'] = $message;
+        $payloadData['type'] = "admin_alert";
 
         if (!empty($androidArr)) {
             $newandroidArr = array_chunk($androidArr, 10);

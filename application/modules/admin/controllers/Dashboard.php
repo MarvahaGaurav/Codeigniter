@@ -20,6 +20,11 @@ class Dashboard extends MY_Controller {
         }
         $this->data = [];
         $this->data['admininfo'] = $this->admininfo;
+        if($this->admininfo['role_id'] == 2){
+            $whereArr = ['where'=>['admin_id'=>$this->admininfo['admin_id']]];
+            $access_detail = $this->Common_model->fetch_data('sub_admin', ['viewp', 'addp', 'editp', 'blockp', 'deletep', 'access_permission', 'admin_id', 'id'], $whereArr, false);
+            $this->data['admin_access_detail'] = $access_detail;
+        }
 
     }
 
@@ -42,7 +47,8 @@ class Dashboard extends MY_Controller {
         }
 
         /*App users count */
-        $where['where'] = ['status !=' => 3,'user_type'=>'1'];
+        $where['where'] = ['status !=' => 3];
+        $where['where_in'] = ['user_type' => array(1,6)];
         if ( isset($get['start_date']) && isset($get['end_date']) ) {
             $where['where']['DATE(registered_date) >='] = $start_date;
             $where['where']['DATE(registered_date) <='] = $end_date;
@@ -52,7 +58,8 @@ class Dashboard extends MY_Controller {
         /*App users count */
         
         /*Technician count */
-        $where['where'] = ['status !=' => 3,'user_type'=>'2'];
+        $where['where'] = ['status !=' => 3];
+        $where['where_in'] = ['user_type' => array(2)];
         if ( isset($get['start_date']) && isset($get['end_date']) ) {
             $where['where']['DATE(registered_date) >='] = $start_date;
             $where['where']['DATE(registered_date) <='] = $end_date;
@@ -60,6 +67,39 @@ class Dashboard extends MY_Controller {
         $dataCount = $this->Common_model->fetch_data('ai_user', array('count(*) as userCount'), $where, true);
         $this->data['technicianCount'] = $dataCount['userCount'];
         /*Technician count */
+        
+        /*Wholeseller count */
+        $where['where'] = ['status !=' => 3];
+        $where['where_in'] = ['user_type' => array(5)];
+        if ( isset($get['start_date']) && isset($get['end_date']) ) {
+            $where['where']['DATE(registered_date) >='] = $start_date;
+            $where['where']['DATE(registered_date) <='] = $end_date;
+        }
+        $dataCount = $this->Common_model->fetch_data('ai_user', array('count(*) as userCount'), $where, true);
+        $this->data['wholesellerCount'] = $dataCount['userCount'];
+        /*wholeseller count */
+        
+        /*Architect count */
+        $where['where'] = ['status !=' => 3];
+        $where['where_in'] = ['user_type' => array(3)];
+        if ( isset($get['start_date']) && isset($get['end_date']) ) {
+            $where['where']['DATE(registered_date) >='] = $start_date;
+            $where['where']['DATE(registered_date) <='] = $end_date;
+        }
+        $dataCount = $this->Common_model->fetch_data('ai_user', array('count(*) as userCount'), $where, true);
+        $this->data['architectCount'] = $dataCount['userCount'];
+        /*Architect count */
+        
+        /*Electric Planner count */
+        $where['where'] = ['status !=' => 3];
+        $where['where_in'] = ['user_type' => array(4)];
+        if ( isset($get['start_date']) && isset($get['end_date']) ) {
+            $where['where']['DATE(registered_date) >='] = $start_date;
+            $where['where']['DATE(registered_date) <='] = $end_date;
+        }
+        $dataCount = $this->Common_model->fetch_data('ai_user', array('count(*) as userCount'), $where, true);
+        $this->data['electricplannerCount'] = $dataCount['userCount'];
+        /*Electric Planner  count */
         
         /*Project count */
         $this->data['projectCount'] = 0;

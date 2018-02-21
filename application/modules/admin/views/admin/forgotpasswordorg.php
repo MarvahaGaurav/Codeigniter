@@ -23,7 +23,8 @@
                         <h1 class="index-comn-heading">Forgot Password  </h1>
                         <p class="index-note">Forgot your password? Don’t worry, Enter us your registered email and we will send you steps to reset your password.</p>
                         <div class="form-field-wrap" id="email_error">
-                            <span class="ad-user"></span>
+                            <a href="forgotpasswordorg.php"></a>
+                            <span class="field-ico user-ico"></span>
                             <input type="text" class="login_filed removespace" maxlength="150" placeholder="* Email Id" name="email" id="email" value="<?php echo set_value('email'); ?>"> 
                             <?php echo isset($error) ? '<label class="alert-danger">' . $error . '</label>' : form_error('email', '<label class="alert-danger">', '</label>'); ?>
                         </div>

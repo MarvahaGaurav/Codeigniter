@@ -10,6 +10,7 @@ class Admin_Profile extends MY_Controller {
         $this->load->model('Common_model');
         $this->load->library('form_validation');
         $this->load->helper("encrypt_openssl");
+        $this->load->helper("images");
         $this->load->helper(array('form', 'url', 'date'));
         $this->load->library('session');
         $this->lang->load('common', "english");
@@ -20,6 +21,11 @@ class Admin_Profile extends MY_Controller {
             redirect(base_url() . 'admin/Admin');
         }
         $this->data['admininfo'] = $this->admininfo;
+        if($this->admininfo['role_id'] == 2){
+            $whereArr = ['where'=>['admin_id'=>$this->admininfo['admin_id']]];
+            $access_detail = $this->Common_model->fetch_data('sub_admin', ['viewp', 'addp', 'editp', 'blockp', 'deletep', 'access_permission', 'admin_id', 'id'], $whereArr, false);
+            $this->data['admin_access_detail'] = $access_detail;
+        }
     }
 
     /**
@@ -90,33 +96,46 @@ class Admin_Profile extends MY_Controller {
                 $this->data["csrfName"] = $this->security->get_csrf_token_name();
                 $this->data["csrfToken"] = $this->security->get_csrf_hash();
                 $this->data['editdata'] = $this->Common_model->fetch_data('admin', array('admin_id', 'admin_email', 'admin_profile_pic'), array('where' => array('admin_id' => $id)), true);
-                load_views("profile/admin_profile_edit", $this->data);
+                load_views_cropper("profile/admin_profile_edit", $this->data);
+
             }
 
-            if (isset($_FILES['admin_image']) && !empty($_FILES['admin_image'])) {
+            if (isset($postdata['imgurl']) && !empty($postdata['imgurl'])) {
                 $this->load->library('commonfn');
+                try
+                {
+                    $imageName=s3_image_uploader(ABS_PATH.$postdata['imgurl'],$postdata['imgurl']);
+                }
+                catch (Exception $e) {
+                    $this->data['imageErr'] = $e->getMessage();
+                    $this->data['imageErr'] = strip_tags($this->upload->display_errors());
+                    $this->session->set_flashdata('message', $this->lang->line('error_prefix') .strip_tags($this->upload->display_errors()). $this->lang->line('error_suffix'));
+                    redirect(base_url() . "admin/edit-profile");
+                }
+//                echo $image;die;
                 $config = [];
                 //echo UPLOAD_IMAGE_PATH; die;
-                $config = getConfig(UPLOAD_IMAGE_PATH, 'jpeg|jpg|png', 3000, 1024, 768);
-                $this->load->library('upload', $config);
-                if ($this->upload->do_upload('admin_image')) {
-                    $upload_data = $this->upload->data();
-                    //print_r($upload_data);die;
-                    $imageName = $upload_data['file_name'];
-                    $thumbFileName = $upload_data['file_name'];
-                    $fileSource = UPLOAD_IMAGE_PATH . $thumbFileName;
-                    $targetPath = UPLOAD_THUMB_IMAGE_PATH;
-                    //$isSuccess = $this->commonfn->thumb_create($thumbFileName, $fileSource, $targetPath);
-                    if ($isSuccess) {
-                        $thumbName = $imageName;
-                    }
-                } else { 
-                    $this->data['imageErr'] = strip_tags($this->upload->display_errors());
-                    //print_r($this->data); die('asdfs');
-                    //load_views("profile/admin_profile_edit", $this->data);
-                    $this->session->set_flashdata('message', $this->lang->line('error_prefix') .strip_tags($this->upload->display_errors()). $this->lang->line('error_suffix'));
-                    redirect(base_url() . "admin/edit-profile");                    
-                }
+//                $config = getConfig(UPLOAD_IMAGE_PATH, 'jpeg|jpg|png', 3000, 1024, 768);
+//                $this->load->library('upload', $config);
+//                if ($this->upload->do_upload('admin_image')) {
+//                    $upload_data = $this->upload->data();
+//                    //print_r($upload_data);die;
+//                    $imageName = $upload_data['file_name'];
+//                    $thumbFileName = $upload_data['file_name'];
+//                    $fileSource = UPLOAD_IMAGE_PATH . $thumbFileName;
+//                    $targetPath = UPLOAD_THUMB_IMAGE_PATH;
+//                    //$isSuccess = $this->commonfn->thumb_create($thumbFileName, $fileSource, $targetPath);
+//                    if ($isSuccess) {
+//                        $thumbName = $imageName;
+//                    }
+//                }
+//                else {
+//                    $this->data['imageErr'] = strip_tags($this->upload->display_errors());
+//                    //print_r($this->data); die('asdfs');
+//                    //load_views("profile/admin_profile_edit", $this->data);
+//                    $this->session->set_flashdata('message', $this->lang->line('error_prefix') .strip_tags($this->upload->display_errors()). $this->lang->line('error_suffix'));
+//                    redirect(base_url() . "admin/edit-profile");
+//                }
             }
             $adminData = [];
             $adminData['admin_name'] = $postdata['Admin_Name'];
@@ -140,14 +159,16 @@ class Admin_Profile extends MY_Controller {
                 redirect(base_url() . "admin/profile");
             } else {
                 $this->session->set_flashdata('message', $this->lang->line('error_prefix') . $this->lang->line('error_suffix'));
-                load_views("profile/admin_profile_edit", $this->data);
+
+                load_views_cropper("profile/admin_profile_edit", $this->data);
             }
         }
 
         $this->data["csrfName"] = $this->security->get_csrf_token_name();
         $this->data["csrfToken"] = $this->security->get_csrf_hash();
         $this->data['editdata'] = $this->admininfo;
-        load_views("profile/admin_profile_edit", $this->data);
+
+        load_views_cropper("profile/admin_profile_edit", $this->data);
     }
 
 }

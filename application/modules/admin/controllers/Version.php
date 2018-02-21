@@ -25,6 +25,11 @@ class Version extends MY_Controller {
         }
         $this->data = [];
         $this->data['admininfo'] = $this->admininfo;
+        if($this->admininfo['role_id'] == 2){
+            $whereArr = ['where'=>['admin_id'=>$this->admininfo['admin_id']]];
+            $access_detail = $this->Common_model->fetch_data('sub_admin', ['viewp', 'addp', 'editp', 'blockp', 'deletep', 'access_permission', 'admin_id', 'id'], $whereArr, false);
+            $this->data['admin_access_detail'] = $access_detail;
+        }
     }
 
     /**
@@ -41,8 +46,8 @@ class Version extends MY_Controller {
         $defaultPermission['deletep'] = 1;
         if ($role_id != 1) {
             $whereArr = [];
-            $whereArr['where'] = array('admin_id' => $this->admininfo['admin_id'], 'access_permission' => 2, 'status' => 1);
-            $access_detail = $this->Common_model->fetch_data('sub_admin', ['addp', 'editp', 'deletep'], $whereArr, true);
+            $whereArr['where'] = array('admin_id' => $this->admininfo['admin_id'], 'access_permission' => 6, 'status' => 1);
+            $access_detail = $this->Common_model->fetch_data('sub_admin', ['addp', 'editp', 'deletep','blockp','viewp'], $whereArr, true);
         }
         $this->data['accesspermission'] = ($role_id == 2) ? $access_detail : $defaultPermission;
         $this->data['admininfo'] = $this->admininfo;

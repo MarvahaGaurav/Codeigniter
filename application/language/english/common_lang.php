@@ -68,6 +68,8 @@ $lang["mobile_does_not_exist"] = "Mobile Number does not exist";
 $lang["social_id_does_not_exist"] = "Social Id does not exist";
 $lang["user_does_not_exists"] = "User does not exist";
 $lang['settings_updated'] = "Your settings have been updated";
+$lang['settings_updated_language'] = "Your Langugage have been updated";
+$lang['settings_updated_currency'] = "Your Currency have been updated";
 /* INVALID PARAMS */
 $lang["invalid_email_format"] = "Invalid email format";
 $lang["invalid_parameter"] = "Entered parameter is invalid";

@@ -38,7 +38,7 @@ class Forgot extends REST_Controller {
      * )
      */
     public function index_post() {
-
+        $language_code = $this->langcode_validate();
         $post_data = $this->post();
 
         $config = array(
@@ -146,7 +146,7 @@ class Forgot extends REST_Controller {
      */
 
     public function verifyotp_post() {
-
+        $language_code = $this->langcode_validate();
         $post_data = $this->post();
 
         $config = array(
@@ -231,7 +231,7 @@ class Forgot extends REST_Controller {
      * )
      */
     public function resendotp_post() {
-
+        $language_code = $this->langcode_validate();
         $post_data = $this->post();        
         $config = array(
             array(
@@ -303,5 +303,48 @@ class Forgot extends REST_Controller {
         }
     }
 
+    private function langcode_validate()
+    {
+        $language_code = $this->head("X-Language-Code");
+        $language_code = trim($language_code);
+        $valid_language_codes = ["en","da","nb","sv","fi","fr","nl","de"];
 
+        if ( empty($language_code) ) {
+            $this->response([
+                'code' => HTTP_UNPROCESSABLE_ENTITY,
+                'api_code_result' => 'UNPROCESSABLE_ENTITY',
+                'msg' => $this->lang->line('header_missing'),
+                'extra_info' => [
+                    "missing_parameter" => "language_code"
+                ]
+            ]);
+        }
+
+        if ( ! in_array($language_code, $valid_language_codes) ) {
+            $this->response([
+                'code' => HTTP_UNPROCESSABLE_ENTITY,
+                'api_code_result' => 'UNPROCESSABLE_ENTITY',
+                'msg' => $this->lang->line('invalid_header'),
+                'extra_info' => [
+                    "missing_parameter" => $this->lang->line('invalid_language_code')
+                ]
+            ]);
+        }
+
+        $language_map = [
+            "en" => "english",
+            "da" => "danish",
+            "nb" => "norwegian",
+            "sv" => "swedish",
+            "fi" => "finnish",
+            "fr" => "french",
+            "nl" => "dutch",
+            "de" => "german"
+        ];
+
+        $this->load->language("common", $language_map[$language_code]);
+        $this->load->language("rest_controller", $language_map[$language_code]);
+
+        return $language_code;
+    }
 }

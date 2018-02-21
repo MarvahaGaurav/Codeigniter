@@ -17,13 +17,16 @@
 
     <!--Filter Section -->
     <div class="section">
-
+        <div class="form-item-title clearfix">
+            <h3 class="title">Add Notification</h3>
+        </div>
         <!-- title and form upper action end-->
          <?php echo form_open_multipart();?>
             <div class="row">
                 <div class="col-lg-3 col-sm-4">
+                    <label class="admin-label"><br></label>
                     <!-- thumb wrapper -->
-                    <div class="image-view-wrapper img-view200p img-viewbdr-radius4p">
+                    <!--<div class="image-view-wrapper img-view200p img-viewbdr-radius4p">
                         <div class="image-view img-view200" id="profilePic" style="background-image:url('<?php echo (isset($editdata['admin_profile_pic']) && !empty($editdata['admin_profile_pic'])) ? base_url() . 'public/adminpanel/admin/' . $editdata['admin_profile_pic'] : '' ?>');">
                             <a href="javascript:void(0);" class="upimage-btn">
                             <input type="file" id="upload" style="display:none;" accept="image/*" name="admin_image" onchange="loadFile_signup(event,'profilePic', this)">
@@ -32,16 +35,27 @@
                             <label id="image-error" class="alert-danger"></label>
                         </div>
                         <span class="loder-wrraper-single"></span>
-                    </div>
-                    <!-- //thumb wrapper -->
-                    <!-- <div class="form-profile-pic-wrapper">
-                        <div class="profile-pic" id="profilePic"  style="background-image:url(<?php //echo (isset($editdata['admin_profile_pic']) && !empty($editdata['admin_profile_pic'])) ? base_url() . 'public/adminpanel/admin/' . $editdata['admin_profile_pic'] : '' ?>);">
-                            <span href="javascript:void(0);" class="upimage-btn"></span>
-                            <input type="file" id="upload" style="display:none;" accept="image/*" name="notificationImage">
-                            <label class="camera" for="upload"><i class="fa fa-camera" aria-hidden="true"></i></label>   
-                            <label id="image-error" class="alert-danger"></label>
+                    </div>-->
+                    
+                    <!-- cropper image preview box start-->
+                    <div class="image-view-wrapper img-view200p img-viewbdr-radius4p">
+                        <div class="image-view img-view200">
+                            <div class="photo-upload-here">
+                                <img style="width: 100%;height: 100%;" class="profile-pic" id="profile_image" src="<?php echo (!empty($editdata['admin_profile_pic']))?$editdata['admin_profile_pic']:DEFAULT_IMAGE ?>">
+                            </div>
+
+                            <div class="image_upload_trigger" onclick="addCoverImage()">
+                                <a href="javascript:void(0);" class="upimage-btn">
+                                </a>
+                                <label class="camera" for="upload"><i class="fa fa-camera" aria-hidden="true"></i></label>
+                                <input type="hidden" name="imgurl" class="inputhidden">
+                                <input type="hidden" id="imgChange" name="imgChange" value="">
+                            </div>
                         </div>
-                    </div> -->
+                    </div>
+                    <!-- cropper image preview box end-->
+                
+                    <!-- //thumb wrapper -->
                 </div>
 
                 <div class="col-lg-9 col-sm-8">
@@ -104,19 +118,10 @@
                             </div>
 
                         </div>
-                        <div class="col-lg-4 col-sm-4">
-                            <div class="display">
-                                <select name="gender" class="form-control gender">
-                                    <option value="">Select Gender</option>
-                                    <option value="1">Male</option>
-                                    <option value="2">Female</option>
-                                </select>
-                            </div>
-                        </div>
                         <div class="col-lg-12">
                             <div class="button-wrap">
                                 <input type="submit" onclick="return checkNotiValidation()" class="commn-btn save" value="Send Now">
-                                <input type="button" onclick="return checkNotiValidation()" class="commn-btn cancel" value="Cancel">
+                                <input type="button" onclick="history.go(-1)"  class="commn-btn cancel" value="Cancel">
                             </div>
                         </div>
                     </div>
@@ -128,10 +133,31 @@
     </div>
 </div>
 
+<!--cropper libraries-->
+<link href="public/cropper/cropper.min.css" rel="stylesheet">
+<script>
+    if (location.hostname == "localhost") {
+        var domain = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + '/smartguide/admin';
+        var domain2 = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + '/smartguide';
+    }
+    else {
+        var domain = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + '/admin';
+        var domain2 = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
+    }
+
+</script>
+<script src="public/cropper/cropper.js"></script>
+<script src="public/cropper/cropper.min.js"></script>
+<script src="public/cropper/main.js"></script>
+<script>
+    function addCoverImage() {
+        callme('coverPicInput','640','640','imagepicker2','addshopbtn','imageMe1','true','','circular');
+    }
+</script>
 <script>
     $(document).ready(function () {
 
-        $('#upload').change(function(){
+        /*$('#upload').change(function(){
             var file = this.files[0];
             var reader = new FileReader();
             reader.onloadend = function () {
@@ -142,7 +168,7 @@
             } else {
                 console.log('not done');
             }
-        });
+        });*/
         
         $('#regDate').daterangepicker(
             {

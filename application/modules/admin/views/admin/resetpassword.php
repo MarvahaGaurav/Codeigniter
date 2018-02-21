@@ -1,7 +1,7 @@
 <div class="form-section">
     <div class="form-inner-section">
         <div class="logo">
-            <h1>ArchiveZ </h1>
+            <img src="public/images/logo.png" alt="logo">
         </div>
         <div class="form-wrapper">
             <div class="login-error">
@@ -9,7 +9,7 @@
             </div>
             <form method="post" id="resetform">
                 <input type="hidden" name="<?php echo $csrfName; ?>" id="<?php echo $csrfName; ?>" value="<?php echo $csrfToken; ?>"> 
-                <h1 class="form-heading">Reset Passwor</h1>
+                <h1 class="form-heading">Reset Password</h1>
                 <p class="form-desc"></p>  
                 <div class="form-group" id="passerror">
                     <span class="field-ico password-ico"></span>

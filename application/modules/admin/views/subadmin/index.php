@@ -34,8 +34,12 @@ $module = $this->router->fetch_module();
             <div class="col-lg-6 col-sm-6">
                 <div class="srch-wrap fawe-icon-position col-sm-space">
                     <span class="fawe-icon fawe-icon-position-left search-ico"><i class="fa fa-search"></i></span>
+                    <?php if(isset($searchlike) && !empty($searchlike)){?>
+                    <span class="fawe-icon fawe-icon-position-right show-close-ico" onclick="jQuery('.searchCloseBtn').trigger('click');"><i class="fa fa-times-circle"></i></span>
+                    <?php }else{ ?>
                     <span class="fawe-icon fawe-icon-position-right close-ico"><i class="fa fa-times-circle"></i></span>
-                    <input type="text" maxlength="15" value="<?php echo (isset($searchlike) && !empty($searchlike))? $searchlike:''?>" class="search-box searchlike" placeholder="Search by name, email" id="searchuser" name="search">
+                    <?php } ?>
+                    <input type="text" maxlength="50" value="<?php echo (isset($searchlike) && !empty($searchlike))? $searchlike:''?>" <?php if(isset($searchlike) && !empty($searchlike)){ echo 'readonly';}?> class="search-box <?php if(isset($searchlike) && !empty($searchlike)){ echo 'searchCloseBtn'; }else{  echo 'searchlike'; }?>" placeholder="Search by name, email" id="searchuser" name="search">
                 </div>
             </div>
 
@@ -106,7 +110,7 @@ $module = $this->router->fetch_module();
                                 <?php echo ($data['status'] == 1)?'Active':'Blocked' ?>
                             </td>
                             <td>
-                                <?php echo date('d-M-Y', strtotime($data['create_date'])); ?>
+                                <?php echo date('d M Y h:i:s A', strtotime($data['create_date'])); ?>
                             </td>
                             <td class="text-nowrap table-action">
                                 <a class="f-pencil" href="admin/subadmin/edit?id=<?php echo encryptDecrypt($data['admin_id']);?>"><i class="fa fa-pencil" title="Edit" aria-hidden="true"></i></a>
@@ -176,6 +180,4 @@ $module = $this->router->fetch_module();
         </div>
     </div>
 </div>
-
-
 

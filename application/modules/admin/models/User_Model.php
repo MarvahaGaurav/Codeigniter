@@ -64,15 +64,22 @@ class User_Model extends CI_Model {
             $this->db->where_in('user_type', explode(',',$params['user_type']));
         }
         if (!empty($params['startDate']) && !empty($params['endDate'])) {
-            $startDate = date('Y-m-d', strtotime($params['startDate']));
-            $endDate = date('Y-m-d', strtotime($params['endDate']));
+            
+            //$startDate = date('Y-m-d', strtotime($params['startDate']));
+            //$endDate = date('Y-m-d', strtotime($params['endDate']));
+            list($day1,$month1,$year1) = explode('/',$params['startDate']);
+            $startDate = $year1.'-'.$month1.'-'.$day1;
+            
+            list($day2,$month2,$year2) = explode('/',$params['endDate']);
+            $endDate = $year2.'-'.$month2.'-'.$day2;
+            
             $this->db->where("DATE(registered_date) >= '" . $startDate . "' AND DATE(registered_date) <= '" . $endDate . "' ");
         }
         
         $this->db->limit($params['limit'], $params['offset']);
 
         $query = $this->db->get();
-//        echo $this->db->last_query();die;
+        //echo $this->db->last_query();die;
         $res['result'] = $query->result_array();
         $res['total'] = $this->db->query('SELECT FOUND_ROWS() count;')->row()->count;
 

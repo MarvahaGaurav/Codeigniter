@@ -23,11 +23,15 @@ $module = $this->router->fetch_module();
     <div class="section filter-section clearfix">
         <div class="row">
 
-            <div class="col-lg-8 col-sm-8">
+            <div class="col-lg-6 col-sm-6">
                 <div class="srch-wrap fawe-icon-position col-sm-space">
                     <span class="fawe-icon fawe-icon-position-left search-ico"><i class="fa fa-search"></i></span>
+                     <?php if(isset($searchlike) && !empty($searchlike)){?>
+                    <span class="fawe-icon fawe-icon-position-right show-close-ico" onclick="jQuery('.searchCloseBtn').trigger('click');"><i class="fa fa-times-circle"></i></span>
+                    <?php }else{ ?>
                     <span class="fawe-icon fawe-icon-position-right close-ico"><i class="fa fa-times-circle"></i></span>
-                    <input type="text" maxlength="15" value="<?php echo (isset($searchlike) && !empty($searchlike))? $searchlike:''?>" class="search-box searchlike" placeholder="Search by name, email" id="searchuser" name="search">
+                    <?php } ?>
+                    <input type="text" maxlength="50" value="<?php echo (isset($searchlike) && !empty($searchlike))? $searchlike:''?>" <?php if(isset($searchlike) && !empty($searchlike)){ echo 'readonly';}?> class="search-box <?php if(isset($searchlike) && !empty($searchlike)){ echo 'searchCloseBtn'; }else{  echo 'searchlike'; }?>" placeholder="Search by title" id="searchuser" name="search">
                 </div>
             </div>
             <?php if($accesspermission['addp']) {?>
@@ -93,7 +97,7 @@ $module = $this->router->fetch_module();
                         <td><?php echo ($value['platform']==ANDROID)?"Andorid":"Iphone"; ?></td>
                         <td><?php echo ($value['update_type']==NORMAL)?"Normal":(($value['update_type']==SKIPPABLE)?"Skippable":"Forcefully"); ?></td>
                         <td><?php echo ($value['is_cur_version']==YES)?"Yes":"No"; ?></td>
-                        <td><?php echo date('d m Y H:i a', strtotime($value['create_date']));?></td>
+                        <td><?php echo date('d M Y H:i:s A', strtotime($value['create_date']));?></td>
                         <?php if($accesspermission['deletep'] || $accesspermission['editp']) { ?>
                         <td class="text-nowrap table-action">
                             <?php if($accesspermission['editp']) {?>

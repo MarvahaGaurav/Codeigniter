@@ -19,14 +19,14 @@
                         <p class="index-note"></p>
 
                         <div class="form-field-wrap" id="passerror">
-                            <span class="ad-password"></span>
+                            <span class="field-ico password-ico"></span>
                             <input type="password" class="login_filed removemessage" maxlength="40" placeholder="* Enter New Password" id="password" name="password"  autocomplete="off"> 
                             <span class="error-mssg passwordErr" id="password" ></span>
                             <span class="bar"></span>
                         </div>
 
                         <div class="form-field-wrap" id="conpassreq">
-                            <span class="ad-password"></span>
+                            <span class="field-ico password-ico"></span>
                             <input type="password" class="login_filed removemessage" maxlength="40" placeholder="* Enter Confirm Password" id="cnfpassword" name="cpassword"  autocomplete="off"> 
                             <span class="error-mssg cnfpasswordErr"  id="cnfpassword"></span>
                             <span class="bar"></span>

@@ -256,3 +256,7 @@ defined("BUSINESS_USER") OR define("BUSINESS_USER", 6);
 defined("ROLE_USER") or define("ROLE_USER", 0);
 defined("ROLE_EMPLOYEE") or define("ROLE_EMPLOYEE", 1);
 defined("ROLE_OWNER") or define("ROLE_OWNER", 2);
+
+/* Application Types */
+defined("APPLICATION_RESIDENTIAL") or define("APPLICATION_RESIDENTIAL", 1);
+defined("APPLICATION_PROFESSIONAL") or define("APPLICATION_PROFESSIONAL", 2);

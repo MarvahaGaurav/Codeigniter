@@ -21,11 +21,25 @@ function load_views($customView, $data = array()) {
     $CI->load->view('templates/footer', $data);
 }
 
+function load_views_cropper($customView, $data = array()) {
+    $CI = &get_instance();
+    $CI->load->view('templates/header', $data);
+    $CI->load->view($customView, $data);
+    $CI->load->view('templates/cropper');
+    $CI->load->view('templates/footer', $data);
+}
 function load_outer_views($customView, $data = array()) {
     $CI = &get_instance();
     $CI->load->view('/admin/header', $data);
     $CI->load->view($customView, $data);
     $CI->load->view('/admin/footer', $data);
+}
+
+function load_outerweb_views($customView, $data = array()) {
+    $CI = &get_instance();
+    $CI->load->view('/index/header', $data);
+    $CI->load->view($customView, $data);
+    $CI->load->view('/index/footer', $data);
 }
 
 function getConfig($uploadPath, $acptFormat, $maxSize = 3000, $maxWidth = 1024, $maxHeight = 768, $encryptName = TRUE) {
@@ -100,10 +114,20 @@ function encrypt_with_openssl($string, $urlencode = true) {
     return $encryptedData;
 }
 
-function show404($err_msg = "", $redurl = 'admin/admin') {
+function show404($err_msg = "", $redurl = 'admin/') {
     $err_msg = (empty($err_msg)) ? 'Invalid Request' : $err_msg;
-    echo $err_msg;
-    die('<a href="' . $redurl . '"><br>Click here to redirect</a>');
+    $jsscript = '';
+    $cssstyle = '<link href="/public/css/style.css" rel="stylesheet"><link href="/public/css/media.css" rel="stylesheet">';
+    $jsscript = '<script>setTimeout(function(){ window.location.href="' . $redurl . '"; }, 5000);</script>';
+    $errorpage_html = '<html><head><title>Smart Guide admin</title>'.$jsscript.' '.$cssstyle.'</head><body>';    
+    $errorpage_html .= '<div class="form-section"><div class="form-inner-section"><div class="logo"><img src="/public/images/logo.png" alt="logo"></div><div class="form-wrapper"><div class="login-error"><span class="error"></span></div>';
+    $errorpage_html .= '<h1 class="form-heading" style="text-align:center;">'.$err_msg.'</h1>';
+    $errorpage_html .= '<div class="form-group" style="text-align:center;"><a class="commn-btn save" style="text-align:center;text-decoration:none;" href='.$redurl.'>Click here to redirect</a></div>';
+    $errorpage_html .= '</div></div></div>';
+    $errorpage_html .= '</body></html>';
+    //echo $err_msg;
+    echo $errorpage_html;
+    die();
 }
 
 function sendPostRequest($data) {

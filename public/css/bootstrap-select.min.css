@@ -48,7 +48,7 @@ select.selectpicker {
 }
 .bootstrap-select .btn {
   border:1px solid #7F7F7F;
-  padding: 9px 12px;
+  padding: 9px 26px 9px 12px;
   border-radius: 2px;
 }
 .bootstrap-select.fit-width {

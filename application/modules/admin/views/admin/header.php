@@ -8,7 +8,7 @@
               minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>Reusable Admin</title>
+        <title>Smart Guide Admin</title>
         <link rel="icon" type="image/png" sizes="32x32" href="public/images/logo.png">
         <link href='<?php echo base_url() . 'public/css/plugin/bootstrap.min.css' ?>' rel='stylesheet'>
         <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css' rel='stylesheet'>

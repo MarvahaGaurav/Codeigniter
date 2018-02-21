@@ -61,6 +61,10 @@ h1,h2,h3,h4,h5,h6 {
     clear: both;
 }
 
+* {
+    word-wrap: break-word;
+}
+
 /* FontAwesome */
 @font-face {
     font-family: 'FontAwesome';
@@ -526,7 +530,7 @@ footer {
     }
 
     .section-caught .sidebar-wrapper .img-view80 {
-        height: 25px;
+        height: 80px;
     }
 
     .section-caught .sidebar-wrapper:hover .img-view80p {

@@ -49,7 +49,8 @@ class Notify extends MY_Controller {
         $payload = [];
         $payload['message'] = $payLoadData['title'];
         $payload['link'] = (isset($payLoadData['link']) && !empty($payLoadData['link'])) ? $payLoadData['link'] : "";
-        $payload['desc'] = (isset($payLoadData['message']) && !empty($payLoadData['message'])) ? $payLoadData['link'] : "";
+        $payload['desc'] = (isset($payLoadData['message']) && !empty($payLoadData['message'])) ? $payLoadData['message'] : "";
+        $payload['type'] = (isset($payLoadData['type']) && !empty($payLoadData['type'])) ? $payLoadData['type'] : "generic";
         $payload['time'] = time();
         /*
          * Extract device token of users
@@ -70,6 +71,7 @@ class Notify extends MY_Controller {
         $payload = [];
         $payload['alert'] = array('title' => $payLoadData['title'], 'body' => $bodyContent);
         $payload['badge'] = 0;
+        $payload['type'] = (isset($payLoadData['type']) && !empty($payLoadData['type'])) ? $payLoadData['type'] : "generic";
         $payload['sound'] = 'beep.mp3';
         /*
          * Extract device token of users

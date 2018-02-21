@@ -138,6 +138,12 @@ class ProductController extends BaseController
      *     description="Search key",
      *     type="string"
      *   ),
+     *   @SWG\Parameter(
+     *     name="type",
+     *     in="query",
+     *     description="1-Residential, 2-Professional",
+     *     type="string"
+     *   ),
      *   @SWG\Response(response=200, description="OK"),
      *   @SWG\Response(response=401, description="Unauthorize"),
      *   @SWG\Response(response=202, description="No data found"), 
@@ -176,7 +182,13 @@ class ProductController extends BaseController
             $params['language_code'] = $language_code;
         }
 
-        $products = $this->Product->get($params);
+        if ( isset($request_data['type']) ) {
+            $validTypes = [APPLICATION_RESIDENTIAL,APPLICATION_PROFESSIONAL];
+            $params['type'] = in_array((int)$request_data['type'], $validTypes)?(int)$request_data['type']:APPLICATION_RESIDENTIAL;
+            $products = $this->Product->productByType($params);
+        } else {
+            $products = $this->Product->get($params);
+        }
         $response = [
             "code" => HTTP_OK,
             "api_code_result" => "OK",
@@ -189,10 +201,13 @@ class ProductController extends BaseController
            
             if ( $next_count < $count ) {
                 $offset = $next_count;
-                $link = "/api/v1/products?offset={$next_count}";
-                $alt_link = "/products?offset={$next_count}";
+                $type = isset($request_data['type'])&&in_array((int)$type, $validTypes)?"&type={$request_data['type']}":'';
+                $link = "/api/v1/products?offset={$next_count}" . $type;
+                $alt_link = "/products?offset={$next_count}" . $type;
             } else {
                 $offset = -1;
+                $link = "";
+                $alt_link = "";
             }
             $response['offset'] = $offset;
             $response["data"] = $products['result'];

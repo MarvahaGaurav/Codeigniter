@@ -22,6 +22,13 @@ class Technician extends MY_Controller {
         }
         $this->data = [];
         $this->data['admininfo'] = $this->admininfo;
+        
+        if($this->admininfo['role_id'] == 2){
+            $whereArr = ['where'=>['admin_id'=>$this->admininfo['admin_id']]];
+            $access_detail = $this->Common_model->fetch_data('sub_admin', ['viewp', 'addp', 'editp', 'blockp', 'deletep', 'access_permission', 'admin_id', 'id'], $whereArr, false);
+            $this->data['admin_access_detail'] = $access_detail;
+        }
+        
         $this->validUserTypes = [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER, WHOLESALER];
         $this->userTypes = [
             INSTALLER => "Technician", 
@@ -46,7 +53,7 @@ class Technician extends MY_Controller {
         if ($role_id != 1) {
             $whereArr = [];
             $whereArr['where'] = array('admin_id' => $this->admininfo['admin_id'], 'access_permission' => 1, 'status' => 1);
-            $access_detail = $this->Common_model->fetch_data('sub_admin', ['viewp', 'blockp', 'deletep'], $whereArr, true);
+            $access_detail = $this->Common_model->fetch_data('sub_admin', ['viewp', 'blockp', 'deletep','blockp','viewp'], $whereArr, true);
         }
 
         $this->data['accesspermission'] = ($role_id == 2) ? $access_detail : $defaultPermission;
@@ -128,7 +135,7 @@ class Technician extends MY_Controller {
          * Manage Pagination
          */
 
-        $pageurl = 'admin/users';
+        $pageurl = 'admin/technician';
         $this->data["link"] = $this->commonfn->pagination($pageurl, $totalrows, $limit);
 
         $this->data["order_by"] = "asc";
@@ -189,12 +196,14 @@ class Technician extends MY_Controller {
             $data = $this->Inspiration->get($params);
             $this->data['initial_count'] = (int)(1 * (($page - 1) * $limit)+1);
             $data['result'] = array_map(function($result) use ($page, $limit) {
+                //pr($result);
                 $result['id'] = $result['inspiration_id'];
                 $result['id'] = encryptDecrypt($result['id']);
                 $result['created_at'] = convert_date_time_format("Y-m-d H:i:s", $result['created_at'], "d/m/Y g:i A");
                 $result['updated_at'] = convert_date_time_format("Y-m-d H:i:s", $result['updated_at'], "d/m/Y g:i A");
                 return $result;
             }, $data['result']); 
+            //pr($data['result']);
             $this->data['total_inspirations'] = (int)$data['count'];
             $pageurl = "/admin/technician/detail?id=" . $get['id'];
             $this->data["link"] = $this->commonfn->pagination($pageurl, $data['count'], $limit);

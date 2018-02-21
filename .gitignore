@@ -1,2 +1,6 @@
 application/composer/vendor
 application/composer/composer.lock
+public/js_*
+public/css_*
+application/modules/admin_*
+backup/

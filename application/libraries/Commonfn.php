@@ -2,7 +2,7 @@
 
 class Commonfn {
 
-    private $androidPushKey = 'AAAAopTlbRU:AAAA9yN7Iwg:APA91bHa7C_FYNvq-pOXju-b-gxrgDBqJNbJxBtgIc4nGPa5flJFTvRiy4iHkLjBRKB84IWAWWOfBK5Au7PKfYa_Ifj3dds0zYMuulqVMWB8jvxbm1K-L3HT1djYHPoULQhMmQ8FBoKf';
+    private $androidPushKey = 'AAAAIsWFxxY:APA91bHzE2QOlyhTafy6ND49WyE1gtrgIgF5-1YTz932yiHlz1QpMV6T_IUch_6vctwko2xoALOl3YgZbkxCrXI8N2TjaF-VvwLJMPEo4Ss6YnUOyUlWxY-uDpArbH1QmPZreDpz7F-n';
 
     public function __construct() {
         ini_set('display_errors', 1);
@@ -24,11 +24,12 @@ class Commonfn {
             /*
              * production or distribution mode)
              */
-            $apnsHost = 'gateway.push.apple.com';
+            // $apnsHost = 'gateway.push.apple.com'; // distribution
+            $apnsHost = 'gateway.sandbox.push.apple.com';
             $apnsPort = '2195';
 //            $apnsCert = base_url() . 'public/ckpm/development.pem';
-            $apnsCert = getcwd() . '/public/ckpm/distribution.pem';
-            $passPhrase = '';
+            $apnsCert = getcwd() . '/public/ios/SmartGuide_Development.pem';
+            $passPhrase = '1234';
 
             $streamContext = stream_context_create();
             $a = stream_context_set_option($streamContext, 'ssl', 'local_cert', $apnsCert);
