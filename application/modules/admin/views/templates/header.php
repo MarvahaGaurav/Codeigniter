@@ -73,17 +73,12 @@
             animation-delay: 1.15s;
         }
     </style>
+    <script>
+        window.onload = function () {
+            document.getElementsByClassName('loaDer')[0].style.display = 'none';
+        }
+    </script>
 </head>
-
-
-<script>
-    window.onload = function () {
-        document.getElementsByClassName('loaDer')[0].style.display = 'none';
-    }
-</script>
-
-
-    </head>
     <?php
     $this->load->helper('cookie');
     $controller = strtolower($this->router->fetch_class());

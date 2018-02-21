@@ -27,7 +27,7 @@ class Index extends MY_Controller {
         if ($this->input->post()) {
             
             $postDataArr = $this->input->post();
-            //echo '<pre>'; print_r($postDataArr);die('safs');
+            // echo '<pre>'; print_r($postDataArr);die('safs');
             
             $this->form_validation->set_rules('email', $this->lang->line('email'), 'trim|required');
             $this->form_validation->set_rules('password', $this->lang->line('password'), 'trim|required');
@@ -62,7 +62,7 @@ class Index extends MY_Controller {
                     );
                     //pr($sg_userinfo);
                     //SETS COOKIE DATA
-                    if (isset($postDataArr["remember_me"]) && $postDataArr["remember_me"] == "remember_me") {
+                    if (isset($postDataArr["remember_me"]) && $postDataArr["remember_me"] == "on") {
                         $this->load->helper(["cookie", "string"]);
                         $cookieData["cookie_validator"] = random_string('alnum', 12);
                         $cookieData["cookie_selector"] = hash("sha256", date("Y-m-d H:i:s") . $postDataArr["email"]);
@@ -75,7 +75,7 @@ class Index extends MY_Controller {
 
                         $cookieData["cookie_validator"] = hash("sha256", $cookieData["cookie_validator"] . $sg_userinfo["create_date"]);
 
-                        $this->Common_model->update_single("admin", $cookieData, ["where" => ["user_id" => $sg_userinfo["user_id"]]]);
+                        $this->Common_model->update_single("ai_user", $cookieData, ["where" => ["user_id" => $sg_userinfo["user_id"]]]);
                     }
                     $this->session->set_flashdata("greetings", "Welcome!");
                     $this->session->set_flashdata("message", "You have successfully logged in");

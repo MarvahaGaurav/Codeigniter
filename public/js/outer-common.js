@@ -30,7 +30,12 @@ $(document).ready(function () {
         errorClass: "alert-danger",
         rules: {
             email: {
-                required: true,
+                required: {
+                    depends:function(){
+                        $(this).val($.trim($(this).val()));
+                        return true;
+                    }
+                },
                 email: true,
             },
             password: {

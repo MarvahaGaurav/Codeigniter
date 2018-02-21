@@ -7,6 +7,7 @@ $module = $this->router->fetch_module();
 ?>
 <link href="<?php echo base_url()?>public/css/datepicker.min.css" rel='stylesheet'>
 <input type="hidden" id="filterVal" value='<?php echo json_encode($filterArr); ?>'>
+<input type="hidden" name="csrf_token" id="csrf" value="<?php echo $csrfToken ?>">
 <input type="hidden" id="pageUrl" value='<?php echo base_url().$module.'/'.strtolower($controller).'/'.$method; ?>'>
 <div class="inner-right-panel">
     <!--breadcrumb wrap-->
@@ -240,7 +241,7 @@ $module = $this->router->fetch_module();
                     <?php 
                     $i++; 
                     } } else { ?>
-                    <tr><td colspan="9">No result found.</td></tr
+                    <tr><td colspan="10">No result found.</td></tr>
                     <?php } ?>
                 </tbody>
             </table>

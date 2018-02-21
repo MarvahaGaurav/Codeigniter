@@ -41,7 +41,7 @@ class InspirationController extends MY_Controller {
         $params['media'] = true;
         $params['poster_details'] = true;
         $data = $this->Inspiration->get($params);
-        $data['media'] = array_filter(explode(",", $data['media']));
+        $data['media'] = json_decode("[" . $data['media'] . "]", true);
         $data['user_id'] = encryptDecrypt($data['user_id']);
         $this->data['inspiration_data'] = $data;
         load_views("inspiration/details", $this->data);

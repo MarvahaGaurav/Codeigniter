@@ -1,5 +1,4 @@
 <div class="inner-right-panel">
-
     <!--breadcrumb wrap-->
     <div class="breadcrumb-wrap">
         <ol class="breadcrumb">
@@ -80,15 +79,23 @@
                                 <label class="admin-label">Media</label>
                                 <div class="input-holder">
                                 <?php foreach ($inspiration_data['media'] as $value) : ?>
+                                    <?php if ( $value['media_type'] == CONTENT_TYPE_IMAGE ) {?>
                                     <div class="col-lg-3 col-sm-3 col-xs-3">
                                         <div class="image-view-wrapper img-view200p img-viewbdr-radius4p img-mb">
                                             <div class="profile-pic image-view img-view200" style=""></div>
                                             <div class="form-profile-pic-wrapper pull-left">
-                                                <div class="profile-pic" style="background-image:url('<?php echo (!empty($value)) ? IMAGE_PATH . $value : DEFAULT_IMAGE ?>');">
+                                                <div class="profile-pic" style="background-image:url('<?php echo (!empty($value['media'])) ? IMAGE_PATH . $value : DEFAULT_IMAGE ?>');">
                                             </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <?php } else if ( $value['media_type'] == CONTENT_TYPE_VIDEO ) { ?>
+                                        <video width="320" height="240" poster="<?php echo $value['video_thumbnail'] ?>" controls>
+                                            <source src="<?php echo $value['media'] ?>" type="video/mp4">
+                                            <source src="<?php echo $value['media'] ?>" type="video/ogg">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    <?php } ?>
                                 <?php endforeach ?>
                                 </div>
                             </div>

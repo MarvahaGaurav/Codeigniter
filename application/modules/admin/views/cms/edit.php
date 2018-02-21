@@ -31,7 +31,7 @@
                         <label class="admin-label">Description</label>
                         <div class="input-holder">
                             <?php echo form_error('page_desc','<label class="alert-danger">','</label>');?>
-                            <textarea class="custom-textarea" name="page_desc" placeholder="Enter the description" id="page_desc"><?php echo isset($pages['content'])?$pages['content']:set_value('page_desc');?></textarea>
+                            <textarea class="custom-textarea" name="page_desc" maxlength="5000" placeholder="Enter the description" id="page_desc"><?php echo isset($pages['content'])?$pages['content']:set_value('page_desc');?></textarea>
                             <!-- <span class="error_wrap"></span> -->
                         </div>
                     </div>

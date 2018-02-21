@@ -475,7 +475,7 @@ $config['csrf_protection'] = TRUE;
 $config['csrf_token_name'] = 'csrf_token';
 $config['csrf_cookie_name'] = 'csrf_cookie_name';
 $config['csrf_expire'] = 7200;
-$config['csrf_regenerate'] = TRUE;
+$config['csrf_regenerate'] = FALSE;
 $config['csrf_exclude_uris'] = array('external/.+');
 
 if (isset($_SERVER["REQUEST_URI"]) && preg_match('/.*\/(curl|api|rest|notify)\/.*/', $_SERVER["REQUEST_URI"] ) == TRUE) {

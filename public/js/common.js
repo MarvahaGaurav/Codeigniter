@@ -93,7 +93,20 @@ $(document).ready(function () {
 
         var filterLen = $.keyCount(filter);
         if (filterLen == 0) {
-            alert('Please select a filter');
+            var $flashCardInfo = $("#flash-card-info"),
+            $cardMessageStrong = $flashCardInfo.find(".card-message-strong"),
+            $cardMessage = $flashCardInfo.find(".card-message");
+
+            $cardMessageStrong.html("No filters selected");
+            $cardMessage.html("Please select atleast one filter");
+            $flashCardInfo.removeAttr("class");
+            $flashCardInfo.addClass("alert alert-info");
+            $flashCardInfo.css({
+                display: 'block'
+            });
+            setTimeout(function(){
+                $flashCardInfo.fadeOut(450);
+            }, 2500);
             return false;
         }
 
@@ -142,7 +155,20 @@ $(document).ready(function () {
 
         var filterLen = $.keyCount(filter);
         if (filterLen == 0) {
-            alert('Please select a filter');
+            var $flashCardInfo = $("#flash-card-info"),
+            $cardMessageStrong = $flashCardInfo.find(".card-message-strong"),
+            $cardMessage = $flashCardInfo.find(".card-message");
+
+            $cardMessageStrong.html("No filters selected");
+            $cardMessage.html("Please select atleast one filter");
+            $flashCardInfo.removeAttr("class");
+            $flashCardInfo.addClass("alert alert-info");
+            $flashCardInfo.css({
+                display: 'block'
+            });
+            setTimeout(function(){
+                $flashCardInfo.fadeOut(450);
+            }, 2500);
             return false;
         }
         var queryParams = $.param(filter)

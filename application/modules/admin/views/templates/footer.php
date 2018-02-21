@@ -3,6 +3,10 @@
 <footer>
     &copy; Smart Guide 2017
 </footer>
+<div id="flash-card-info" style="display:none;z-index:99999999;position:fixed;right:33.3%;top:10%;">
+  <div style="text-align:center;"><strong class="card-message-strong"></strong> <span class="card-message"></span></div>
+</div>
+
 <script src="<?php echo base_url()?>public/js/bootstrap.min.js"></script>
 <script src="<?php echo base_url()?>public/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="<?php echo base_url()?>public/js/bootstrap-select.js"></script>
