@@ -11,7 +11,7 @@
 }
 
 .skewpart {
-    background: url(../../images/form-bg-mob.png) no-repeat;
+    background: url(../images/form-bg-mob.png) no-repeat;
     background-size: cover;
     background-position: top right;
     width: 100%;
@@ -40,7 +40,7 @@
 
 .form-bg {
     position: fixed;
-    background: url(../../images/form-bg.png) no-repeat;
+    background: url(../images/form-bg.png) no-repeat;
     background-size: cover;
     background-position: center;
     width:100%;
@@ -65,12 +65,11 @@
 
 .fm-table-section {
     display: table;
-    margin: 0 auto;
-    width: calc(100% - 70px);
     height: calc(100% - 70px);
     position: relative;
-    margin: 35px;
+    margin: 35px auto;
     background: #fff;
+    width: 95%;
     -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.12);
     -moz-box-shadow: 0 0 8px rgba(0, 0, 0, 0.12);
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.12);
@@ -121,7 +120,8 @@
 
 .form-right-cell h2 {
     font-size: 30px;
-    font-family: 'OpenSans-Semibold';
+    /* font-family: 'OpenSans-Semibold'; */
+    font-weight: 600;
     margin: 5px 0 5px 0;
 }
 
@@ -134,7 +134,8 @@
 .form-caption {
     font-size: 26px;
     text-transform: uppercase;
-    font-family: 'OpenSans-Semibold';
+    /* font-family: 'OpenSans-Semibold'; */
+    font-weight: 600;
     color:#2e2e2e;
 }
 
@@ -145,7 +146,8 @@
 }
 
 .form-desciption .create-account {
-    font-family: 'OpenSans-Semibold';
+    /* font-family: 'OpenSans-Semibold'; */
+    font-weight: 600;
     color:#e4001b;
 }
 
@@ -206,7 +208,7 @@ input[type="radio"] {
 }
 
 .form-group-inline .form-group {
-    width:50%;
+    width:100%;
     float:left;
     padding:0 10px;
     margin:0 0 20px 0;
@@ -259,7 +261,8 @@ input[type="radio"] {
 
 .succeed {
     color:#343434;
-    font-family: 'OpenSans-Semibold';
+    /* font-family: 'OpenSans-Semibold'; */
+    font-weight: 600;
     margin: 15px 0 0 0;
     text-transform: uppercase;
 }
@@ -309,7 +312,8 @@ input[type="radio"] {
 }
 
 .continueasguest a {
-    font-family: 'OpenSans-Semibold';
+    /* font-family: 'OpenSans-Semibold'; */
+    font-weight: 600;
     font-size: 12px;
     color:#e4001b;
 }
@@ -319,7 +323,8 @@ input[type="radio"] {
     font-size: 16px;
     color:#343434;
     margin: 0 0 10px 0;
-    font-family: 'OpenSans-Semibold';
+    /* font-family: 'OpenSans-Semibold'; */
+    font-weight: 600;
 }
 
 .account-type-wrapper .account-type {
@@ -544,12 +549,15 @@ input[type="radio"] {
         color:#fff;
         text-align: center;
     }
+    .form-group-inline .form-group {
+        width: 50%;
+    }
 }
 
 @media (min-width: 992px) {
 
     .skewpart {
-        background: url(../../images/form-bg.png) no-repeat;
+        background: url(../images/form-bg.png) no-repeat;
         background-size: contain;
         background-position: top right;
         max-width: 100%;
@@ -565,9 +573,12 @@ input[type="radio"] {
         padding: 0 10px 0 65px;
     }
 
+    .fm-table-section {
+        width: calc(100% - 70px);
+    }
+
     .fm-table-cell {
         vertical-align: top;
-        height: 100%;
     }
 
     .tbl-cell-1 {
@@ -578,6 +589,7 @@ input[type="radio"] {
     .tbl-cell-2 {
         width: 63%;
         float:right;
+        height:664px;
     }
 
     .form-right-cell {

@@ -57,8 +57,14 @@ if (isset($_SERVER["REQUEST_URI"]) && preg_match('/.*\/(api)\/.*/', $_SERVER["RE
     //$route['404_override'] = 'website/Page404';
 }
 
-$route['default_controller'] = 'web/home';
+$route['default_controller'] = 'web/ProjectController';
 $route['translate_uri_dashes'] = FALSE;
+
+$route['home/profile/(.+)'] = 'web/UserController/profile/$1';
+$route['home/projects'] = 'web/ProjectController';
+$route['logout'] = 'web/Logout';
+$route['login'] = 'web/index/index';
+$route['register'] = 'web/index/signup';
 
 /*Route for Admin*/
 $route["admin"] = 'admin/Admin';

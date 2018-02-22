@@ -42,6 +42,18 @@ function load_outerweb_views($customView, $data = array()) {
     $CI->load->view('/index/footer', $data);
 }
 
+/**
+ * Loads alternate views which depends on the require js modules
+ * @param string $view view file
+ * @param array $data data array
+ */
+function load_alternate_views($view, $data = array()) {
+    $CI = &get_instance();
+    $CI->load->view('templates/alternate_header', $data);
+    $CI->load->view($view, $data);
+    $CI->load->view('templates/alternate_footer', $data);
+}
+
 function getConfig($uploadPath, $acptFormat, $maxSize = 3000, $maxWidth = 1024, $maxHeight = 768, $encryptName = TRUE) {
     $config = [];
     $config['upload_path'] = $uploadPath;
@@ -179,6 +191,21 @@ function setSessionVariables($data, $accessToken) {
         "private_key" => isset($accessToken['private_key']) ? $accessToken['private_key'] : "",
     ];
     return $sessionDataArr;
+}
+
+function retrieveEmployeePermission($userId) 
+{
+    $ci = &get_instance();
+    $ci->load->model("Common_model");
+    $data = $ci->Common_model->fetch_data(
+        "user_employee_permission",
+        "quote_view, quote_add, quote_edit, quote_delete," .
+            "insp_view, insp_add, insp_edit, insp_delete," .
+            "project_view, project_add, project_edit, project_delete",
+        ["where" => ["employee_id" => $userId]]
+    );
+    
+    return $data;
 }
 
 ?>

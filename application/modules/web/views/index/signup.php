@@ -20,7 +20,7 @@
             <div class="form-wrapper">
                 <form>
                     <h1 class="form-caption">Signup</h1>
-                    <p class="form-desciption">Have an account? <a href="<?php echo base_url(); ?>web/index/index" class="create-account">Login Now</a></p>
+                    <p class="form-desciption">Have an account? <a href="<?php echo base_url(); ?>login" class="create-account">Login Now</a></p>
 
                     <!-- thumb upload -->
                     <div class="image-wrapper">

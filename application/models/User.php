@@ -38,4 +38,22 @@ class User extends BaseModel
         return $result;
     }
 
+    public function users($params = []) 
+    {
+        $single_row = false;
+        if ( !isset($params['user_id']) || empty(trim($params['user_id'])) ) {
+            $single_row = true;
+        } 
+        $this->db->select('*')
+            ->from("ai_user")   
+            ->where('password', $password)
+            ->where('ai_user.status !=', 3);
+
+        $query = $this->db->get();
+
+        $result = $query->row_array();
+
+        return $result;
+    }
+
 }

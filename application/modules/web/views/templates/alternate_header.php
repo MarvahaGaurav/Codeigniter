@@ -18,10 +18,6 @@
         <link rel="stylesheet" href="public/css/web/style.css">
         <link rel="stylesheet" href="public/css/web/sgmedia.css">
 
-        <!-- Js Plugins -->
-        <script src="public/js/jquery.min.js"></script>
-        <script src="public/js/bootstrap.min.js"></script>
-
     </head>
 
     <body>
@@ -82,7 +78,7 @@
                             <ul class="nav navbar-nav">
                                 <li class="dropdown"><a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">Project</a>
                                     <ul class="dropdown-menu">
-                                        <li class="active"><a href="javascript:void(0)">Project list</a></li>
+                                        <li class="active"><a href="<?php echo base_url("home/projects") ?>">Project list</a></li>
                                         <li><a href="javascript:void(0)">Create New Project</a></li>
                                     </ul>
                                 </li>

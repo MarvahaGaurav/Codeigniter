@@ -21,7 +21,7 @@
                 <p class="succeed"><span><img src="public/images/checked.svg" alt="check"/></span>Sucessfull Done!</p>
                 <p class="form-desciption">A verification link has been sent to your registered email <span class="create-account">anderson12@gmail.com</span></p> 
                 <div class="form-group form-btn-wrap">
-                    <button class="form-btn save" type="button" onclick="window.location.href='<?php echo base_url(); ?>web/index/index';">OK</button>
+                    <button class="form-btn save" type="button" onclick="window.location.href='<?php echo base_url(); ?>login';">OK</button>
                 </div>
             </div>
         </div>

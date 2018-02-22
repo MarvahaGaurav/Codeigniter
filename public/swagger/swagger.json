@@ -1314,6 +1314,12 @@
                         "in": "formData",
                         "description": "Company image",
                         "type": "string"
+                    },
+                    {
+                        "name": "company_image_remove",
+                        "in": "formData",
+                        "description": "Company image",
+                        "type": "string"
                     }
                 ],
                 "responses": {

@@ -321,6 +321,12 @@ class Profile extends REST_Controller {
      *     description="Company image",
      *     type="string"
      *   ),  
+     *   @SWG\Parameter(
+     *     name="company_image_remove",
+     *     in="formData",
+     *     description="Company image",
+     *     type="string"
+     *   ),  
      *   @SWG\Response(response=200, description="Profile Update Success"),
      *   @SWG\Response(response=206, description="Unauthorized request"),     
      *   @SWG\Response(response=207, description="Header is missing"),        
@@ -413,6 +419,11 @@ class Profile extends REST_Controller {
                 }
                 if (isset($postDataArr['company_image']) && !empty($postDataArr['company_image'])) {
                     $compupdateArr['company_image'] = $postDataArr['company_image'];
+                }
+                if (isset($postDataArr['company_image_remove']) && !empty($postDataArr['company_image_remove'])) {
+                    $this->load->helper("s3_helper");
+                    s3_delete_image($postDataArr['company_image_remove']);
+                    $compupdateArr['company_image'] = "";
                 }
                 
                 // pr($compupdateArr);

@@ -30,7 +30,7 @@
         <div class="no-record text-center">
             <img src="public/images/no-found-note.png" alt="Note Paper">
             <p>You have no quotes received.</p>
-            <p>You have to <a href="<?php echo base_url(); ?>web/index/index" class="login">Login</a> first to get quotes!</p>
+            <p>You have to <a href="<?php echo base_url(); ?>login" class="login">Login</a> first to get quotes!</p>
         </div>
         <!-- no record found -->
 

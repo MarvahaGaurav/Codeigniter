@@ -1,16 +1,12 @@
 <?php
-
 defined('BASEPATH') OR exit('No direct script access allowed');
+require_once "BaseController.php";
 
-class Index extends MY_Controller {
-
-    function __construct() {		
+class Index extends BaseController {
+    public function __construct() {		
         parent::__construct();
-        $this->load->helper(['url', 'form', 'custom_cookie']);
-        $this->load->model('Common_model');
-        $this->load->library('session');
-        $this->lang->load('common', "english");
-        $this->load->library('form_validation');        
+        $this->load->library('form_validation');    
+        $this->inactive_session_required();
     }
 
     /*
@@ -44,7 +40,7 @@ class Index extends MY_Controller {
                  * Matched the Credentials
                  */
                 try {
-                    $sg_userinfo = $this->Common_model->fetch_data('ai_user', array('user_id', 'first_name', 'email'), array('where' => array('email' => $email, 'password' => $pass, 'status' => 1)), true);
+                    $sg_userinfo = $this->Common_model->fetch_data('ai_user', array('user_id', 'first_name', 'email', 'status'), array('where' => array('email' => $email, 'password' => $pass, 'status' => 1)), true);
                     //echo $this->db->last_query(); die;
                 } catch (Exception $ex) {
                     echo $ex->getMessage();
@@ -57,8 +53,9 @@ class Index extends MY_Controller {
                     //$sg_userinfo = array();
                     $sg_userinfo = array(
                         "user_id" => $sg_userinfo['user_id'],
-                        //"first_name" => $sg_userinfo['first_name'],
-                        //"email" => $sg_userinfo['email'],
+                        "first_name" => $sg_userinfo['first_name'],
+                        "email" => $sg_userinfo['email'],
+                        'status' => $sg_userinfo['status']
                     );
                     //pr($sg_userinfo);
                     //SETS COOKIE DATA
@@ -80,7 +77,7 @@ class Index extends MY_Controller {
                     $this->session->set_flashdata("greetings", "Welcome!");
                     $this->session->set_flashdata("message", "You have successfully logged in");
                     $this->session->set_userdata('sg_userinfo', $sg_userinfo);
-                    redirect(base_url() . "web/home/index");
+                    redirect(base_url("home/projects"));
                 } else {
                     $data['email'] = $email;
                     $data['password'] = $password;
@@ -284,16 +281,4 @@ class Index extends MY_Controller {
         die;
     }
 
-    
-    /*
-     * @function:logout
-     * @param: 
-     * @description: this is used to logout the user and redirect him to home page after logout
-     */
-
-    public function logout() {	                
-        $this->session->sess_destroy();
-        redirect(base_url() . "web/home/index");
-    }
-    
 }

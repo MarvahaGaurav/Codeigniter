@@ -19,7 +19,7 @@
             <div class="form-wrapper">                
                 <?php echo form_open('', array('id' => 'loginwebform', 'name' => "loginwebform")) ?>
                 <h1 class="form-caption">Login</h1>
-                <p class="form-desciption">Don't have an account? <a href="<?php echo base_url(); ?>web/index/signup" class="create-account">Create your account.</a></p> 
+                <p class="form-desciption">Don't have an account? <a href="<?php echo base_url(); ?>register" class="create-account">Create your account.</a></p> 
                 <p class="form-desciption">
                     <?php echo isset($error) ? '<label class="alert-danger">' . $error . '</label>' : form_error('email', '<label class="alert-danger">', '</label>') ?>
                     <?php echo form_error('password', '<label class="alert-danger">', '</label>') ?>
