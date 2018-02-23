@@ -21,11 +21,11 @@
                     <div class="profile-thumb">
                         <!-- Thumb Wrapper -->
                         <div class="thumb-view-wrapper thumb-view-p5 img-viewbdr-radius">
-                            <div class="thumb-view thumb-viewfullheight-5" style="background:url('<?php echo base_url("public/images/missing_avatar.svg") ?>')"></div>
+                            <div class="thumb-view thumb-viewfullheight-5" style="background:url('<?php echo isset($user['image'])&&!empty($user['image'])?$user['image']:base_url("public/images/missing_avatar.svg") ?>')"></div>
                         </div>
                         <!-- //Thumb Wrapper -->
-                        <h3 class="profile-username">Anderson Grey</h3>
-                        <p>User</p>
+                        <h3 class="profile-username"><?php echo $user['first_name'] ?></h3>
+                        <p></p>
                     </div>
                 </div>
                 <div class="col-sm-9 col-xs-12">
@@ -42,7 +42,7 @@
                                 <div class="form-group">
                                     <label class="p-label">Email ID</label>
                                     <div class="input-holder">
-                                        <span class="p-label-value">anderson012@gmail.com</span>
+                                        <span class="p-label-value"><?php echo $user['email'] ?></span>
                                     </div>
                                 </div>
                             </div>
@@ -50,7 +50,7 @@
                                 <div class="form-group">
                                     <label class="p-label">Mobile Number</label>
                                     <div class="input-holder">
-                                        <span class="p-label-value">45+ 9988787960</span>
+                                        <span class="p-label-value"><?php echo "+ {$user['prm_user_countrycode']} {$user['phone']}" ?></span>
                                     </div>
                                 </div>
                             </div>
@@ -58,7 +58,7 @@
                                 <div class="form-group">
                                     <label class="p-label">Alternate Number</label>
                                     <div class="input-holder">
-                                        <span class="p-label-value">45+ 9988787961</span>
+                                        <span class="p-label-value"><?php echo "+ {$user['alt_user_countrycode']} {$user['alt_userphone']}" ?></span>
                                     </div>
                                 </div>
                             </div>
@@ -78,7 +78,7 @@
                                 <div class="form-group">
                                     <label class="p-label">City</label>
                                     <div class="input-holder">
-                                        <span class="p-label-value">Odense</span>
+                                        <span class="p-label-value"><?php echo $user['city_name'] ?></span>
                                     </div>
                                 </div>
                             </div>
@@ -86,7 +86,7 @@
                                 <div class="form-group">
                                     <label class="p-label">Country</label>
                                     <div class="input-holder">
-                                        <span class="p-label-value">Denmark</span>
+                                        <span class="p-label-value"><?php echo $user['country_name'] ?></span>
                                     </div>
                                 </div>
                             </div>
@@ -94,7 +94,7 @@
                                 <div class="form-group">
                                     <label class="p-label">Zipcode</label>
                                     <div class="input-holder">
-                                        <span class="p-label-value">5210</span>
+                                        <span class="p-label-value"><?php echo $user['zipcode'] ?></span>
                                     </div>
                                 </div>
                             </div>

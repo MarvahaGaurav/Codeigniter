@@ -18,26 +18,32 @@ class UserController extends BaseController
             $userId = encryptDecrypt($user_id, 'decrypt');
             if ( !isset($userId) || empty($userId) ) {
                 show_404();
+                exit;
             }
 
             $this->load->model("UtilModel");
 
             $userData = $this->UtilModel->selectQuery(
-                "*",
+                "*, cl.name as city_name, country.name as country_name",
                 "ai_user",
                 [
-                    "where" => [
-                        "user_id" => $userId,
-                        "status !=" => DELETED
+                    "where" => ["user_id" => $userId, "status !=" => DELETED],
+                    "join" => [
+                        "city_list as cl" => "cl.id=ai_user.city_id",
+                        "country_list as country" => "country.country_code1=ai_user.country_id"
                     ],
                     "single_row" => true
                 ]
             );
-
-            load_alternate_views("users/profile", $this->data);
+            // pd($userData);
             if ( empty($userData) ) {
                 show_404();
-            }
+                exit;
+            }            
+            $this->data['user'] = $userData;
+            $userTypeMap = [];
+            load_alternate_views("users/profile", $this->data);
+            
         } catch ( DatabaseExceptions\SelectException $error ) {
             
 
