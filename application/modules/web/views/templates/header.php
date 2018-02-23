@@ -21,6 +21,14 @@
         <!-- Js Plugins -->
         <script src="public/js/jquery.min.js"></script>
         <script src="public/js/bootstrap.min.js"></script>
+        <script>
+            var smartguide = {};
+            smartguide.baseUrl = "<?php echo base_url() ?>";
+            if (location.hostname == "localhost")
+                var domain = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + '/';
+            else
+                var domain = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + '/';
+        </script>
 
     </head>
 
@@ -63,7 +71,7 @@
                                         </a>
                                         <ul class="dropdown-menu dropdown-profile">
                                             <li><a href="<?php echo base_url("home/profile/" . encryptDecrypt($userInfo['user_id'])) ?>">My Profile</a></li>
-                                            <li><a href="<?php echo base_url("") ?>">Settings</a></li>
+                                            <li><a href="<?php echo base_url("home/settings/" . encryptDecrypt($userInfo['user_id'])) ?>">Settings</a></li>
                                             <li><a href="<?php echo base_url("logout") ?>">Logout</a></li>
                                         </ul>
                                     </li>

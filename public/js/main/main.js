@@ -1,5 +1,6 @@
 requirejs.config({
   baseUrl: "public/js",
+  waitSeconds: 60,
   paths: {
     jquery: "jquery.min",
     bootstrap: "bootstrap.min",

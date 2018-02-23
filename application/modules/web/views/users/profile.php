@@ -104,7 +104,7 @@
 
                     <!-- button wrapper section -->
                     <div class="button-wrapper">
-                        <a href="javascript:void(0)" class="custom-btn btn-margin btn-width save">Edit Profile</a>
+                        <a href="<?php echo base_url("home/profile/{$user_id}/edit") ?>" class="custom-btn btn-margin btn-width save">Edit Profile</a>
                     </div>
                 </div>
 

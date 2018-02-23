@@ -8,7 +8,6 @@ class QuotesController extends BaseController
     function __construct() {		
         parent::__construct();
         $this->neutral_session();
-        
     }
 
     public function index() {	

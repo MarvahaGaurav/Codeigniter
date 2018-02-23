@@ -60,7 +60,9 @@ if (isset($_SERVER["REQUEST_URI"]) && preg_match('/.*\/(api)\/.*/', $_SERVER["RE
 $route['default_controller'] = 'web/ProjectController';
 $route['translate_uri_dashes'] = FALSE;
 
+$route['home/profile/(.+)/edit'] = 'web/UserController/edit_profile/$1';
 $route['home/profile/(.+)'] = 'web/UserController/profile/$1';
+$route['home/settings/(.+)'] = 'web/UserController/settings/$1';
 $route['home/projects'] = 'web/ProjectController';
 $route['home/quotes'] = 'web/QuotesController';
 $route['logout'] = 'web/Logout';
