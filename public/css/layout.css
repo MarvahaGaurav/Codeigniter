@@ -50,7 +50,7 @@ body {
     width: 100%;
     font-family: 'Open Sans', sans-serif;
     text-rendering: optimizeLegibility;
-    background-color: #ededed;
+    background-color: #eeeeee;
 }
 
 h1,h2,h3,h4,h5,h6 {
@@ -131,7 +131,7 @@ header {
 }
 
 .logoTxt {
-    background: #fbfbfb;
+    background: #eef5f9;
     padding: 9px 10px;
     font-size: 14px;
     line-height: 1;
@@ -312,7 +312,7 @@ header {
     vertical-align: middle;
     width: 17px;
     position: absolute;
-    top: 20px;
+    top: 22px;
     left: 13px;
 }
 

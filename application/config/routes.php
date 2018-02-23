@@ -62,6 +62,7 @@ $route['translate_uri_dashes'] = FALSE;
 
 $route['home/profile/(.+)'] = 'web/UserController/profile/$1';
 $route['home/projects'] = 'web/ProjectController';
+$route['home/quotes'] = 'web/QuotesController';
 $route['logout'] = 'web/Logout';
 $route['login'] = 'web/index/index';
 $route['register'] = 'web/index/signup';

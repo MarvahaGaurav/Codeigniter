@@ -1,18 +1,13 @@
 <?php 
 defined("BASEPATH") or exit("No direct script access allowed");
 require_once "BaseController.php";
-/**
- * @property array $data  array of values for view
- * @property array $userInfo session data
- * 
- */
+
 
 class ProjectController extends BaseController
 {   
     
     public function __construct()
     {
-        
         parent::__construct();
         $this->neutral_session();
     }

@@ -25,7 +25,7 @@
     <div id="myModal-trash" class="modal fade" role="dialog">
         <input type="hidden" id="uid" name="uid" value="">
         <input type="hidden" id="ustatus" name="ustatus" value="">
-        <div class="modal-dialog modal-sm">
+        <div class="modal-dialog modal-custom">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header modal-alt-header">
@@ -42,7 +42,7 @@
                 <input type="hidden" id="new_msg" name="new_msg">
                 <input type="hidden" id="for" name="for">
                 <div class="modal-footer">
-                    <div class="button-wrap">
+                    <div class="modal-button-wrap">
                         <button type="button" class="commn-btn cancel" data-dismiss="modal">Cancel</button>
                         <button type="button" class="commn-btn save" onclick="changeStatusToDelete($('#for').val(),$('#new_status').val(),$('#new_id').val(),$('#new_url').val())">Delete</button>
                     </div>
@@ -58,7 +58,7 @@
     <div id="myModal-block" class="modal fade" role="dialog">
         <input type="hidden" id="userid" name="userid" value="">
         <input type="hidden" id="udstatus" name="udstatus" value="">
-        <div class="modal-dialog modal-sm">
+        <div class="modal-dialog modal-custom">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header modal-alt-header">
@@ -76,7 +76,7 @@
                 
                 
                 <div class="modal-footer">
-                    <div class="button-wrap">
+                    <div class="modal-button-wrap">
                         <button type="button" class="commn-btn cancel" data-dismiss="modal">Cancel</button>
                         <button type="button" id="action" class="commn-btn save" onclick="changeStatusToBlock($('#for').val(),$('#new_status').val(),$('#new_id').val(),$('#new_url').val())">Block</button>
                     </div>
@@ -89,7 +89,7 @@
      <div id="myModal-logout" class="modal fade" role="dialog">
         <input type="hidden" id="uid" name="uid" value="">
         <input type="hidden" id="ustatus" name="ustatus" value="">
-        <div class="modal-dialog modal-sm">
+        <div class="modal-dialog modal-custom">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header modal-alt-header">
@@ -101,7 +101,7 @@
                 </div>
                 
                 <div class="modal-footer">
-                    <div class="button-wrap">
+                    <div class="modal-button-wrap">
                         <button type="button" class="commn-btn cancel" data-dismiss="modal">No</button>
                         <button type="button" onclick="window.location='<?php echo base_url()?>admin/Logout'" class="commn-btn save">Yes</button>
                     </div>

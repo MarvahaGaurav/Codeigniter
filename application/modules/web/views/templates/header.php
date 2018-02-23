@@ -86,10 +86,32 @@
                                         <li><a href="javascript:void(0)">Create New Project</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="javascript:void(0)">Quick Calculations</a></li>
-                                <li><a href="javascript:void(0)">Companies</a></li>
-                                <li><a href="javascript:void(0)">Quotes</a></li>
-                                <li><a href="javascript:void(0)">Inspirations</a></li>
+                                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Quick Calculations</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#">Application</a></li>
+                                        <li><a href="#">Lux Values</a></li>
+                                        <li><a href="#">Number Luminaires</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Companies</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#">All Companies</a></li>
+                                        <li><a href="#">Favourite Companies</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Quotes</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#">Awiating</a></li>
+                                        <li><a href="#">Submitted</a></li>
+                                        <li><a href="#">Approved</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Inspirations</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#">Inspiration List</a></li>
+                                        <li><a href="#">Add Inspiration</a></li>
+                                    </ul>
+                                </li>
                             </ul>
                         </div>
 

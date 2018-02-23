@@ -1,18 +1,19 @@
 blockquote {
-    border-left: 5px solid #e4001c;
+    border-left: 5px solid #ff334c;
 }
 
-.section,
+/* .section,
 .section-wrapper {
     -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.12);
     -moz-box-shadow: 0 0 8px rgba(0, 0, 0, 0.12);
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.12);
-}
+} */
 
 .section {
     background: #fff;
     padding:15px;
-    margin: 0 0 15px 0;
+    margin: 0 0 10px 0;
+    border:1px solid #e1e6ef;
 }
 
 .section-alternate {
@@ -21,7 +22,7 @@ blockquote {
 }
 
 .section-heading {
-    padding:15px 10px 9px 0;
+    padding:0 10px 9px 0;
     margin: 0 0 15px 0;
     border-bottom: 1px solid #e0cece;
 }
@@ -29,7 +30,7 @@ blockquote {
 .section-wrapper {
     background: #fff;
     padding:15px 10px;
-    margin: 0 0 15px 0;
+    margin: 0 0 10px 0;
 }
 
 .col-sm-space {
@@ -244,12 +245,11 @@ blockquote {
     font-size: 40px;
     letter-spacing: 1px;
     line-height: 1;
-    color:#b7283a;
+    color:#505458;
 }
 
 .ts-content .ts-numbers .ts-userstxt {
     font-size: 15px;
-    font-weight: 600;
     display: block;
     letter-spacing: initial;
     margin: 3px 0 0 0;
@@ -288,7 +288,7 @@ blockquote {
 .admin-label {
     font-size: 15px;
     font-weight: 600;
-    color: #000;
+    color: #505458;
     margin: 0 0 7px 0;
     display: block;
     line-height: 1;
@@ -339,7 +339,7 @@ blockquote {
     height: 39px;
     line-height: 44px;
     text-align: center;
-    background: #9e0d0c;
+    background: #505458;
     color:#fff;
     margin: 0 0 0 0;
 }
@@ -502,7 +502,7 @@ blockquote {
 }
 
 .image-browse {
-    background: #e4001c;
+    background: #ff334c;
     border-radius: 50%;
     padding: 10px;
 }
@@ -599,8 +599,8 @@ blockquote {
     text-align: center;
 }
 .table-wrapper .table-custom thead tr th {
-    color: #2c2c2c;
-    font-weight: 700;
+    color: #505458;
+    font-weight: 600;
 }
 .table-wrapper .table-custom thead tr th {
     font-size: 14px;
@@ -627,7 +627,7 @@ blockquote {
 }
 .table-wrapper .table-custom tbody tr td {
     color:#2c2c2c;
-    font-size: 12px;
+    font-size: 13px;
 }
 .table-wrapper .table-custom thead tr th a {
     color:#2c2c2c;
@@ -701,12 +701,12 @@ blockquote {
 }
 .sorting:before, 
 .sort-ascending:before {
-    border-bottom-color: #2c2c2c;
+    border-bottom-color: #505458;
     margin-top: -10px;
 }
 .sorting:after,
 .sort-descending:before {
-    border-top-color: #2c2c2c;
+    border-top-color: #505458;
 }
 
 /* searchbox */
@@ -788,17 +788,21 @@ span.close.flt_cl {
 /* buttons */
 
 .commn-btn {
-    font-size: 14px;
+    font-size: 12px;
     vertical-align: middle;
     padding: 10px 22px;
     color: #fff;
     display: inline-block;
-    min-width: 138px;
+    min-width: 110px;
     border:0;
 }
 
 .commn-btn:not(:last-child) {
     margin-right:5px;
+}
+
+.modal-button-wrap {
+    margin: 15px 0 0 0;
 }
 
 .modal-footer {
@@ -810,11 +814,11 @@ span.close.flt_cl {
 }
 
 .commn-btn.cancel {
-    background: #2c2c2c;
+    background: #505458;
 }
 
 .commn-btn.save {
-    background: #e4001c;
+    background: #ff334c;
 }
 
 .commn-btn.cancel:hover {
@@ -851,7 +855,7 @@ span.close.flt_cl {
     text-align:center;
     font-size: 14px;
     vertical-align: middle;
-    background: #e4001c;
+    background: #ff334c;
     color: #fff;
     display: inline-block;
     margin-right:5px;
@@ -899,7 +903,7 @@ span.close.flt_cl {
 }
 
 .fawe-icon-position .close-ico:hover .fa-times-circle {
-    color:#e4001c;
+    color:#ff334c;
 }
 
 .fawe-icon-position .fawe-icon-position-left {
@@ -964,7 +968,7 @@ span.close.flt_cl {
     opacity: 10;
 }
 .modal-header.modal-alt-header {
-    background: #e65466;
+    background: #505457;
     text-align: center;
     color: #fff;
     border-radius: 5px 5px 0 0;
@@ -1238,6 +1242,17 @@ span.close.flt_cl {
     background: #ededed;
 }
 
+.gallery-thumb-list ul {
+    margin:0 -5px;
+}
+.gallery-thumb-list ul li {
+    list-style: none;
+    width: 100%;
+    margin: 0 0 10px 0;
+    cursor: pointer;
+    padding: 0 5px;
+}
+
 @media (max-width:600px) {
     .thumbview-tablecell-one,
     .thumbview-tablecell-two {
@@ -1266,9 +1281,24 @@ span.close.flt_cl {
     .img-view-full-12 {
         height: 400px;
     }
+    .commn-btn {
+        font-size: 14px;
+        min-width: 138px;
+    }
+    .modal-custom {
+        width: 480px;
+    }
+    .gallery-thumb-list ul li {
+        width: 33.33%;
+        float: left;
+    }
 }
 @media (min-width:768px) {
     .col-sm-space {
         margin: 0 0 0 0;
+    }
+    .gallery-thumb-list ul li {
+        width: 25%;
+        float: left;
     }
 }

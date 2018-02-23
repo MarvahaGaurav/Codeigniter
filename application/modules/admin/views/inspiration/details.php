@@ -74,32 +74,41 @@
                             </div>
                         </div>
                         <div class="clearfix"></div>
-                        <div class="col-lg-6 col-sm-6 col-xs-6">
-                            <div class="form-group">
-                                <label class="admin-label">Media</label>
-                                
-                                <?php foreach ($inspiration_data['media'] as $value) : ?>
-                                
-                                    <?php if ( $value['media_type'] == CONTENT_TYPE_IMAGE ) {?>
-                                        
-                                        <div class="col-lg-3 col-sm-3 col-xs-3">
-                                            <div class="image-view-wrapper img-view200p img-viewbdr-radius4p img-mb">
-                                                <!-- <div class="profile-pic image-view img-view200" style=""></div> -->
-                                                <!-- <div class="form-profile-pic-wrapper pull-left"> -->
-                                                    <div class="profile-pic image-view img-view200" style="background-image:url('<?php echo (!empty($value['media'])) ? $value['media'] : DEFAULT_IMAGE ?>');">
-                                                <!-- </div> -->
-                                                </div>
-                                            </div>
-                                        </div>
-                                    <?php } else if ( $value['media_type'] == CONTENT_TYPE_VIDEO ) { ?>
-                                        <video width="320" height="240" poster="<?php echo $value['video_thumbnail'] ?>" controls>
-                                            <source src="<?php echo $value['media'] ?>" type="video/mp4">
-                                            <source src="<?php echo $value['media'] ?>" type="video/ogg">
-                                            Your browser does not support the video tag.
-                                        </video>
-                                    <?php } ?>
-                                <?php endforeach ?>
-                               
+                        <div class="col-lg-12">
+                            <div class="gallery-wrapper">
+                                <div class="gallery-thumb-list">
+                                    <ul>
+                                        <?php foreach ($inspiration_data['media'] as $value) : ?>
+                                            <?php if ( $value['media_type'] == CONTENT_TYPE_IMAGE ) {?>
+                                                <!-- <div class="image-view-wrapper img-view200p img-viewbdr-radius4p img-mb">
+                                                    <div class="profile-pic image-view img-view200" style="background-image:url('<?php echo (!empty($value['media'])) ? $value['media'] : DEFAULT_IMAGE ?>');"></div>
+                                                </div> -->
+                                                <li>
+                                                    <div class="image-view-wrapper img-view-fullp img-viewbdr-radius4p">
+                                                        <div class="image-view img-view200" style="background-image:url('<?php echo (!empty($value['media'])) ? $value['media'] : DEFAULT_IMAGE ?>');"></div>
+                                                    </div>
+                                                </li>
+                                            <?php } else if ( $value['media_type'] == CONTENT_TYPE_VIDEO ) { ?>
+                                                <!-- <video width="320" height="240" poster="<?php echo $value['video_thumbnail'] ?>" controls>
+                                                    <source src="<?php //echo $value['media'] ?>" type="video/mp4">
+                                                    <source src="<?php //echo $value['media'] ?>" type="video/ogg">
+                                                    Your browser does not support the video tag.
+                                                </video> -->
+                                                <li>
+                                                    <div class="image-view-wrapper img-view-fullp img-viewbdr-radius4p">
+                                                        <div class="image-view img-view200">
+                                                            <video poster="<?php echo $value['video_thumbnail'] ?>" controls>
+                                                                <source src="<?php echo $value['media'] ?>" type="video/mp4">
+                                                                <source src="<?php echo $value['media'] ?>" type="video/ogg">
+                                                                Your browser does not support the video tag.
+                                                            </video>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            <?php } ?>
+                                        <?php endforeach ?>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
