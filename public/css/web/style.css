@@ -1790,3 +1790,11 @@ video {
     font-size: 12px;
     margin: 0 0 0 8px;
 }
+
+label.error {
+    color: #e00016;
+}
+
+div.error {
+    color: #e00016;
+}

@@ -72,7 +72,7 @@
                                         <ul class="dropdown-menu dropdown-profile">
                                             <li><a href="<?php echo base_url("home/profile/" . encryptDecrypt($userInfo['user_id'])) ?>">My Profile</a></li>
                                             <li><a href="<?php echo base_url("home/settings/" . encryptDecrypt($userInfo['user_id'])) ?>">Settings</a></li>
-                                            <li><a href="<?php echo base_url("logout") ?>">Logout</a></li>
+                                            <li><a href="javascript:void(0)" id="user-logout">Logout</a></li>
                                         </ul>
                                     </li>
                                     <?php }else{ ?>

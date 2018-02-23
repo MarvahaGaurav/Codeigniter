@@ -60,7 +60,9 @@
 <!-- //footer -->
 
 </div>
-
+<div id="flash-card">
+    <strong class="strong-message"></strong><span class="message"></span>
+</div>
 <script src="public/js/web/common.js"></script>
 <script>
     $(document).ready(function () {
@@ -77,11 +79,34 @@
         $(".close-ico").on("click", function () {
             $("#search-box").val('');
             $('.close-ico').hide();
-        })
+        });
         /* on type close icon show in search field end */
 
     })
 </script>
+<div id="myModal-logout" class="modal fade" role="dialog">
+    <input type="hidden" id="uid" name="uid" value="">
+    <input type="hidden" id="ustatus" name="ustatus" value="">
+    <div class="modal-dialog modal-custom">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header modal-alt-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title modal-heading">Logout</h4>
+            </div>
+            <div class="modal-body">
+                <p class="modal-para">Do you really want to logout?</p>
+            </div>
+            
+            <div class="modal-footer">
+                <div class="modal-button-wrap">
+                    <button type="button" class="commn-btn cancel" data-dismiss="modal">No</button>
+                    <button type="button" onclick="window.location='<?php echo base_url('logout')?>'" class="commn-btn save">Yes</button>
+                </div>
+            </div>
 
+        </div>
+    </div>
+</div>
 </body>
 </html>
