@@ -180,3 +180,6 @@ $lang['cannot_delete_inspiration'] = "Cannot delete inspirations posted by anoth
 $lang['application_data_fetched'] = "Application data fetched";
 
 $lang['products_found'] = "Products Found";
+
+$lang['employee_permissions_updated'] = "Permissions changed successfully";
+$lang['settings_updated'] = "Settings changed successfully";

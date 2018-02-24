@@ -60,7 +60,7 @@
 <!-- //footer -->
 
 </div>
-<div id="flash-card">
+<div id="flash-card" data-message="<?php echo $this->session->flashdata("flash-message") ?>" data-type="<?php echo $this->session->flashdata("flash-type") ?>">
     <strong class="strong-message"></strong><span class="message"></span>
 </div>
 <script src="public/js/web/common.js"></script>

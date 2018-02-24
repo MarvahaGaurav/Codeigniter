@@ -79,7 +79,7 @@ class UserController extends BaseController
             $this->User->language = $post['language'];
 
             $this->User->update(["user_id" => $userData['user_id']]);
-            $this->session->set_flashdata("flash-message", "Settings updated successfully");
+            $this->session->set_flashdata("flash-message", $this->lang->line("settings_updated"));
             $this->session->set_flashdata("flash-type", "success");
             redirect(base_url("home/settings/" . encryptDecrypt($userData['user_id'])));
         }
@@ -166,7 +166,7 @@ class UserController extends BaseController
     public function old_password_check($password) {
         $password = encrypt($password);
         $db_password = $this->userData['password'];
-
+        
         if ( $db_password != $password ) {
             return FALSE;
         }

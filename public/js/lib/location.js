@@ -34,3 +34,4 @@
 
     window.fetchLocation = fetchLocation;
 })($);
+

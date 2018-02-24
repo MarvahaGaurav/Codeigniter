@@ -116,6 +116,14 @@
                                         <li><a href="#">Add Inspiration</a></li>
                                     </ul>
                                 </li>
+                                <?php if ( isset($userInfo['user_type']) && in_array($userInfo['user_type'], [INSTALLER, WHOLESALER, ARCHITECT, ELECTRICAL_PLANNER]) && ROLE_OWNER === (int)$userInfo['is_owner'] ) { ?>
+                                <li class="dropdown"><a href="" class="dropdown-toggle" data-toggle="dropdown">Manage Technician</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="<?php echo base_url("home/technicians") ?>">Technician List</a></li>
+                                        <li><a href="<?php echo base_url("home/technicians/requests") ?>">Request List</a></li>
+                                    </ul>
+                                </li>
+                                <?php }?>
                             </ul>
                         </div>
 
@@ -142,4 +150,4 @@
             </nav>
         </header>
         <!-- //header -->
-        <div class="main-container">
+    <div class="main-container">

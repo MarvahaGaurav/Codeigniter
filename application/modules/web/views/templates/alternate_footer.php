@@ -88,5 +88,29 @@
         </div>
     </div>
 </div>
+<div id="myModal-confirmation" class="modal fade" role="dialog">
+    <input type="hidden" id="uid" name="uid" value="">
+    <input type="hidden" id="ustatus" name="ustatus" value="">
+    <div class="modal-dialog modal-custom">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header modal-alt-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title modal-heading"></h4>
+            </div>
+            <div class="modal-body">
+                <p class="modal-para"></p>
+            </div>
+            
+            <div class="modal-footer">
+                <div class="modal-button-wrap">
+                    <button type="button" class="commn-btn cancel yes">Yes</button>
+                    <button type="button" class="commn-btn save no" data-dismiss="modal">No</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 </body>
 </html>

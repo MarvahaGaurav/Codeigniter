@@ -64,15 +64,22 @@ $(document).ready(function () {
         $("#myModal-logout").modal("show");
     });
 
+    
     var $flashCard = $("#flash-card");
     var flashMessage = $flashCard.attr("data-message").trim();
-
+    
     if ( flashMessage.length > 1 ) {
+        displayFlashCard(flashMessage);
+    }
+
+    function displayFlashCard(message) {
+        
         $flashCard.addClass("alert alert-" + $flashCard.attr("data-type"));
-        $flashCard.find(".strong-message").html(flashMessage);
+        $flashCard.find(".strong-message").html(message);
         $flashCard.find(".strong-message").css({
             width: "100%",
-            textAlign: "center"
+            textAlign: "center",
+            display: "block"
         });
         $flashCard.css({
             position: "fixed",
@@ -88,7 +95,16 @@ $(document).ready(function () {
         }, 5000);
     }
 
-    /* on type close icon show in search field */
+    var $searchBox = $("#search-box");
+    if ( $searchBox.length > 0 ) {
+        var searchBoxVal = $searchBox.val().trim();
+        if ( searchBoxVal.length > 0) {
+            $('.close-ico').show();
+        } else {
+            $('.close-ico').hide();
+        }
+    }
+
     $("#search-box").keyup(function () {
         if ($(this).val()) {
             $('.close-ico').show();
@@ -99,7 +115,32 @@ $(document).ready(function () {
 
     $(".close-ico").on("click", function () {
         $("#search-box").val('');
+        window.location = $("#search-box").attr("data-redirect");
         $('.close-ico').hide();
+    });
+
+    var $searchForm = $("form#search-form");
+
+    if ( $searchForm.length > 0 ) {
+        var $searchBoxInput = $searchForm.find("input[type='text']");
+        $searchForm.on("submit", function(){
+            var search = $searchBoxInput.val().trim();
+            console.log(search);
+            if ( search.length < 1 ) {
+                $flashCard.attr("data-type", "danger");
+                displayFlashCard("Search field cant be empty");
+                return false;
+            }
+            return true;
+        });
+    }
+
+    $(".back-button").on("click", function(){
+        var $self = $(this),
+            redirectTo = $self.attr("data-redirect");
+        if ( redirectTo.length > 0 ) {
+            window.location = redirectTo;
+        }
     });
     
     /* on type close icon show in search field end */

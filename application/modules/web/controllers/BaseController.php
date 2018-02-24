@@ -21,7 +21,7 @@ class BaseController extends MY_Controller
         $this->load->library('session');
         $this->lang->load('common', "english");
         $this->userInfo = [];
-        $this->user_query_fields = 'status,user_id,first_name,image,email';
+        $this->user_query_fields = 'status,user_id,first_name,image,email, user_type, is_owner';
         $this->session_data = $this->session->userdata('sg_userinfo');
     }
 
