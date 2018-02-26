@@ -17,22 +17,22 @@
             <!-- technician list search -->
             <div class="project-list-wrapper technician-list clearfix">
                 <h2 class="project-listtxt">Technician List</h2>
-                <div class="button-wrapper-two button-wrapper-right">
+               <!--  <div class="button-wrapper-two button-wrapper-right">
                     <button type="button" id="filter-btn" class="custom-btn btn-width save">
                         <i class="fa fa-filter fa-common"></i> Filter
-                    </button>
+                    </button> -->
                     <!-- filter section -->
-                    <div id="filter-section" class="filter-section section-arrow">
+                    <!-- <div id="filter-section" class="filter-section section-arrow"> -->
                         <!-- form wrapper -->
-                        <div class="form-wrapper">
+                        <!-- <div class="form-wrapper"> -->
 
                             <!-- Caption before section -->
-                            <div class="section-title clearfix">
+                            <!-- <div class="section-title clearfix">
                                 <h3>Filter</h3>
-                            </div>
+                            </div> -->
                             <!-- Caption before section -->
 
-                            <div class="row form-inline-wrapper">
+                            <!-- <div class="row form-inline-wrapper">
                                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                     <div class="form-group">
                                         <label class="labelTxt">Find your Product</label>
@@ -75,20 +75,20 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
 
                             <!-- Caption before section -->
-                            <div class="section-title clearfix">
+                            <!-- <div class="section-title clearfix">
                                 <div class="button-wrapper text-right">
                                     <input type="submit" value="Apply" class="custom-btn btn-width save">
                                     <button type="button" id="close-filter" class="custom-btn btn-width cancel">Cancel</button>
                                 </div>
-                            </div>
+                            </div> -->
                             <!-- Caption before section -->
-                        </div>
+                        <!-- </div> -->
                         <!-- //form wrapper -->
-                    </div>
-                </div>
+                    <!-- </div>
+                </div> -->
                 <div class="search-wrapper search-wrapper-width-2 search-wrp-992 fawe-icon-position">
                     <span class="fawe-icon fawe-icon-position-right close-ico">
                         <i class="fa fa-times"></i>
@@ -114,8 +114,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($technicians as $technician) : ?>
-                        <tr>
+                        <?php foreach ($technicians as $key => $technician) : ?>
+                        <tr id="technician-<?php echo $key ?>">
                             <td class="td-thumb-round text-nowrap">
                                 <div class="thumb-view-wrapper thumb-view-p4 img-viewbdr-radius">
                                     <div class="thumb-view thumb-viewfullheight-4" style="background:url('<?php echo $technician['image'] ?>') no-repeat;"></div>
@@ -127,7 +127,7 @@
                             <td class="text-nowrap"><?php echo $technician['country'] ?></td>
                             <td  class="text-nowrap action-user">
                                 <a href="<?php echo base_url("home/technicians/" . $technician['id']) ?>" class="tb-view-list" title="View">View</a>
-                                <a href="javascript:void(0)" data-json='<?php echo $technician['delete_data'] ?>' data-url="<?php echo base_url("xhttp/employee") ?>" data-action="DELETE" data-redirect="<?php echo base_url("home/technicians") ?>" data-title="Delete" data-message="Are you sure you want to remove <?php echo ucwords($technician['first_name']) ?>?" class="tb-view-list user-reject confirmation-action" title="Delete">Delete</a>
+                                <a href="javascript:void(0)" data-target="#technician-<?php echo $key ?>" data-json='<?php echo $technician['delete_data'] ?>' data-url="<?php echo base_url("xhttp/employee/remove") ?>" data-action="remove" data-redirect="<?php echo base_url("home/technicians") ?>" data-title="Delete" data-message="Are you sure you want to remove <?php echo ucwords($technician['first_name']) ?>?" class="tb-view-list user-reject confirmation-action-xhttp" title="Delete">Delete</a>
                             </td>
                         </tr>
                         <?php endforeach ?>

@@ -373,7 +373,6 @@ abstract class REST_Controller extends MX_Controller {
      * @return void
      */
     public function __construct($config = 'rest') {
-        
         parent::__construct();
         
         $config_username = AUTH_USER;

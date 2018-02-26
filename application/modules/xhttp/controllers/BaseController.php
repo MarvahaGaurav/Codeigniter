@@ -20,6 +20,7 @@ class BaseController extends MY_Controller
         $this->load->model('Common_model');
         $this->load->library('session');
         $this->lang->load('common', "english");
+        $this->lang->load('xhttp', "english");
         $this->userInfo = [];
         $this->user_query_fields = 'status,user_id,first_name,image,email';
         $this->session_data = $this->session->userdata('sg_userinfo');

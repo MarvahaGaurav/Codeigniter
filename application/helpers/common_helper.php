@@ -42,6 +42,13 @@ function load_outerweb_views($customView, $data = array()) {
     $CI->load->view('/index/footer', $data);
 }
 
+function load_outerwebcropper_views($customView, $data = array()) {
+    $CI = &get_instance();
+    $CI->load->view('/index/header', $data);
+    $CI->load->view($customView, $data);
+    $CI->load->view('/index/cropper');
+    $CI->load->view('/index/footer', $data);
+}
 /**
  * Loads alternate views which depends on the require js modules
  * @param string $view view file
@@ -218,7 +225,7 @@ function retrieveEmployeePermission($userId)
         "quote_view, quote_add, quote_edit, quote_delete," .
             "insp_view, insp_add, insp_edit, insp_delete," .
             "project_view, project_add, project_edit, project_delete",
-        ["where" => ["employee_id" => $userId]]
+        ["where" => ["employee_id" => $userId]], true
     );
     
     return $data;

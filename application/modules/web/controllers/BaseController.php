@@ -13,6 +13,7 @@ class BaseController extends MY_Controller
     protected $userInfo;
     private $user_query_fields;
     protected $session_data;
+    protected $employeePermission;
     public function __construct()
     {
         parent::__construct();
@@ -23,6 +24,8 @@ class BaseController extends MY_Controller
         $this->userInfo = [];
         $this->user_query_fields = 'status,user_id,first_name,image,email, user_type, is_owner';
         $this->session_data = $this->session->userdata('sg_userinfo');
+        $this->employeePermission = retrieveEmployeePermission($this->session->userdata('sg_userinfo')['user_id']);
+        $this->data['employee_permission'] = $this->employeePermission;
     }
 
     protected function active_session_required()

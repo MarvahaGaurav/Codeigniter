@@ -92,6 +92,10 @@ class Product extends BaseModel
         ->limit(isset($options['limit'])?(int)$options['limit']:RECORDS_PER_PAGE)
         ->offset(isset($options['offset'])?(int)$options['offset']:0);
 
+        if ( ! isset($options['search']) || empty($options['search']) ) {
+            $this->db->where('products.title LIKE', "%{$options['search']}%");
+        }
+
         $query = $this->db->get();
         $data['result'] = $query->result_array();
         $data['count'] = $this->db->query("SELECT FOUND_ROWS() as count")->row()->count;

@@ -14,7 +14,7 @@ class BaseController extends REST_Controller
     {
         parent::__construct();
         $this->load->helper(["input_data", "debuging"]);
-        $this->load->language("common");
+        $this->load->language("common", 'english');
         $this->load->model("UtilModel");
         $this->datetime = date("Y-m-d H:i:s");
         $this->header = $this->head();

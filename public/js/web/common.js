@@ -99,6 +99,9 @@ $(document).ready(function () {
     if ( $searchBox.length > 0 ) {
         var searchBoxVal = $searchBox.val().trim();
         if ( searchBoxVal.length > 0) {
+            var $submitBtn = $searchBox.siblings("input[type='submit']");
+            $submitBtn.prop("disabled", true);
+            $searchBox.prop('readonly', true);
             $('.close-ico').show();
         } else {
             $('.close-ico').hide();
@@ -123,9 +126,8 @@ $(document).ready(function () {
 
     if ( $searchForm.length > 0 ) {
         var $searchBoxInput = $searchForm.find("input[type='text']");
-        $searchForm.on("submit", function(){
+        $searchForm.on("submit", function() {
             var search = $searchBoxInput.val().trim();
-            console.log(search);
             if ( search.length < 1 ) {
                 $flashCard.attr("data-type", "danger");
                 displayFlashCard("Search field cant be empty");
@@ -142,6 +144,66 @@ $(document).ready(function () {
             window.location = redirectTo;
         }
     });
+
+    var $confirmationModal = $("#myModal-confirmation");
+    var $confirmationActionXhttp = $(".confirmation-action-xhttp");
+    if ( $confirmationActionXhttp.length > 0 ) {
+        $confirmationActionXhttp.on("click", function(){
+            var $self = $(this),
+                dataJson = $self.attr("data-json"),
+                dataUrl = $self.attr("data-url"),
+                dataAction = $self.attr("data-action"),
+                dataRedirect = $self.attr("data-redirect"),
+                dataTitle = $self.attr("data-title"),
+                dataTarget = $self.attr("data-target"),
+                dataMessage = $self.attr("data-message");
+            
+            var $modalTitle = $confirmationModal.find(".modal-header h4"),
+                $modalMessage = $confirmationModal.find(".modal-body p"),
+                $modalActionButton = $confirmationModal.find(".modal-footer button.yes");
+            
+            $modalTitle.html(dataTitle);
+            $modalMessage.html(dataMessage);
+            $modalActionButton.attr("data-json", dataJson);
+            $modalActionButton.attr("data-url", dataUrl);
+            $modalActionButton.attr("data-action", dataAction);
+            $modalActionButton.attr("data-redirect", dataRedirect);
+            $modalActionButton.attr("data-target", dataTarget);
+
+            $confirmationModal.modal("show");
+
+        });
+
+        $("#confirmation-ok").on("click", function(){
+            var $self = $(this),
+                dataJson = $self.attr("data-json"),
+                dataUrl = $self.attr("data-url"),
+                dataAction = $self.attr("data-action"),
+                dataRedirect = $self.attr("data-redirect"),
+                dataTarget = $self.attr("data-target");
+
+            $.ajax({
+                url: dataUrl,
+                method: "POST",
+                data: JSON.parse(dataJson),
+                dataType: 'json', 
+                beforeSend: function () {
+
+                },
+                success: function(response) {
+                    if (response.success) {
+                        if ( dataAction == "remove" ) {
+                            $confirmationModal.modal("hide");
+                            $(dataTarget).remove();
+                            $flashCard.addClass("alert alert-success");
+                            // displayFlashCard(response.message);
+                            window.location = dataRedirect;
+                        }
+                    }
+                }
+            });
+        });
+    }
     
     /* on type close icon show in search field end */
-})
+});

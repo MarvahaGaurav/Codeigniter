@@ -12,11 +12,17 @@
 
         <!-- Css Plugins -->
         <link rel="stylesheet" href="public/css/web/plugins/bootstrap.min.css">
+        <?php if ( isset($owl) ) { ?>
+
+        <link rel="stylesheet" href="public/css/jquery.scrollbar.css">
+        <link rel="stylesheet" href="public/css/owl.carousel.min.css" >
+        <?php } ?>
 
         <!-- Custom Css Plugin -->
         <link rel="stylesheet" href="public/css/web/common.css">        
         <link rel="stylesheet" href="public/css/web/style.css">
         <link rel="stylesheet" href="public/css/web/sgmedia.css">
+        
         <script>
             var smartguide = {};
             smartguide.baseUrl = "<?php echo base_url() ?>";
@@ -112,8 +118,13 @@
                                 </li>
                                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Inspirations</a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="#">Inspiration List</a></li>
-                                        <li><a href="#">Add Inspiration</a></li>
+                                        <li><a href="<?php echo base_url("home/inspirations") ?>">Inspiration List</a></li>
+                                        <?php if (isset($userInfo['user_type']) &&
+                                        in_array($userInfo['user_type'], [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER]) &&
+                                        (ROLE_OWNER === (int)$userInfo['is_owner'] || (isset($employee_permission['insp_add']) && (int)$employee_permission['insp_add'] == 1))) {
+                                          ?>
+                                        <li><a href="<?php echo base_url("home/inspirations/add") ?>">Add Inspiration</a></li>
+                                        <?php } ?>
                                     </ul>
                                 </li>
                                 <?php if ( isset($userInfo['user_type']) && in_array($userInfo['user_type'], [INSTALLER, WHOLESALER, ARCHITECT, ELECTRICAL_PLANNER]) && ROLE_OWNER === (int)$userInfo['is_owner'] ) { ?>

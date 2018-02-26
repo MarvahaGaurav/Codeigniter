@@ -70,6 +70,7 @@ class Employee extends BaseModel
             ->join("city_list", "city_list.id=users.city_id")
             ->join("country_list", "country_list.country_code1=users.country_id")
             ->where("requested_to", $options['user_id'])
+            ->where('users.status', ACTIVE)
             ->limit($options['limit'])
             ->offset($options['offset'])
             ->order_by("erm.er_id", $options['orderby']);

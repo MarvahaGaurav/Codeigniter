@@ -85,6 +85,7 @@ class UserController extends BaseController
         }
         $this->data['user'] = $userData;
         $this->data['js'] = "settings";
+        
         load_alternate_views("users/settings", $this->data);
     }
 

@@ -38,7 +38,7 @@ class Inspiration extends BaseModel
             ->where('i.status', 1)
             ->where('i.is_deleted', 0)
             ->join("company_master as company", "company.company_id=i.company_id")
-            ->join('ai_user as user', 'user.company_id=company.company_id AND user.is_owner = 2' . $user_additional_join)
+            ->join('ai_user as user', 'user.company_id=company.company_id' . $user_additional_join, "left")
             ->join('city_list as cl', 'cl.id=user.city_id', 'left')
             ->join('country_list as country', 'country.country_code1=user.country_id', 'left')
             ->order_by("i.id", "desc")
@@ -62,6 +62,10 @@ class Inspiration extends BaseModel
             $this->db->limit((int)$options['limit']);
         } else {
             $this->db->limit(RECORDS_PER_PAGE);
+        }
+
+        if (isset($options['search']) && !empty($options['search'])) {
+            $this->db->where('i.title LIKE', "%{$options['search']}%");
         }
 
         if (isset($options['user_id']) && !empty($options['user_id'])) {

@@ -183,3 +183,9 @@ $lang['products_found'] = "Products Found";
 
 $lang['employee_permissions_updated'] = "Permissions changed successfully";
 $lang['settings_updated'] = "Settings changed successfully";
+
+
+/* employee requests */
+$lang['employee_removed'] = "Employee removed successfully";
+$lang['employee_accepted'] = "Employee request has been accepted, please check the technician list <a href='home/technicians'>here</a>";
+$lang['employee_rejected'] = "Employee request has been rejected";

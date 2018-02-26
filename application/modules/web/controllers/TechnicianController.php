@@ -44,6 +44,7 @@ class TechnicianController extends BaseController
             $row['user_type'] = in_array($row['user_type'], array_keys($technicianTypes))? $technicianTypes[$row['user_type']]: "Technician";
             $row['image'] = empty($row['image']) ? base_url("public/images/missing_avatar.svg") : $row['image'];
             $row['id'] = encryptDecrypt($row['id']);
+            //following delete_data would be used to delete using ajax
             $row['delete_data'] = json_encode([
                 $this->data["csrfName"] = $this->security->get_csrf_token_name() =>
                 $this->data["csrfToken"] = $this->security->get_csrf_hash(),
@@ -55,7 +56,8 @@ class TechnicianController extends BaseController
         $this->data['technicians'] = $result;
         $this->data['search'] = $search;
         $this->data['js'] = 'technician';
-
+        // $this->session->set_flashdata("flash-message", "");
+        // $this->session->set_flashdata("flash-type", "");
         load_alternate_views("technicians/main", $this->data);
     }
 
@@ -108,6 +110,7 @@ class TechnicianController extends BaseController
             redirect(base_url("home/technicians/". encryptDecrypt($employee_id)));
         }
         $this->data['js'] = 'technician';
+        
         // pd($data);
         load_alternate_views("technicians/details", $this->data);
     }
@@ -135,13 +138,28 @@ class TechnicianController extends BaseController
             $row['user_type'] = in_array($row['user_type'], array_keys($technicianTypes))? $technicianTypes[$row['user_type']]: "Technician";
             $row['image'] = empty($row['image']) ? base_url("public/images/missing_avatar.svg") : $row['image'];
             $row['id'] = encryptDecrypt($row['id']);
+            //following delete_data would be used to delete using ajax
+            $row['accept_data'] = json_encode([
+                $this->data["csrfName"] = $this->security->get_csrf_token_name() =>
+                $this->data["csrfToken"] = $this->security->get_csrf_hash(),
+                "id" => $row['id'],
+                "action" => "accept"
+            ]);
+            //following delete_data would be used to delete using ajax
+            $row['reject_data'] = json_encode([
+                $this->data["csrfName"] = $this->security->get_csrf_token_name() =>
+                $this->data["csrfToken"] = $this->security->get_csrf_hash(),
+                "id" => $row['id'],
+                "action" => "reject"
+            ]);
             return $row;
         }, $data['result']);
 
         $this->data['technicians'] = $result;
         $this->data['search'] = $search;
         $this->data['js'] = 'technician';
-
+        $this->session->set_flashdata("flash-message", "");
+        $this->session->set_flashdata("flash-type", "");
         load_alternate_views("technicians/requests", $this->data);
     }
 

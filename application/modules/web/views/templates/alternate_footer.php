@@ -104,7 +104,7 @@
             
             <div class="modal-footer">
                 <div class="modal-button-wrap">
-                    <button type="button" class="commn-btn cancel yes">Yes</button>
+                    <button type="button" id="confirmation-ok" class="commn-btn cancel yes">Yes</button>
                     <button type="button" class="commn-btn save no" data-dismiss="modal">No</button>
                 </div>
             </div>
