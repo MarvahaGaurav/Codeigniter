@@ -6,23 +6,23 @@
             <li>
                 <a href="javascript:void(0)">Home</a>
             </li>
-            <li class="active">Add Inspiration</li>
+            <li class="active">Edit Inspiration</li>
         </ul>
         <!-- //breadcrumb -->
 
         <div class="page-heading">
-            <h1 class="page-title">Add Inspiration</h1>
+            <h1 class="page-title">Edit Inspiration</h1>
             <p class="prj-description">We are continously designing, prototyping and testing new products to enable us to deliver products that are
                 energy efficient and environmental friendly, in combination with a creation of the ambiance that you need,
                 always keeping in mind that luminaires have a great impact on the environment.</p>
         </div>
-
+        
         <!-- Caption before section -->
         <div class="section-title clearfix">
             <h3>Inspiration Details</h3>
         </div>
         <!-- Caption before section -->
-        <?php echo form_open(base_url('home/inspirations/add'), ['id' => 'add-inspiration']) ?>
+        <?php echo form_open(base_url("home/inspirations/{$inspiration_id}/edit"), ['id' => 'add-inspiration']) ?>
             <div class="inspiration-wrapper">
                 <div class="user-detail-block3">
                     <div class="row">
@@ -30,7 +30,7 @@
                             <div class="form-group">
                                 <label class="p-label">Inspiration Title</label>
                                 <div class="form-group-field">
-                                    <input type="text" name="title" maxlength="255" value="<?php echo set_value("title") ?>" placeholder="Tower Name">
+                                    <input type="text" name="title" maxlength="255" value="<?php echo set_value("title", $inspiration['title']) ?>" placeholder="Tower Name">
                                 </div>
                                 <div class="error"><?php echo form_error("title") ?></div>
                             </div>
@@ -43,7 +43,7 @@
                             <div class="form-group">
                                 <label class="p-label">Description</label>
                                 <div class="form-group-field">
-                                    <textarea maxlength="255" name="description" class="textarea-height"><?php echo set_value("description") ?></textarea>
+                                    <textarea maxlength="255" name="description" class="textarea-height"><?php echo set_value("description", $inspiration['description']) ?></textarea>
                                 </div>
                                 <div class="error"><?php echo form_error("description") ?></div>
                             </div>

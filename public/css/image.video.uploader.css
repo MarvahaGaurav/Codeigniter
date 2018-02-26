@@ -1,0 +1,135 @@
+/* image video uploader styling */
+
+.album-wrapper {
+    margin: 15px -8px 10px;
+    padding: 8px 0;
+    overflow: hidden;
+}
+
+.album-wrapper li {
+    position: relative;
+    float: left;
+    padding: 0 8px 15px;
+}
+
+.album-wrapper li .album-thumnail {
+    width:90px;
+    height: 90px;
+}
+
+.album-wrapper li:last-child .album-thumnail {
+    border: 1px dashed #2e2e2e;
+}
+
+.album-wrapper li:not(:last-child) .album-thumnail .albub-item:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    opacity: 0;
+    z-index: 1000;
+    background: rgba(224, 0, 22,0.5);
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+    transition: all 0.2s linear;
+}
+
+.album-wrapper li:not(:last-child):hover .album-thumnail .albub-item:before {
+    opacity: 1;
+}
+
+.album-thumnail {
+    display: block;
+    position: relative;
+}
+
+.album-thumnail .albub-item {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    z-index: 99;
+    background: #000;
+    overflow: hidden;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}
+
+.album-thumnail .albub-item img,
+.album-thumnail .albub-item video {
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    margin:auto;
+}
+
+.album-thumnail .albub-item img {
+    height: 100%;
+    width:100%;
+}
+
+.album-thumnail .albub-item video {
+    width: 100%;
+}
+
+.album-thumnail .fa-plus {
+    color:#2e2e2e;
+    font-size: 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 18px;
+    height: 18px;
+    pointer-events: none;
+}
+
+.album-thumnail .album-uploader {
+    position: absolute;
+    top:0;
+    right:0;
+    height: 100%;
+    cursor: pointer;
+    opacity: 0;
+}
+
+.album-thumnail .remove-item {
+    position: absolute;
+    color: #fff;
+    z-index: 999;
+    font-size: 11px;
+    top: -8px;
+    right: -6px;
+    background: #2e2e2e;
+    border-radius: 50%;
+    border:1px solid #fff;
+    width: 20px;
+    height: 20px;
+    line-height: 1.55;
+    text-align: center;
+    cursor: pointer;
+}
+
+.album-thumnail .player {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 0;
+    left: 8px;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    z-index: 99;
+}
+
+.album-thumnail .player .fa-play-circle {
+    color:#fff;
+    font-size: 21px;
+}

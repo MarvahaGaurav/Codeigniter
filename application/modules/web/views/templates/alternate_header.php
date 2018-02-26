@@ -13,9 +13,20 @@
         <!-- Css Plugins -->
         <link rel="stylesheet" href="public/css/web/plugins/bootstrap.min.css">
         <?php if ( isset($owl) ) { ?>
+            <link rel="stylesheet" href="public/css/jquery.scrollbar.css">
+            <link rel="stylesheet" href="public/css/owl.carousel.min.css" >
+        <?php } ?>
+        
+        <?php if ( isset($selectpicker) ) { ?>
+            <link rel="stylesheet" href="public/css/bootstrap-select.min.css" >
+        <?php } ?>
 
-        <link rel="stylesheet" href="public/css/jquery.scrollbar.css">
-        <link rel="stylesheet" href="public/css/owl.carousel.min.css" >
+        <?php if ( isset($custom_select) ) { ?>
+            <link rel="stylesheet" href="public/css/select2.min.css">
+        <?php } ?>
+
+        <?php if ( isset($image_video_uploader) ) { ?>
+            <link rel="stylesheet" href="public/css/image.video.uploader.css">
         <?php } ?>
 
         <!-- Custom Css Plugin -->

@@ -14,6 +14,7 @@ class BaseController extends MY_Controller
     private $user_query_fields;
     protected $session_data;
     protected $employeePermission;
+    protected $datetime;
     public function __construct()
     {
         parent::__construct();
@@ -22,7 +23,8 @@ class BaseController extends MY_Controller
         $this->load->library('session');
         $this->lang->load('common', "english");
         $this->userInfo = [];
-        $this->user_query_fields = 'status,user_id,first_name,image,email, user_type, is_owner';
+        $this->datetime = date("Y-m-d H:i:s");
+        $this->user_query_fields = 'status,user_id,first_name,image,email, user_type, is_owner, company_id';
         $this->session_data = $this->session->userdata('sg_userinfo');
         $this->employeePermission = retrieveEmployeePermission($this->session->userdata('sg_userinfo')['user_id']);
         $this->data['employee_permission'] = $this->employeePermission;
