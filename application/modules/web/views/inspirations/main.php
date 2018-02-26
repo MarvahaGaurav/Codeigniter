@@ -100,6 +100,9 @@
                         </td>
                         <td class="text-nowrap action-user">
                             <a href="<?php echo base_url("home/inspirations/" . $inspiration['inspiration_id']) ?>" class="tb-view-list" title="View">View</a>
+                            <?php if ( $inspiration['edit_inspiration'] ) { ?>
+                            <a href="<?php echo base_url("home/inspirations/{$inspiration['inspiration_id']}/edit") ?>" class="tb-view-list" title="View">Edit</a>
+                            <?php } ?>
                         </td>
                     </tr>
                     <?php endforeach?>

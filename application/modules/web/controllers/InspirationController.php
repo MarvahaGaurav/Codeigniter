@@ -48,6 +48,14 @@ class InspirationController extends BaseController
             $row['products'] = json_decode("[{$row['products']}]", true);
             $row['media'] = json_decode("[{$row['media']}]", true);
             $row['media'] = !empty($row['media'])?$row['media']:base_url("public/images/missing_avatar.svg");
+            if (isset($this->userInfo['user_type']) &&
+            in_array($this->userInfo['user_type'], [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER]) &&
+            (ROLE_OWNER === (int)$this->userInfo['is_owner'] || (isset($this->employeePermission['insp_edit']) && (int)$this->employeePermission['insp_edit'] === 1)) &&
+            ( (int)$this->userInfo['company_id'] === (int)$row['company_id'] )) {
+                $row['edit_inspiration'] = true;
+            } else {
+                $row['edit_inspiration'] = false;
+            }
             return $row;
         }, $data['result']);
         $this->data['js'] = "inspirations";
