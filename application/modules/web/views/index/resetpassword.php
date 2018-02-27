@@ -17,14 +17,16 @@
         <!-- ============== Left Section ============== -->
         <div class="fm-table-cell fm-cell tbl-cell-1">
             <div class="form-wrapper">
-                <?php echo form_open('', array('id' => 'resetwebform', 'name' => "resetwebform")) ?>
-                    <h1 class="form-caption">Set Password</h1>
-                    <p class="form-desciption">Lorem ipsum dolor sit amet, consectetuer adipiscing elit,  sed diam nunoy.</p> 
+                <?php echo form_open("web/index/resetpassword?token=".$token, array('id' => 'resetwebform', 'name' => "resetwebform")) ?>
+                    <h1 class="form-caption">Reset Password</h1>
+                    <p class="form-desciption">You can reset your password from here</p> 
                     <div class="form-group">
-                        <input type="email" class="form-control" name="username" placeholder="New Password" required="" autofocus="" />
-                    </div>
+                        <input type="password" class="form-control" name="password" placeholder="New Password" value="<?php echo set_value('password'); ?>" required="required" autofocus="" />
+                        <?php echo form_error('password', '<label class="alert-danger">', '</label>'); ?>
+                    </div> 
                     <div class="form-group">
-                        <input type="email" class="form-control" name="username" placeholder="Confirm Password" required="" autofocus="" />
+                        <input type="password" class="form-control" name="cnfpassword" placeholder="Confirm Password" value="<?php echo set_value('cnfpassword'); ?>" required="required" autofocus="" />
+                        <?php echo form_error('cnfpassword', '<label class="alert-danger">', '</label>'); ?>
                     </div>
                     <div class="form-group form-btn-wrap">
                         <button class="form-btn save" type="submit">Save</button>

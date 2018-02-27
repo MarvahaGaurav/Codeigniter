@@ -22,9 +22,11 @@
                     <p class="form-desciption">Forgot your password? Enter the email address of your account to reset your password.</p> 
                     <p class="form-desciption">
                     <?php echo isset($error) ? '<label class="alert-danger">' . $error . '</label>' : form_error('email', '<label class="alert-danger">', '</label>') ?>                    
+                    <?php echo isset($Success) ? '<label class="alert-success">' . $Success . '</label>' : form_error('email', '<label class="alert-success">', '</label>') ?>                    
                     </p> 
                     <div class="form-group">
-                        <input type="email" class="form-control" name="email" placeholder="Email Address" required="required" autofocus="">
+                        <input type="email" class="form-control" name="email" value="<?php echo set_value('email'); ?>" placeholder="Email Address" required="required" autofocus="">
+                        <?php echo form_error('email', '<label class="alert-danger">', '</label>'); ?>
                     </div>
                     <div class="form-group form-btn-wrap">
                         <button class="form-btn save" type="submit">Send</button>

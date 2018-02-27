@@ -36,6 +36,7 @@ class Product extends BaseModel
                 if ( isset($params['offset']) && !empty((int)$params['offset']) && ! $search ) {
                     $this->db->offset((int)$params['offset']);
                 }
+                
             } else {
                 $query = "products.id as product_id, products.title as product_title, how_to_specity as description, products.image, productTechnicalData(products.id) as technical_data," .
                 "IFNULL(GROUP_CONCAT(gallery.image), '') as images";

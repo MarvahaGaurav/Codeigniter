@@ -41,7 +41,7 @@
                 <div class="clearfix"></div>
                 <div class="col-sm-push-4 col-sm-4 col-xs-12">
                     <div class="form-group">
-                        <label class="admin-label">*Confirm Password</label>
+                        <label class="admin-label">* Confirm Password</label>
                         <div class="input-holder">
                             <input type="password" maxlength="16" class="form-control material-control" maxlength="55" name="confirm_password" value="<?php echo set_value('confirm_password');?>">
                             <?php echo form_error('confirm_password','<label class="alert-danger">','</label>');?>

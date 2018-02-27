@@ -18,8 +18,14 @@ class UserController extends BaseController
             $this->data['userInfo'] = $this->userInfo;
             
             $userData = $this->validateUser($user_id);
-
+            if($userData['company_id'] > 0){
+                $whereArr['where'] = ['company_id'=>$userData['company_id']];
+                $compnaydetail = $this->Common_model->fetch_data('company_master', '*', $whereArr, true);
+            }else{
+                $compnaydetail = [];
+            }
             $this->data['user'] = $userData;
+            $this->data['compnaydetail'] = $compnaydetail;
             $this->data['user_id'] = $user_id;
             $userTypeMap = [];
             load_alternate_views("users/profile", $this->data);
@@ -34,14 +40,100 @@ class UserController extends BaseController
         $this->data['userInfo'] = $this->userInfo;
 
         $userData = $this->validateUser($user_id);
+        
+        if($userData['company_id'] > 0){
+            $whereArr['where'] = ['company_id'=>$userData['company_id']];
+            $compnaydetail = $this->Common_model->fetch_data('company_master', '*', $whereArr, true);
+        }else{
+            $compnaydetail = [];
+        }
         $this->load->helper("location");
         $countries = fetch_countries();
         $cities = fetch_cities($userData['country_id']);
         $this->data['countries'] = $countries;
         $this->data['cities'] = $cities;
         $this->data['user'] = $userData;
+        $this->data['compnaydetail'] = $compnaydetail;
         $this->data['js'] = 'edit-profile';
-        load_alternate_views("users/edit_profile", $this->data);
+        
+        if ($this->input->post()) {
+            $dataArr = $this->input->post();
+            //echo '<pre>'; print_r($dataArr); echo '</pre>';  die('here i m');
+            $this->db->trans_begin();
+            if(isset($dataArr['company_id']) && !empty($dataArr['company_id'])){
+                /* Company update here */
+                $companyArr['company_reg_number'] = $dataArr['company_reg_number'];
+                $companyArr['company_name'] = $dataArr['company_name'];
+                $companyArr['country'] = $dataArr['country'];
+                $companyArr['city'] = $dataArr['city'];
+                $companyArr['zipcode'] = $dataArr['zip_code'];
+                
+                if (isset($dataArr['company_image']) && !empty($dataArr['company_image'])) {
+                    $this->load->helper("images");
+                    try
+                    {
+                        $companyArr['company_image'] = $imageName=s3_image_uploader(ABS_PATH.$dataArr['company_image'],$dataArr['company_image']);
+                    } catch (Exception $e) {                                
+                        $this->data['error'] = strip_tags($this->upload->display_errors());                                
+                        $this->session->set_flashdata("flash-message", $e->getMessage());
+                        $this->session->set_flashdata("flash-type", "danger");
+                        load_alternatecropper_views("users/edit_profile", $this->data);
+                    }                
+                }else{
+                    //$companyArr['company_image'] = isset($dataArr['prevcompimg']) && !empty($dataArr['prevcompimg'])?$dataArr['prevcompimg']:"";
+                }                 
+
+                $this->Common_model->update_single('company_master',$companyArr, array('where'=>array('company_id'=>$dataArr['company_id'])));
+                /* Company update here */
+            }
+            /* userdata update here */
+            $userDataArr['first_name'] = $dataArr['name'];
+            $userDataArr['prm_user_countrycode'] = $dataArr['prmccode'];
+            $userDataArr['phone'] = $dataArr['phone'];
+            $userDataArr['alt_user_countrycode'] = $dataArr['altccode'];
+            $userDataArr['alt_userphone'] = $dataArr['alt_phone'];
+            $userDataArr['country_id'] = $dataArr['country'];
+            $userDataArr['city_id'] = $dataArr['city'];
+            $userDataArr['zipcode'] = $dataArr['zip_code'];
+            if (isset($dataArr['imgurl']) && !empty($dataArr['imgurl'])) {
+                $this->load->helper("images");
+                try
+                {
+                    $userDataArr['image'] = $imageName=s3_image_uploader(ABS_PATH.$dataArr['imgurl'],$dataArr['imgurl']);
+                } catch (Exception $e) {                                
+                    $this->data['error'] = strip_tags($this->upload->display_errors());                                
+                    $this->session->set_flashdata("flash-message", $e->getMessage());
+                    $this->session->set_flashdata("flash-type", "danger");
+                    load_alternatecropper_views("users/edit_profile", $this->data);
+                }                
+            }else{
+                //$userData['image'] = isset($dataArr['previmg']) && !empty($dataArr['previmg'])?$dataArr['previmg']:"";
+            }            
+            
+            //echo '<pre>'; print_r($userDataArr);  die;
+            $updateuserdata = $this->Common_model->update_single('ai_user',$userDataArr, array('where'=>array('user_id'=>$userData['user_id'])));
+            if ($this->db->trans_status() === TRUE) {
+                $this->db->trans_commit();
+                if($updateuserdata){
+                    $this->session->set_flashdata("flash-message", 'Profile Update Successfully');
+                    $this->session->set_flashdata("flash-type", "success");
+                    redirect(base_url("home/profile/" . $user_id));
+                    //redirect(base_url("users/settings/" . encryptDecrypt($user_id)));
+                    //load_alternatecropper_views("users/edit_profile", $this->data);
+                }else{
+                    $this->session->set_flashdata("flash-message", 'Profile not updated!');
+                    $this->session->set_flashdata("flash-type", "danger");
+                    load_alternatecropper_views("users/edit_profile", $this->data);
+                }
+            }else{
+                $this->db->trans_rollback();                
+                $this->session->set_flashdata("flash-message", 'Profile not updated!');
+                $this->session->set_flashdata("flash-type", "danger");
+                load_alternatecropper_views("users/edit_profile", $this->data);
+            } 
+            
+        }
+        load_alternatecropper_views("users/edit_profile", $this->data);
     }
 
     public function settings($user_id='')

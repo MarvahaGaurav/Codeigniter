@@ -18,17 +18,18 @@
         </div>
 
         <!-- Caption before section -->
-        <div class="section-title section-border">
+        <!--<div class="section-title section-border">
             <h3>Invite People</h3>
         </div>
-        <!-- //Caption before section end -->
+        
 
         <div class="invite-people setting-section">
             <p>Click on Invite button to invite your friends to get connect with SG Lightings.</p>
             <div class="button-wrapper">
                 <button type="button" class="custom-btn btn-margin btn-width save" data-toggle="modal" data-target="#invite-people">Invite</button>
             </div>
-        </div>
+        </div>-->
+        <!-- //Caption before section end -->
 
         
         <?php echo form_open('home/settings/' . encryptDecrypt($user['user_id']), ['id' => 'settings-form'])  ?>

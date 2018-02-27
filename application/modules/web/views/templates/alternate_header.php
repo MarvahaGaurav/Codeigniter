@@ -33,8 +33,9 @@
         <link rel="stylesheet" href="public/css/web/common.css">        
         <link rel="stylesheet" href="public/css/web/style.css">
         <link rel="stylesheet" href="public/css/web/sgmedia.css">
-        
+        <script src="public/js/jquery.min.js"></script>
         <script>
+            
             var smartguide = {};
             smartguide.baseUrl = "<?php echo base_url() ?>";
             if (location.hostname == "localhost")

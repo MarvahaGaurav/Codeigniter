@@ -22,14 +22,14 @@
                 <p class="form-desciption">Don't have an account? <a href="<?php echo base_url(); ?>register" class="create-account">Create your account.</a></p> 
                 <p class="form-desciption">
                     <?php echo isset($error) ? '<label class="alert-danger">' . $error . '</label>' : form_error('email', '<label class="alert-danger">', '</label>') ?>
-                    <?php echo form_error('password', '<label class="alert-danger">', '</label>') ?>
                 </p> 
                 <div class="form-group">
                     <input type="email" class="form-control" name="email" placeholder="Email Address" required="required" autofocus="" />
-
+                    <?php echo form_error('email', '<label class="alert-danger">', '</label>') ?>
                 </div>
                 <div class="form-group">
                     <input type="password" class="form-control" name="password" placeholder="Password" required="required"/>
+                    <?php echo form_error('password', '<label class="alert-danger">', '</label>') ?>
 
                 </div>
                 <div class="form-group clearfix">
