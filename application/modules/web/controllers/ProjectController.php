@@ -15,8 +15,6 @@ class ProjectController extends BaseController
     public function index()
     {
         $this->data['userInfo'] = $this->userInfo;
-        $this->session->set_flashdata("flash-message", "");
-        $this->session->set_flashdata("flash-type", "");
         if ( ! empty($this->userInfo) &&
             isset($this->userInfo['status']) &&
             $this->userInfo['status'] != BLOCKED

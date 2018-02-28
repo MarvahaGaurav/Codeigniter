@@ -106,6 +106,7 @@ requirejs(
               return true;
             }
           },
+          number: true,
           maxlength:10
         }
       }

@@ -1153,7 +1153,7 @@ class Common_model extends CI_Model {
         $this->db->where('s.login_status = 1');
         $this->db->group_by('s.device_id');
         $query = $this->db->get();
-        
+
         return $query->result_array();
     }
 

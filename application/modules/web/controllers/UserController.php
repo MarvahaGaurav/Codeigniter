@@ -336,7 +336,7 @@ class UserController extends BaseController
                 [
                     'field' => 'company_reg_number',
                     'label' => 'Company Registration Number',
-                    'rules' => 'trim|required|max_length[20]'
+                    'rules' => 'trim|required|alpha_numeric|max_length[20]'
                 ]
             ]
         ];
