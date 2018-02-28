@@ -61,6 +61,19 @@ function load_alternate_views($view, $data = array()) {
     $CI->load->view('templates/alternate_footer', $data);
 }
 
+/**
+ * Loads alternate views which depends on the require js modules with cropper
+ * @param string $view view file
+ * @param array $data data array
+ */
+function load_alternatecropper_views($view, $data = array()) {
+    $CI = &get_instance();
+    $CI->load->view('templates/alternate_header', $data);
+    $CI->load->view($view, $data);
+    $CI->load->view('templates/cropper');
+    $CI->load->view('templates/alternate_footer', $data);
+}
+
 function getConfig($uploadPath, $acptFormat, $maxSize = 3000, $maxWidth = 1024, $maxHeight = 768, $encryptName = TRUE) {
     $config = [];
     $config['upload_path'] = $uploadPath;

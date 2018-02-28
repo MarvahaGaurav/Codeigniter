@@ -47,7 +47,7 @@ class UserController extends BaseController
         }else{
             $compnaydetail = [];
         }
-        $this->load->helper("location");
+        $this->load->helper(["location", "input_data"]);
         $countries = fetch_countries();
         $cities = fetch_cities($userData['country_id']);
         $this->data['countries'] = $countries;
@@ -55,9 +55,26 @@ class UserController extends BaseController
         $this->data['user'] = $userData;
         $this->data['compnaydetail'] = $compnaydetail;
         $this->data['js'] = 'edit-profile';
-        
-        if ($this->input->post()) {
-            $dataArr = $this->input->post();
+
+        /* form validation load */
+        $this->load->library('form_validation');
+        $this->form_validation->CI =& $this;
+        $validation_rules = $this->edit_profile_validation();
+        $rules = $validation_rules['basic_details'];
+        $dataArr = $this->input->post();
+        $dataArr = trim_input_parameters($dataArr);
+        if ( isset($dataArr['company_name']) ) {
+            $rules = array_merge($rules, $validation_rules['company_details']);
+        }
+
+        $this->form_validation->set_rules($rules);
+        $this->form_validation->set_data($dataArr);
+        pd($dataArr, false);
+        dd($this->form_validation->run(), false);
+        // if ($this->input->post()) {
+        if ($this->form_validation->run()) {
+
+            
             //echo '<pre>'; print_r($dataArr); echo '</pre>';  die('here i m');
             $this->db->trans_begin();
             if(isset($dataArr['company_id']) && !empty($dataArr['company_id'])){
@@ -264,6 +281,65 @@ class UserController extends BaseController
             return FALSE;
         }
         return TRUE;
+    }
+
+    private function edit_profile_validation() {
+        return [
+            'basic_details' => [
+                [
+                    'field' => 'name',
+                    'label' => 'Name',
+                    'rules' => 'trim|required|max_length[255]'
+                ],
+                [
+                    'field' => 'prmccode',
+                    'label' => 'Phone Code',
+                    'rules' => 'trim|required'
+                ],
+                [
+                    'field' => 'phone',
+                    'label' => 'Phone',
+                    'rules' => 'trim|required|max_length[20]'
+                ],
+                [
+                    'field' => 'altccode',
+                    'label' => 'Alternate Phone Code',
+                    'rules' => 'trim|required'
+                ],
+                [
+                    'field' => 'alt_phone',
+                    'label' => 'Alternate Code',
+                    'rules' => 'trim|required|max_length[20]'
+                ],
+                [
+                    'field' => 'country',
+                    'label' => 'Country',
+                    'rules' => 'trim|required'
+                ],
+                [
+                    'field' => 'city',
+                    'label' => 'City',
+                    'rules' => 'trim|required'
+                ],
+                [
+                    'field' => 'zip_code',
+                    'label' => 'Zip Code',
+                    'rules' => 'trim|required|max_length[10]'
+                ]
+            ],
+            'company_details' => [
+                [
+                    'field' => 'company_name',
+                    'label' => 'Company Name',
+                    'rules' => 'trim|required|max_length[255]'
+                ],
+                [
+                    'field' => 'company_reg_number',
+                    'label' => 'Company Registration Number',
+                    'rules' => 'trim|required|max_length[20]'
+                ]
+            ]
+        ];
     }
 
 }

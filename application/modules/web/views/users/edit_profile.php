@@ -69,8 +69,9 @@
                                 <div class="form-group">
                                     <label class="p-label">Name</label>
                                     <div class="form-group-field">
-                                        <input type="text" value="<?php echo $user['first_name'] ?>" name="name" placeholder="Company Name">
+                                        <input type="text" maxlength="255" value="<?php echo $user['first_name'] ?>" name="name" placeholder="Company Name">
                                     </div>
+                                    <div class="error"><?php echo form_error('name') ?></div>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-sm-6 col-xs-12">
@@ -98,8 +99,9 @@
                                                 <option value="<?php echo $country['calling_code'] ?>" <?php echo ($country['calling_code'] == $user['prm_user_countrycode']) ? "selected" : "" ?> ><?php echo $country['name'] ?></option>
                                             <?php endforeach ?>
                                         </select>
-                                        <input type="text" value="<?php echo $user['phone']; ?>" name="phone" class="codephone" placeholder="Contact Number">
+                                        <input type="text" value="<?php echo $user['phone']; ?>" maxlenght="20" name="phone" class="codephone" placeholder="Contact Number">
                                     </div>
+                                    <div class="error"><?php echo form_error('phone') ?></div>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-sm-6 col-xs-12">
@@ -113,8 +115,9 @@
                                                 <option value="<?php echo $country['calling_code'] ?>" <?php echo ($country['calling_code'] == $user['alt_user_countrycode']) ? "selected" : "" ?> ><?php echo $country['name'] ?></option>
                                             <?php endforeach ?>
                                         </select>
-                                        <input type="text" value="<?php echo $user['alt_userphone']; ?>" name="alt_phone" class="codephone" placeholder="Alternate Number">
+                                        <input type="text" value="<?php echo $user['alt_userphone']; ?>" maxlenght="20" name="alt_phone" class="codephone" placeholder="Alternate Number">
                                     </div>
+                                    <div class="error"><?php echo form_error('alt_phone') ?></div>
                                 </div>
                             </div>
                         </div>
@@ -134,16 +137,18 @@
                                     <div class="form-group">
                                         <label class="p-label">Company Name</label>
                                         <div class="form-group-field">
-                                            <input type="text" name="company_name" value="<?php echo $compnaydetail['company_name'] ?>" placeholder="Smart Guide Pvt. Ltd.">
+                                            <input type="text" name="company_name" maxlength="255" value="<?php echo $compnaydetail['company_name'] ?>" placeholder="Smart Guide Pvt. Ltd.">
                                         </div>
+                                        <div class="error"><?php echo form_error('company_name') ?></div>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-sm-6 col-xs-12">
                                     <div class="form-group">
                                         <label class="p-label">Company Reg. Number</label>
                                         <div class="form-group-field">
-                                            <input type="text" name="company_reg_number" value="<?php echo $compnaydetail['company_reg_number'] ?>" placeholder="12131321321">
+                                            <input type="text" name="company_reg_number" maxlength="30" value="<?php echo $compnaydetail['company_reg_number'] ?>" placeholder="12131321321">
                                         </div>
+                                        <div class="error"><?php echo form_error('company_reg_number') ?></div>
                                     </div>
                                 </div>
 
@@ -197,8 +202,9 @@
                                 <div class="form-group">
                                     <label class="p-label">Zip Code</label>
                                     <div class="form-group-field">
-                                        <input type="text" name="zip_code" value="<?php echo $user['zipcode'] ?>" placeholder="12131321321">
+                                        <input type="text" maxlength="10" name="zip_code" value="<?php echo $user['zipcode'] ?>" placeholder="12131321321">
                                     </div>
+                                    <div class="error"><?php echo form_error('zip_code') ?></div>
                                 </div>
                             </div>
 
