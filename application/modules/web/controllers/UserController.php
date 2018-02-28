@@ -69,12 +69,9 @@ class UserController extends BaseController
 
         $this->form_validation->set_rules($rules);
         $this->form_validation->set_data($dataArr);
-        pd($dataArr, false);
-        dd($this->form_validation->run(), false);
+        
         // if ($this->input->post()) {
         if ($this->form_validation->run()) {
-
-            
             //echo '<pre>'; print_r($dataArr); echo '</pre>';  die('here i m');
             $this->db->trans_begin();
             if(isset($dataArr['company_id']) && !empty($dataArr['company_id'])){

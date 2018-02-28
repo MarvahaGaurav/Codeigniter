@@ -36,21 +36,11 @@ requirejs(
     $('form#add-inspiration').validate({
       rules: {
         title: {
-          required: {
-            depends: function() {
-              $(this).val($.trim($(this).val()));
-              return true;
-            }
-          },
+          required: true,
           maxlength: 255
         },
         description: {
-          required: {
-            depends: function() {
-              $(this).val($.trim($(this).val()));
-              return true;
-            }
-          },
+          required: true,
           maxlength: 255
         }
       }

@@ -39,21 +39,11 @@ requirejs(
     $('#signupwebform').validate({
       rules: {
         name: {
-          required: {
-            depends: function() {
-              $(this).val($.trim($(this).val()));
-              return true;
-            }
-          },
+          required: true,
           maxlength: 255
         },
         prmccode: {
-          required: {
-            depends: function() {
-              $(this).val($.trim($(this).val()));
-              return true;
-            }
-          }
+          required: true
         },
         phone: {
           required: {
@@ -66,12 +56,7 @@ requirejs(
           maxlength: 20
         },
         altccode: {
-          required: {
-            depends: function() {
-              $(this).val($.trim($(this).val()));
-              return true;
-            }
-          }
+          required: true
         },
         alt_phone: {
           required: {
@@ -84,20 +69,10 @@ requirejs(
           maxlength: 20
         },
         country: {
-          required: {
-            depends: function() {
-              $(this).val($.trim($(this).val()));
-              return true;
-            }
-          }
+          required: true
         },
         city: {
-          required: {
-            depends: function() {
-              $(this).val($.trim($(this).val()));
-              return true;
-            }
-          }
+          required: true
         },
         zip_code: {
           required: {
@@ -114,21 +89,11 @@ requirejs(
 
     if ( $companyName.length > 0 ) {
       $companyName.rules("add", {
-        required: {
-          depends: function() {
-            $(this).val($.trim($(this).val()));
-            return true;
-          }
-        },
+        required: true,
         maxlength: 255
       });
       $companyRegNumber.rules("add", {
-        required: {
-          depends: function() {
-            $(this).val($.trim($(this).val()));
-            return true;
-          }
-        },
+        required: true,
         maxlength: 30
       });
   }

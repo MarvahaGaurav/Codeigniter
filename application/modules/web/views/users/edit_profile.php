@@ -99,7 +99,7 @@
                                                 <option value="<?php echo $country['calling_code'] ?>" <?php echo ($country['calling_code'] == $user['prm_user_countrycode']) ? "selected" : "" ?> ><?php echo $country['name'] ?></option>
                                             <?php endforeach ?>
                                         </select>
-                                        <input type="text" value="<?php echo $user['phone']; ?>" maxlenght="20" name="phone" class="codephone" placeholder="Contact Number">
+                                        <input type="text" value="<?php echo $user['phone']; ?>" maxlength="20" name="phone" class="codephone" placeholder="Contact Number">
                                     </div>
                                     <div class="error"><?php echo form_error('phone') ?></div>
                                 </div>
@@ -115,7 +115,7 @@
                                                 <option value="<?php echo $country['calling_code'] ?>" <?php echo ($country['calling_code'] == $user['alt_user_countrycode']) ? "selected" : "" ?> ><?php echo $country['name'] ?></option>
                                             <?php endforeach ?>
                                         </select>
-                                        <input type="text" value="<?php echo $user['alt_userphone']; ?>" maxlenght="20" name="alt_phone" class="codephone" placeholder="Alternate Number">
+                                        <input type="text" value="<?php echo $user['alt_userphone']; ?>" maxlength="20" name="alt_phone" class="codephone" placeholder="Alternate Number">
                                     </div>
                                     <div class="error"><?php echo form_error('alt_phone') ?></div>
                                 </div>
