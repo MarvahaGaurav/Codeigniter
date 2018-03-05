@@ -306,7 +306,10 @@
                         <div class="form-group">
                             <label class="labelTxt">Enter Old Password</label>
                             <div class="form-group-field">
-                                <input type="password" maxlength="30" name="old_password" id="old-password" placeholder="********">
+                                <div class="input-wrapper">
+                                    <input data-error="#old-password-error" type="password" maxlength="30" name="old_password" id="old-password" placeholder="********">
+                                    <span class="glyphicon glyphicon-eye-close password-toggle" data-state="hidden"></span>
+                                </div>
                                 <div class="error"><?php echo form_error("old_password") ?></div>
                             </div>
                         </div>
@@ -315,7 +318,10 @@
                         <div class="form-group">
                             <label class="labelTxt">Enter New Password</label>
                             <div class="form-group-field">
-                                <input type="password" maxlength="30" name="new_password" id="new-password" placeholder="********">
+                                <div class="input-wrapper">
+                                    <input data-error="#new-password-error" type="password" maxlength="30" name="new_password" id="new-password" placeholder="********">
+                                    <span class="glyphicon glyphicon-eye-close password-toggle" data-state="hidden"></span>
+                                </div>
                                 <div class="error"><?php echo form_error("new_password") ?></div>
                             </div>
                         </div>
@@ -324,7 +330,10 @@
                         <div class="form-group">
                             <label class="labelTxt">Enter Confirm Password</label>
                             <div class="form-group-field">
-                                <input type="password" maxlength="30" name="confirm_password" id="confirm-password" placeholder="********">
+                                <div class="input-wrapper">
+                                    <input data-error="#confirm-password-error" type="password" maxlength="30" name="confirm_password" id="confirm-password" placeholder="********">
+                                    <span class="glyphicon glyphicon-eye-close password-toggle" data-state="hidden"></span>
+                                </div>
                                 <div class="error"><?php echo form_error("confirm_password") ?></div>
                             </div>
                         </div>

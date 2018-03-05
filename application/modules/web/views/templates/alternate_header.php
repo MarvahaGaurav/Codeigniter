@@ -11,7 +11,7 @@
         <link href="public/images/favicon.png" type="image/png" rel="icon">
 
         <!-- Css Plugins -->
-        <link rel="stylesheet" href="public/css/web/plugins/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <?php if ( isset($owl) ) { ?>
             <link rel="stylesheet" href="public/css/jquery.scrollbar.css">
             <link rel="stylesheet" href="public/css/owl.carousel.min.css" >

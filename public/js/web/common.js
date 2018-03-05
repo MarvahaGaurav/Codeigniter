@@ -206,4 +206,25 @@ $(document).ready(function () {
     }
     
     /* on type close icon show in search field end */
+    $(".password-toggle").on("mousedown", function(){
+        var $self = $(this),
+            $inputSibling = $self.siblings('input');  	
+            
+        $self.removeClass("glyphicon-eye-close");
+        $self.addClass("glyphicon-eye-open");
+
+        $inputSibling.attr("type", "text");
+        $self.attr('data-state', 'visible');
+      
+    });
+
+    $(".password-toggle").on("mouseup", function(){
+        var $self = $(this),
+            $inputSibling = $self.siblings('input');  	
+            
+        $self.removeClass("glyphicon-eye-open");
+        $self.addClass("glyphicon-eye-close");
+        $inputSibling.attr("type", "password");
+        $self.attr('data-state', 'hidden');
+    });
 });

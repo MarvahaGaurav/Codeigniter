@@ -471,3 +471,17 @@
         margin: 25px 0 0 0;
     }
 }
+
+.input-wrapper{
+    position: relative;
+  }
+  .input-wrapper * {
+    position: absolute;
+    
+  }
+  .input-wrapper .glyphicon {
+    font-size: 19px;
+    top: 11px;
+    right: 5px;
+    cursor: pointer;
+  }
