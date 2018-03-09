@@ -58,29 +58,36 @@
             <div class="col-lg-9 col-sm-9 col-xs-12">
                 <div class="user-detail-panel">
                     <div class="row">
-                        <div class="form-group">
-                            <label class="admin-label">Name</label>
-                            <div class="input-holder">
-                                <input type="text" maxlength="100" name="Admin_Name" id="Admin_Name" value="<?php echo (isset($editdata['admin_name']) && !empty($editdata['admin_name'])) ? $editdata['admin_name'] : set_value('Admin_Name'); ?>" placeholder="Enter Name">
-                                <?php echo form_error('Admin_Name','<label class="alert-danger">','</label>');?>
+                        <div class="col-lg-6 col-sm-6">
+                            <div class="form-group">
+                                <label class="admin-label">Name</label>
+                                <div class="input-holder">
+                                    <input type="text" maxlength="100" name="Admin_Name" id="Admin_Name" value="<?php echo (isset($editdata['admin_name']) && !empty($editdata['admin_name'])) ? $editdata['admin_name'] : set_value('Admin_Name'); ?>" placeholder="Enter Name">
+                                    <?php echo form_error('Admin_Name','<label class="alert-danger">','</label>');?>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="admin-label">Email ID</label>
-                            <div class="input-holder">
-                                <input type="text" readonly maxlength="100" name="email" value="<?php echo (isset($editdata['admin_email']) && !empty($editdata['admin_email'])) ? $editdata['admin_email'] : set_value('email'); ?>" id="email" placeholder="Enter Email">
-                                <?php echo form_error('email','<label class="alert-danger">','</label>');?>
+                        <div class="clearfix"></div>
+                        <div class="col-lg-6 col-sm-6">
+                            <div class="form-group">
+                                <label class="admin-label">Email ID</label>
+                                <div class="input-holder">
+                                    <input type="text" readonly maxlength="100" name="email" value="<?php echo (isset($editdata['admin_email']) && !empty($editdata['admin_email'])) ? $editdata['admin_email'] : set_value('email'); ?>" id="email" placeholder="Enter Email">
+                                    <?php echo form_error('email','<label class="alert-danger">','</label>');?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-lg-12">
+                            <div class="button-wrap text-left">
+                                <button type="button"  onclick="window.location.href='<?php echo base_url()?>admin/profile'"class="commn-btn cancel">Cancel</button>
+                                <button type="submit" class="commn-btn save">Save</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             </div>
-        </div>
-
-        <div class="button-wrap text-center">
-            <button type="button"  onclick="window.location.href='<?php echo base_url()?>admin/profile'"class="commn-btn cancel">Cancel</button>
-            <button type="submit" class="commn-btn save">Save</button>
         </div>
 
     </div>

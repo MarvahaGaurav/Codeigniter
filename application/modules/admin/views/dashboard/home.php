@@ -64,7 +64,7 @@
             <div class="col-lg-12">
                 <h3 class="section-heading ts-numberof-heading">Total Number Of</h3>
             </div>
-            <div class="col-lg-4 col-md-4">
+            <div class="col-lg-4 col-md-4 col-sm-6">
                 <a href="<?php echo base_url().'admin/users?startDate='.$start_date.'&endDate='.$end_date?>">
                     <div class="ts-wrapper purple clearfix">
                         <div class="ts-content">
@@ -76,12 +76,14 @@
                                 Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                             </p>-->
                         </div>
-                        <div class="ts-thumbnail" style="background:url('public/images/ts-img1.jpg')"></div>
+                        <div class="ts-thumbnail">
+                            <i class="fa fa-users"></i>
+                        </div>
                     </div>
                 </a>
             </div>
 
-            <div class="col-lg-4 col-md-4">
+            <div class="col-lg-4 col-md-4 col-sm-6">
                 <a href="<?php echo base_url().'admin/technician?user_type=technician&startDate='.$start_date.'&endDate='.$end_date?>">
                     <div class="ts-wrapper yellow clearfix">
                         <div class="ts-content">
@@ -92,12 +94,14 @@
                                 Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                             </p>-->
                         </div>
-                        <div class="ts-thumbnail" style="background:url('public/images/ts-img1.jpg')"></div>
+                        <div class="ts-thumbnail">
+                            <i class="fa fa-users"></i>
+                        </div>
                     </div>
                 </a>
             </div>
             
-            <div class="col-lg-4 col-md-4">
+            <div class="col-lg-4 col-md-4 col-sm-6">
                 <a href="<?php echo base_url().'admin/technician?user_type=architect&startDate='.$start_date.'&endDate='.$end_date?>">
                     <div class="ts-wrapper red clearfix">
                         <div class="ts-content">
@@ -108,22 +112,14 @@
                                 Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                             </p>-->
                         </div>
-                        <div class="ts-thumbnail" style="background:url('public/images/ts-img1.jpg')"></div>
+                        <div class="ts-thumbnail">
+                            <i class="fa fa-users"></i>
+                        </div>
                     </div>
                 </a>
             </div>
         
-        </div>
-    </div>
-    <!-- //totalwrapper-section-->
-
-    <!-- totalwrapper-section-->
-    <div class="totalwrapper-section"> 
-        <div class="row">
-        <div class="col-lg-12">
-                <h3 class="section-heading ts-numberof-heading">Total Number Of</h3>
-            </div>
-            <div class="col-lg-4 col-md-4">
+            <div class="col-lg-4 col-md-4 col-sm-6">
                 <a href="<?php echo base_url().'admin/technician?user_type=wholesaler&startDate='.$start_date.'&endDate='.$end_date?>">
                 <div class="ts-wrapper purple clearfix">
                     <div class="ts-content">
@@ -134,12 +130,14 @@
                             Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                         </p>-->
                     </div>
-                    <div class="ts-thumbnail" style="background:url('public/images/ts-img1.jpg')"></div>
+                    <div class="ts-thumbnail">
+                        <i class="fa fa-users"></i>
+                    </div>
                 </div>
                 </a>
             </div>
 
-            <div class="col-lg-4 col-md-4">
+            <div class="col-lg-4 col-md-4 col-sm-6">
                 <a href="<?php echo base_url().'admin/technician?user_type=electrical_planner&startDate='.$start_date.'&endDate='.$end_date?>">
                 <div class="ts-wrapper yellow clearfix">
                     <div class="ts-content">
@@ -149,13 +147,15 @@
                         <!--<p class="ts-description">
                             Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                         </p>-->
-                   </div>
-                    <div class="ts-thumbnail" style="background:url('public/images/ts-img1.jpg')"></div>
+                    </div>
+                    <div class="ts-thumbnail">
+                        <i class="fa fa-users"></i>
+                    </div>
                 </div>
                 </a>
             </div>
 
-            <div class="col-lg-4 col-md-4">
+            <div class="col-lg-4 col-md-4 col-sm-6">
                 <div class="ts-wrapper red clearfix">
                     <div class="ts-content">
                         <div class="ts-numbers"><?php echo $projectCount ?>
@@ -164,8 +164,10 @@
                         <!--<p class="ts-description">
                             Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                         </p>-->
-                   </div>
-                    <div class="ts-thumbnail" style="background:url('public/images/ts-img1.jpg')"></div>
+                    </div>
+                    <div class="ts-thumbnail">
+                        <i class="fa fa-users"></i>
+                    </div>
                 </div>
             </div>
             </div>

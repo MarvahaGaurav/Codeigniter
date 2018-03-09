@@ -309,6 +309,14 @@ button:focus {
     content: "\f144";
 }
 
+.fa-eye:before {
+    content: "\f06e";
+}
+
+.fa-eye-slash:before {
+    content: "\f070";
+}
+
 * {
     word-wrap: break-word;
 }
@@ -319,10 +327,12 @@ button:focus {
 
 /* alert */
 .alert {
-    position: fixed;
-    top: 7px;
-    right: 7px;
-    z-index: 9999;
+    position: fixed !important;
+    top: 7px !important;
+    right: 7px !important;
+    z-index: 9999 !important;
+    left: initial !important;
+    width: 300px !important;
 }
 .alert h4 {
     margin: 0 0 12px 0;
@@ -350,14 +360,21 @@ input[type=number] {
     -moz-appearance:textfield;
 }
 
-input[type=number]::-webkit-inner-spin-button, 
+/* input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button,
 input[type=number]::-moz-inner-spin-button, 
-input[type=number]::-moz-outer-spin-button {
+input[type=number]::-moz-outer-spin-button,
+input[type=number] {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     margin: 0; 
+} */
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
 }
 
 textarea::-webkit-input-placeholder,

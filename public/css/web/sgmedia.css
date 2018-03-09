@@ -298,6 +298,9 @@
     .fawe-icon-position .close-ico {
         right: 140px;
     }
+    .form-group-inline .form-group-field {
+        width: 50%;
+    }
     .tabs ul li a {
         padding: 8px 16px;
         font-size: 14px;
@@ -471,17 +474,3 @@
         margin: 25px 0 0 0;
     }
 }
-
-.input-wrapper{
-    position: relative;
-  }
-  .input-wrapper * {
-    position: absolute;
-    
-  }
-  .input-wrapper .glyphicon {
-    font-size: 19px;
-    top: 11px;
-    right: 5px;
-    cursor: pointer;
-  }

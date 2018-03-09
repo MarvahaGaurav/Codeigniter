@@ -123,7 +123,7 @@ class TechnicianController extends BaseController
         $get = trim_input_parameters($get);
         $page = isset($get['page'])&!empty((int)$get['page'])?(int)$get['page']:1;
         $search = isset($get['search'])?$get['search']:"";
-        
+
         $options['offset'] = ($page - 1) * $limit;
         $options['limit'] = $limit;
         $options['search'] = $search;

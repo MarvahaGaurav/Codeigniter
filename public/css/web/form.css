@@ -1,3 +1,7 @@
+.bootstrap-selectpicker .bootstrap-select .btn {
+    padding:11px 15px 10px 21px !important;
+}
+
 .overlay:before {
     content: '';
     position: absolute;
@@ -162,8 +166,8 @@ textarea, select,
 .chooseFile .form-control {
     width:100%;
     padding: 15px;
-    border-radius: 4px;
-    border: 1px solid #7e8a97;
+    border-radius: 0;
+    border: 1px solid #9D9D9C;
     color:#2c2c2c;
     padding:11px 15px 10px;
 }
@@ -209,9 +213,22 @@ input[type="radio"] {
 
 .form-group-inline .form-group {
     width:100%;
+    margin:0 0 20px 0;
+}
+
+.form-group-inline .form-group {
     float:left;
     padding:0 10px;
-    margin:0 0 20px 0;
+}
+
+.form-group .pluscode {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 20px;
+    line-height: 2.2;
+    padding: 0 0 0 16px;
+    z-index: 3;
 }
 
 .form-group .fs-caret {
@@ -412,7 +429,7 @@ input[type="radio"] {
 }
 .image-view-box {
     position: relative;
-    border-radius: 50%;
+    border-radius: 3px;
     border: 1px solid #ccc;
     height:130px;
     width:130px;
@@ -460,6 +477,10 @@ input[type="radio"] {
 
 .image-wrapper .upload-btn img {
     width:16px;
+}
+
+.image-mb {
+    margin-bottom:0;
 }
 
 /* user type */
@@ -622,4 +643,8 @@ input[type="radio"] {
     .form-wrapper {
         width: 560px;
     }
+}
+
+label.error {
+    color: #EF0020;
 }

@@ -3,6 +3,14 @@
 </div>
 <script src="public/js/web/global-msg.js"></script>
 <script src="public/js/jquery.validate.min.js"></script>
+<?php if ( isset($additional_js) && !empty($additional_js) && is_array($additional_js) ) { ?>
+    <?php foreach($additional_js as $js):?>
+
+<script src="<?php echo $js ?>"></script>
+
+    <?php endforeach?>
+<?php }?>
+
 <script>
     var $flashCard = $("#flash-card");
     var flashMessage = $flashCard.attr("data-message").trim();
@@ -20,14 +28,14 @@
             textAlign: "center",
             display: "block"
         });
-        $flashCard.css({
-            position: "fixed",
-            top: "15%",
-            left: "33.33%",
-            zIndex: "9999",
-            display: "block",
-            width: "30%"
-        });
+        // $flashCard.css({
+        //     position: "fixed",
+        //     top: "15%",
+        //     left: "33.33%",
+        //     zIndex: "9999",
+        //     display: "block",
+        //     width: "30%"
+        // });
 
         setTimeout(function(){
             $flashCard.fadeOut(300);

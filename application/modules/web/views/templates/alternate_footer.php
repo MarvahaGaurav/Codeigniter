@@ -64,11 +64,10 @@
 </div>
 <script data-main="<?php echo base_url("public/js/main/" . (isset($js) && !empty(trim($js)) ? $js : "main")) ?>" src="<?php echo base_url("public/js/require.js") ?>"></script>
 
-<div id="myModal-logout" class="modal fade" role="dialog">
+<!-- <div id="myModal-logout" class="modal fade" role="dialog">
     <input type="hidden" id="uid" name="uid" value="">
     <input type="hidden" id="ustatus" name="ustatus" value="">
     <div class="modal-dialog modal-custom">
-        <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header modal-alt-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -87,12 +86,39 @@
 
         </div>
     </div>
-</div>
-<div id="myModal-confirmation" class="modal fade" role="dialog">
+</div> -->
+
+<!-- modal -->
+<div id="myModal-logout" class="modal fade" role="dialog">
     <input type="hidden" id="uid" name="uid" value="">
     <input type="hidden" id="ustatus" name="ustatus" value="">
     <div class="modal-dialog modal-custom">
-        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center">Logout</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-description">
+                    Do you really want to logout?
+                </div>
+            </div>
+            <div class="modal-button-wrapper text-center">
+                <button type="button" class="custom-btn btn-margin btn-width cancel" data-dismiss="modal">No</button>
+                <button type="button" class="custom-btn btn-margin btn-width save" onclick="window.location='<?php echo base_url('logout')?>'">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- modal end -->
+
+<!-- <div id="myModal-confirmation" class="modal fade" role="dialog">
+    <input type="hidden" id="uid" name="uid" value="">
+    <input type="hidden" id="ustatus" name="ustatus" value="">
+    <div class="modal-dialog modal-custom">
+
         <div class="modal-content">
             <div class="modal-header modal-alt-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -111,6 +137,31 @@
 
         </div>
     </div>
+</div> -->
+
+<!-- modal -->
+<div id="myModal-confirmation" class="modal fade" role="dialog">
+    <input type="hidden" id="uid" name="uid" value="">
+    <input type="hidden" id="ustatus" name="ustatus" value="">
+    <div class="modal-dialog modal-custom">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-description"></div>
+            </div>
+            <div class="modal-button-wrapper text-center">
+                <button type="button" class="custom-btn btn-margin btn-width cancel no" data-dismiss="modal">No</button>
+                <button type="button" class="custom-btn btn-margin btn-width save yes" id="confirmation-ok">Yes</button>
+            </div>
+        </div>
+    </div>
 </div>
+<!-- modal end -->
+
 </body>
 </html>

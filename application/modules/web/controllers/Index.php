@@ -111,6 +111,9 @@ class Index extends BaseController {
             $this->load->library("commonfn");
             $this->session->set_flashdata("flash-message", '');
             $this->session->set_flashdata("flash-type", "");
+            $data['additional_js'] = [
+                base_url("public/js/web/forgot-password.js")
+            ];
             if ($this->input->post()) {
 
                 $this->form_validation->set_rules('email', $this->lang->line('email'), 'trim|required');
@@ -207,7 +210,7 @@ class Index extends BaseController {
 
                 $this->form_validation->set_rules('country', 'Country', 'trim|required');
                 $this->form_validation->set_rules('cities', 'City', 'trim|required');
-                $this->form_validation->set_rules('zipcode', 'Zip Code', 'trim|required|min_length[5]|max_length[7]');
+                $this->form_validation->set_rules('zipcode', 'Zip Code', 'trim|required|min_length[3]|max_length[7]');
                 
                 if($dataArr['user_type'] != '1'){
                     if($dataArr['isowner'] == '2'){
@@ -219,12 +222,12 @@ class Index extends BaseController {
                     }                
                 }
                 if(!empty($dataArr['phone'])){
-                    $this->form_validation->set_rules('prmccode', 'Country Code', 'min_length[2]|max_length[4]');
-                    $this->form_validation->set_rules('phone', 'Phone Number', 'min_length[10]|max_length[15]');
+                    //$this->form_validation->set_rules('prmccode', 'Country Code', 'min_length[2]|max_length[4]');
+                    $this->form_validation->set_rules('phone', 'Phone Number', 'min_length[6]|max_length[15]');
                 }
                 if(!empty($dataArr['altphone'])){
-                    $this->form_validation->set_rules('altccode', 'Country Code', 'min_length[2]|max_length[4]');
-                    $this->form_validation->set_rules('altphone', 'Alternate Phone Number', 'min_length[10]|max_length[15]');
+                    //$this->form_validation->set_rules('altccode', 'Country Code', 'min_length[2]|max_length[4]');
+                    $this->form_validation->set_rules('altphone', 'Alternate Phone Number', 'min_length[6]|max_length[15]');
                 }
                 
                 if ($this->form_validation->run() == FALSE) {                    
@@ -415,8 +418,8 @@ class Index extends BaseController {
             }                        
             $result = $this->Common_model->fetch_data('ai_user', 'user_id,reset_link_time', array('where' => array('reset_token' => $token)), true);
             if ($post) {
-                $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[8]|max_length[8]|alpha_numeric');
-                $this->form_validation->set_rules('cnfpassword', 'Confirm Password', 'trim|required|matches[password]|min_length[8]|max_length[8]|alpha_numeric');
+                $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[8]|max_length[30]|alpha_numeric');
+                $this->form_validation->set_rules('cnfpassword', 'Confirm Password', 'trim|required|matches[password]|min_length[8]|max_length[30]|alpha_numeric');
                 if ($this->form_validation->run() == FALSE) {                          
                     $data["csrfName"] = $this->security->get_csrf_token_name();
                     $data["csrfToken"] = $this->security->get_csrf_hash();

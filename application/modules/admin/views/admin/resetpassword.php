@@ -1,8 +1,13 @@
-<div class="form-section">
-    <div class="form-inner-section">
+<div class="fm-table-section">
+
+    <div class="fm-table-cell tbl-cell-1">
         <div class="logo">
             <img src="public/images/logo.png" alt="logo">
+            <p class="text-center logo-txt">Smart Guide</p>
         </div>
+    </div>
+
+    <div class="fm-table-cell tbl-cell-2">
         <div class="form-wrapper">
             <div class="login-error">
                 <span class="error"></span>
@@ -30,4 +35,5 @@
             <?php echo form_close(); ?>
         </div>
     </div>
+    
 </div>

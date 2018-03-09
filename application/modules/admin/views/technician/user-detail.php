@@ -99,19 +99,18 @@
         <div class="form-item-title clearfix">
             <h3 class="title">Company Detail</h3>
         </div>
-        
+        <?php //echo '<pre>'; print_r($profile); echo '</pre>'; ?>
         <div class="row">
             <!--form ele wrapper-->
             <div class="user-detail-panel">
                 <div class="col-lg-3 col-sm-3 col-xs-3">
-
                     <div class="image-view-wrapper img-view200p img-viewbdr-radius4p img-mb">
-                        <img src="public/images/logo.png" title="Admin Logo">                         
+                        <img style="" src="<?php echo (!empty($profile['company_image'])) ? $profile['company_image'] : DEFAULT_IMAGE ?>" title="Compamy Logo">                         
                     </div>
-                    <!-- <div class="form-profile-pic-wrapper pull-left">
-                        <div class="profile-pic" style="background-image:url('<?php echo (!empty($profile['company_image'])) ? $companydetail['company_image'] :BASE_URL. DEFAULT_IMAGE ?>');">
+                    <!--<div class="form-profile-pic-wrapper pull-left">
+                        <div class="profile-pic" style="background-image:url('<?php echo (!empty($profile['company_image'])) ? $profile['company_image'] : DEFAULT_IMAGE ?>');">
                         </div>
-                    </div> -->
+                    </div>-->
                 </div>
                 <div class="col-lg-9 col-sm-9 col-xs-9">
                     <div class="row">

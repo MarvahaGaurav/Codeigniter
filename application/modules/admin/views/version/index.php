@@ -35,7 +35,7 @@ $module = $this->router->fetch_module();
                 </div>
             </div>
             <?php if($accesspermission['addp']) {?>
-                <div class="col-lg-4 col-sm-3">
+                <div class="col-lg-6 col-sm-6">
                     <div class="circle-btn-wrap col-sm-space">
                         <a href="admin/version/add" title="Add Version" class="tooltip-p">
                             <div class="circle-btn animate-btn">

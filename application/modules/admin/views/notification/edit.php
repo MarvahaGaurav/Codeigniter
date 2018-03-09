@@ -57,40 +57,42 @@
                     </div>
                     <input type="hidden" value="<?php echo $detail['id'] ?>" name="notiId">
                     <span class="loder-wrraper-single"></span>
-                <div class="col-sm-9 col-xs-9">    
-                    <div class="col-sm-6 col-xs-6">
-                        <div class="form-group">
-                            <label class="admin-label">Title</label>
-                            <div class="input-holder">
-                                <input type="text" name="title" name="title" value="<?php echo $detail['title'] ?>" id="title" placeholder="Notification title">
-                                <span class="titleErr error"></span>
+                    <div class="col-sm-9">  
+                        <div class="row">  
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="admin-label">Title</label>
+                                    <div class="input-holder">
+                                        <input type="text" name="title" name="title" value="<?php echo $detail['title'] ?>" id="title" placeholder="Notification title">
+                                        <span class="titleErr error"></span>
+                                    </div>
+
+                                </div>
                             </div>
 
-                        </div>
-                    </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="admin-label">External Link</label>
+                                    <div class="input-holder">
+                                        <input type="text" name="link" value="<?php echo $detail['link'] ?>" id="link" placeholder="Enter link">
+                                    </div>
 
-                    <div class="col-sm-6 col-xs-6">
-                        <div class="form-group">
-                            <label class="admin-label">External Link</label>
-                            <div class="input-holder">
-                                <input type="text" name="link" value="<?php echo $detail['link'] ?>" id="link" placeholder="Enter link">
+                                </div>
                             </div>
 
-                        </div>
-                    </div>
-
-                    <div class="col-sm-12">
-                        <div class="form-group">
-                            <label class="admin-label">Message</label>
-                            <div class="input-holder">
-                                <textarea class="custom-textarea" style="resize:none;" maxlength="255" name="message" id="message-text"><?php echo $detail['message'] ?></textarea>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="admin-label">Message</label>
+                                    <div class="input-holder">
+                                        <textarea class="custom-textarea" style="resize:none;" maxlength="255" name="message" id="message-text"><?php echo $detail['message'] ?></textarea>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                </div>
 
-            <div class="wrap-insection">
+
                 <div class="section-title">
                     <h3>Select Users</h3>
                 </div>
@@ -100,8 +102,8 @@
                 <div class="fltr-srch-wrap clearfix">
                     <div class="row">
                         <div class="col-lg-4 col-sm-4">
-                            <div class="display">
-                                <select name="platform" class="form-control platform">
+                            <div class="display form-group">
+                                <select name="platform" class="selectpicker platform">
                                     <option value="">Select Platform</option>
                                     <option <?php echo ($detail['platform'] == '1')?'Selected':'' ?> value="1">All</option>
                                     <option <?php echo ($detail['platform'] == '2')?'Selected':'' ?> value="2">Android</option>
@@ -111,7 +113,7 @@
                             </div>
                         </div>
                         <div class="col-lg-4 col-sm-4">
-                            <div class="display">
+                            <div class="display form-group">
                                 <input type="text" id="regDate" value="<?php echo $detail['date_range'] ?>" class="regDate" name="regDate" placeholder="Select Date Range">
                             </div>
                         </div>
@@ -126,7 +128,6 @@
                 <!--Filter Section Close-->
                 
             <?php echo form_close();?>
-        </div>
     </div>
 </div>
 

@@ -15,3 +15,4 @@
         <link href='<?php echo base_url() . 'public/css/style.css' ?>' rel='stylesheet'>
         <link href='<?php echo base_url() . 'public/css/media.css' ?>' rel='stylesheet'>
     </head>
+    <body class="wrapper-bg">

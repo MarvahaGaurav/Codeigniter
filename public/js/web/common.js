@@ -158,9 +158,9 @@ $(document).ready(function () {
                 dataTarget = $self.attr("data-target"),
                 dataMessage = $self.attr("data-message");
             
-            var $modalTitle = $confirmationModal.find(".modal-header h4"),
-                $modalMessage = $confirmationModal.find(".modal-body p"),
-                $modalActionButton = $confirmationModal.find(".modal-footer button.yes");
+            var $modalTitle = $confirmationModal.find(".modal-header h5"),
+                $modalMessage = $confirmationModal.find(".modal-body .modal-description"),
+                $modalActionButton = $confirmationModal.find(".modal-button-wrapper button.yes");
             
             $modalTitle.html(dataTitle);
             $modalMessage.html(dataMessage);
@@ -210,8 +210,8 @@ $(document).ready(function () {
         var $self = $(this),
             $inputSibling = $self.siblings('input');  	
             
-        $self.removeClass("glyphicon-eye-close");
-        $self.addClass("glyphicon-eye-open");
+        $self.removeClass("fa-eye-slash");
+        $self.addClass("fa-eye");
 
         $inputSibling.attr("type", "text");
         $self.attr('data-state', 'visible');
@@ -222,8 +222,8 @@ $(document).ready(function () {
         var $self = $(this),
             $inputSibling = $self.siblings('input');  	
             
-        $self.removeClass("glyphicon-eye-open");
-        $self.addClass("glyphicon-eye-close");
+        $self.removeClass("fa-eye");
+        $self.addClass("fa-eye-slash");
         $inputSibling.attr("type", "password");
         $self.attr('data-state', 'hidden');
     });

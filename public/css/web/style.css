@@ -1,3 +1,7 @@
+.bootstrap-selectpicker .bootstrap-select .btn {
+    padding:11px 15px 10px 21px !important;
+}
+
 header {
     position: fixed;
     right: 0px;
@@ -406,6 +410,30 @@ textarea {
     position: relative;
 }
 
+.form-group-inline {
+    margin: 0 -10px;
+}
+
+.form-group-inline .form-group-field {
+    width:100%;
+    margin:0 0 20px 0;
+}
+
+.form-group-inline .form-group-field {
+    float:left;
+    padding:0 10px;
+}
+
+.form-group-field .pluscode {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 20px;
+    line-height: 2.2;
+    padding: 0 0 0 16px;
+    z-index: 3;
+}
+
 .form-group-field .select-filed-name {
     /* padding: 11px 94px 10px 15px; */
     cursor: pointer;
@@ -478,14 +506,17 @@ textarea {
     border-radius: 2px;
 }
 
-.customArrow {
-    width: 0;
-    height: 0;
+.customArrow,
+.absolute-postn {
     vertical-align: middle;
     display: inline-block;
     position: absolute;
     top: 21px;
     right: 11px;
+}
+
+.fa.absolute-postn {
+    top: 17px;
 }
 
 .chooseFile {
@@ -1268,6 +1299,9 @@ h2 { font-size: 14px; }
 .thumb-viewfullheight-5 { /* this is using for profile techinician image */
     height:150px;
 }
+.img-viewbdr-radius3p {
+    border-radius: 3px;
+}
 .img-viewbdr-radius {
     border-radius: 50%;
 }
@@ -1420,7 +1454,10 @@ h2 { font-size: 14px; }
     margin: 15px 0 0 0;
 }
 
-/* modal table */
+/* modal */
+.modal-open .modal {
+    padding-right:0 !important;
+}
 .modal-custom {
     width:406px;
 }
@@ -1451,6 +1488,11 @@ h2 { font-size: 14px; }
     font-weight:600;
     color:#2e2e2e;
     text-transform: uppercase;
+}
+.modal-description {
+    padding: 10px 10px 35px;
+    font-size: 14px;
+    text-align: center;
 }
 .modal-table {
     display: table;
@@ -1671,7 +1713,8 @@ h2 { font-size: 14px; }
     color:#2e2e2e;
     font-size: 18px;
     font-weight: 600;
-    margin: 18px 8px 0;
+    margin: 6px 8px 18px;
+    text-transform: capitalize;
 }
 .user-detail-block {
     margin: 0 0 30px 0;
@@ -1779,16 +1822,17 @@ video {
 
 /* change currency */
 .change-currency > ul > li .custom-control label .custom-control-indicator {
-    top:5px;
+    top:2px;
 }
 .change-currency > ul > li .custom-control label strong,
 .change-currency > ul > li .custom-control label img {
     vertical-align: middle;
+    width: 20px;
 }
 
 .change-currency > ul > li .custom-control label strong {
     font-size: 12px;
-    margin: 0 0 0 8px;
+    margin: 0 0 0 4px;
 }
 
 label.error {

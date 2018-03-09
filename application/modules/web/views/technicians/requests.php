@@ -140,7 +140,9 @@
                     </tbody>
                 </table>
             </div>   	
-            <?php echo $links ?>
+            <div class="pagination-wrap">
+                <?php echo $links ?>
+            </div>
             <!-- //Technician list table -->
 
             <!-- no record found -->

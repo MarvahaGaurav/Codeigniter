@@ -13,11 +13,11 @@
         <!-- Bootstrap Core CSS -->
 
         <link href="public/css/plugin/bootstrap.min.css" rel='stylesheet'>
+        <link href="public/css/plugin/font-awesome.min.css" rel='stylesheet'>
         <link href="public/css/layout.css" rel='stylesheet'>
         <link href="public/css/style.css" rel='stylesheet'>
         <link href="public/css/plugin/jquery.mCustomScrollbar.min.css" rel='stylesheet'>
         <link href="public/css/plugin/bootstrap-select.min.css" rel='stylesheet'>
-        <link href="public/css/plugin/font-awesome.min.css" rel='stylesheet'>
         <link rel="stylesheet" href="<?php echo base_url()?>public/css/bootstrap-datetimepicker.css">
         <script src="public/js/jquery.min.js"></script>
         <script>
@@ -94,8 +94,8 @@
     <body class="<?php echo ($sideBar == 'minimized') ? 'body-sm' : '' ?>">
         <!-- loaDer Start-->
         <div class="loaDer" style="position:fixed;background-color:rgba(0,0,0,0.25);width:100%;height:100%;top:0;bottom:0;right:0;left:0;z-index:9999;">
-           <div class="proG" style="position: relative;width: 100%;top: 0;left: 0;height: 15px;background: #da2d4d;overflow:hidden;">
-               <div id="loaDeranimaTion" class="indeterminate" style="background-color:#ea2222;"></div>
+           <div class="proG" style="position: relative;width: 100%;top: 0;left: 0;height: 8px;background: #da2d4d;overflow:hidden;">
+               <div id="loaDeranimaTion" class="indeterminate" style="background-color:#fb5b5b;"></div>
            </div>
        </div>
         <!-- loaDer End-->

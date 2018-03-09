@@ -114,6 +114,9 @@ class Admin extends MY_Controller {
         try {
             $data = array();
             $this->load->library("commonfn");
+            $data['additional_js'] = [
+                base_url("public/js/web/forgot-password.js")
+            ];
             if ($this->input->post()) {
 
                 $this->form_validation->set_rules('email', $this->lang->line('email'), 'trim|required');

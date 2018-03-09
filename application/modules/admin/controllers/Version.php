@@ -99,13 +99,6 @@ class Version extends MY_Controller {
             if ($this->form_validation->run() == FALSE) {
                 load_views("version/add", $this->data);
             } else {
-                $appData = $this->Common_model->fetch_data("app_version", "vid", ["where" => ["version_name" => $this->input->post('name')]]);
-                if ( ! empty ($appData) ) {
-                    $alertMsg = "{$this->input->post('name')} version already exists, Please enter a new version.";
-                    $this->session->set_flashdata('alertMsg', $alertMsg);
-                    load_views("version/add", $this->data);
-                    exit;
-                }
                 $saveData = array(
                     'version_name' => $this->input->post('name'),
                     'versiob_title' => $this->input->post('title'),
@@ -221,6 +214,7 @@ class Version extends MY_Controller {
      * @return boolean
      */
     protected function saveVersionData($data, $updateId = false) {
+
         try {
             $this->db->trans_start();
             if ($updateId) {

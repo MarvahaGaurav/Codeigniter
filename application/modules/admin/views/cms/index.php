@@ -85,7 +85,7 @@
                   <tr id ="remove_<?php echo $value['id'];?>">
                     <td><?php echo ++$key; ?></td>
                     <td><?php echo ucfirst($value['name']); ?></td>
-                    <td><?php echo substr($value['content'],0,150);?></td>
+                    <td style="text-align:left;"><?php echo substr($value['content'],0,150);?></td>
                     <td><?php echo ($value['status']==ACTIVE)?"Active":"Inactive";?></td>
                     <td class="text-nowrap table-action">
                         <a class="f-pencil" href="<?php echo base_url()?>admin/cms/edit?id=<?php echo encryptDecrypt($value['id']);?>"><i class="fa fa-pencil" title="Edit" aria-hidden="true"></i></a>

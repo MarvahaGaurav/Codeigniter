@@ -542,6 +542,9 @@ class Signup extends REST_Controller {
                                 $this->pushnotification->sendMultipleIphonePush($ios_user_data, $ios_payload_data);
                             }
                         }
+                        
+                        $signupArr['country_name'] = $this->Common_model->fetch_data("country_list", "name", ["where" => ["country_code1" => $signupArr['country_id']]], true);
+                        $signupArr['country_name'] = $signupArr['country_name']['name'];
                         $this->response(array('code' => SUCCESS_CODE, 'msg' => $this->lang->line('registration_success'), 'result' => $signupArr));
                     }
                 }

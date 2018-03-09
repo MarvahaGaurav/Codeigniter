@@ -1,129 +1,128 @@
 <style>
     .myloader{
-        width: 16%;
-        position: absolute;
-        margin-top: -29px;
-        /*display: none;*/
+        width: 5%;
+    }
+    .modal-header {
+        padding: 15px;
+        border-bottom: 1px solid #e4001c;
     }
     .avatar-form .modal-header {
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
-}
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+        background: #2e2e2e;
+    }
+    .avatar-chooseimg-wrapper {
+        position: relative;
+        padding: 11px 15px 10px;
+        background: #e4001c;
+        border-radius:3px;
+        font-size: 12px;
+        color: #fff;
+        display: inline-block;
+        overflow: hidden;
+    }
+    .avatar-chooseimg-wrapper label {
+        margin-bottom: 0;
+    }
+    .avatar-chooseimg-wrapper input {
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        cursor: pointer;
+        opacity: 0;
+        height: auto;
+        width: auto;
+    }
+    .avatar-wrapper {
+        min-height: 250px;
+        width: 100%;
+        margin-top: 15px;
+        box-shadow: inset 0 0 5px rgba(0,0,0,.25);
+        background-color: #fcfcfc;
+    }
+    .avatar-form .modal-header .img_up_hd h1 {
+        font-size: 14px;
+        color: #fff;
+        float: left;
+    }
+    .avatar-btns, .avatar-zooms {
+        float: left;
+        margin: 10px 3px 0 0;
+    }
+    .btn-group, .btn-group-vertical {
+        position: relative;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .btn-group>.btn:first-child {
+        margin-left: 0;
+    }
 
-.avatar-form .modal-header, .videotrim-wrap .modal-header {
-    background: #e4001c;
-}
-.modal-header {
-    padding: 15px;
-    border-bottom: 1px solid #e4001c;
-}
-.avatar-form .modal-body, .videotrim-wrap .modal-body {
-    padding: 30px 15px;
-}
-
-.modal-body {
-    position: relative;
-    padding: 15px;
-}
-.avatar-chooseimg-wrapper, .vdo-upload {
-    position: relative;
-    padding: 13px 14px 11px;
-    background: #e4001c;
-    font-size: 16px;
-    color: #fff;
-    display: inline-block;
-    float: left;
-    overflow: hidden;
-}
-.avatar-chooseimg-wrapper label, .vdo-upload label {
-    margin-bottom: 0;
-}
-.avatar-chooseimg-wrapper input, .vdo-upload input {
-    display: block;
-    position: absolute;
-    top: 0;
-    right: 0;
-    cursor: pointer;
-    opacity: 0;
-    height: 100%;
-}
-.avatar-wrapper {
-    /* height: 330px; */
-    min-height: 400px;
-    width: 100%;
-    margin-top: 20px;
-    box-shadow: inset 0 0 5px rgba(0,0,0,.25);
-    background-color: #fcfcfc;
-    /* overflow: hidden; */
-}
-.avatar-form .modal-header .img_up_hd h1, .videotrim-wrap .modal-header .modal-title {
-    font-size: 18px;
-    color: #fff;
-    float: left;
-}
-.avatar-btns, .avatar-zooms {
-    float: left;
-    margin: 10px 3px 0 0;
-}
-.btn-group, .btn-group-vertical {
-    position: relative;
-    display: inline-block;
-    vertical-align: middle;
-}
-.btn-group>.btn:first-child {
-    margin-left: 0;
-}
-
-.btn-group-vertical>.btn, .btn-group>.btn {
-    position: relative;
-    float: left;
-}
-.fa {
-    display: inline-block;
-    font: normal normal normal 14px/1 FontAwesome;
-    font-size: inherit;
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-.btn-default {
-    color: #333;
-    background-color: #fff;
-    border-color: #ccc !important;
-}
-.btn {
-    display: inline-block;
-    padding: 6px 12px;
-    margin-bottom: 0;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.42857143;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: middle;
-    -ms-touch-action: manipulation;
-    touch-action: manipulation;
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    background-image: none;
-    border: 1px solid transparent;
-    border-radius: 4px;
-}
-.fa-rotate-left:before {
-    content: "\f0e2";
-}
-avatar-btns, .avatar-zooms {
-    float: left;
-    margin: 10px 3px 0 0;
-}
-#avatar-modal .up_img_wrap .change {
-    width: 100%;
-    padding-top: 20px;
-    clear: both;
-}
+    .btn-group-vertical>.btn, 
+    .btn-group>.btn {
+        position: relative;
+        float: left;
+    }
+    .fa-rotate-left:before {
+        content: "\f0e2";
+    }
+    .fa-rotate-right:before {
+        content: "\f01e";
+    }
+    .avatar-btns, .avatar-zooms {
+        float: left;
+        margin: 10px 3px 0 0;
+    }
+    .custom-btn {
+        display: inline-block;
+        border-radius: 3px;
+        text-align: center;
+        -webkit-transition: all 0.3s ease;
+        -moz-transition: all 0.3s ease;
+        -o-transition: all 0.3s ease;
+        transition: all 0.3s ease;
+    }
+    .custom-btn {
+        padding: 11px 15px 10px !important;
+        font-size: 11px;
+    }
+    .custom-btn.save {
+        border: 1px solid #e00016 !important;
+        background: #e00016;
+        color: #fff !important;
+    }
+    .custom-btn.cancel {
+        border: 1px solid #e00016 !important;
+        background: #fff;
+        color: #e00016;
+    }
+    .custom-btn:hover {
+        background: #e00016;
+        color: #fff;
+        -webkit-box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.5);
+        -moz-box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.5);
+        box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.5);
+    }
+    @media (min-width: 480px) {
+        .avatar-chooseimg-wrapper {
+            font-size: 14px;
+        }
+        .avatar-form .modal-header .img_up_hd h1 {
+            font-size: 16px;
+        }
+        .avatar-wrapper {
+            min-height: 400px;
+        }
+        .custom-btn {
+            padding: 11px 28px;
+            font-size: 14px;
+        }
+        .btn-width {
+            min-width: 142px !important;
+            width: auto !important;
+        }
+    }
 </style>
 <!--*******************cropper modal************************-->
 <div class="modal fade" id="avatar-modal" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">
@@ -143,7 +142,7 @@ avatar-btns, .avatar-zooms {
                         <div class="reatiler_box insidegrey_bg">
 
                             <!-- Upload image and data -->
-                            <div class="avatar-upload text-center clearfix">
+                            <div class="avatar-upload clearfix">
                                 <input class="avatar-src" name="avatar_src" type="hidden">
                                 <input class="avatar-data" name="avatar_data" type="hidden">
                                 <div class="avatar-chooseimg-wrapper">
@@ -177,12 +176,11 @@ avatar-btns, .avatar-zooms {
                                             <button class="btn btn-default btn-cropper fa fa-minus " data-method="zoom" data-option="-0.1" type="button" title="Zoom In"></button>
                                         </div>
                                     </div>
-
-                                    <div class="col-lg-12 col-sm-12 text-center change clearfix" style="margin-top:20px">
-                                        <button class="commn-btn custom-btn cancel" data-dismiss="modal" type="reset">Cancel</button>
-                                        <button class="commn-btn custom-btn save sv-btn" type="submit">Save</button>
-                                        <img class="myloader" src="public/images/loader.svg" style="display: none">
-                                    </div>
+                                </div>
+                                <div class="col-sm-12 text-center change clearfix" style="margin-top:25px">
+                                    <button class="custom-btn btn-width cancel" data-dismiss="modal" type="reset">Cancel</button>
+                                    <button class="custom-btn btn-width save sv-btn" type="submit">Save</button>
+                                    <img class="myloader" src="public/images/loader.svg" style="display: none;margin-top:10px">
                                 </div>
                             </div>
                         </div>

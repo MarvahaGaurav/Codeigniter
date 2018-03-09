@@ -21,7 +21,7 @@
                 <div class="col-sm-3 col-xs-12">
                     <div class="profile-thumb">
                         <!-- Thumb Wrapper -->
-                        <div class="thumb-view-wrapper thumb-view-p5 img-viewbdr-radius">
+                        <div class="thumb-view-wrapper thumb-view-p5 img-viewbdr-radius3p">
                             <div class="thumb-view thumb-viewfullheight-5" style="background:url('<?php echo isset($user['image'])&&!empty($user['image'])?$user['image']:base_url("public/images/missing_avatar.svg") ?>')"></div>
                         </div>
                         <!-- //Thumb Wrapper -->
@@ -33,7 +33,7 @@
                     <div class="profile-thumb">
                         
                         <!-- Thumb Wrapper -->
-                        <div class="thumb-view-wrapper thumb-view-p5 img-viewbdr-radius">
+                        <div class="thumb-view-wrapper thumb-view-p5 img-viewbdr-radius3p">
                             <div class="thumb-view thumb-viewfullheight-5" style="background:url('<?php echo isset($compnaydetail['company_image'])&&!empty($compnaydetail['company_image'])?$compnaydetail['company_image']:base_url("public/images/missing_avatar.svg") ?>')"></div>
                         </div>
                         <!-- //Thumb Wrapper -->

@@ -204,7 +204,7 @@ $module = $this->router->fetch_module();
 <div id="editModal" class="modal fade" role="dialog">
     <input type="hidden" id="uid" name="uid" value="">
     <input type="hidden" id="ustatus" name="ustatus" value="">
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog modal-custom">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header modal-alt-header">
@@ -216,7 +216,7 @@ $module = $this->router->fetch_module();
             </div>
             <input type="hidden" id="notiToken">
             <div class="modal-footer">
-                <div class="button-wrap">
+                <div class="modal-button-wrap">
                     <button type="button" class="commn-btn resendPush save" data-dismiss="modal">Resend Now</button>
                     <button type="button" class="commn-btn editPush cancel" >Edit & Resend</button>
                 </div>

@@ -161,7 +161,7 @@ class UserController extends BaseController
         }
        
         $userData = $this->validateUser($user_id);
-
+        
         $this->load->helper("input_data");
         $post = $this->input->post();
         $post = trim_input_parameters($post);

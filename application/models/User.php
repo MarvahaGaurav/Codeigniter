@@ -19,6 +19,7 @@ class User extends BaseModel
         'image, image_thumb,'.
         'ai_user.language, ai_user.currency,' .
         'ai_user.status,user_type,is_owner,'.
+        'country.name as country_name,' . 
         'IFNULL(quote_view, 0) as quote_view, IFNULL(quote_add, 0) as quote_add,'.
         'IFNULL(quote_edit, 0) as quote_edit, IFNULL(quote_delete, 0) as quote_delete,'.
         'IFNULL(insp_view, 0) as insp_view,'.
@@ -27,6 +28,7 @@ class User extends BaseModel
         'IFNULL(project_add, 0) as project_add, IFNULL(project_edit, 0) as project_edit, IFNULL(project_delete, 0) as project_delete')
             ->from("ai_user")   
             ->join("user_employee_permission as uep", "uep.employee_id=ai_user.user_id", 'left')
+            ->join("country_list as country", "country.country_code1=ai_user.country_id")
             ->where('email', $email)
             ->where('password', $password)
             ->where('ai_user.status !=', 3);
