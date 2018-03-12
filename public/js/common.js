@@ -730,7 +730,7 @@ function logoutUser() {
  */
 
 function changeStatusToBlock(type, status, id, url) {
-    var csrf = $('#csrf').val();
+    var csrf = $('#csrf').val() || csrf_token;
     $.ajax({
         method: "POST",
         url: baseUrl + url,
@@ -744,7 +744,6 @@ function changeStatusToBlock(type, status, id, url) {
             res = JSON.parse(res);
             var csrf = $('#csrf').val(res.csrf_token);
             if (res.code === 200) {
-
                 if (status == 2) {
                     $('#error').empty().append(string.successPrefix + string.block_success + string.successSuffix);
                     $('#unblock_' + res.id).show();
