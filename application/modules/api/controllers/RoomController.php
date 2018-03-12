@@ -19,7 +19,7 @@ class RoomController extends BaseController
     }
 
     /**
-     * @SWG\Get(path="/applications/rooms",
+     * @SWG\Get(path="/applications/{application_id}/rooms",
      *   tags={"Products"},
      *   summary="Room types based on application",
      *   description="Room types based on application",
@@ -94,9 +94,11 @@ class RoomController extends BaseController
             $offset = (int)$offset + RECORDS_PER_PAGE;
             if ( (int)$offset >= (int)$result['count'] ) {
                 $offset = -1;
+            } else {
+                $link = base_url("api/v1/applications/{$request_data['application_id']}/rooms?offset={$offset}");
             }
             $this->load->helper("url");
-            $link = base_url("api/v1/applications/rooms?offset={$offset}");
+           
         }
 
         if ( empty($data) ) {
@@ -110,7 +112,7 @@ class RoomController extends BaseController
         $response = [
             "code" => HTTP_OK,
             "api_code_result" => "OK",
-            "msg" => $this->lang->line(""),
+            "msg" => $this->lang->line("rooms_fetched"),
             "data" => $data
         ];
 

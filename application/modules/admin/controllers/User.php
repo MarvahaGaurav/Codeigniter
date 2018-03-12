@@ -175,6 +175,7 @@ class User extends MY_Controller {
             show_404();
         }
         
+        $this->data['profile']['user_type_numeric'] = $this->data['profile']['user_type'];
         if ( in_array((int)$this->data['profile']['user_type'], $this->validUserTypes) ) {
             $this->data['profile']['user_type'] = $this->userTypes[(int)$this->data['profile']['user_type']];
         } else {

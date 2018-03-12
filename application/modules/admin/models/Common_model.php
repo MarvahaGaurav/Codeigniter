@@ -1164,7 +1164,7 @@ class Common_model extends CI_Model {
             $this->db->like('n.title', $params['searchlike']);
         }
         if (!empty($params['platform'])) {
-            $platform = $params['platform'] + 1;
+            $platform = $params['platform'];
             $this->db->like('n.platform', $platform);
         }
 

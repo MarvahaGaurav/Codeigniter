@@ -3,6 +3,16 @@ var prev = 0;
 var $window = $(window);
 var header = $('header');
 
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
 $window.on('scroll', function () {
     var scrollTop = $window.scrollTop();
     header.toggleClass('scrollhidden', scrollTop > prev);
@@ -94,9 +104,9 @@ $(document).ready(function () {
             $flashCard.fadeOut(300);
         }, 5000);
     }
-
+    var searchQuery = getParameterByName('search');
     var $searchBox = $("#search-box");
-    if ( $searchBox.length > 0 ) {
+    if ( searchQuery && $searchBox.length > 0 ) {
         var searchBoxVal = $searchBox.val().trim();
         if ( searchBoxVal.length > 0) {
             var $submitBtn = $searchBox.siblings("input[type='submit']");
@@ -118,7 +128,10 @@ $(document).ready(function () {
 
     $(".close-ico").on("click", function () {
         $("#search-box").val('');
-        window.location = $("#search-box").attr("data-redirect");
+        var search = getParameterByName('search');
+        if ( search ) {
+            window.location = $("#search-box").attr("data-redirect");
+        }
         $('.close-ico').hide();
     });
 

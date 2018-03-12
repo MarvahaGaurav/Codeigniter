@@ -59,7 +59,7 @@ class Notification extends MY_Controller {
         $params['startDate'] = $startDate;
         $params['endDate'] = $endDate;
         $params['platform'] = $platform;
-
+        
         $offset = ($page - 1) * $limit;
         $params['limit'] = $limit;
         $params['offset'] = $offset;

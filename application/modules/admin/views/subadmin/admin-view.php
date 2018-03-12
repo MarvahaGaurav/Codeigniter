@@ -32,7 +32,16 @@ $messagePermission = isset($permission[8])?$permission[8]:array();
                         </div>
                         <!-- title and form upper action end-->
                         <div class="row">
+                            
+                        </div>
+                        <div class="row">
                             <div class="user-detail-panel">
+                                <div class="col-lg-12 col-sm-12 col-xs-12">
+                                    <!-- Thumb Wrapper -->
+                                    <div class="image-view-wrapper img-view200p img-viewbdr-radius4p img-mb">
+                                        <div class="profile-pic image-view img-view200" style="background-image:url('<?php echo (!empty($admindetail['admin_profile_pic'])) ? $admindetail['admin_profile_pic'] : DEFAULT_IMAGE ?>');"></div>
+                                    </div>
+                                </div>
                                 <div class="col-sm-6 col-xs-6">
                                     <div class="form-group">
                                         <label class="admin-label">Admin Name</label>
@@ -305,7 +314,7 @@ $messagePermission = isset($permission[8])?$permission[8]:array();
                                                             <li>
                                                                 <div class="custom-check">
                                                                     <input id="subcheck7-3" <?php echo (!empty($notiPermission['editp']))?'checked':'' ?> value="1"  disabled="true" class="noti" type="checkbox" >
-                                                                    <label for="subcheck7-3"><span></span>Edit  </label>
+                                                                    <label for="subcheck7-3"><span></span>Edit or Resend </label>
                                                                 </div>
                                                             </li>
                                                             <li>

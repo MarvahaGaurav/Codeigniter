@@ -159,7 +159,7 @@
                             <?php } ?>
                             <?php if(in_array('4',$assignedmodules) || $admininfo['role_id'] == 1){ ?>
                             <li>
-                                <a href="javascript:void(0)" <?php echo ($controller == "roomtemplates") ? "class='active'" : "" ?> >
+                                <a href="<?php echo base_url("admin/templates") ?>" <?php echo ($controller == "templatecontroller") ? "class='active'" : "" ?> >
                                     <img src="public/images/svg/cms.svg" alt="Content Management">
                                     <label class="nav-txt">Template Management</label>
                                 </a>

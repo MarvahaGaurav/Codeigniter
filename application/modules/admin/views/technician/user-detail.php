@@ -105,7 +105,7 @@
             <div class="user-detail-panel">
                 <div class="col-lg-3 col-sm-3 col-xs-3">
                     <div class="image-view-wrapper img-view200p img-viewbdr-radius4p img-mb">
-                        <img style="" src="<?php echo (!empty($profile['company_image'])) ? $profile['company_image'] : DEFAULT_IMAGE ?>" title="Compamy Logo">                         
+                        <img style="width:100%;" src="<?php echo (!empty($profile['company_image'])) ? $profile['company_image'] : DEFAULT_IMAGE ?>" title="Compamy Logo">                         
                     </div>
                     <!--<div class="form-profile-pic-wrapper pull-left">
                         <div class="profile-pic" style="background-image:url('<?php echo (!empty($profile['company_image'])) ? $profile['company_image'] : DEFAULT_IMAGE ?>');">

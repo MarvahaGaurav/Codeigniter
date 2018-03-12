@@ -26,4 +26,4 @@ $route['api/v1/applications'] = 'ApplicationController/application';
 $route['api/v1/applications/(:num)/products'] = 'ProductController/application_products/application_id/$1';
 $route['api/v1/products'] = 'ProductController/products';
 $route['api/v1/products/(:num)'] = 'ProductController/products/product_id/$1';
-$route['api/v1/applications/rooms'] = 'RoomController/rooms';
+$route['api/v1/applications/(:num)/rooms'] = 'RoomController/rooms/application_id/$1';

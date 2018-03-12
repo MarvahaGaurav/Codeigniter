@@ -98,7 +98,7 @@
                                         <!--<input type="text" value="<?php //echo $user['prm_user_countrycode']; ?>" name="prmccode" class="ccode" placeholder="Country Code">-->
                                         <select class="selectpicker select-filed-name2 ccode" name="prmccode" data-live-search="true">
                                             <?php foreach ($countries as $country) : ?>
-                                                <option value="<?php echo $country['calling_code'] ?>" <?php echo ($country['calling_code'] == $user['prm_user_countrycode']) ? "selected" : "" ?> ><?php echo $country['name'] ?></option>
+                                                <option value="<?php echo $country['calling_code'] ?>" <?php echo ($country['calling_code'] == $user['prm_user_countrycode']) ? "selected" : "" ?> ><?php echo '('.$country['country_code1'].') '.$country['name'] ?></option>
                                             <?php endforeach ?>
                                         </select>
                                     </div>
@@ -116,7 +116,7 @@
                                         <!--<input type="text" value="<?php //echo $user['alt_user_countrycode']; ?>" name="altccode" class="ccode" placeholder="Country Code">-->
                                         <select class="selectpicker select-filed-name2 ccode" name="altccode" data-live-search="true">
                                             <?php foreach ($countries as $country) : ?>
-                                                <option value="<?php echo $country['calling_code'] ?>" <?php echo ($country['calling_code'] == $user['alt_user_countrycode']) ? "selected" : "" ?> ><?php echo $country['name'] ?></option>
+                                                <option value="<?php echo $country['calling_code'] ?>" <?php echo ($country['calling_code'] == $user['alt_user_countrycode']) ? "selected" : "" ?> ><?php echo '('.$country['country_code1'].') '.$country['name'] ?></option>
                                             <?php endforeach ?>
                                         </select>
                                     </div>

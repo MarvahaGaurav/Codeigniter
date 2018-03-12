@@ -12,7 +12,7 @@
             <p class="text-center logo-txt">Smart Guide</p>
         </div>
     </div>
-    
+
     <div class="fm-table-cell tbl-cell-2">
         <div class="form-wrapper">
             <div class="login-error">

@@ -113,9 +113,10 @@ $module = $this->router->fetch_module();
                 <label class="admin-label">Platform</label>
                 <div class="commn-select-wrap">
                     <select class="selectpicker platform">
-                        <option value="">All</option>
-                        <option <?php echo ($platform == 1)?'Selected':'' ?> value="1">Android</option>
-                        <option <?php echo ($platform == 2)?'Selected':'' ?> value="2">iOS</option>
+                        <option value="">Select</option>
+                        <option <?php echo ($platform == 1)?'Selected':'' ?> value="1">All</option>
+                        <option <?php echo ($platform == 2)?'Selected':'' ?> value="2">Android</option>
+                        <option <?php echo ($platform == 3)?'Selected':'' ?> value="3">iOS</option>
                     </select>
                 </div>
             </div>

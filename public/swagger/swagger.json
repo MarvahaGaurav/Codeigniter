@@ -1396,6 +1396,45 @@
                 }
             }
         },
+        "/applications/{application_id}/rooms": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Room types based on application",
+                "description": "Room types based on application",
+                "operationId": "rooms_get",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "application_id",
+                        "in": "query",
+                        "description": "Application id to fetch room type",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "offset value to be passed back to paginate, if offset is -1, there is no further data",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "No data found"
+                    },
+                    "200": {
+                        "description": "Room details fetched"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
         "/user/signup": {
             "post": {
                 "tags": [

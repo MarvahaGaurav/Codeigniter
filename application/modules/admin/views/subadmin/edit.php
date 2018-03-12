@@ -30,6 +30,27 @@ $messagePermission = isset($permission[8])?$permission[8]:array();
                     </div>
                     <!-- title and form upper action end-->
                     <?php echo form_open_multipart('', array('id' => 'subadmin_add')); ?>
+                    <br><br>
+                    <div class="row">
+                        <div class="col-lg-3 col-sm-4">
+                            <label class="admin-label">Profile Picture<br></label>
+                            <div class="image-view-wrapper img-view200p img-viewbdr-radius4p">
+                                <div class="image-view img-view200">
+                                    <div class="photo-upload-here">
+                                        <img style="width: 100%;height: 100%;" class="profile-pic" id="profile_image" src="<?php echo (!empty($admindetail['admin_profile_pic']))?$admindetail['admin_profile_pic']:DEFAULT_IMAGE ?>">
+                                    </div>
+                                    
+                                    <div class="image_upload_trigger" onclick="addCoverImage()">
+                                        <a href="javascript:void(0);" class="upimage-btn">
+                                        </a>
+                                        <label class="camera" for="upload"><i class="fa fa-camera" aria-hidden="true"></i></label>
+                                        <input type="hidden" name="imgurl" class="inputhidden">
+                                        <input type="hidden" id="imgChange" name="imgChange" value="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <input type='hidden' value='<?php echo encryptDecrypt($admin_id); ?>' name='token' >
                     <div class="form-ele-wrapper clearfix">
                     <div class="row">
@@ -307,7 +328,7 @@ $messagePermission = isset($permission[8])?$permission[8]:array();
                                     <li>
                                         <div class="custom-check">
                                             <input id="subcheck7-3" name="permission[notification][edit]" <?php echo (!empty($notiPermission['editp']))?'checked':'' ?> value="1"  class="noti" type="checkbox" >
-                                            <label for="subcheck7-3"><span></span>Edit  </label>
+                                            <label for="subcheck7-3"><span></span>Edit or Resend </label>
                                         </div>
                                     </li>
                                     <li>
@@ -404,4 +425,25 @@ $messagePermission = isset($permission[8])?$permission[8]:array();
         });
     });
     
+</script>
+
+<link href="public/cropper/cropper.min.css" rel="stylesheet">
+<script>
+    if (location.hostname == "localhost") {
+        var domain = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + '/smartguide/admin';
+        var domain2 = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + '/smartguide';
+    }
+    else {
+        var domain = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + '/admin';
+        var domain2 = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
+    }
+
+</script>
+<script src="public/cropper/cropper.js"></script>
+<script src="public/cropper/cropper.min.js"></script>
+<script src="public/cropper/main.js"></script>
+<script>
+    function addCoverImage() {
+        callme('coverPicInput','640','640','imagepicker2','addshopbtn','imageMe1','true','','circular');
+    }
 </script>

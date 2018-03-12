@@ -10,6 +10,16 @@ blockquote {
     border-color:#e0dddd !important;
 }
 
+.gutter10 {
+    margin-left:10px;
+    margin-right:10px;
+}
+
+.col-pd-5 {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
 /* .section,
 .section-wrapper {
     -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.12);
@@ -18,10 +28,12 @@ blockquote {
 } */
 
 .section {
-    background: #fff;
+    background: #efefef;
     padding:15px;
     margin: 0 0 10px 0;
-    border:1px solid #e1e6ef;
+    -webkit-box-shadow: 0 6px 10px -4px rgba(0,0,0,.15);
+    -moz-box-shadow: 0 6px 10px -4px rgba(0,0,0,.15);
+    box-shadow: 0 6px 10px -4px rgba(0,0,0,.15);
 }
 
 .section-alternate {
@@ -36,9 +48,12 @@ blockquote {
 }
 
 .section-wrapper {
-    background: #fff;
+    background: #efefef;
     padding:15px 10px;
     margin: 0 0 10px 0;
+    -webkit-box-shadow: 0 6px 10px -4px rgba(0,0,0,.15);
+    -moz-box-shadow: 0 6px 10px -4px rgba(0,0,0,.15);
+    box-shadow: 0 6px 10px -4px rgba(0,0,0,.15);
 }
 
 .col-sm-space {
@@ -126,7 +141,7 @@ blockquote {
 }
 
 .logo-txt {
-    color: #e4001c;
+    color: #e00016;
     font-size: 20px;
     margin: 6px 0 0 0;
 }
@@ -204,7 +219,7 @@ blockquote {
 .breadcrumb-wrap .breadcrumb {
     border-radius: 0;
     font-size: 13px;
-    padding: 12px 27px;
+    padding: 12px 27px 0 0;
     background: #ffffff;
     margin: 0;
 }
@@ -227,7 +242,7 @@ blockquote {
 
 /* dashboard */
 .totalwrapper-section {
-    margin: 0 0 10px 0;
+    margin-bottom: 10px;
 }
 .totalwrapper-section a {
     text-decoration: none;
@@ -254,6 +269,30 @@ blockquote {
     background: #fff;
 }
 
+.ts-wrapper.bgcolor1 {
+    background: #454c6d;
+}
+
+.ts-wrapper.bgcolor2 {
+    background: #d43649;
+}
+
+.ts-wrapper.bgcolor3 {
+    background: #e6a546;
+}
+
+.ts-wrapper.bgcolor4 {
+    background: #5d9059;
+}
+
+.ts-wrapper.bgcolor5 {
+    background: #454c6c;
+}
+
+.ts-wrapper.bgcolor6 {
+    background: #53b4c3;
+}
+
 .ts-numberof-heading {
     font-size: 15px;
     font-weight: 600;
@@ -278,7 +317,7 @@ blockquote {
     font-size: 40px;
     letter-spacing: 1px;
     line-height: 1;
-    color:#505458;
+    color:#e2dfdf;
 }
 
 .ts-content .ts-numbers .ts-userstxt {
@@ -297,7 +336,6 @@ blockquote {
 }
 
 .ts-thumbnail {
-    background:#fff;
     text-align: center;
 }
 .ts-thumbnail .fa {
@@ -305,8 +343,14 @@ blockquote {
     vertical-align: middle;
     margin: -8px 0 0 0;
 }
-.ts-thumbnail .fa.fa-users {
-    color:#e4001c;
+.ts-thumbnail .fa {
+    color: rgba(255,255,255,0.4);
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+.ts-wrapper:hover .ts-thumbnail .fa {
+    color:rgba(255,255,255,1);
 }
 /* .ts-thumbnail {
     background-size: cover !important;
@@ -369,6 +413,10 @@ blockquote {
     margin: 0 0 25px 0;
 }
 
+.section-wrapper .form-group {
+    margin: 0 0 10px 0;
+}
+
 .form-blk {
     position: relative;
 }
@@ -381,7 +429,7 @@ blockquote {
     height: 39px;
     line-height: 44px;
     text-align: center;
-    background: #505458;
+    background: #e00016;
     color:#fff;
     margin: 0 0 0 0;
 }
@@ -839,6 +887,9 @@ span.close.flt_cl {
     display: inline-block;
     min-width: 102px;
     border:0;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
 }
 
 .commn-btn:not(:last-child) {
@@ -858,19 +909,22 @@ span.close.flt_cl {
 }
 
 .commn-btn.cancel {
-    background: #505458;
+    background: #fff;
+    color:#e00016;
+    border:1px solid #e00016;
 }
 
 .commn-btn.save {
-    background: #ff334c;
+    background: #e00016;
+    border:1px solid #e00016;
 }
 
-.commn-btn.cancel:hover {
-    background: #545252;
-}
-
-.commn-btn.save:hover {
-    background: #860505;
+.commn-btn:hover {
+    background: #e00016;
+    color: #fff;
+    -webkit-box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.5);
 }
 
 .circle-btn-wrap {
@@ -899,7 +953,7 @@ span.close.flt_cl {
     text-align:center;
     font-size: 14px;
     vertical-align: middle;
-    background: #ff334c;
+    background: #839090;
     color: #fff;
     display: inline-block;
     margin-right:5px;

@@ -317,6 +317,22 @@ button:focus {
     content: "\f070";
 }
 
+.fa-camera:before {
+    content: "\f030";
+}
+
+.fa-check-circle-o:before {
+    content: "\f05d";
+}
+
+.fa-check:before {
+    content: "\f00c";
+}
+
+.fa-pencil:before {
+    content: "\f040";
+}
+
 * {
     word-wrap: break-word;
 }

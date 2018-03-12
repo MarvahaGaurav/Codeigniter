@@ -4,13 +4,18 @@ defined("BASEPATH") OR exit("No direct script access allowed");
 require_once 'BaseModel.php';
 
 use DatabaseExceptions\SelectException;
-
-class Room extends BaseModel
+//fields in this table
+// "id, room_id,".
+// "category_id, type, title, image, room_length, room_length_unit,".
+// "room_width, room_width_unit, room_height, room_height_unit, workplane_height,".
+// "workplane_height_unit, room_shape, lux_value, number_of_luminaries,".
+// "created_at, updated_at";
+class Template extends BaseModel
 {
     public function __construct()
     {
         $this->load->database();
-        $this->tableName = "rooms";
+        $this->tableName = "templates";
     }
     
     public function get($options) 
@@ -18,12 +23,13 @@ class Room extends BaseModel
         $query = "";
         $singleRow = false;
         
-        if ( isset($options['room_id']) && !empty($options['room_id'])) {
-            $query = "*";
-            $this->db->where("rooms.id", $options['room_id']);
+        if ( isset($options['template_id']) && !empty($options['template_id'])) {
+            $query = "templates.id as template_id, *";
+            $this->db->where("templates.id", $options['template_id']);
             $singleRow = true;
         } else {
-            $query = "SQL_CALC_FOUND_ROWS rooms.id as room_id, title, image, icon";
+            $query = "SQL_CALC_FOUND_ROWS templates.id as template_id, *";
+            
         }
 
         $this->db->select($query, false)
@@ -53,8 +59,5 @@ class Room extends BaseModel
         }
 
         return $data;
-        
     }
-
-
 }

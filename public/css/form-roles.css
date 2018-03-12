@@ -85,19 +85,19 @@ input[type="checkbox"]+label {
 }
 
 input[type="checkbox"]+label>span {
-    background: rgba(0, 0, 0, 0) url(../images/uncheck.png) no-repeat;
+    background: rgba(255, 255, 255, 1) url(../images/uncheck.png) no-repeat;
     cursor: pointer;
     display: inline-block;
     height: 22px;
-    margin: -1px 6px 0 0;
+    margin: 0 6px 0 0;
+    border-radius:50%;
     position: relative;
     vertical-align: middle;
-    width: 25px;
+    width: 21px;
     background-color: #fff;
 }
 input[type="checkbox"]:checked+label>span {
-    background: url(../images/checked_img.png) no-repeat;
-    background-color: #fff;
+    background: rgba(255, 255, 255, 1) url(../images/checked_img.png) no-repeat;
 }
 
 @media (min-width:480px) {

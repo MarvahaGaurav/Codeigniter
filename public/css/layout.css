@@ -50,7 +50,7 @@ body {
     width: 100%;
     font-family: 'Open Sans', sans-serif;
     text-rendering: optimizeLegibility;
-    background-color: #eeeeee;
+    /* background-color: #eeeeee; */
 }
 
 h1,h2,h3,h4,h5,h6 {
@@ -116,8 +116,8 @@ header {
     top: 0;
     width: 100%;
     z-index: 999;
-    box-shadow: 0 0px 5px rgba(0, 0, 0, 0.15), 
-                0 0 3px rgba(0, 0, 0, 0.14);
+    /* box-shadow: 0 0px 5px rgba(0, 0, 0, 0.15), 
+                0 0 3px rgba(0, 0, 0, 0.14); */
 }
 
 .brand {
@@ -263,7 +263,7 @@ header {
     position: fixed;
     left: -274px;
     height: 100%;
-    background: #3E3E3E;
+    background: #2a2f4a;
     z-index: 1000;
 }
 
@@ -306,7 +306,7 @@ header {
     text-decoration: none;
     padding: 11px 0 10px;
     position: relative;
-    color: #B8B8B8;
+    color: #fff;
     font-family: 'Open Sans', sans-serif;
     font-weight: 400;
     border-bottom: 1px solid rgba(199, 199, 199, 0.09);
@@ -315,7 +315,7 @@ header {
 .left-menu ul li a.active,
 .left-menu ul li a:active,
 .left-menu ul li a:hover {
-    background: #4a4949;
+    background: #3a415f;
     color: #fff;
 }
 
@@ -389,7 +389,7 @@ header {
 footer {
     width: 100%;
     z-index: 9;
-    background: #e4001c;
+    background: #839090;
     position: absolute;
     bottom: 0;
     color: rgba(255, 255, 255, 0.73);

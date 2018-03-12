@@ -42,7 +42,7 @@ class Subadmin extends MY_Controller {
         $this->form_validation->set_rules('status', 'Status', 'trim|required');
 
         if (!($this->form_validation->run())) {
-            $this->Common_model->load_views('/subadmin/add-new', $this->data);
+            load_views_cropper('/subadmin/add-new', $this->data);
         } else {
             $post = $this->input->post();
             /*
@@ -60,6 +60,21 @@ class Subadmin extends MY_Controller {
                     'create_date' => datetime(),
                     'update_date' => datetime(),
                 );
+
+                if (isset($post['imgurl']) && !empty($post['imgurl'])) {
+                    $this->load->helper("images");
+                    try
+                    {
+                        $adminInsertArr['admin_profile_pic'] = $imageName=s3_image_uploader(ABS_PATH.$post['imgurl'],$post['imgurl']);
+                    } catch (Exception $e) {                                
+                        $this->data['error'] = strip_tags($this->upload->display_errors());                                
+                        $this->session->set_flashdata("flash-message", $e->getMessage());
+                        $this->session->set_flashdata("flash-type", "danger");
+                        // load_alternatecropper_views("users/edit_profile", $this->data);
+                    }                
+                }else{
+                    //$userData['image'] = isset($dataArr['previmg']) && !empty($dataArr['previmg'])?$dataArr['previmg']:"";
+                }  
 
                 try {
                     $adminid = $this->Common_model->insert_single('admin', $adminInsertArr);
@@ -122,7 +137,7 @@ class Subadmin extends MY_Controller {
                         redirect('/admin/subadmin');
                     } else {
                         $this->data['saveErr'] = 'Please try again';
-                        load_views("/subadmin/add", $this->data);
+                        load_views_cropper("/subadmin/add", $this->data);
                     }
                 } catch (Exception $ex) {
                     pr($ex . getmessage());
@@ -133,7 +148,7 @@ class Subadmin extends MY_Controller {
                  */
                 $this->data["csrfName"] = $this->security->get_csrf_token_name();
                 $this->data["csrfToken"] = $this->security->get_csrf_hash();
-                load_views('/subadmin/add-new', $this->data);
+                load_views_cropper('/subadmin/add-new', $this->data);
             }
         }
     }
@@ -201,7 +216,7 @@ class Subadmin extends MY_Controller {
         }
         $whereArr = [];
         $whereArr['where'] = array('admin_id' => $admin_id);
-        $adminField = ['admin_id', 'admin_name', 'status', 'admin_email', 'create_date'];
+        $adminField = ['admin_id', 'admin_profile_pic','admin_name', 'status', 'admin_email', 'create_date'];
         $adminInfo = $this->Common_model->fetch_data('admin', $adminField, $whereArr, true);
         $perField = ['viewp', 'blockp', 'deletep', 'editp', 'addp', 'admin_id', 'access_permission'];
         $permissionDetails = $this->Common_model->fetch_data('sub_admin', $perField, $whereArr);
@@ -245,7 +260,7 @@ class Subadmin extends MY_Controller {
             $this->form_validation->set_rules('status', 'Status', 'trim|required');
 
             if (!($this->form_validation->run())) {
-                $this->Common_model->load_views('/subadmin/add-new', $this->data);
+                load_views_cropper('/subadmin/edit', $this->data);
             } else {
                 $admin_id = (isset($post['token']) && !empty($post['token'])) ? encryptDecrypt($post['token'], 'decrypt') : "";
                 //echo $admin_id; die;
@@ -258,6 +273,21 @@ class Subadmin extends MY_Controller {
                 if (isset($post['newpassword']) && !empty($post['newpassword'])) {
                     $subAdminUpdateArr['admin_password'] = hash('sha256', trim($post['newpassword']));
                 }
+
+                if (isset($post['imgurl']) && !empty($post['imgurl'])) {
+                    $this->load->helper("images");
+                    try
+                    {
+                        $subAdminUpdateArr['admin_profile_pic'] = $imageName=s3_image_uploader(ABS_PATH.$post['imgurl'],$post['imgurl']);
+                    } catch (Exception $e) {                                
+                        $this->data['error'] = strip_tags($this->upload->display_errors());                                
+                        $this->session->set_flashdata("flash-message", $e->getMessage());
+                        $this->session->set_flashdata("flash-type", "danger");
+                        // load_alternatecropper_views("users/edit_profile", $this->data);
+                    }                
+                }else{
+                    //$userData['image'] = isset($dataArr['previmg']) && !empty($dataArr['previmg'])?$dataArr['previmg']:"";
+                }  
 
                 $whereArr = [];
                 $whereArr['where'] = array('admin_id' => $admin_id);
@@ -325,7 +355,7 @@ class Subadmin extends MY_Controller {
                     redirect('/admin/subadmin');
                 } else {
                     $this->data['msg'] = 'Please try again';
-                    load_views("/subadmin/edit", $this->data);
+                    load_views_cropper("/subadmin/edit", $this->data);
                 }
             }
             
@@ -338,7 +368,7 @@ class Subadmin extends MY_Controller {
 
             $whereArr = [];
             $whereArr['where'] = array('admin_id' => $admin_id);
-            $adminField = ['admin_id', 'admin_name', 'status', 'admin_email', 'create_date'];
+            $adminField = ['admin_id', 'admin_profile_pic' ,'admin_name', 'status', 'admin_email', 'create_date'];
             $adminInfo = $this->Common_model->fetch_data('admin', $adminField, $whereArr, true);
             $perField = ['viewp', 'blockp', 'deletep', 'editp', 'addp', 'admin_id', 'access_permission'];
             $permissionDetails = $this->Common_model->fetch_data('sub_admin', $perField, $whereArr);
@@ -361,7 +391,7 @@ class Subadmin extends MY_Controller {
             $this->data['admindetail'] = $adminInfo;
             $this->data['admin_id'] = $admin_id;
 
-            load_views('/subadmin/edit', $this->data);
+            load_views_cropper('/subadmin/edit', $this->data);
         }
     }
 
