@@ -37,6 +37,11 @@ class Template extends BaseModel
             $this->db->join("rooms", "rooms.id=templates.room_id");
         }
 
+        if ( isset($options['application']) && !empty($options['application']) ) {
+            $query .= ", applications.title as application_title";
+            $this->db->join("applications", "applications.id=templates.category_id");
+        }
+
         $this->db->select($query, false)
         ->from($this->tableName)
         ->order_by("templates.id", "desc");

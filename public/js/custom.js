@@ -105,7 +105,9 @@ $(".close-ico").click(function () {
     $(".close-ico").removeClass("show-close-ico");
     $(".search-box").val('');
 
-})
+});
+
+$(".selectpicker").selectpicker({});
 
 $("form#create-room-template").validate({
     rules : {

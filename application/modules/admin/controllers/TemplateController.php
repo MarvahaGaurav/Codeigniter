@@ -157,6 +157,12 @@ class TemplateController extends MY_Controller
         $this->load->library("form_validation");
         $this->form_validation->set_rules($this->validation_rules());
         $post = $this->input->post();
+        if ( isset($post['room_type']) && !empty($post['room_type']) ) {
+            $post['room_type'] = encryptDecrypt($post['room_type'], 'decrypt');
+        }
+        if ( isset($post['category']) && !empty($post['category']) ) {
+            $post['category'] = encryptDecrypt($post['category'], 'decrypt');
+        }
         $post = trim_input_parameters($post);
         $this->form_validation->set_data($post);
         if ( $this->form_validation->run() ) {
@@ -164,6 +170,7 @@ class TemplateController extends MY_Controller
             $this->Template->category_id = $post['category'];
             $this->Template->type = $post['lighting'];
             if ( isset($post['imgurl']) ) {
+                $this->load->helper(['images']);
                 $this->Template->image = $imageName = s3_image_uploader(ABS_PATH.$post['imgurl'],$post['imgurl']);
             }
             $this->Template->room_length = $post['room_length'];
@@ -180,6 +187,7 @@ class TemplateController extends MY_Controller
 
             try {
                 $this->Template->update(['id' => $template_id]);
+                redirect(base_url("/admin/templates"));
             } catch ( \Exception $error ) {
 
             }
@@ -240,14 +248,25 @@ class TemplateController extends MY_Controller
         $options = [
             "template_id" => $template_id,
             "limit" => 1,
-            "room" => true
+            "room" => true,
+            "application" => true
         ];
 
         $data = $this->Template->get($options);
         if ( empty($data) ) {
             error404("", base_url("admin"));
         }
-        pd($data);
+        // pd($data);
+        $this->data["room_type_map"] = [
+            APPLICATION_RESIDENTIAL => "Residential",
+            APPLICATION_PROFESSIONAL => "Professional"  
+        ];
+        $this->data['room_shape'] = [
+            "1" => "Rectangular",
+            "2" => "Circular"
+        ];
+        
+        $this->data['template'] = $data;
         load_views("project_templates/details", $this->data);
     }
 

@@ -48,8 +48,8 @@
                         <div class="display">
                             <select name="lighting" class="selectpicker platform">
                                 <option value="">Select</option>
-                                <option value="1" <?php echo set_select("lighting", "1", $template['room_id']=="1") ?>>Residential</option>
-                                <option value="2" <?php echo set_select("lighting", "2", $template['room_id']=="2") ?>>Professional</option>
+                                <option value="1" <?php echo set_select("lighting", "1", $template['type']=="1") ?>>Residential</option>
+                                <option value="2" <?php echo set_select("lighting", "2", $template['type']=="2") ?>>Professional</option>
                             </select>
                             <span class=""></span>
                         </div>
