@@ -160,7 +160,7 @@
                             <?php if(in_array('4',$assignedmodules) || $admininfo['role_id'] == 1){ ?>
                             <li>
                                 <a href="<?php echo base_url("admin/templates") ?>" <?php echo ($controller == "templatecontroller") ? "class='active'" : "" ?> >
-                                    <img src="public/images/svg/cms.svg" alt="Content Management">
+                                    <img src="public/images/svg/cms.svg" alt="Template Management">
                                     <label class="nav-txt">Template Management</label>
                                 </a>
                             </li>

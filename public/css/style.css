@@ -184,6 +184,59 @@ blockquote {
     color: #363636;
 }
 
+.form-group-field {
+    position: relative;
+}
+
+.field-type {
+    border-left: 1px solid #2e2e2e;
+}
+
+.field-type, .choosebtn {
+    color: #fff;
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 15px;
+    cursor: pointer;
+    width: 86px;
+}
+
+.field-type .customArrow {
+    border-top: 4px solid #fff;
+    top: 20px;
+    z-index: 0;
+}
+.customArrow {
+    width: 0;
+    height: 0;
+    vertical-align: middle;
+    display: inline-block;
+    position: absolute;
+    top: 21px;
+    right: 11px;
+}
+.customArrow {
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid #727272;
+    border-radius: 2px;
+}
+
+.form-group-field .select-filed-name {
+    padding: 9px 20px 9px 15px;
+    cursor: pointer;
+    border: 0;
+    background: #2e2e2e;
+    color: #fff;
+}
+
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
 .form-group .user-ico {
     background-image: url(../images/user.svg);
 }

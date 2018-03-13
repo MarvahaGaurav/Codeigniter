@@ -169,6 +169,8 @@
                 console.log('not done');
             }
         });*/
+
+
         
         $('#regDate').daterangepicker(
             {

@@ -3,8 +3,6 @@ defined("BASEPATH") OR exit("No direct script access allowed");
 
 /**
  * Checks for empty parameters
- * @param array $data
- * @param array $mandatoryFields
  * @return array error status
  */
 if ( ! function_exists('convert_date_time_format') ) {

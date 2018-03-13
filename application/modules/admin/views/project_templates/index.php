@@ -170,51 +170,40 @@ $module = $this->router->fetch_module();
             <table cellspacing="0" id="example" class="table-custom sortable">
                 <thead>
                     <tr>
-                        <th>S.No</th>
-                        <th>
-                            <a href="<?php base_url() ?>admin/users?field=name&order=<?php echo $order_by . $get_query ?>" class="sort sorting">Name</a>
-                        </th>
-                        <th>Email Id</th>
-                        <th>Mobile Number</th>
-                        <th>Country</th>
-                        <th>
-                            <a href="<?php base_url() ?>admin/users?field=registered&order=<?php echo $order_by . $get_query ?>" class="sort sorting">Registered On</a>
-                        </th>
-                        <th>User Type</th>
-                        <th>status</th>
-                        <?php if($accesspermission['deletep'] || $accesspermission['blockp']){ ?>
-                            <th>Action</th>
-                        <?php } ?>
+                       <th>S.No.</th>
+                       <th>Room Type</th>
+                       <th>Room Dimensions</th>
+                       <th>Workplane Height</th>
+                       <th>Room Shape</th>
+                       <th>LUX Value</th>
+                       <th>Added On</th>
+                    <?php if($accesspermission['deletep'] || $accesspermission['blockp']){ ?>
+                        <th>Action</th>
+                    <?php } ?>
                     </tr>
                 </thead>
                 <tbody id="table_tr">
                     
-                <?php if(isset($userlist) && count($userlist)){
-                        if ($page > 1){
-                            $i = (($page * $limit)- $limit) + 1;
-                        } else {
-                            $i = 1;
-                        }
-                        foreach($userlist as $value){ ?>
-                        
-                        <tr id ="remove_<?php echo $value['user_id'];?>" >
-                        <td><?php echo $i; ?></td>
-                        <td>
-                            <?php if($accesspermission['viewp']) { ?>
-                            <a href="<?php echo base_url()?>admin/users/detail?id=<?php echo encryptDecrypt($value['user_id']); ?>"><?php echo ucfirst($value['first_name']).' '.ucfirst($value['last_name']); ?></a>
-                            <?php }else{ ?>
-                            <?php echo ucfirst($value['first_name']).' '.ucfirst($value['last_name']); ?>
-                            <?php } ?>
-                        </td>
-                        <td><?php echo $value['email'];?></td>
-                        <td><?php echo !empty($value['phone'])?$value['phone']:"Not Available";?></td>
-                        <td><?php echo !empty($value['name'])?$value['name']:"Not Available";?></td>
-                        <td><?php echo date("d M Y H:i A",strtotime($value['registered_date']));?></td>
-                        <td><?php echo $value['user_type']?></td>
-                        <td id ="status_<?php echo $value['user_id'];?>"><?php echo ($value['status'] == ACTIVE)?"Active":"Blocked";?></td>
-                        <?php if($accesspermission['deletep'] || $accesspermission['blockp']){ ?>
+                <?php if(isset($templates) && count($templates)){ ?>
+                    <?php foreach( $templates as $key => $template) { 
+
+                    ?>
+                    <tr>
+                        <td><?php echo $sno_start ?></td>
+                        <td><?php echo $template['room_type'] ?></td>
+                        <td><?php echo $template['dimensions'] ?></td>
+                        <td><?php echo $template['workplane_height'].$template['workplane_height_unit'] ?></td>
+                        <td><?php echo $template['room_shape'] ?></td>
+                        <td><?php echo $template['lux_value'] ?></td>
+                        <td><?php echo $template['created_at'] ?></td>
+                        <?php if($accesspermission['viewp'] || $accesspermission['deletep'] || $accesspermission['blockp'] || $accesspermission['editp']){ ?>
                         <td class="text-nowrap table-action">
-                            <a class="f-delete" href="<?php echo base_url()?>admin/user/detail?id=<?php echo encryptDecrypt($value['user_id']); ?>"><i class="fa fa-eye" title="View Detail" aria-hidden="true"></i></a>
+                            <?php if($accesspermission['editp']){ ?>
+                                <a class="f-delete" href="<?php echo base_url("admin/templates/{$template['template_id']}") ?>"><i class="fa fa-eye" title="Edit Detail" aria-hidden="true"></i></a>    
+                            <?php }?>
+                            <?php if($accesspermission['editp']){ ?>
+                            <a class="f-pencil" href="<?php echo base_url("admin/templates/{$template['template_id']}/edit") ?>"><i class="fa fa-pencil" title="Edit Detail" aria-hidden="true"></i></a>
+                            <?php }?>
                             <?php if($accesspermission['blockp']){ ?>
                                 <?php if($value['status'] == BLOCKED){?>
                                     <a class="f-unblock" href="javascript:void(0);" id ="unblock_<?php echo $value['user_id'];?>"><i class="fa fa-unlock" title="unblock" aria-hidden="true" onclick="blockUser('user',<?php echo ACTIVE;?>,'<?php echo encryptDecrypt($value['user_id']);?>','req/change-user-status','Do you really want to unblock this user?','Unblock');"></i></a>
@@ -230,9 +219,9 @@ $module = $this->router->fetch_module();
                         </td>
                         <?php } ?>
                     </tr>
-                    <?php 
-                    $i++; 
-                    } } else { ?>
+                <?php 
+                    $sno_start++;
+                } } else { ?>
                     <tr><td colspan="9">No result found.</td></tr>
                     <?php } ?>
                 </tbody>

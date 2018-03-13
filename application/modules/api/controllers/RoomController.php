@@ -112,7 +112,7 @@ class RoomController extends BaseController
         $response = [
             "code" => HTTP_OK,
             "api_code_result" => "OK",
-            "msg" => $this->lang->line("rooms_fetched"),
+            "msg" => $this->lang->line("room_fetched"),
             "data" => $data
         ];
 

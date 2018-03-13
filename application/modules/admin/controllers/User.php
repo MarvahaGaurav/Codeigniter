@@ -54,7 +54,7 @@ class User extends MY_Controller {
 
         $this->data['accesspermission'] = ($role_id == 2) ? $access_detail : $defaultPermission;
         $this->load->library('commonfn');
-
+        
         /* Fetch List of users */
         $reverseUserTypes = [
             "individual_user" => PRIVATE_USER,

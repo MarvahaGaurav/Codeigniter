@@ -178,6 +178,8 @@ class ApplicationController extends BaseController
         $data["slug"]= preg_replace("/\s+/", "-" ,trim(strtolower(convert_accented_characters($specification_data['title'])))). "-" . $language_code;
         $data["uld"]= $specification_data["uld"];
         $data["ldt"]= $specification_data["ldt"];
+        $data["price"]= $specification_data["price"];
+        $data["currency"]= $specification_data["currency"];
         $data["pdf"]= $specification_data["pdf"];
         $data["type"]= $specification_data["data"]["type"];
         $data["driver"]= $specification_data["data"]["driver"];

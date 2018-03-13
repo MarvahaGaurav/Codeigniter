@@ -24,16 +24,22 @@ class Template extends BaseModel
         $singleRow = false;
         
         if ( isset($options['template_id']) && !empty($options['template_id'])) {
-            $query = "templates.id as template_id, *";
+            $query = "templates.*, templates.id as template_id";
             $this->db->where("templates.id", $options['template_id']);
             $singleRow = true;
         } else {
-            $query = "SQL_CALC_FOUND_ROWS templates.id as template_id, *";
+            $query = "SQL_CALC_FOUND_ROWS templates.*, templates.id as template_id";
             
         }
 
+        if ( isset($options['room']) && ! empty($options['room']) ) {
+            $query .= ", rooms.title as room_type";
+            $this->db->join("rooms", "rooms.id=templates.room_id");
+        }
+
         $this->db->select($query, false)
-        ->from($this->tableName);
+        ->from($this->tableName)
+        ->order_by("templates.id", "desc");
 
         if ( isset($options['limit']) && !empty($options['limit']) ) {
             $this->db->limit($options['limit']);
@@ -51,6 +57,7 @@ class Template extends BaseModel
 
         $data = [];
         $exec = $this->db->get();
+            
         if ( $singleRow ) {
             $data = $exec->row_array();
         } else {

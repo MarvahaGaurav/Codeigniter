@@ -92,7 +92,6 @@ $('.selectpicker').selectpicker();
 
 //Select Picker Js Close
 
-
 $(".search-box").keyup(function () {
     var char_length = $(this).val().length;
     if (char_length > 0) {
@@ -107,3 +106,57 @@ $(".close-ico").click(function () {
     $(".search-box").val('');
 
 })
+
+$("form#create-room-template").validate({
+    rules : {
+        lighting: {
+            required: true,
+        },
+        category: {
+            required: true,
+        },
+        room_type: {
+            required: true,
+        },
+        room_length: {
+            required: true,
+            number: true,
+            maxlength: 10
+        },
+        room_length_unit: {
+            required: true,
+        },
+        room_breath: {
+            required: true,
+            number: true,
+            maxlength: 10
+        },
+        room_breath_unit: {
+            required: true,
+        },
+        room_height: {
+            required: true,
+            number: true,
+            maxlength: 10
+        },
+        room_height_unit: {
+            required: true,
+        },
+        workplane_height: {
+            required: true,
+            number: true,
+            maxlength: 10
+        },
+        workplane_height_unit: {
+            required: true
+        },
+        room_shape: {
+            required: true,
+        },
+        lux_value: {
+            required: true,
+            number: true,
+            maxlength: 10
+        }
+    }
+});

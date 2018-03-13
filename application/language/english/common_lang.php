@@ -189,3 +189,5 @@ $lang['settings_updated'] = "Settings changed successfully";
 $lang['employee_removed'] = "Employee removed successfully";
 $lang['employee_accepted'] = "Employee request has been accepted, please check the technician list <a href='home/technicians'>here</a>";
 $lang['employee_rejected'] = "Employee request has been rejected";
+
+$lang['room_fetched'] = "Rooms found";
