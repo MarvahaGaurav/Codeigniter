@@ -22,7 +22,7 @@ class Template extends BaseModel
     {
         $query = "";
         $singleRow = false;
-        
+
         if ( isset($options['template_id']) && !empty($options['template_id'])) {
             $query = "templates.*, templates.id as template_id";
             $this->db->where("templates.id", $options['template_id']);
@@ -62,7 +62,7 @@ class Template extends BaseModel
 
         $data = [];
         $exec = $this->db->get();
-            
+        // echo $this->db->last_query();die;
         if ( $singleRow ) {
             $data = $exec->row_array();
         } else {

@@ -586,7 +586,41 @@ $(document.body).on("blur", ".filtertxt", function () {
     }
 });
 
+$(".filter-check").on("click", function(){
+    var filter = {},
+        $filterFields = $(".filter-check-field"),
+        pageUrl = $('#pageUrl').val();
 
+    $.each($filterFields, function(index, element){
+        var $element = $(element);
+        if (  $element.val() != undefined && $element.val().length != 0 ) {
+            filter[$element.attr("name")] = $element.val();
+        }
+    });
+
+    var filterLen = $.keyCount(filter);
+    if (filterLen == 0) {
+        var $flashCardInfo = $("#flash-card-info"),
+        $cardMessageStrong = $flashCardInfo.find(".card-message-strong"),
+        $cardMessage = $flashCardInfo.find(".card-message");
+
+        $cardMessageStrong.html("No filters selected");
+        $cardMessage.html("Please select atleast one filter");
+        $flashCardInfo.removeAttr("class");
+        $flashCardInfo.addClass("alert alert-info");
+        $flashCardInfo.css({
+            display: 'block'
+        });
+        setTimeout(function(){
+            $flashCardInfo.fadeOut(450);
+        }, 2500);
+        return false;
+    }
+
+    var queryParams = $.param(filter)
+
+    window.location.href = pageUrl + '?' + queryParams;
+});
 
 //-----------------------------------------------------------------------
 /**
@@ -624,9 +658,6 @@ $(document.body).on("keyup", ".search-box", function () {
         $('.search-icon').show();
     }
 });
-
-
-
 
 /**
  * 

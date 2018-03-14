@@ -86,7 +86,6 @@ $(".flt_cl").click(function (e) {
 });
 //Filter Show or hide JS Close
 
-
 //Select Picker Js Start
 $('.selectpicker').selectpicker();
 

@@ -88,64 +88,58 @@ $module = $this->router->fetch_module();
         <div class="inner-filter-wrap">
            
             <div class="fltr-field-wrap">
-                <label class="admin-label">Status</label>
+                <label class="admin-label">Building Type</label>
                 <div class="commn-select-wrap">
-                    <select class="selectpicker filter status" name="status">
-                        <option value="">All</option>
-                        <option <?php echo ($status == ACTIVE)?'selected':'' ?> value="1">Active</option>
-                        <option <?php echo ($status == BLOCKED)?'selected':'' ?> value="2">Inactive</option>
-                     </select>
+                    <select class="selectpicker filter filter-check-field building_type" name="building_type">
+                        <option value="">Select</option>
+                        <?php foreach ( $applications as $application ) : ?>
+                        <option value="<?php echo $application['application_id'] ?>" <?php echo isset($filter_display['building_type'])&&$application['id'] == $filter_display['building_type']?"selected":"" ?>><?php echo $application['title'] ?></option>
+                        <?php endforeach?>
+                    </select>
+                </div>
+            </div>
+            <div class="fltr-field-wrap">
+                <label class="admin-label">Total Rooms</label>
+                <div class="commn-select-wrap">
+                    <select class="selectpicker filter filter-check-field total_rooms" name="total_rooms">
+                        <option value="">Select</option>
+                    </select>
                     
                 </div>
             </div>
             <div class="fltr-field-wrap">
-                <label class="admin-label">User Type</label>
-                <div class="commn-select-wrap">
-                    <select class="selectpicker filter user_type" name="user_type">
-                        <option value="">All</option>
-                        
-                        <option value="individual_user" <?php echo $user_type == "individual_user" ? "selected":"" ?>>Individual User</option>
-                        <option value="business_user" <?php echo $user_type == "business_user" ? "selected":"" ?>>Business User</option>
-                     </select>
-                    
-                </div>
-            </div>
-            <div class="fltr-field-wrap">
-                <label class="admin-label">Registration Date</label>
+                <label class="admin-label">Added on</label>
                 <div class="inputfield-wrap">
-                    <input type="text" name="startDate" data-provide="datepicker" value="<?php echo isset($startDate)?$startDate:""?>" class="startDate" id="startDate" placeholder="From">
+                    <input type="text" name="startDate" data-provide="datepicker" value="<?php echo isset($filter_display['startDate'])?$filter_display['startDate']:""?>" class="startDate filter-check-field" id="startDate" placeholder="From">
                     <label class="ficon ficon-right" for="startDate"><i class="fa fa-calendar"></i></label>
                 </div>
                 <div class="inputfield-wrap">
-                    <input type="text" name="endDate" data-provide="datepicker" value="<?php echo isset($endDate)?$endDate:""?>" class="endDate" id="endDate" placeholder="To">
+                    <input type="text" name="endDate" data-provide="datepicker" value="<?php echo isset($filter_display['endDate'])?$filter_display['endDate']:""?>" class="endDate filter-check-field" id="endDate" placeholder="To">
                     <label class="ficon ficon-right" for="endDate"><i class="fa fa-calendar"></i></label>
                 </div>
                
             </div>
-
-            <?php
-                $this->load->helper('state_helper');
-                $countries = get_country_list();
-                
-            ?>
             <div class="fltr-field-wrap">
-                <label class="admin-label">Country</label>
+                <label class="admin-label">Room Shape</label>
                 <div class="commn-select-wrap">
-                    <select class="selectpicker filter country" name="country" data-live-search="true">
-                    <option value="">Select Country</option>
-                    <?php if(!empty($countries)){
-                        foreach($countries as $key=>$val){
-                    ?>
-                    <option <?php if(isset($country) && $country == $val['country_code1']){ echo "selected='selected'";}?> value="<?php echo $val['country_code1'];?>"><?php echo $val['name'];?></option>
-                       
-                    <?php }} ?>
+                    <select class="selectpicker filter filter-check-field room_shape" name="room_shape">
+                        <option value="">Select</option>
+                        <option value="1" <?php echo isset($filter_display['room_shape'])&&$filter_display['room_shape']=="1"?"selected":"" ?>>Rectangular</option>
+                        <option value="2" <?php echo isset($filter_display['room_shape'])&&$filter_display['room_shape']=="2"?"selected":"" ?>>Circular</option>
                     </select>
                 </div>
             </div>
-
+            <div class="fltr-field-wrap">
+                <label class="admin-label">Lux Value</label>
+                <div class="commn-select-wrap">
+                    <select class="selectpicker filter filter-check-field lux_value" name="lux_value">
+                        <option value="">Select</option>
+                    </select>
+                </div>
+            </div>
             <div class="button-wrap text-center">
                 <button type="reset" class="commn-btn cancel resetfilter" id="resetbutton">Reset</button>
-                <input type="submit" class="commn-btn save applyFilterUser" id="filterbutton"name="filter" value="Apply">
+                <input type="submit" class="commn-btn save filter-check" id="filterbutton"name="filter" value="Apply">
             </div>
             
         </div>
@@ -177,6 +171,7 @@ $module = $this->router->fetch_module();
                        <th>Room Shape</th>
                        <th>LUX Value</th>
                        <th>Added On</th>
+                       <th>Last Updated</th>
                     <?php if($accesspermission['deletep'] || $accesspermission['blockp']){ ?>
                         <th>Action</th>
                     <?php } ?>
@@ -196,6 +191,7 @@ $module = $this->router->fetch_module();
                         <td><?php echo $template['room_shape'] ?></td>
                         <td><?php echo $template['lux_value'] ?></td>
                         <td><?php echo $template['created_at'] ?></td>
+                        <td><?php echo $template['updated_at'] ?></td>
                         <?php if($accesspermission['viewp'] || $accesspermission['deletep'] || $accesspermission['blockp'] || $accesspermission['editp']){ ?>
                         <td class="text-nowrap table-action">
                             <?php if($accesspermission['editp']){ ?>
@@ -206,15 +202,15 @@ $module = $this->router->fetch_module();
                             <?php }?>
                             <?php if($accesspermission['blockp']){ ?>
                                 <?php if($value['status'] == BLOCKED){?>
-                                    <a class="f-unblock" href="javascript:void(0);" id ="unblock_<?php echo $value['user_id'];?>"><i class="fa fa-unlock" title="unblock" aria-hidden="true" onclick="blockUser('user',<?php echo ACTIVE;?>,'<?php echo encryptDecrypt($value['user_id']);?>','req/change-user-status','Do you really want to unblock this user?','Unblock');"></i></a>
-                                    <a class="f-block" href="javascript:void(0);"  id ="block_<?php echo $value['user_id'];?>" style="display:none;"><i class="fa fa-ban" title="block" aria-hidden="true" onclick="blockUser('user',<?php echo BLOCKED;?>,'<?php echo encryptDecrypt($value['user_id']);?>','req/change-user-status','Do you really want to block this user?','Block');"></i></a>
+                                    <!-- <a class="f-unblock" href="javascript:void(0);" id ="unblock_<?php echo $value['user_id'];?>"><i class="fa fa-unlock" title="unblock" aria-hidden="true" onclick="blockUser('user',<?php echo ACTIVE;?>,'<?php echo encryptDecrypt($value['user_id']);?>','req/change-user-status','Do you really want to unblock this user?','Unblock');"></i></a>
+                                    <a class="f-block" href="javascript:void(0);"  id ="block_<?php echo $value['user_id'];?>" style="display:none;"><i class="fa fa-ban" title="block" aria-hidden="true" onclick="blockUser('user',<?php echo BLOCKED;?>,'<?php echo encryptDecrypt($value['user_id']);?>','req/change-user-status','Do you really want to block this user?','Block');"></i></a> -->
                                 <?php }else{?>
-                                    <a class="f-block" href="javascript:void(0);" id ="block_<?php echo $value['user_id'];?>"><i class="fa fa-ban" title="block" aria-hidden="true" onclick="blockUser('user',<?php echo BLOCKED;?>,'<?php echo encryptDecrypt($value['user_id']);?>','req/change-user-status','Do you really want to block this user?','Block');"></i></a>
-                                    <a class="f-unblock" href="javascript:void(0);" id ="unblock_<?php echo $value['user_id'];?>" style="display:none;"><i class="fa fa-unlock" title="unblock" aria-hidden="true" onclick="blockUser('user',<?php echo ACTIVE;?>,'<?php echo encryptDecrypt($value['user_id']);?>','req/change-user-status','Do you really want to unblock this user?','Unblock');"></i></a>
+                                    <!-- <a class="f-block" href="javascript:void(0);" id ="block_<?php echo $value['user_id'];?>"><i class="fa fa-ban" title="block" aria-hidden="true" onclick="blockUser('user',<?php echo BLOCKED;?>,'<?php echo encryptDecrypt($value['user_id']);?>','req/change-user-status','Do you really want to block this user?','Block');"></i></a> -->
+                                    <!-- <a class="f-unblock" href="javascript:void(0);" id ="unblock_<?php echo $value['user_id'];?>" style="display:none;"><i class="fa fa-unlock" title="unblock" aria-hidden="true" onclick="blockUser('user',<?php echo ACTIVE;?>,'<?php echo encryptDecrypt($value['user_id']);?>','req/change-user-status','Do you really want to unblock this user?','Unblock');"></i></a> -->
                                 <?php }?>
                             <?php }?>
                             <?php if($accesspermission['deletep']){ ?>
-                                <a class="f-delete" href="javascript:void(0);"><i class="fa fa-trash" title="Delete" aria-hidden="true" onclick="deleteUser('user',<?php echo DELETED;?>,'<?php echo encryptDecrypt($value['user_id']);?>','req/change-user-status','Do you really want to delete this user?');"></i></a>
+                                <!-- <a class="f-delete" href="javascript:void(0);"><i class="fa fa-trash" title="Delete" aria-hidden="true" onclick="deleteUser('user',<?php echo DELETED;?>,'<?php echo encryptDecrypt($value['user_id']);?>','req/change-user-status','Do you really want to delete this user?');"></i></a> -->
                             <?php } ?>
                         </td>
                         <?php } ?>

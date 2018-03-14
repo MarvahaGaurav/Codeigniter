@@ -28,6 +28,6 @@ class Application extends BaseModel
         $result = $query->result_array();
 
         return $result;
-}
+    }
 
 }

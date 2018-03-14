@@ -33,11 +33,33 @@ class Templates extends MY_Controller
 
     public function index()
     {
+        $this->load->helper("datetime");
         $get = $this->input->get();
+        if ( isset($get['startDate']) ) {
+            $get['startDate'] = convert_date_time_format("d/m/Y", $get['startDate'], "Y-m-d");
+        }
+        if ( isset($get['endDate']) ) {
+            $get['endDate'] = convert_date_time_format("d/m/Y", $get['endDate'], "Y-m-d");
+        }
+        if ( isset($get['building_type']) ) {
+            $get['building_type'] = encryptDecrypt($get['building_type'], 'decrypt');
+        }
         $get = trim_input_parameters($get);
         $page = isset($get['page'])&&!empty((int)$get['page'])?(int)$get['page']:1;
         $limit = isset($get['limit'])&&!empty((int)$get['limit'])?(int)$get['limit']:10;
+        $search = isset($get['searchlike'])?$get['searchlike']:""; 
+        // pd($get);
+        $filter_data = [
+            "building_type" => ["templates.category_id" => isset($get['building_type'])?$get['building_type']:'' ],
+            // "total_rooms" => ["templates.created_at" => isset($get['total_rooms'])?$get['total_rooms']:'' ],
+            "start_date" => ["DATE(templates.created_at) >=" => isset($get['startDate'])?$get['startDate']:'' ],
+            "end_date" => ["DATE(templates.created_at) <=" =>  isset($get['endDate'])?$get['endDate']:''],
+            "room_shape" => [ "templates.room_shape" => isset($get['room_shape'])?$get['room_shape']:'' ],
+            "lux_value" => ["templates.lux_value" => isset($get['lux_value'])?$get['lux_value']:''],
+        ];
 
+        $filter_data = trim_input_parameters($filter_data);
+        
         $defaultPermission['viewp'] = 1;
         $defaultPermission['blockp'] = 1;
         $defaultPermission['editp'] = 1;
@@ -55,23 +77,57 @@ class Templates extends MY_Controller
             "offset" => ($page - 1) * $limit,
             "room" => true
         ];
-        
+
+        $options['where'] = [];
+
+        foreach ( $filter_data as $key => $value ) {
+            $options['where'] = array_merge($options['where'], $value);
+        }
+        //fetch data
+        $this->load->model("Application");
         $data = $this->Template->get($options);
+        $application_data = $this->Application->get(['type' => '', 'language_code' => 'en']);
         
-        
+        $application_data = array_map(function($data){
+            $data['id'] = $data['application_id'];
+            $data['application_id'] = encryptDecrypt($data['application_id']);
+            return $data;
+        }, $application_data);
+        //prepare view
+        $this->data['applications'] = $application_data;
+        $this->data['searchlike'] = $search;
+        $this->data['limit'] = $limit;
         $this->data['templates'] = $data['result'];
+        $this->data['filter_display'] = [
+            "building_type" => isset($get['building_type'])?$get['building_type']:'',
+            // "total_rooms" => ["templates.created_at" => isset($get['total_rooms'])?$get['total_rooms']:'' ],
+            "startDate" => isset($get['startDate'])?convert_date_time_format("Y-m-d", $get['startDate'], 'd/m/Y'):'',
+            "endDate" => isset($get['endDate'])?convert_date_time_format("Y-m-d", $get['endDate'], 'd/m/Y'):'',
+            "room_shape" => isset($get['room_shape'])?$get['room_shape']:'',
+            "lux_value" => ''
+        ];
+
+        $this->data['filter_display'] = trim_input_parameters($this->data['filter_display']);
+
         $this->load->helper("datetime");
         $counter = 0;
+        $this->data['room_map'] = [
+            1 => "Rectangular",
+            2 => "Circular"   
+        ];
         $this->data['templates'] = array_map(function($template) use ($page, $counter){
             // $template['page'] = $page - 1;
             $template['dimensions'] = "{$template['room_length']}{$template['room_length_unit']}x" .
                                       "{$template['room_breath']}{$template['room_breath_unit']}x".
-                                      "{$template['room_height']}{$template['room_height_unit']}x";
+                                      "{$template['room_height']}{$template['room_height_unit']}";
+            $template['room_shape'] = in_array($template['room_shape'], array_keys($this->data['room_map']))?$this->data['room_map'][$template['room_shape']]:"";
             $template['template_id'] = encryptDecrypt($template['id']);
             $template['created_at'] = convert_date_time_format("Y-m-d H:i:s", $template['created_at'], "d M Y g:i A");
             $template['updated_at'] = convert_date_time_format("Y-m-d H:i:s", $template['updated_at'], "d M Y g:i A");
             return $template;
         }, $this->data['templates']);
+
+        
         $this->load->library("Commonfn");
         $this->data['sno_start'] = (($page - 1) * $limit) + 1;
         $this->data['link'] = $this->commonfn->pagination("admin/templates", $data['count'], $limit);
