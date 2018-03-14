@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class TemplateController extends MY_Controller
+class Templates extends MY_Controller
 {
 
     public function __construct()
@@ -36,6 +36,8 @@ class TemplateController extends MY_Controller
         $get = $this->input->get();
         $get = trim_input_parameters($get);
         $page = isset($get['page'])&&!empty((int)$get['page'])?(int)$get['page']:1;
+        $limit = isset($get['limit'])&&!empty((int)$get['limit'])?(int)$get['limit']:10;
+
         $defaultPermission['viewp'] = 1;
         $defaultPermission['blockp'] = 1;
         $defaultPermission['editp'] = 1;
@@ -48,7 +50,6 @@ class TemplateController extends MY_Controller
 
         $this->data['accesspermission'] = ($role_id == 2) ? $access_detail : $defaultPermission;
         
-        $limit = 10;
         $options = [
             "limit" => $limit,
             "offset" => ($page - 1) * $limit,
