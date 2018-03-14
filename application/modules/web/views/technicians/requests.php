@@ -126,9 +126,15 @@
                             <td class="text-nowrap"><?php echo $technician['city'] ?></td>
                             <td class="text-nowrap"><?php echo $technician['country'] ?></td>
                             <td  class="text-nowrap action-user">
-                                <a href="<?php echo base_url("home/technicians/" . $technician['id']) ?>" class="tb-view-list" title="View">View</a>
-                                <a href="javascript:void(0)" data-target="#technician-<?php echo $key ?>" data-json='<?php echo $technician['accept_data'] ?>' data-url="<?php echo base_url("xhttp/employee/action") ?>" data-action="remove" data-redirect="<?php echo base_url("home/technicians") ?>" data-title="Delete" data-message="Are you sure you want to accept <?php echo ucwords($technician['first_name']) ?>'s request?" class="tb-view-list confirmation-action-xhttp" class="tb-view-list" title="Accept">Accept</a>
-                                <a href="javascript:void(0)" data-target="#technician-<?php echo $key ?>" data-json='<?php echo $technician['reject_data'] ?>' data-url="<?php echo base_url("xhttp/employee/action") ?>" data-action="remove" data-redirect="<?php echo base_url("home/technicians/requests") ?>" data-title="Delete" data-message="Are you sure you want to reject <?php echo ucwords($technician['first_name']) ?>'s request?" class="tb-view-list user-reject confirmation-action-xhttp" title="Reject">Reject</a>
+                                <a href="<?php echo base_url("home/technicians/" . $technician['id']) ?>" class="tb-view-list" title="View">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </a>
+                                <a href="javascript:void(0)" data-target="#technician-<?php echo $key ?>" data-json='<?php echo $technician['accept_data'] ?>' data-url="<?php echo base_url("xhttp/employee/action") ?>" data-action="remove" data-redirect="<?php echo base_url("home/technicians") ?>" data-title="Delete" data-message="Are you sure you want to accept <?php echo ucwords($technician['first_name']) ?>'s request?" class="tb-view-list user-accept confirmation-action-xhttp" class="tb-view-list" title="Accept">
+                                    <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                </a>
+                                <a href="javascript:void(0)" data-target="#technician-<?php echo $key ?>" data-json='<?php echo $technician['reject_data'] ?>' data-url="<?php echo base_url("xhttp/employee/action") ?>" data-action="remove" data-redirect="<?php echo base_url("home/technicians/requests") ?>" data-title="Delete" data-message="Are you sure you want to reject <?php echo ucwords($technician['first_name']) ?>'s request?" class="tb-view-list user-reject confirmation-action-xhttp" title="Reject">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </a>
                             </td>
                         </tr>
                         <?php endforeach ?>

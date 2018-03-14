@@ -67,7 +67,9 @@
                             <td>Oslo, Norway</td>
                             <td>06:00 pm, Oct 31,2017</td>
                             <td class="op-semibold">
-                                <a href="javascript:void(0)" class="tb-view-list" title="View">View</a>
+                                <a href="javascript:void(0)" class="tb-view-list" title="View">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </a>
                             </td>
                         </tr>
                         <tr>
@@ -76,7 +78,9 @@
                             <td>Oslo, Norway</td>
                             <td>06:00 pm, Oct 31,2017</td>
                             <td class="op-semibold">
-                                <a href="javascript:void(0)" class="tb-view-list" title="View">View</a>
+                                <a href="javascript:void(0)" class="tb-view-list" title="View">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </a>
                             </td>
                         </tr>
                         <tr>
@@ -85,7 +89,9 @@
                             <td>Oslo, Norway</td>
                             <td>06:00 pm, Oct 31,2017</td>
                             <td class="op-semibold">
-                                <a href="javascript:void(0)" class="tb-view-list" title="View">View</a>
+                                <a href="javascript:void(0)" class="tb-view-list" title="View">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </a>
                             </td>
                         </tr>
                         <tr>
@@ -94,7 +100,9 @@
                             <td>Oslo, Norway</td>
                             <td>06:00 pm, Oct 31,2017</td>
                             <td class="op-semibold">
-                                <a href="javascript:void(0)" class="tb-view-list" title="View">View</a>
+                                <a href="javascript:void(0)" class="tb-view-list" title="View">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </a>
                             </td>
                         </tr>
                     </tbody>
@@ -129,7 +137,9 @@
                             <td>06:00 pm, Oct 31,2017</td>
                             <td>06:00 pm, Oct 31,2017</td>
                             <td class="op-semibold">
-                                <a href="javascript:void(0)" class="tb-view-list" title="View">View</a>
+                                <a href="javascript:void(0)" class="tb-view-list" title="View">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </a>
                             </td>
                         </tr>
                         <tr>
@@ -141,7 +151,9 @@
                             <td>06:00 pm, Oct 31,2017</td>
                             <td>06:00 pm, Oct 31,2017</td>
                             <td class="op-semibold">
-                                <a href="javascript:void(0)" class="tb-view-list" title="View">View</a>
+                                <a href="javascript:void(0)" class="tb-view-list" title="View">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </a>
                             </td>
                         </tr>
                         <tr>
@@ -153,7 +165,9 @@
                             <td>06:00 pm, Oct 31,2017</td>
                             <td>06:00 pm, Oct 31,2017</td>
                             <td class="op-semibold">
-                                <a href="javascript:void(0)" class="tb-view-list" title="View">View</a>
+                                <a href="javascript:void(0)" class="tb-view-list" title="View">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </a>
                             </td>
                         </tr>
                         <tr>
@@ -165,7 +179,9 @@
                             <td>06:00 pm, Oct 31,2017</td>
                             <td>06:00 pm, Oct 31,2017</td>
                             <td class="op-semibold">
-                                <a href="javascript:void(0)" class="tb-view-list" title="View">View</a>
+                                <a href="javascript:void(0)" class="tb-view-list" title="View">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </a>
                             </td>
                         </tr>
                     </tbody>
@@ -204,7 +220,9 @@
                             <td>06:00 pm, Oct 31,2017</td>
                             <td>07:00 am, Nov 1,2017</td>
                             <td class="op-semibold">
-                                <a href="javascript:void(0)" class="tb-view-list" title="View">View</a>
+                                <a href="javascript:void(0)" class="tb-view-list" title="View">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </a>
                             </td>
                         </tr>
                         <tr>
@@ -218,7 +236,9 @@
                             <td>06:00 pm, Oct 31,2017</td>
                             <td>07:00 am, Nov 1,2017</td>
                             <td class="op-semibold">
-                                <a href="javascript:void(0)" class="tb-view-list" title="View">View</a>
+                                <a href="javascript:void(0)" class="tb-view-list" title="View">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </a>
                             </td>
                         </tr>
                         <tr>
@@ -232,7 +252,9 @@
                             <td>06:00 pm, Oct 31,2017</td>
                             <td>07:00 am, Nov 1,2017</td>
                             <td class="op-semibold">
-                                <a href="javascript:void(0)" class="tb-view-list" title="View">View</a>
+                                <a href="javascript:void(0)" class="tb-view-list" title="View">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </a>
                             </td>
                         </tr>
                         <tr>
@@ -246,7 +268,9 @@
                             <td>06:00 pm, Oct 31,2017</td>
                             <td>07:00 am, Nov 1,2017</td>
                             <td class="op-semibold">
-                                <a href="javascript:void(0)" class="tb-view-list" title="View">View</a>
+                                <a href="javascript:void(0)" class="tb-view-list" title="View">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </a>
                             </td>
                         </tr>
                     </tbody>

@@ -23,7 +23,7 @@
                 <div class="col-sm-3 col-xs-12">
                     <div class="profile-thumb">
                         <!-- Thumb Wrapper -->
-                        <div class="thumb-view-wrapper thumb-view-p5 img-viewbdr-radius">
+                        <div class="thumb-view-wrapper thumb-view-p5 img-viewbdr-radius3px">
                             <div class="thumb-view thumb-viewfullheight-5" style="background:url('<?php echo $technician['image'] ?>')"></div>
                         </div>
                         <!-- //Thumb Wrapper -->

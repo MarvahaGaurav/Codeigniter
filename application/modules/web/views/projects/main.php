@@ -49,7 +49,9 @@
                                 <td class="text-center">v1.1</td>
                                 <td class="text-center">20</td>
                                 <td class="op-semibold">
-                                    <a href="javascript:void(0)" class="tb-view-list" title="View">View</a>
+                                    <a href="javascript:void(0)" class="tb-view-list" title="View">
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                    </a>
                                 </td>
                             </tr>
                             <tr>
@@ -60,7 +62,9 @@
                                 <td class="text-center">v1.1</td>
                                 <td class="text-center">20</td>
                                 <td class="op-semibold">
-                                    <a href="javascript:void(0)" class="tb-view-list" title="View">View</a>
+                                    <a href="javascript:void(0)" class="tb-view-list" title="View">
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                    </a>
                                 </td>
                             </tr>
                             <tr>
@@ -71,7 +75,9 @@
                                 <td class="text-center">v1.1</td>
                                 <td class="text-center">20</td>
                                 <td class="op-semibold">
-                                    <a href="javascript:void(0)" class="tb-view-list" title="View">View</a>
+                                    <a href="javascript:void(0)" class="tb-view-list" title="View">
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                    </a>
                                 </td>
                             </tr>
                             <tr>
@@ -82,7 +88,9 @@
                                 <td class="text-center">v1.1</td>
                                 <td class="text-center">20</td>
                                 <td class="op-semibold">
-                                    <a href="javascript:void(0)" class="tb-view-list" title="View">View</a>
+                                    <a href="javascript:void(0)" class="tb-view-list" title="View">
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                    </a>
                                 </td>
                             </tr>
                         </tbody>

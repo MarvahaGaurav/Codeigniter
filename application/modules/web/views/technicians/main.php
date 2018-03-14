@@ -126,8 +126,12 @@
                             <td class="text-nowrap"><?php echo $technician['city'] ?></td>
                             <td class="text-nowrap"><?php echo $technician['country'] ?></td>
                             <td  class="text-nowrap action-user">
-                                <a href="<?php echo base_url("home/technicians/" . $technician['id']) ?>" class="tb-view-list" title="View">View</a>
-                                <a href="javascript:void(0)" data-target="#technician-<?php echo $key ?>" data-json='<?php echo $technician['delete_data'] ?>' data-url="<?php echo base_url("xhttp/employee/remove") ?>" data-action="remove" data-redirect="<?php echo base_url("home/technicians") ?>" data-title="Delete" data-message="Are you sure you want to remove <?php echo ucwords($technician['first_name']) ?>?" class="tb-view-list user-reject confirmation-action-xhttp" title="Delete">Delete</a>
+                                <a href="<?php echo base_url("home/technicians/" . $technician['id']) ?>" class="tb-view-list" title="View">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </a>
+                                <a href="javascript:void(0)" data-target="#technician-<?php echo $key ?>" data-json='<?php echo $technician['delete_data'] ?>' data-url="<?php echo base_url("xhttp/employee/remove") ?>" data-action="remove" data-redirect="<?php echo base_url("home/technicians") ?>" data-title="Delete" data-message="Are you sure you want to remove <?php echo ucwords($technician['first_name']) ?>?" class="tb-view-list user-reject confirmation-action-xhttp" title="Delete">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </a>
                             </td>
                         </tr>
                         <?php endforeach ?>
