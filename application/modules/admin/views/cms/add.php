@@ -37,7 +37,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-4 col-xs-4">
+                <div class="col-sm-4 col-xs-8">
                     <div class="form-group">
                         <label class="admin-label">Status</label>
                         <div class="commn-select-wrap">

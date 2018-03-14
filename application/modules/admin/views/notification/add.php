@@ -23,7 +23,7 @@
         <!-- title and form upper action end-->
          <?php echo form_open_multipart();?>
             <div class="row">
-                <div class="col-lg-3 col-sm-4">
+                <div class="col-lg-3 col-sm-5">
                     <label class="admin-label"><br></label>
                     <!-- thumb wrapper -->
                     <!--<div class="image-view-wrapper img-view200p img-viewbdr-radius4p">
@@ -58,9 +58,9 @@
                     <!-- //thumb wrapper -->
                 </div>
 
-                <div class="col-lg-9 col-sm-8">
+                <div class="col-lg-9 col-sm-7">
                     <div class="row">
-                        <div class="col-sm-6 col-xs-6">
+                        <div class="col-sm-6 col-xs-12">
                             <div class="form-group">
                                 <label class="admin-label">Title</label>
                                 <div class="input-holder">
@@ -71,7 +71,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-6 col-xs-6">
+                        <div class="col-sm-6 col-xs-12">
                             <div class="form-group">
                                 <label class="admin-label">External Link</label>
                                 <div class="input-holder">
@@ -79,6 +79,8 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="clearfix"></div>
 
                         <div class="col-sm-12">
                             <div class="form-group">
@@ -93,7 +95,7 @@
                 </div>
             </div>
 
-            <div class="wrap-insection">
+            <div class="">
                 <div class="section-title">
                     <h3>Select Users</h3>
                 </div>
@@ -102,8 +104,8 @@
                 <div class="fltr-srch-wrap clearfix">
                     <div class="row">
                         <div class="col-lg-4 col-sm-4">
-                            <div class="display">
-                                <select name="platform" class="form-control platform">
+                            <div class="form-group display">
+                                <select name="platform" class="selectpicker platform">
                                     <option value="">Select Platform</option>
                                     <option value="1">All</option>
                                     <option value="2">Android</option>
@@ -113,7 +115,7 @@
                             </div>
                         </div>
                         <div class="col-lg-4 col-sm-4">
-                            <div class="display showcalendar-up">
+                            <div class="form-group display showcalendar-up">
                                 <input type="text" id="regDate" class="regDate" name="regDate" placeholder="Select Date Range">
                             </div>
 
@@ -169,8 +171,6 @@
                 console.log('not done');
             }
         });*/
-
-
         
         $('#regDate').daterangepicker(
             {

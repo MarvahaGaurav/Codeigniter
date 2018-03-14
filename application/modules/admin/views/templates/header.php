@@ -12,7 +12,7 @@
         <link rel="icon" type="image/png" sizes="32x32" href="public/images/logo.png">
         <!-- Bootstrap Core CSS -->
 
-        <link href="public/css/plugin/bootstrap.min.css" rel='stylesheet'>
+        <link href="public/css/bootstrap.min.css" rel='stylesheet'>
         <link href="public/css/plugin/font-awesome.min.css" rel='stylesheet'>
         <link href="public/css/layout.css" rel='stylesheet'>
         <link href="public/css/style.css" rel='stylesheet'>
@@ -94,7 +94,7 @@
     <body class="<?php echo ($sideBar == 'minimized') ? 'body-sm' : '' ?>">
         <!-- loaDer Start-->
         <div class="loaDer" style="position:fixed;background-color:rgba(0,0,0,0.25);width:100%;height:100%;top:0;bottom:0;right:0;left:0;z-index:9999;">
-           <div class="proG" style="position: relative;width: 100%;top: 0;left: 0;height: 8px;background: #da2d4d;overflow:hidden;">
+           <div class="proG" style="position: relative;width: 100%;top: 0;left: 0;height: 4px;background: #da2d4d;overflow:hidden;">
                <div id="loaDeranimaTion" class="indeterminate" style="background-color:#fb5b5b;"></div>
            </div>
        </div>
@@ -229,11 +229,17 @@
                             <a href="javascript:void(0)" class="drpactions dropmenu" data-toggle="dropdown">
                                 <i class="fa fa-bell-o"></i>
                             </a>
-                            <div class="fncy-drp fncy-dropdown-two">
+                            <div class="fncy-drp fncy-dropdown-two notification">
                                 <h3 class="notifyTxt">Notifications</h3>
                                 <ul>
-                                    <li><a href="javascript:void(0)">Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</a><span class="pull-right">08 Feb 2018 05:41 AM</span></li>                                   
-                                    <li><a href="javascript:void(0)" class="viewallNotifications">View All Notifications</a></li>
+                                    <li>
+                                        <a href="javascript:void(0)">
+                                            <h5>Wholesaler</h5>
+                                            <p>Lorem Ipsum has been the industry's</p>
+                                            <span>08 Feb 2018 05:41 AM</span>
+                                        </a>
+                                    </li>                                   
+                                    <li><a href="javascript:void(0)" class="viewallNotifications">View All</a></li>
                                 </ul>
                             </div>
                         </li>

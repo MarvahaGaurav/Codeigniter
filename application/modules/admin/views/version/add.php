@@ -17,7 +17,7 @@
         <div class="section">
 
             <div class="row">
-                <div class="col-sm-6 col-xs-6">
+                <div class="col-sm-6 col-xs-12">
                     <div class="form-group">
                         <label class="admin-label">Version Name</label>
                         <div class="input-holder">
@@ -28,7 +28,7 @@
                     </div>
                 </div>
                 
-                <div class="col-sm-6 col-xs-6">
+                <div class="col-sm-6 col-xs-12">
                     <div class="form-group">
                         <label class="admin-label">Title</label>
                         <div class="input-holder">
@@ -37,6 +37,7 @@
                         </div>
                     </div>
                 </div>
+                <div class="clearfix"></div>
                 
                 <div class="col-sm-12 col-xs-12">
                     <div class="form-group">
@@ -49,7 +50,7 @@
                 </div>
                 
                 
-                <div class="col-sm-4 col-xs-4">
+                <div class="col-sm-4 col-xs-12">
                     <div class="form-group">
                         <label class="admin-label">Platform</label>
                         <div class="commn-select-wrap">
@@ -65,7 +66,7 @@
                     </div>
                 </div>
                 
-                <div class="col-sm-4 col-xs-4">
+                <div class="col-sm-4 col-xs-12">
                     <div class="form-group">
                         <label class="admin-label">Update Type</label>
                         <div class="commn-select-wrap">
@@ -82,7 +83,7 @@
                     </div>
                 </div>
                 
-                <div class="col-sm-4 col-xs-4">
+                <div class="col-sm-4 col-xs-12">
                     <div class="form-group">
                         <label class="admin-label">Is current version ?</label>
                         <div class="commn-select-wrap">
