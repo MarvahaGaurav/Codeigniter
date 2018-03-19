@@ -2,6 +2,10 @@
     padding:11px 15px 10px 21px !important;
 }
 
+.clickable {
+    cursor: pointer;
+}
+
 header {
     position: fixed;
     right: 0px;

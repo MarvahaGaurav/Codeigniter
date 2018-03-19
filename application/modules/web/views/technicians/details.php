@@ -122,37 +122,37 @@
                                 <div class="col-lg-3 col-sm-3 col-xs-12">
                                     <div class="form-group clearfix">
                                         <label class="custom-control custom-checkbox pull-left">
-                                            <input type="checkbox" value="1" name="quote_view" <?php echo $technician['quote_view'] == 1?"checked":"" ?> class="custom-control-input">
+                                            <input id="quote-view" type="checkbox" value="1" name="quote_view" <?php echo $technician['quote_view'] == 1?"checked":"" ?> class="custom-control-input">
                                             <span class="custom-control-indicator"></span>
                                         </label>
-                                        <span class="remember">View</span>
+                                        <label for="quote-view" class="clickable remember">View</label>
                                     </div>
                                 </div>
                                 <div class="col-lg-3 col-sm-3 col-xs-12">
                                     <div class="form-group clearfix">
                                         <label class="custom-control custom-checkbox pull-left">
-                                            <input type="checkbox" value="1" name="quote_add" <?php echo $technician['quote_add'] == 1?"checked":"" ?> class="custom-control-input">
+                                            <input id="quote-add" type="checkbox" value="1" name="quote_add" <?php echo $technician['quote_add'] == 1?"checked":"" ?> class="custom-control-input">
                                             <span class="custom-control-indicator"></span>
                                         </label>
-                                        <span class="remember">Add</span>
+                                        <label for="quote-add" class="clickable remember">Add</label>
                                     </div>
                                 </div>
                                 <div class="col-lg-3 col-sm-3 col-xs-12">
                                     <div class="form-group clearfix">
                                         <label class="custom-control custom-checkbox pull-left">
-                                            <input type="checkbox" value="1" name="quote_edit" <?php echo $technician['quote_edit'] == 1?"checked":"" ?> class="custom-control-input">
+                                            <input id="quote-edit" type="checkbox" value="1" name="quote_edit" <?php echo $technician['quote_edit'] == 1?"checked":"" ?> class="custom-control-input">
                                             <span class="custom-control-indicator"></span>
                                         </label>
-                                        <span class="remember">Edit</span>
+                                        <label for="quote-edit" class="clickable remember">Edit</label>
                                     </div>
                                 </div>
                                 <div class="col-lg-3 col-sm-3 col-xs-12">
                                     <div class="form-group clearfix">
                                         <label class="custom-control custom-checkbox pull-left">
-                                            <input type="checkbox" value="1" name="quote_delete" <?php echo $technician['quote_delete'] == 1?"checked":"" ?> class="custom-control-input">
+                                            <input id="quote-delete" type="checkbox" value="1" name="quote_delete" <?php echo $technician['quote_delete'] == 1?"checked":"" ?> class="custom-control-input">
                                             <span class="custom-control-indicator"></span>
                                         </label>
-                                        <span class="remember">Delete</span>
+                                        <label for="quote-delete" class="clickable remember">Delete</label>
                                     </div>
                                 </div>
                             </div>
@@ -166,37 +166,37 @@
                                 <div class="col-lg-3 col-sm-3 col-xs-12">
                                     <div class="form-group clearfix">
                                         <label class="custom-control custom-checkbox pull-left">
-                                            <input type="checkbox" value="1" name="inspiration_view" <?php echo $technician['insp_view'] == 1?"checked":"" ?> class="custom-control-input">
+                                            <input id="inspiration-view" type="checkbox" value="1" name="inspiration_view" <?php echo $technician['insp_view'] == 1?"checked":"" ?> class="custom-control-input">
                                             <span class="custom-control-indicator"></span>
                                         </label>
-                                        <span class="remember">View</span>
+                                        <label for="inspiration-view" class="clickable remember">View</label>
                                     </div>
                                 </div>
                                 <div class="col-lg-3 col-sm-3 col-xs-12">
                                     <div class="form-group clearfix">
                                         <label class="custom-control custom-checkbox pull-left">
-                                            <input type="checkbox" value="1" name="inspiration_add" <?php echo $technician['insp_add'] == 1?"checked":"" ?> class="custom-control-input">
+                                            <input id="inspiration-add" type="checkbox" value="1" name="inspiration_add" <?php echo $technician['insp_add'] == 1?"checked":"" ?> class="custom-control-input">
                                             <span class="custom-control-indicator"></span>
                                         </label>
-                                        <span class="remember">Add</span>
+                                        <label for="inspiration-add" class="clickable remember">Add</label>
                                     </div>
                                 </div>
                                 <div class="col-lg-3 col-sm-3 col-xs-12">
                                     <div class="form-group clearfix">
                                         <label class="custom-control custom-checkbox pull-left">
-                                            <input type="checkbox" value="1" name="inspiration_edit" <?php echo $technician['insp_edit'] == 1?"checked":"" ?> class="custom-control-input">
+                                            <input id="inspiration-edit" type="checkbox" value="1" name="inspiration_edit" <?php echo $technician['insp_edit'] == 1?"checked":"" ?> class="custom-control-input">
                                             <span class="custom-control-indicator"></span>
                                         </label>
-                                        <span class="remember">Edit</span>
+                                        <label for="inspiration-edit" class="clickable remember">Edit</label>
                                     </div>
                                 </div>
                                 <div class="col-lg-3 col-sm-3 col-xs-12">
                                     <div class="form-group clearfix">
                                         <label class="custom-control custom-checkbox pull-left">
-                                            <input type="checkbox" value="1" name="inspiration_delete" <?php echo $technician['insp_delete'] == 1?"checked":"" ?> class="custom-control-input">
+                                            <input id="inspiration-delete" type="checkbox" value="1" name="inspiration_delete" <?php echo $technician['insp_delete'] == 1?"checked":"" ?> class="custom-control-input">
                                             <span class="custom-control-indicator"></span>
                                         </label>
-                                        <span class="remember">Delete</span>
+                                        <label for="inspiration-delete" class="clickable remember">Delete</label>
                                     </div>
                                 </div>
                             </div>
@@ -210,37 +210,37 @@
                                 <div class="col-lg-3 col-sm-3 col-xs-12">
                                     <div class="form-group clearfix">
                                         <label class="custom-control custom-checkbox pull-left">
-                                            <input type="checkbox" value="1" name="project_view" <?php echo $technician['project_view'] == 1?"checked":"" ?> class="custom-control-input">
+                                            <input id="project-view" type="checkbox" value="1" name="project_view" <?php echo $technician['project_view'] == 1?"checked":"" ?> class="custom-control-input">
                                             <span class="custom-control-indicator"></span>
                                         </label>
-                                        <span class="remember">View</span>
+                                        <label for="project-view" class="clickable remember">View</label>
                                     </div>
                                 </div>
                                 <div class="col-lg-3 col-sm-3 col-xs-12">
                                     <div class="form-group clearfix">
                                         <label class="custom-control custom-checkbox pull-left">
-                                            <input type="checkbox" value="1" name="project_add" <?php echo $technician['project_add'] == 1?"checked":"" ?> class="custom-control-input">
+                                            <input id="project-add" type="checkbox" value="1" name="project_add" <?php echo $technician['project_add'] == 1?"checked":"" ?> class="custom-control-input">
                                             <span class="custom-control-indicator"></span>
                                         </label>
-                                        <span class="remember">Add</span>
+                                        <label for="project-add" class="clickable remember">Add</label>
                                     </div>
                                 </div>
                                 <div class="col-lg-3 col-sm-3 col-xs-12">
                                     <div class="form-group clearfix">
                                         <label class="custom-control custom-checkbox pull-left">
-                                            <input type="checkbox" value="1" name="project_edit" <?php echo $technician['project_edit'] == 1?"checked":"" ?> class="custom-control-input">
+                                            <input id="project-edit" type="checkbox" value="1" name="project_edit" <?php echo $technician['project_edit'] == 1?"checked":"" ?> class="custom-control-input">
                                             <span class="custom-control-indicator"></span>
                                         </label>
-                                        <span class="remember">Edit</span>
+                                        <label for="project-edit" class="clickable remember">Edit</label>
                                     </div>
                                 </div>
                                 <div class="col-lg-3 col-sm-3 col-xs-12">
                                     <div class="form-group clearfix">
                                         <label class="custom-control custom-checkbox pull-left">
-                                            <input type="checkbox" value="1" name="project_delete" <?php echo $technician['project_delete'] == 1?"checked":"" ?> class="custom-control-input">
+                                            <input id="project-delete" type="checkbox" value="1" name="project_delete" <?php echo $technician['project_delete'] == 1?"checked":"" ?> class="custom-control-input">
                                             <span class="custom-control-indicator"></span>
                                         </label>
-                                        <span class="remember">Delete</span>
+                                        <label for="project-delete" class="clickable remember">Delete</label>
                                     </div>
                                 </div>
                             </div>

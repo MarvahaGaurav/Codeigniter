@@ -71,7 +71,7 @@ class InspirationController extends BaseController
         $inspiration_id = encryptDecrypt($inspiration_id, 'decrypt');
 
         if ( ! isset($inspiration_id) || empty($inspiration_id) ) {
-            error404();
+            error404("", base_url());
             exit;
         }
 
@@ -83,7 +83,7 @@ class InspirationController extends BaseController
         $data = $this->Inspiration->get($options);
 
         if ( empty($data) ) {
-            error404();
+            error404("", base_url());
             exit;
         }
 
@@ -101,7 +101,7 @@ class InspirationController extends BaseController
         if (!isset($this->userInfo['user_type']) ||
             !in_array($this->userInfo['user_type'], [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER]) ||
             (ROLE_OWNER !== (int)$this->userInfo['is_owner'] && (!isset($this->employeePermission['insp_add']) || (int)$this->employeePermission['insp_add'] == 0))) {
-            error404();
+            error404("", base_url());
             exit;
         }
         $this->load->library("form_validation");
@@ -140,14 +140,14 @@ class InspirationController extends BaseController
         if (!isset($this->userInfo['user_type']) ||
             !in_array($this->userInfo['user_type'], [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER]) ||
             (ROLE_OWNER !== (int)$this->userInfo['is_owner'] && (!isset($this->employeePermission['insp_edit']) || (int)$this->employeePermission['insp_edit'] == 0))) {
-            error404();
+            error404("", base_url());
             exit;
         }
 
         $inspiration_id = encryptDecrypt($inspiration_id, 'decrypt');
 
         if ( ! isset($inspiration_id) || empty($inspiration_id) ) {
-            error404();
+            error404("", base_url());
             exit;
         }
 
@@ -159,7 +159,7 @@ class InspirationController extends BaseController
         $data = $this->Inspiration->get($options);
 
         if ( empty($data) ) {
-            error404();
+            error404("", base_url());
             exit;
         }
 
@@ -167,7 +167,7 @@ class InspirationController extends BaseController
         $data['media'] = json_decode("[{$data['media']}]", true);
 
         if ( (int)$data['company_id'] !== (int)$this->userInfo['company_id'] ) {
-            error404();
+            error404("", base_url());
             exit;
         }
         $this->data['inspiration'] = $data;

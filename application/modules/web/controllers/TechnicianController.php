@@ -16,7 +16,7 @@ class TechnicianController extends BaseController
         if (!isset($this->userInfo['user_type']) ||
             !in_array($this->userInfo['user_type'], [INSTALLER, WHOLESALER, ARCHITECT, ELECTRICAL_PLANNER]) ||
             ROLE_OWNER !== (int)$this->userInfo['is_owner']) {
-            error404();
+            error404("", base_url());
             exit;
         }
     }
@@ -34,7 +34,7 @@ class TechnicianController extends BaseController
         $options['limit'] = $limit;
         $options['search'] = $search;
         $options['where'] = ['erm.status' => EMPLOYEE_REQUEST_ACCEPTED];
-
+        
         $data = $this->Employee->get($options);
         
         $this->load->library("Commonfn");
@@ -65,7 +65,7 @@ class TechnicianController extends BaseController
     {
         $employee_id = encryptDecrypt($employee_id, 'decrypt');
         if ( !isset($employee_id) || empty($employee_id) ) {
-            error404();
+            error404("", base_url());
             exit;
         }
 
