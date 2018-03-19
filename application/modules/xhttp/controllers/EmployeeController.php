@@ -66,11 +66,12 @@ class EmployeeController extends BaseController
             'accept' => EMPLOYEE_REQUEST_ACCEPTED,
             'reject' => EMPLOYEE_REQUEST_REJECTED
         ];
-        
+
         $this->load->model("Employee");
+        $this->load->model("User");
 
         $this->Employee->status = $actionMap[$action];
-
+        
         try {   
             $this->Employee->update(['requested_by' => $employee_id]);
             $message = "";
@@ -79,7 +80,7 @@ class EmployeeController extends BaseController
             } else {
                 $message = $this->lang->line('employee_rejected');
             }
-            $this->User->update(['user_id' => $employee_id]);
+            // $this->User->update(['user_id' => $employee_id]);
             $this->session->set_flashdata("flash-message", $message);
             $this->session->set_flashdata("flash-type", "success");
             json_dump([

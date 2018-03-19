@@ -420,7 +420,7 @@
         }
 
         // Selectpicker
-        $('.selectpicker').selectpicker(refresh);
+        $('.selectpicker').selectpicker('refresh');
     </script>
 
     <style>

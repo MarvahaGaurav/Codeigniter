@@ -1,12 +1,15 @@
 <?php 
 defined("BASEPATH") or exit("No direct script access allowed");
+
 require_once "BaseController.php";
+
 /**
  * @property array $data  array of values for view
  * @property array $userInfo session data
  * @property array $user_query_fields - table fields for user table
  * @property array $session_data - session data
  */
+
 class LocationController extends BaseController
 {   
     
@@ -28,7 +31,11 @@ class LocationController extends BaseController
             ]);
         }
 
-        $cities = fetch_cities($request_data['param']);
+        $options['limit'] = 50;
+        if ( isset($request_data['query']) ) {
+            $options['where'] = ['name LIKE' => "%{$request_data['query']}%"];    
+        }
+        $cities = fetch_cities($request_data['param'], $options);
         
         if ( empty($cities) ) {
             json_dump([

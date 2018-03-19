@@ -586,7 +586,7 @@ $(document.body).on("blur", ".filtertxt", function () {
     }
 });
 
-$(".filter-check").on("click", function(){
+$(".filter-check").on("click", function() {
     var filter = {},
         $filterFields = $(".filter-check-field"),
         pageUrl = $('#pageUrl').val();

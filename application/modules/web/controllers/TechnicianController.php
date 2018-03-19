@@ -40,7 +40,7 @@ class TechnicianController extends BaseController
         $this->load->library("Commonfn");
         $technicianTypes = [INSTALLER => "Installer", ARCHITECT => "Architect", ELECTRICAL_PLANNER => "Electrical Planner", WHOLESALER => "Wholesaler"];
         $this->data['links'] = $this->commonfn->pagination("home/technicians", $data['count'], $limit);
-        $result = array_map(function($row) use ($technicianTypes){
+        $result = array_map(function($row) use ($technicianTypes) {
             $row['user_type'] = in_array($row['user_type'], array_keys($technicianTypes))? $technicianTypes[$row['user_type']]: "Technician";
             $row['image'] = empty($row['image']) ? base_url("public/images/missing_avatar.svg") : $row['image'];
             $row['id'] = encryptDecrypt($row['id']);
@@ -138,14 +138,14 @@ class TechnicianController extends BaseController
             $row['user_type'] = in_array($row['user_type'], array_keys($technicianTypes))? $technicianTypes[$row['user_type']]: "Technician";
             $row['image'] = empty($row['image']) ? base_url("public/images/missing_avatar.svg") : $row['image'];
             $row['id'] = encryptDecrypt($row['id']);
-            //following delete_data would be used to delete using ajax
+            //following accept_data would be used to accept using ajax
             $row['accept_data'] = json_encode([
                 $this->data["csrfName"] = $this->security->get_csrf_token_name() =>
                 $this->data["csrfToken"] = $this->security->get_csrf_hash(),
                 "id" => $row['id'],
                 "action" => "accept"
             ]);
-            //following delete_data would be used to delete using ajax
+            //following reject_data  would be used to reject using ajax
             $row['reject_data'] = json_encode([
                 $this->data["csrfName"] = $this->security->get_csrf_token_name() =>
                 $this->data["csrfToken"] = $this->security->get_csrf_hash(),
@@ -158,8 +158,8 @@ class TechnicianController extends BaseController
         $this->data['technicians'] = $result;
         $this->data['search'] = $search;
         $this->data['js'] = 'technician';
-        $this->session->set_flashdata("flash-message", "");
-        $this->session->set_flashdata("flash-type", "");
+        // $this->session->set_flashdata("flash-message", "");
+        // $this->session->set_flashdata("flash-type", "");
         load_alternate_views("technicians/requests", $this->data);
     }
 

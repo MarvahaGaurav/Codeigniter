@@ -21,11 +21,20 @@ if ( ! function_exists("fetch_countries") ) {
  * @return array 
   */
 if ( ! function_exists("fetch_cities") ) {
-    function fetch_cities($country_code) 
+    function fetch_cities($country_code, $opt=[]) 
     {
         $ci = &get_instance();
         $ci->load->model("UtilModel");
-        $cities = $ci->UtilModel->selectQuery("*", "city_list", ["where" => ["country_code" => $country_code]]);
+        $options = ["where" => ["country_code" => $country_code]];
+        if ( isset($opt['limit']) && !empty((int)$opt['limit']) ) {
+            $options['limit'] = $opt['limit'];
+        }
+        if ( isset($opt['where']) && !empty($opt['where']) && is_array($opt['where']) ) {
+            foreach ( $opt['where'] as $column_field => $value ) {
+                $options['where'][$column_field] = $value;
+            }
+        }
+        $cities = $ci->UtilModel->selectQuery("*", "city_list", $options);
 
         return $cities;
     }

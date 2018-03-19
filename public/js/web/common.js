@@ -201,14 +201,15 @@ $(document).ready(function () {
                 data: JSON.parse(dataJson),
                 dataType: 'json', 
                 beforeSend: function () {
-
+                    $self.prepend("<span class='fa fa-circle-o-notch fa-spin'></span>");
                 },
                 success: function(response) {
+                    $self.find("span.fa-circle-o-notch").remove();
                     if (response.success) {
                         if ( dataAction == "remove" ) {
                             $confirmationModal.modal("hide");
                             $(dataTarget).remove();
-                            $flashCard.addClass("alert alert-success");
+                            // $flashCard.addClass("alert alert-success");
                             // displayFlashCard(response.message);
                             window.location = dataRedirect;
                         }

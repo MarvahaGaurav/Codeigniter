@@ -17,17 +17,20 @@ class User extends MY_Controller {
             $this->session->set_userdata('admininfo', $sessionData);
         }
         $this->admininfo = $this->session->userdata('admininfo');
+
         if (empty($this->admininfo)) {
             redirect(base_url() . 'admin/Admin');
         }
+
         $this->data = [];
         $this->validUserTypes = [PRIVATE_USER, BUSINESS_USER];
         $this->data['admininfo'] = $this->admininfo;
-        if($this->admininfo['role_id'] == 2){
+        if($this->admininfo['role_id'] == 2) {
             $whereArr = ['where'=>['admin_id'=>$this->admininfo['admin_id']]];
             $access_detail = $this->Common_model->fetch_data('sub_admin', ['viewp', 'addp', 'editp', 'blockp', 'deletep', 'access_permission', 'admin_id', 'id'], $whereArr, false);
             $this->data['admin_access_detail'] = $access_detail;
         }
+
         $this->userTypes = [
             PRIVATE_USER => "Individual User",
             BUSINESS_USER => "Business User"
@@ -134,7 +137,6 @@ class User extends MY_Controller {
 
         $this->data['get_query'] = !empty($getQuery) ? "&" . $getQuery : "";
         
-
         /* CSRF token */
         $this->data["csrfName"] = $this->security->get_csrf_token_name();
         $this->data["csrfToken"] = $this->security->get_csrf_hash();
