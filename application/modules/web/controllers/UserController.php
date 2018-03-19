@@ -49,8 +49,10 @@ class UserController extends BaseController
         }
         $this->load->helper(["location", "input_data"]);
         $countries = fetch_countries();
-        $cities = fetch_cities($userData['country_id']);
+        
         $this->data['countries'] = $countries;
+        $cities = fetch_cities($userData['country_id'], ['where' => ['id' => $userData['city_id']]]);
+        // echo $this->db->last_query();die;
         $this->data['cities'] = $cities;
         $this->data['user'] = $userData;
         $this->data['compnaydetail'] = $compnaydetail;

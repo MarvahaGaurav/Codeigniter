@@ -14,7 +14,7 @@
         <link rel="stylesheet" href="public/css/web/plugins/bootstrap.min.css">
         <link rel="stylesheet" href="public/css/web/plugins/bootstrap-select.min.css">
         <link rel="stylesheet" href="public/css/ajax-bootstrap-select.min.css">
-
+        <link rel="stylesheet" href="public/css/easy-autocomplete.min.css">
         <!-- Custom Css Plugin -->
         <link rel="stylesheet" href="public/css/web/common.css">
         <link rel="stylesheet" href="public/css/web/form.css">

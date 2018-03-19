@@ -186,11 +186,13 @@
                                 <div class="form-group">
                                     <label class="p-label">City</label>
                                     <div class="form-group-field">
-                                        <select class="selectpicker select-filed-name2 cities" name="city" data-live-search="true">
-                                            <?php foreach ($cities as $city) : ?>
-                                                <option value="<?php echo $city['id'] ?>" <?php echo $city['id'] == $user['city_id'] ? "selected" : "" ?>><?php echo $city['name'] ?></option>
-                                            <?php endforeach ?>
-                                        </select>
+                                        <div class="input-wrapper">
+                                            <input type="text" id="select-city" name="city_name" data-country="<?php echo $country['country_code1'] ?>" value="<?php echo $cities[0]['name'] ?>" <?php echo empty($user['country_id'])?"disabled":"" ?> >
+                                        </div>
+                                        <input type="hidden" name="city" id="city-id" value="<?php echo $cities['id'] ?>">
+                                        <ul class="nolistdata" style="display:none;">
+                                            <li>No cities found</li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>

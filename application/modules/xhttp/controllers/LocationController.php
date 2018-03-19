@@ -27,10 +27,11 @@ class LocationController extends BaseController
         if ( !isset($request_data['param']) ) {
             json_dump([
                 "success" => false,
-                "message" => "missing parameter"
+                "message" => "missing parameter",
+                "data" => []
             ]);
         }
-
+        
         $options['limit'] = 50;
         if ( isset($request_data['query']) ) {
             $options['where'] = ['name LIKE' => "%{$request_data['query']}%"];    
@@ -40,7 +41,8 @@ class LocationController extends BaseController
         if ( empty($cities) ) {
             json_dump([
                 "success" => false,
-                "message" => "no data found"
+                "message" => "no data found",
+                "data" => []
             ]);
         }
         // pd($cities);

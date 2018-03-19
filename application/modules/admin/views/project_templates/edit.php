@@ -12,7 +12,7 @@
     <!--Filter Section -->
     <div class="section">
         <div class="form-item-title clearfix">
-            <h3 class="title">Edit Room Template</h3>
+            <!-- <h3 class="title">Edit Room Template</h3> -->
         </div>
         <!-- title and form upper action end-->
          <?php echo form_open_multipart(base_url("admin/templates/{$template_id}/edit"), ['id' => 'create-room-template']); ?>
@@ -176,7 +176,7 @@
             </div>
             <div class="row">
                 <div class="button-wrap">
-                    <input type="submit" class="commn-btn save" value="Add Room">
+                    <input type="submit" class="commn-btn save" value="Edit Room">
                 </div>
             </div>
 

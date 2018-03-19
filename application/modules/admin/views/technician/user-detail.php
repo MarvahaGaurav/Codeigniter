@@ -87,7 +87,7 @@
                             <div class="form-group">
                                 <label class="admin-label">User Role</label>
                                 <div class="input-holder">
-                                    <span class="text-detail"><?php if($value['user_type_num'] != 1 ){ echo ($value['is_owner'] == '2')?"Owner":"Employee";} ?></span>
+                                    <span class="text-detail"><?php if($value['user_type_num'] != 1 ){ echo ($profile['is_owner'] == '2')?"Owner":"Employee";} ?></span>
                                 </div>
                             </div>
                         </div>

@@ -12,6 +12,7 @@
 
         <!-- Css Plugins -->
         <link rel="stylesheet" href="public/css/web/plugins/bootstrap.min.css">
+        <link rel="stylesheet" href="public/css/easy-autocomplete.min.css">
 
         <!-- Custom Css Plugin -->
         <link rel="stylesheet" href="public/css/web/common.css">        
@@ -24,10 +25,14 @@
         <script>
             var smartguide = {};
             smartguide.baseUrl = "<?php echo base_url() ?>";
+            var domain = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + '/admin';
+            var domain2 = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
             if (location.hostname == "localhost")
                 var domain = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + '/';
             else
                 var domain = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + '/';
+
+            
         </script>
 
     </head>

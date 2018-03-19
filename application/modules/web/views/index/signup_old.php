@@ -1,6 +1,5 @@
 <link rel="stylesheet" href="public/css/web/plugins/bootstrap-select.min.css">
 
-
 <body class="form-backgournd">
 
     <div class="form-bg"></div>
@@ -258,14 +257,20 @@
                             <span class="customArrow"></span>
                         </div>
                         <div class="form-group">
-                                <!-- <select class="cities selectpicker" id="citiesselbox" name="cities" data-live-search="true" required="">
+                            <?php if(!empty(set_value('cities'))){?>
+                                
+                                <select class="cities selectpicker"  id="citiesselbox" name="cities" data-live-search="true" required="">
                                     <option value="">Select City</option>
-                                </select> -->
-                            <input type="text" class='form-control' id="select-city" name="city_name" value="<?php echo set_value("city_name", '') ?>" <?php echo empty(set_value('cities'))?"disabled":"" ?>>
-                            <input type="hidden" name="cities" id="city-id" value="<?php echo set_value('cities', '') ?>">
-                            <ul class="nolistdata" style="display:none;">
-                                <li>No cities found</li>
-                            </ul>
+                                    <?php if($allcities){
+                                        foreach($allcities as $cty){?>
+                                        <option <?php if($cty['id'] == set_value('cities')){ echo 'selected';} ?> value="<?php echo $cty['id'] ?>"><?php echo $cty['name']; ?></option>
+                                    <?php }} ?>
+                                </select>
+                            <?php }else{ ?>
+                                <select class="cities selectpicker" id="citiesselbox" name="cities" data-live-search="true" required="">
+                                    <option value="">Select City</option>
+                                </select>
+                            <?php } ?>
                             
                             <span class="sg-loader hidden"><img style="height:40px;" src="/public/images/preloader.gif" /></span>
                         </div>
@@ -302,7 +307,7 @@
 
             return html;
         }
-        var $selectCity = $("#select-city");
+
         function fetchLocation(url, parent, source, target, events) {
             
             var parent = parent || "body";
@@ -314,13 +319,6 @@
                 
                 var $self = $(this),
                         selfValue = $self.val();
-
-                if ( selfValue.length > 0 ) {
-                    $selectCity.prop("disabled", false);
-                } else {
-                    $selectCity.prop("disabled", false);
-                    return false;
-                }
                 $.ajax({
                     url: '<?php echo base_url(); ?>xhttp/cities',
                     method: "GET",                       
@@ -330,13 +328,10 @@
                     dataType: "json",
                     beforeSend:function(){
                         $('span.sg-loader').removeClass('hidden');
-                        
                     },
                     success: function (response) {
-                        
+
                         if (response.success) {
-                            $selectCity.val("");
-                            $selectCity.prop("placeholder", "Please start typing your location...");
                             var data = response.data
                             data = data.map(function (row) {
                                 return {id: row.id, text: row.name};
@@ -345,10 +340,6 @@
                             $('#citiesselbox').html(optionsViewBuilder(data, "Select a city"));
                             $('.selectpicker').selectpicker('refresh');
                             $('span.sg-loader').addClass('hidden');
-                            var cityOptions = {
-                                location: selfValue
-                            };
-                            setAutoComplete($selectCity, cityOptions);
                         }
                     },
                     error: function () {
@@ -472,54 +463,5 @@
             margin: -40px;
         }
     </style>
-    <script src="<?php echo base_url("public/js/jquery.easy-autocomplete.min.js") ?>"></script>
-    <script>
-        <?php if ( ! empty(set_value('cities', '')) ) :?>
-        var cityOptions = {
-            location: '<?php echo set_value('country') ?>'
-        };
-        setAutoComplete($selectCity, cityOptions);
-        <?php endif?>
-        function setAutoComplete($element, options){
-            options = options || {};
-            var location = options.location || "en";
-			var autoCompleteOptions = {
-				url: function(search) {
-					return domain2 + "/xhttp/cities?param=" + location + "&query=" + search;
-				},
-				listLocation: "data",
-				getValue: function(data) {
-                    return data.name
-				},
-				ajaxSettings: {
-					dataType: "json",
-					success: function(response) {
-						if ( ! response.success ) {
-                            $("#city-id").val('');
-                            $("ul.nolistdata").show();                      
-						} else {
-                            $("ul.nolistdata").hide();
-                        }
-					}
-				},
-				list: {
-                    maxNumberOfElements: 8,
-					match: {
-						enabled: true
-					},
-					sort: {
-						enabled: true
-                    },
-                    onSelectItemEvent: function() {
-                        var value = $element.getSelectedItemData().id;
-                        $("#city-id").val(value);
-                    }
-				},
-				theme: "square",
-				requestDelay: 70,
-                placeholder: "Please start typing your city..."
-			};
-			$element.easyAutocomplete(autoCompleteOptions);
-		}
-    </script>
+    
 </body>

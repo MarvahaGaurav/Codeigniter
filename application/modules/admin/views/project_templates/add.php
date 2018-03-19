@@ -12,7 +12,7 @@
     <!--Filter Section -->
     <div class="section">
         <div class="form-item-title clearfix">
-            <h3 class="title">Create Room Template</h3>
+            <!-- <h3 class="title">Create Room Template</h3> -->
         </div>
         <!-- title and form upper action end-->
          <?php echo form_open_multipart(base_url("admin/templates/add"), ['id' => 'create-room-template']); ?>

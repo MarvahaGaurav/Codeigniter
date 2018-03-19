@@ -222,7 +222,6 @@ class Technician extends MY_Controller {
         /* CSRF token */
         $this->data["csrfName"] = $this->security->get_csrf_token_name();
         $this->data["csrfToken"] = $this->security->get_csrf_hash();
-
         load_views("technician/user-detail", $this->data);
     }
 

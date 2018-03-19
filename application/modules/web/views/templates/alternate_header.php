@@ -12,6 +12,7 @@
 
         <!-- Css Plugins -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="public/css/easy-autocomplete.min.css">
         <?php if ( isset($owl) ) { ?>
             <link rel="stylesheet" href="public/css/jquery.scrollbar.css">
             <link rel="stylesheet" href="public/css/owl.carousel.min.css" >
@@ -24,7 +25,7 @@
         <?php if ( isset($custom_select) ) { ?>
             <link rel="stylesheet" href="public/css/select2.min.css">
         <?php } ?>
-
+            
         <?php if ( isset($image_video_uploader) ) { ?>
             <link rel="stylesheet" href="public/css/image.video.uploader.css">
         <?php } ?>

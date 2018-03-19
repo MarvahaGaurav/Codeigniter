@@ -8,7 +8,8 @@ requirejs.config({
     jqueryValidator: 'jquery.validate.min',
     viewBuilder: 'lib/view-builder',
     location: 'lib/location',
-    jqueryScrollbar: 'plugin/jquery.scrollbar.min'
+    jqueryScrollbar: 'plugin/jquery.scrollbar.min',
+    easyAutoComplete: 'jquery.easy-autocomplete.min'
   },
   shim: {
     //dependencies
@@ -17,7 +18,8 @@ requirejs.config({
     viewBuilder: ['jquery'],
     jqueryValidator: ['jquery'],
     location: ['viewBuilder'],
-    jqueryScrollbar: ['jquery']
+    jqueryScrollbar: ['jquery'],
+    easyAutoComplete: ['jquery']
   }
 });
 
@@ -29,10 +31,11 @@ requirejs(
     'jqueryScrollbar',
     'viewBuilder',
     'jqueryValidator',
-    'location'
+    'location',
+    'easyAutoComplete'
   ],
   function($) {
-    fetchLocation('xhttp/cities');
+    fetchLocation('/xhttp/cities');
     var $companyName = $("input[name='company_name']"),
         $companyRegNumber = $("input[name='company_reg_number']");
 
