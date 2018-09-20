@@ -15,7 +15,7 @@
             <!-- <h3 class="title">Edit Room Template</h3> -->
         </div>
         <!-- title and form upper action end-->
-         <?php echo form_open_multipart(base_url("admin/templates/{$template_id}/edit"), ['id' => 'create-room-template']); ?>
+            <?php echo form_open_multipart(base_url("admin/templates/{$template_id}/edit"), ['id' => 'create-room-template']); ?>
             <div class="row">
                 <div class="col-lg-12 col-sm-12">
                     <label class="admin-label"><br></label>

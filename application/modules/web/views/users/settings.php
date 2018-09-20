@@ -33,7 +33,7 @@
 
         
         <?php echo form_open('home/settings/' . encryptDecrypt($user['user_id']), ['id' => 'settings-form'])  ?>
-            <?php if ( INSTALLER === (int)$user['user_type'] && ROLE_OWNER === (int)$user['is_owner'] ) : ?>
+            <?php if (INSTALLER === (int)$user['user_type'] && ROLE_OWNER === (int)$user['is_owner'] ) : ?>
             <!-- Caption before section -->
             <div class="section-title section-border">
                 <h3>Pricing</h3>
@@ -283,7 +283,7 @@
                                 <input id="currency4" name="currency"  value="EUR" <?php echo $user['currency'] == "EUR" ? "checked": "" ?> class="custom-control-input"  type="radio">
                                 <label for="currency4">
                                     <span class="custom-control-indicator"></span>
-                                    <img src="<?php echo base_url('/public/images/currency2.png' ) ?>" alt="Country Logo">
+                                    <img src="<?php echo base_url('/public/images/currency2.png') ?>" alt="Country Logo">
                                     <strong class="op-semibold">Euro</strong>
                                 </label>
                             </div>

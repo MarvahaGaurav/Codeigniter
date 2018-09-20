@@ -17,9 +17,10 @@
                         
                         <form method="GET" id ="page_count_form">
                         <select class="selectpicker" name="pagecount" onchange="pageCountForm();">
-                           <?php for($i=10;$i<=100;$i=$i+30){?>
-                            <option  <?php if(isset($limit) && $limit  == $i ){ echo "selected='selected'"; }?> value="<?php echo $i?>">Display <?php echo $i?></option>
-                           <?php } ?>
+                            <?php for($i=10;$i<=100;$i=$i+30){?>
+                            <option  <?php if(isset($limit) && $limit  == $i ) { echo "selected='selected'"; 
+                           }?> value="<?php echo $i?>">Display <?php echo $i?></option>
+                            <?php } ?>
                         </select>
                         </form>
                     </div>
@@ -77,8 +78,10 @@
                     
                     <select class="selectpicker filter" name="status">
                         <option value="">Select</option>
-                        <option <?php if(isset($status) && $status==ACTIVE){ echo "selected='selected'";}?> value="<?php echo ACTIVE;?>">Active</option>
-                        <option <?php if(isset($status) && $status==INACTIVE && $status!=''){ echo "selected='selected'";}?> value="<?php echo INACTIVE;?>">Inactive</option>
+                        <option <?php if(isset($status) && $status==ACTIVE) { echo "selected='selected'";
+                       }?> value="<?php echo ACTIVE;?>">Active</option>
+                        <option <?php if(isset($status) && $status==INACTIVE && $status!='') { echo "selected='selected'";
+                       }?> value="<?php echo INACTIVE;?>">Inactive</option>
                      </select>
                     
                 </div>
@@ -104,12 +107,14 @@
                 <div class="commn-select-wrap">
                     <select class="selectpicker filter" name="country" onchange="getStates(this.value,'state');" data-live-search="true">
                     <option value="">Select Country</option>
-                    <?php if(!empty($countries)){
+                    <?php if(!empty($countries)) {
                         foreach($countries as $key=>$val){
                     ?>
-                    <option <?php if(isset($country) && $country==$val['id']){ echo "selected='selected'";}?> value="<?php echo $val['id'];?>"><?php echo $val['name'];?></option>
+                    <option <?php if(isset($country) && $country==$val['id']) { echo "selected='selected'";
+                   }?> value="<?php echo $val['id'];?>"><?php echo $val['name'];?></option>
                         
-                    <?php }} ?>
+                        <?php }
+                    } ?>
            </select>
                 </div>
 
@@ -120,13 +125,14 @@
                 <div class="commn-select-wrap">
                     <select class="selectpicker filter" id="state" name="state" data-live-search="true" onchange="getCities(this.value,'city');">
                         <option value="">Select State</option>
-                        <?php if(isset($states) && !empty($states)){
-                              foreach($states as $key=>$val){
-                         ?>
+                        <?php if(isset($states) && !empty($states)) {
+                            foreach($states as $key=>$val){
+                            ?>
                         
-                        <option <?php if(isset($state) && $state==$val['id']){ echo "selected='selected'";}?> value="<?php echo $val['id'];?>"><?php echo $val['name'];?></option>
-                        <?php }
-                            }
+                        <option <?php if(isset($state) && $state==$val['id']) { echo "selected='selected'";
+                       }?> value="<?php echo $val['id'];?>"><?php echo $val['name'];?></option>
+                            <?php }
+                        }
                         ?>
                     </select>
                 </div>
@@ -137,13 +143,14 @@
                 <div class="commn-select-wrap">
                     <select class="selectpicker filter" id="city" name="city" data-live-search="true">
                         <option value="">Select City</option>
-                        <?php if(isset($cities) && !empty($cities)){
-                              foreach($cities as $key=>$val){
-                         ?>
+                        <?php if(isset($cities) && !empty($cities)) {
+                            foreach($cities as $key=>$val){
+                            ?>
                         
-                        <option <?php if(isset($city) && $city==$val['id']){ echo "selected='selected'";}?> value="<?php echo $val['id'];?>"><?php echo $val['name'];?></option>
-                        <?php }
-                            }
+                        <option <?php if(isset($city) && $city==$val['id']) { echo "selected='selected'";
+                       }?> value="<?php echo $val['id'];?>"><?php echo $val['name'];?></option>
+                            <?php }
+                        }
                         ?>
                     </select>
                 </div>
@@ -182,37 +189,37 @@
             </thead>
             <tbody id="table_tr">
                 
-            <?php if(isset($userlist['result']) && count($userlist['result'])>0):
+            <?php if(isset($userlist['result']) && count($userlist['result'])>0) :
                     
-                    foreach($userlist['result'] as $key =>$value):
+                foreach($userlist['result'] as $key =>$value):
                     
             ?>
                 
-                <tr id ="remove_<?php echo $value['user_id'];?>" >
-                    <td><?php echo ++$key; ?></td>
-                    <td><a href="<?php echo base_url()?>admin/users/detail?id=<?php echo $this->Common_model->mcrypt_data($value['user_id'])?>"><?php echo ucfirst($value['first_name']).' '.ucfirst($value['last_name']); ?></a></td>
-                    <td><?php echo $value['email'];?></td>
-                    <td><?php echo $value['phone'];?></td>
-                    <td><?php echo $value['address'];?></td>
-                    <td><?php echo date("d M Y H:i A",strtotime($value['registered_date']));?></td>
-                    <td>12</td>
-                    <td id ="status_<?php echo $value['user_id'];?>"><?php echo ($value['status']==ACTIVE)?"Active":(($value['status']==INACTIVE)?"Inactive":"Blocked");?></td>
-                    <td> 
-                        <?php if($value['status']==BLOCKED){?>
-                        <a href="javascript:void(0);" id ="unblock_<?php echo $value['user_id'];?>" class="table_icon"><i class="fa fa-unlock" aria-hidden="true" onclick="blockUser('user',<?php echo ACTIVE;?>,'<?php echo encrypt_with_openssl(new Encryption\OpenSSLEncrypt($value['user_id']),true);?>','req/change-user-status','Do you really want to unblock this user?','Unblock');"></i></a>
-                        <a href="javascript:void(0);"  id ="block_<?php echo $value['user_id'];?>" style="display:none;" class="table_icon"><i class="fa fa-ban" aria-hidden="true" onclick="blockUser('user',<?php echo BLOCKED;?>,'<?php echo encrypt_with_openssl(new Encryption\OpenSSLEncrypt($value['user_id']),true);?>','req/change-user-status','Do you really want to block this user?','Block');"></i></a>
-                        <?php }else{?>
-                        <a href="javascript:void(0);" id ="block_<?php echo $value['user_id'];?>" class="table_icon"><i class="fa fa-ban" aria-hidden="true" onclick="blockUser('user',<?php echo BLOCKED;?>,'<?php echo encrypt_with_openssl(new Encryption\OpenSSLEncrypt($value['user_id']),true);?>','req/change-user-status','Do you really want to block this user?','Block');"></i></a>
-                        <a href="javascript:void(0);" id ="unblock_<?php echo $value['user_id'];?>" style="display:none;" class="table_icon"><i class="fa fa-unlock" aria-hidden="true" onclick="blockUser('user',<?php echo ACTIVE;?>,'<?php echo encrypt_with_openssl(new Encryption\OpenSSLEncrypt($value['user_id']),true);?>','req/change-user-status','Do you really want to unblock this user?','Unblock');"></i></a>
-                        <?php }?>
+            <tr id ="remove_<?php echo $value['user_id'];?>" >
+                <td><?php echo ++$key; ?></td>
+                <td><a href="<?php echo base_url()?>admin/users/detail?id=<?php echo $this->Common_model->mcrypt_data($value['user_id'])?>"><?php echo ucfirst($value['first_name']).' '.ucfirst($value['last_name']); ?></a></td>
+                <td><?php echo $value['email'];?></td>
+                <td><?php echo $value['phone'];?></td>
+                <td><?php echo $value['address'];?></td>
+                <td><?php echo date("d M Y H:i A", strtotime($value['registered_date']));?></td>
+                <td>12</td>
+                <td id ="status_<?php echo $value['user_id'];?>"><?php echo ($value['status']==ACTIVE)?"Active":(($value['status']==INACTIVE)?"Inactive":"Blocked");?></td>
+                <td> 
+                    <?php if($value['status']==BLOCKED) {?>
+                        <a href="javascript:void(0);" id ="unblock_<?php echo $value['user_id'];?>" class="table_icon"><i class="fa fa-unlock" aria-hidden="true" onclick="blockUser('user',<?php echo ACTIVE;?>,'<?php echo encrypt_with_openssl(new Encryption\OpenSSLEncrypt($value['user_id']), true);?>','req/change-user-status','Do you really want to unblock this user?','Unblock');"></i></a>
+                        <a href="javascript:void(0);"  id ="block_<?php echo $value['user_id'];?>" style="display:none;" class="table_icon"><i class="fa fa-ban" aria-hidden="true" onclick="blockUser('user',<?php echo BLOCKED;?>,'<?php echo encrypt_with_openssl(new Encryption\OpenSSLEncrypt($value['user_id']), true);?>','req/change-user-status','Do you really want to block this user?','Block');"></i></a>
+                    <?php }else{?>
+                        <a href="javascript:void(0);" id ="block_<?php echo $value['user_id'];?>" class="table_icon"><i class="fa fa-ban" aria-hidden="true" onclick="blockUser('user',<?php echo BLOCKED;?>,'<?php echo encrypt_with_openssl(new Encryption\OpenSSLEncrypt($value['user_id']), true);?>','req/change-user-status','Do you really want to block this user?','Block');"></i></a>
+                        <a href="javascript:void(0);" id ="unblock_<?php echo $value['user_id'];?>" style="display:none;" class="table_icon"><i class="fa fa-unlock" aria-hidden="true" onclick="blockUser('user',<?php echo ACTIVE;?>,'<?php echo encrypt_with_openssl(new Encryption\OpenSSLEncrypt($value['user_id']), true);?>','req/change-user-status','Do you really want to unblock this user?','Unblock');"></i></a>
+                    <?php }?>
                         
                         
-                        <a href="javascript:void(0);" class="table_icon"><i class="fa fa-trash" aria-hidden="true" onclick="deleteUser('user',<?php echo DELETED;?>,'<?php echo encrypt_with_openssl(new Encryption\OpenSSLEncrypt($value['user_id']),true);?>','req/change-user-status','Do you really want to delete this user?');"></i></a>
+                    <a href="javascript:void(0);" class="table_icon"><i class="fa fa-trash" aria-hidden="true" onclick="deleteUser('user',<?php echo DELETED;?>,'<?php echo encrypt_with_openssl(new Encryption\OpenSSLEncrypt($value['user_id']), true);?>','req/change-user-status','Do you really want to delete this user?');"></i></a>
                        
-                    </td>
-                </tr>
+                </td>
+            </tr>
                 
-                <?php 
+            <?php 
                 endforeach;
                 else:
                     echo '<tr><td colspan="9">No result found.</td></tr>';

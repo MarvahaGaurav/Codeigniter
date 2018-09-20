@@ -10,12 +10,13 @@ class TechnicianController extends BaseController
     public function __construct()
     {
         parent::__construct();
-        $this->active_session_required();
+        $this->activeSessionGuard();
         $this->load->model("Employee");
         $this->data['userInfo'] = $this->userInfo;
-        if (!isset($this->userInfo['user_type']) ||
-            !in_array($this->userInfo['user_type'], [INSTALLER, WHOLESALER, ARCHITECT, ELECTRICAL_PLANNER]) ||
-            ROLE_OWNER !== (int)$this->userInfo['is_owner']) {
+        if (!isset($this->userInfo['user_type']) 
+            || !in_array($this->userInfo['user_type'], [INSTALLER, WHOLESALER, ARCHITECT, ELECTRICAL_PLANNER]) 
+            || ROLE_OWNER !== (int)$this->userInfo['is_owner']
+        ) {
             error404("", base_url());
             exit;
         }
@@ -40,31 +41,35 @@ class TechnicianController extends BaseController
         $this->load->library("Commonfn");
         $technicianTypes = [INSTALLER => "Installer", ARCHITECT => "Architect", ELECTRICAL_PLANNER => "Electrical Planner", WHOLESALER => "Wholesaler"];
         $this->data['links'] = $this->commonfn->pagination("home/technicians", $data['count'], $limit);
-        $result = array_map(function($row) use ($technicianTypes) {
-            $row['user_type'] = in_array($row['user_type'], array_keys($technicianTypes))? $technicianTypes[$row['user_type']]: "Technician";
-            $row['image'] = empty($row['image']) ? base_url("public/images/missing_avatar.svg") : $row['image'];
-            $row['id'] = encryptDecrypt($row['id']);
-            //following delete_data would be used to delete using ajax
-            $row['delete_data'] = json_encode([
-                $this->data["csrfName"] = $this->security->get_csrf_token_name() =>
-                $this->data["csrfToken"] = $this->security->get_csrf_hash(),
-                "id" => $row['id']
-            ]);
-            return $row;
-        }, $data['result']);
+        $result = array_map(
+            function ($row) use ($technicianTypes) {
+                $row['user_type'] = in_array($row['user_type'], array_keys($technicianTypes))? $technicianTypes[$row['user_type']]: "Technician";
+                $row['image'] = empty($row['image']) ? base_url("public/images/missing_avatar.svg") : $row['image'];
+                $row['id'] = encryptDecrypt($row['id']);
+                //following delete_data would be used to delete using ajax
+                $row['delete_data'] = json_encode(
+                    [
+                    $this->data["csrfName"] = $this->security->get_csrf_token_name() =>
+                    $this->data["csrfToken"] = $this->security->get_csrf_hash(),
+                    "id" => $row['id']
+                    ]
+                );
+                return $row;
+            }, $data['result']
+        );
 
         $this->data['technicians'] = $result;
         $this->data['search'] = $search;
         $this->data['js'] = 'technician';
         // $this->session->set_flashdata("flash-message", "");
         // $this->session->set_flashdata("flash-type", "");
-        load_alternate_views("technicians/main", $this->data);
+        load_website_views("technicians/main", $this->data);
     }
 
     public function details($employee_id = '')
     {
         $employee_id = encryptDecrypt($employee_id, 'decrypt');
-        if ( !isset($employee_id) || empty($employee_id) ) {
+        if (!isset($employee_id) || empty($employee_id) ) {
             error404("", base_url());
             exit;
         }
@@ -79,7 +84,7 @@ class TechnicianController extends BaseController
         $post = $this->input->post();
         $this->load->helper("input_data");
         $post = trim_input_parameters($post);
-        if ( ! empty($post) ) {
+        if (! empty($post) ) {
             $fieldMaps = [
                 "quote_view" => "quote_view",
                 "quote_add" => "quote_add",
@@ -98,7 +103,7 @@ class TechnicianController extends BaseController
             foreach ( $fieldMaps as $dbColumn => $postArrayKey ) {
                 $this->EmployeePermission->$dbColumn = isset($post[$postArrayKey])?1:0;
             }
-            if ( $data['exist_check'] == 'not_exists' ) {
+            if ($data['exist_check'] == 'not_exists' ) {
                 $this->EmployeePermission->user_id = $this->userInfo['user_id'];
                 $this->EmployeePermission->employee_id = $employee_id;
                 $this->EmployeePermission->save();
@@ -112,7 +117,7 @@ class TechnicianController extends BaseController
         $this->data['js'] = 'technician';
         
         // pd($data);
-        load_alternate_views("technicians/details", $this->data);
+        load_website_views("technicians/details", $this->data);
     }
 
     public function request_list()
@@ -134,33 +139,39 @@ class TechnicianController extends BaseController
         $this->load->library("Commonfn");
         $technicianTypes = [INSTALLER => "Installer", ARCHITECT => "Architect", ELECTRICAL_PLANNER => "Electrical Planner", WHOLESALER => "Wholesaler"];
         $this->data['links'] = $this->commonfn->pagination("home/technicians", $data['count'], $limit);
-        $result = array_map(function($row) use ($technicianTypes){
-            $row['user_type'] = in_array($row['user_type'], array_keys($technicianTypes))? $technicianTypes[$row['user_type']]: "Technician";
-            $row['image'] = empty($row['image']) ? base_url("public/images/missing_avatar.svg") : $row['image'];
-            $row['id'] = encryptDecrypt($row['id']);
-            //following accept_data would be used to accept using ajax
-            $row['accept_data'] = json_encode([
-                $this->data["csrfName"] = $this->security->get_csrf_token_name() =>
-                $this->data["csrfToken"] = $this->security->get_csrf_hash(),
-                "id" => $row['id'],
-                "action" => "accept"
-            ]);
-            //following reject_data  would be used to reject using ajax
-            $row['reject_data'] = json_encode([
-                $this->data["csrfName"] = $this->security->get_csrf_token_name() =>
-                $this->data["csrfToken"] = $this->security->get_csrf_hash(),
-                "id" => $row['id'],
-                "action" => "reject"
-            ]);
-            return $row;
-        }, $data['result']);
+        $result = array_map(
+            function ($row) use ($technicianTypes) {
+                $row['user_type'] = in_array($row['user_type'], array_keys($technicianTypes))? $technicianTypes[$row['user_type']]: "Technician";
+                $row['image'] = empty($row['image']) ? base_url("public/images/missing_avatar.svg") : $row['image'];
+                $row['id'] = encryptDecrypt($row['id']);
+                //following accept_data would be used to accept using ajax
+                $row['accept_data'] = json_encode(
+                    [
+                    $this->data["csrfName"] = $this->security->get_csrf_token_name() =>
+                    $this->data["csrfToken"] = $this->security->get_csrf_hash(),
+                    "id" => $row['id'],
+                    "action" => "accept"
+                    ]
+                );
+                //following reject_data  would be used to reject using ajax
+                $row['reject_data'] = json_encode(
+                    [
+                    $this->data["csrfName"] = $this->security->get_csrf_token_name() =>
+                    $this->data["csrfToken"] = $this->security->get_csrf_hash(),
+                    "id" => $row['id'],
+                    "action" => "reject"
+                    ]
+                );
+                return $row;
+            }, $data['result']
+        );
 
         $this->data['technicians'] = $result;
         $this->data['search'] = $search;
         $this->data['js'] = 'technician';
         // $this->session->set_flashdata("flash-message", "");
         // $this->session->set_flashdata("flash-type", "");
-        load_alternate_views("technicians/requests", $this->data);
+        load_website_views("technicians/requests", $this->data);
     }
 
 }

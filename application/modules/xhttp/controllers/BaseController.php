@@ -7,7 +7,8 @@ defined("BASEPATH") or exit("No direct script access allowed");
  * @property array $session_data - session data
  */
 class BaseController extends MY_Controller
-{   
+{
+   
     
     protected $data;
     protected $userInfo;
@@ -25,16 +26,16 @@ class BaseController extends MY_Controller
         $this->user_query_fields = 'status,user_id,first_name,image,email';
         $this->session_data = $this->session->userdata('sg_userinfo');
         $is_ajax_request = $this->input->is_ajax_request();
-        if ( ! $is_ajax_request ) {
+        if (! $is_ajax_request ) {
             exit("Only XHTTP request allowed");
         }
     }
 
-    protected function active_session_required()
+    protected function activeSessionGuard()
     {
         if(!empty($this->session_data) && ($this->session_data != '')) { 
             $sg_userinfo = $this->session_data;
-            if ( $sg_userinfo['status'] == BLOCKED ) {
+            if ($sg_userinfo['status'] == BLOCKED ) {
                 $this->session->unset_userdata("sg_userinfo");
                 redirect(base_url());
             }
@@ -44,18 +45,18 @@ class BaseController extends MY_Controller
         }
     }
 
-    protected function inactive_session_required()
+    protected function inactiveSessionGuard()
     {
         if(isset($this->session_data) && !empty($this->session_data)) { 
             redirect(base_url());
         }
     }
 
-    protected function neutral_session()
+    protected function neutralGuard()
     {
         if(!empty($this->session_data) && ($this->session_data != '')) { 
             $sg_userinfo = $this->session_data;
-            $this->userInfo = $this->Common_model->fetch_data('ai_user', $this->user_query_fields , array('where' => array('user_id' => $sg_userinfo['user_id'],'status'=>1)), true);
+            $this->userInfo = $this->Common_model->fetch_data('ai_user', $this->user_query_fields, array('where' => array('user_id' => $sg_userinfo['user_id'],'status'=>1)), true);
         }
     }
 

@@ -87,7 +87,7 @@
                 </div>
             </div>
         </div>
-        <?php if ( BUSINESS_USER === (int)$profile['user_type_numeric'] ) { ?>
+        <?php if (BUSINESS_USER === (int)$profile['user_type_numeric'] ) { ?>
         <div class="form-item-title clearfix">
             <h3 class="title">Company Detail</h3>
         </div>

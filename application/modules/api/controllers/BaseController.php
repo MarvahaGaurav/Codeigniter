@@ -22,15 +22,16 @@ class BaseController extends REST_Controller
 
     /**
      * Checks for and validates Access Token 
-     * @param string $additionalParams (optional) - additional Field name "name,email" 
+     *
+     * @param  string $additionalParams (optional) - additional Field name "name,email" 
      * @return array
      */
     protected function accessTokenCheck($additionalParams = "", $options=[])
     {
         $accessToken = "";
-        if ( isset($this->header["accesstoken"]) ) {
+        if (isset($this->header["accesstoken"]) ) {
             $accessToken = $this->header["accesstoken"];
-        } else if ( isset($this->header["Accesstoken"]) ) {
+        } else if (isset($this->header["Accesstoken"]) ) {
             $accessToken = $this->header["Accesstoken"];
         } else {
             $accessToken = "";
@@ -38,21 +39,25 @@ class BaseController extends REST_Controller
         $accessToken = trim($accessToken);
         $additionalParams = !empty(trim($additionalParams))?"," . trim($additionalParams):"";
 
-        if ( empty($accessToken) ) {
-            $this->response([
+        if (empty($accessToken) ) {
+            $this->response(
+                [
                 "code" => HTTP_UNAUTHORIZED,
                 "api_code_result" => "UNAUTHORIZED",
                 "msg" => $this->lang->line("invalid_access_token")
-            ], HTTP_UNAUTHORIZED);
+                ], HTTP_UNAUTHORIZED
+            );
         }
 
         $accessToken = explode("||", $accessToken);
-        if ( count($accessToken) !== 2 ) {
-            $this->response([
+        if (count($accessToken) !== 2 ) {
+            $this->response(
+                [
                 "code" => HTTP_UNAUTHORIZED,
                 "api_code_result" => "UNAUTHORIZED",
                 "msg" => $this->lang->line("invalid_access_token")
-            ], HTTP_UNAUTHORIZED);
+                ], HTTP_UNAUTHORIZED
+            );
         }
 
         try {
@@ -68,39 +73,47 @@ class BaseController extends REST_Controller
                 ]
             );
         } catch (SelectException $error) {
-            $this->response([
+            $this->response(
+                [
                 "code" => HTTP_INTERNAL_SERVER_ERROR,
                 "api_code_result" => "INTERNAL_SERVER_ERROR",
                 "msg" => $this->lang->line("internal_server_error")
-            ],HTTP_INTERNAL_SERVER_ERROR);
+                ], HTTP_INTERNAL_SERVER_ERROR
+            );
         }
 
-        if ( ! $userData ) {
-            $this->response([
+        if (! $userData ) {
+            $this->response(
+                [
                 "code" => HTTP_UNAUTHORIZED,
                 "api_code_result" => "UNAUTHORIZED",
                 "msg" => $this->lang->line("invalid_access_token")
-            ], HTTP_UNAUTHORIZED);
+                ], HTTP_UNAUTHORIZED
+            );
         }
 
 
 
-        if ( $userData ) {
-            if ( $userData['user_status'] == BLOCKED) {
-                $this->response([
+        if ($userData ) {
+            if ($userData['user_status'] == BLOCKED) {
+                $this->response(
+                    [
                     "code" => HTTP_FORBIDDEN,
                     "api_code_result" => "FORBIDDEN",
                     "msg" => $this->lang->line("account_blocked")
-                ], HTTP_FORBIDDEN);
+                    ], HTTP_FORBIDDEN
+                );
             }
     
             return $userData;
         } else {
-            $this->response([
+            $this->response(
+                [
                 "code" => HTTP_INTERNAL_SERVER_ERROR,
                 "api_code_result" => "INTERNAL_SERVER_ERROR",
                 "msg" => $this->lang->line("internal_server_error")
-            ], HTTP_INTERNAL_SERVER_ERROR);
+                ], HTTP_INTERNAL_SERVER_ERROR
+            );
         }
 
     }
@@ -108,12 +121,14 @@ class BaseController extends REST_Controller
     protected function apiKeyCheck()
     {
         $header = $this->head();
-        if ( !isset($header["api-key"]) || empty($header["api-key"]) || $header["api-key"] !== API_KEY ) {
-            $this->response([
+        if (!isset($header["api-key"]) || empty($header["api-key"]) || $header["api-key"] !== API_KEY ) {
+            $this->response(
+                [
                 "code" => HTTP_UNAUTHORIZED,
                 "api_code_result" => "UNAUTHORIZED",
                 "msg" => $this->lang->line("invalid_api_key")
-            ], HTTP_UNAUTHORIZED);
+                ], HTTP_UNAUTHORIZED
+            );
         }
     }
 
@@ -123,26 +138,30 @@ class BaseController extends REST_Controller
         $language_code = trim($language_code);
         $valid_language_codes = ["en","da","nb","sv","fi","fr","nl","de"];
 
-        if ( empty($language_code) ) {
-            $this->response([
+        if (empty($language_code) ) {
+            $this->response(
+                [
                 'code' => HTTP_UNPROCESSABLE_ENTITY,
                 'api_code_result' => 'UNPROCESSABLE_ENTITY',
                 'msg' => $this->lang->line('header_missing'),
                 'extra_info' => [
                     "missing_parameter" => "language_code"
                 ]
-            ]);
+                ]
+            );
         }
 
-        if ( ! in_array($language_code, $valid_language_codes) ) {
-            $this->response([
+        if (! in_array($language_code, $valid_language_codes) ) {
+            $this->response(
+                [
                 'code' => HTTP_UNPROCESSABLE_ENTITY,
                 'api_code_result' => 'UNPROCESSABLE_ENTITY',
                 'msg' => $this->lang->line('invalid_header'),
                 'extra_info' => [
                     "missing_parameter" => $this->lang->line('invalid_language_code')
                 ]
-            ]);
+                ]
+            );
         }
 
         $language_map = [

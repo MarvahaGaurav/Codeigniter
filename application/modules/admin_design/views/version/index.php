@@ -81,13 +81,15 @@ $module = $this->router->fetch_module();
 
             </thead>
             <tbody id="table_tr">
-              <?php if(isset($versions['result']) && count($versions['result'])>0):
+                <?php if(isset($versions['result']) && count($versions['result'])>0) :
                     foreach($versions['result'] as $key =>$value): ?>
 
                     <td><?php echo ++$key; ?></td>
                     <td><?php echo $value['version_name']; ?></td>
                     <td><?php echo $value['versiob_title'];?></td>
-                    <td><?php if (!empty($value['version_desc'])) {echo substr($value['version_desc'],0,155); if(strlen($value['version_desc']) > 154){echo '...';} } ?></td>
+                    <td><?php if (!empty($value['version_desc'])) {echo substr($value['version_desc'], 0, 155); if(strlen($value['version_desc']) > 154) {echo '...';
+                   } 
+                   } ?></td>
                     <td><?php echo ($value['platform']==ANDROID)?"Andorid":"Iphone"; ?></td>
                     <td><?php echo ($value['update_type']==NORMAL)?"Normal":(($value['update_type']==SKIPPABLE)?"Skippable":"Forcefully"); ?></td>
                     <td><?php echo ($value['is_cur_version']==YES)?"Yes":"No"; ?></td>
@@ -103,10 +105,10 @@ $module = $this->router->fetch_module();
                     </td>
                     <?php } ?>
                 </tr>
-          <?php
-              endforeach;
+            <?php
+                    endforeach;
               else:
-                  echo '<tr><td colspan="9">No result found.</td></tr>';
+                    echo '<tr><td colspan="9">No result found.</td></tr>';
               endif;?>
             </tbody>
         </table>

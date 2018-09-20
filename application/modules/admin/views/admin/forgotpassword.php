@@ -1,7 +1,7 @@
 <?php
-    if ($this->session->flashdata('Success') != '') {
-        echo $this->session->flashdata('Success');
-    }
+if ($this->session->flashdata('Success') != '') {
+    echo $this->session->flashdata('Success');
+}
 ?>
 
 <div class="fm-table-section">
@@ -37,7 +37,7 @@
     </div>
     <script>
         /* function submitfrmforgot(){
-            <?php if(isset($error) && !empty($error)){ ?>
+            <?php if(isset($error) && !empty($error)) { ?>
                 $('#forgot').removeAttr('disabled','');
             <?php }else{ ?>
                 $('#forgot').attr('disabled','disabled');

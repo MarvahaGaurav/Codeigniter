@@ -68,7 +68,7 @@
                                 </ul>
                                 <ul class="nav navbar-nav navbar-right">
                                     
-                                    <?php if(!empty($userInfo['user_id'])){ ?>
+                                    <?php if(!empty($userInfo['user_id'])) { ?>
                                     <li class="dropdown dropdown-toggle">
                                         <a href="javascript:void(0)" class="guest"><cite>Hi!</cite> &nbsp;
                                             <span class="user-name"><?php echo ucfirst($userInfo['first_name']); ?></span> 

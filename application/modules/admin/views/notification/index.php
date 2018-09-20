@@ -37,12 +37,15 @@ $module = $this->router->fetch_module();
             <div class="col-lg-6 col-sm-6">
                 <div class="srch-wrap fawe-icon-position col-sm-space">
                     <span class="fawe-icon fawe-icon-position-left search-ico"><i class="fa fa-search"></i></span>
-                    <?php if(isset($searchlike) && !empty($searchlike)){?>
+                    <?php if(isset($searchlike) && !empty($searchlike)) {?>
                     <span class="fawe-icon fawe-icon-position-right show-close-ico" onclick="jQuery('.searchCloseBtn').trigger('click');"><i class="fa fa-times-circle"></i></span>
                     <?php }else{ ?>
                     <span class="fawe-icon fawe-icon-position-right close-ico"><i class="fa fa-times-circle"></i></span>
                     <?php } ?>
-                    <input type="text" maxlength="50" value="<?php echo (isset($searchlike) && !empty($searchlike))? $searchlike:''?>" <?php if(isset($searchlike) && !empty($searchlike)){ echo 'readonly';}?> class="search-box <?php if(isset($searchlike) && !empty($searchlike)){ echo 'searchCloseBtn'; }else{  echo 'searchlike'; }?>" placeholder="Search by name" id="searchuser" name="search">
+                    <input type="text" maxlength="50" value="<?php echo (isset($searchlike) && !empty($searchlike))? $searchlike:''?>" <?php if(isset($searchlike) && !empty($searchlike)) { echo 'readonly';
+                   }?> class="search-box <?php if(isset($searchlike) && !empty($searchlike)) { echo 'searchCloseBtn'; 
+}else{  echo 'searchlike'; 
+}?>" placeholder="Search by name" id="searchuser" name="search">
                 </div>
             </div>
 
@@ -51,7 +54,7 @@ $module = $this->router->fetch_module();
                     <a href="javascript:void(0)" title="Filter" id="filter-side-wrapper" class="tooltip-p">
                         <div class="circle-btn animate-btn">
                             <i class="fa fa-filter" aria-hidden="true"></i>
-                            <?php if(!empty($platform) || !empty($startDate) || !empty($endDate)){ ?>
+                            <?php if(!empty($platform) || !empty($startDate) || !empty($endDate)) { ?>
                             <i class="fa fa-close" aria-hidden="true"></i>
                             <?php } ?>
                         </div>
@@ -160,7 +163,7 @@ $module = $this->router->fetch_module();
                 <tbody>
                     
                     <?php if (!empty($notiList)) { 
-                        if ($page > 1){
+                        if ($page > 1) {
                             $i = (($page * $limit)- $limit) + 1;
                         } else {
                             $i = 1;
@@ -174,7 +177,7 @@ $module = $this->router->fetch_module();
                                 </td>
                                 <td><?php echo ($list['platform'] == 1)?'All':(($list['platform'] == 2)?'Android':'iOS'); ?></td>
                                 <td><?php echo $list['total_sents'] ?></td>
-                                <td><?php echo date('d M Y h:i:s A',strtotime($list['created_at'])) ?></td>
+                                <td><?php echo date('d M Y h:i:s A', strtotime($list['created_at'])) ?></td>
                                 <?php if($accesspermission['deletep'] || $accesspermission['editp']) { ?>
                                 <td class="text-nowrap table-action">
                                     <?php if($accesspermission['editp']) { ?>
@@ -186,9 +189,11 @@ $module = $this->router->fetch_module();
                                 </td>
                                 <?php } ?>
                             </tr>
-                        <?php $i++; } } else { ?>
+                        <?php $i++; 
+                        } 
+                    } else { ?>
                         <td colspan="9">No notifications found</td>
-                        <?php } ?>
+<?php } ?>
                 </tbody>
             </table>
                 </div>

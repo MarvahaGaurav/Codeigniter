@@ -89,10 +89,10 @@ $module = $this->router->fetch_module();
             <div class="fltr-field-wrap">
                 <label class="admin-label">Received On</label>
                 <div class="inputfield-wrap">
-                    <input type="text" value="<?php echo !empty($startDate)?date('m/d/Y',strtotime($startDate)):"" ?>" class="form-date_wrap startDate" data-provide="datepicker" id="from_date" placeholder="From">
+                    <input type="text" value="<?php echo !empty($startDate)?date('m/d/Y', strtotime($startDate)):"" ?>" class="form-date_wrap startDate" data-provide="datepicker" id="from_date" placeholder="From">
                 </div>
                 <div class="inputfield-wrap">
-                    <input type="text" value="<?php echo !empty($endDate)?date('m/d/Y',strtotime($endDate)):"" ?>" class="form-date_wrap endDate" data-provide="datepicker" id="to_date" placeholder="To">
+                    <input type="text" value="<?php echo !empty($endDate)?date('m/d/Y', strtotime($endDate)):"" ?>" class="form-date_wrap endDate" data-provide="datepicker" id="to_date" placeholder="To">
                 </div>
             </div>
             <div class="button-wrap text-center">
@@ -124,7 +124,7 @@ $module = $this->router->fetch_module();
                 <tbody>
                     
                     <?php if (!empty($notiList)) { 
-                        if ($page > 1){
+                        if ($page > 1) {
                             $i = (($page * $limit)- $limit) + 1;
                         } else {
                             $i = 1;
@@ -136,15 +136,17 @@ $module = $this->router->fetch_module();
                                 <td class="text-nowrap">Lorem Ipsum</td>
                                 <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</td>
                                 <td class="text-nowrap"><?php echo $list['total_sents'] ?></td>
-                                <td class="text-nowrap"><?php echo date('d-m-Y',strtotime($list['created_at'])) ?></td>
+                                <td class="text-nowrap"><?php echo date('d-m-Y', strtotime($list['created_at'])) ?></td>
                                 <td class="text-nowrap table-action">
                                     <a href=href="<?php echo base_url()?>admin/message/add"  class="f-eye"><i class="fa fa-eye" aria-hidden="true"></i></a>
                                     <a href="javascript:void(0);" class="f-delete"><i class="fa fa-trash"></i></a>
                                 </td>
                             </tr>
-                        <?php $i++; } } else { ?>
+                        <?php $i++; 
+                        } 
+                    } else { ?>
                         <td colspan="9">No notifications found</td>
-                        <?php } ?>
+<?php } ?>
                 </tbody>
             </table>
                 </div>

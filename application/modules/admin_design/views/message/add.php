@@ -14,7 +14,7 @@ $notiPermission = isset($permission[3])?$permission[3]:array();
                 <li class="breadcrumb-item active">View Message</li>
             </ol>
         </div>
-        <!--breadcrumb wrap close-->	
+        <!--breadcrumb wrap close-->    
 
         <div class="clear"></div>
         <div class="col-sm-12">

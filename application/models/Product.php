@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined("BASEPATH") or exit("No direct script access allowed");
 
 require_once 'BaseModel.php';
@@ -16,27 +16,24 @@ class Product extends BaseModel
     {
         $query = "*";
         $single_row = false;
-        if (
-           ( (isset($params['product_id']) && ! empty($params['product_id'])) ||
+        if (( (isset($params['product_id']) && ! empty($params['product_id'])) ||
             (isset($params['product_listing']) && !empty($params['product_listing'])) ) &&
-            (!isset($params['application_id']) && empty($params['application_id'])) 
+            (!isset($params['application_id']) && empty($params['application_id']))
         ) {
-           
             $this->db->from("products");
-            if ( isset($params['product_listing']) && !empty($params['product_listing']) ) {
+            if (isset($params['product_listing']) && !empty($params['product_listing'])) {
                 $query = "SQL_CALC_FOUND_ROWS products.id as product_id, products.title as product_title, products.image";
                 $this->db->where("products.language_code", $params['language_code']);
                 $search = true;
-                if ( ! isset($params['search']) || empty($params['search']) ) {
+                if (! isset($params['search']) || empty($params['search'])) {
                     $search = false;
                     $this->db->limit(RECORDS_PER_PAGE);
                 } else {
                     $this->db->like('products.title', $params['search']);
                 }
-                if ( isset($params['offset']) && !empty((int)$params['offset']) && ! $search ) {
+                if (isset($params['offset']) && !empty((int)$params['offset']) && ! $search) {
                     $this->db->offset((int)$params['offset']);
                 }
-                
             } else {
                 $query = "products.id as product_id, products.title as product_title, how_to_specity as description, products.image, productTechnicalData(products.id) as technical_data," .
                 "IFNULL(GROUP_CONCAT(gallery.image), '') as images";
@@ -65,10 +62,10 @@ class Product extends BaseModel
             $result = $query->row_array();
             $technical_data = utf8_encode($result['technical_data']);
             $result['technical_data'] = json_decode($result['technical_data'], true);
-            if ( json_last_error() > 0 ) {
+            if (json_last_error() > 0) {
                 $result['technical_data'] = $technical_data;
             } else {
-                $result['technical_data'] = array_map(function($data){
+                $result['technical_data'] = array_map(function ($data) {
                     $data['info'] = strip_tags($data['info']);
                     return $data;
                 }, $result['technical_data']);
@@ -81,7 +78,7 @@ class Product extends BaseModel
         return $result;
     }
 
-    public function productByType($options) 
+    public function productByType($options)
     {
         $this->db->select("SQL_CALC_FOUND_ROWS products.id as product_id, products.title as product_title, products.image", false)
         ->from("(SELECT product_applications.product_id, product_applications.application_id FROM product_applications ".
@@ -89,11 +86,11 @@ class Product extends BaseModel
         ->join("products", "products.id=distinct_products.product_id")
         ->join("applications", "applications.id=distinct_products.application_id")
         ->where("applications.type", isset($options['type'])?(int)$options['type']:APPLICATION_RESIDENTIAL)
-        ->where("products.language_code",isset($options['language_code'])?$options['language_code']:'en')
+        ->where("products.language_code", isset($options['language_code'])?$options['language_code']:'en')
         ->limit(isset($options['limit'])?(int)$options['limit']:RECORDS_PER_PAGE)
         ->offset(isset($options['offset'])?(int)$options['offset']:0);
 
-        if ( ! isset($options['search']) || empty($options['search']) ) {
+        if (! isset($options['search']) || empty($options['search'])) {
             $this->db->where('products.title LIKE', "%{$options['search']}%");
         }
 
@@ -102,7 +99,5 @@ class Product extends BaseModel
         $data['count'] = $this->db->query("SELECT FOUND_ROWS() as count")->row()->count;
         
         return $data;
-
-        
     }
 }

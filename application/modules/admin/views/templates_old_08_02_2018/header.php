@@ -34,7 +34,7 @@
     $sidebarState = isset($adminInfo["sidebar_state"]) ? $adminInfo["sidebar_state"] : "";
     $sideBar = get_cookie('sideBar');
     $sideBar = isset($sideBar) ? $sideBar : "";
-//        echo $controller;die('test');
+    //        echo $controller;die('test');
     ?>
     <body class="<?php echo ($sideBar == 'minimized') ? 'body-sm' : '' ?>">
         <?php //echo '<pre>'; print_r($admininfo); echo '</pre>';?>

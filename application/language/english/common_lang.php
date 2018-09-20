@@ -1,10 +1,11 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 /* WEBSITE LANG FILES */
 $lang["not_an_image"] = "Not an Image";
 $lang["image_too_big"] = "Image too large";
 $lang["use_app_to_signin"] = "Can't Sign in using Website use Android or IOS App, thank you";
+
 /*
  * English language
  */
@@ -56,6 +57,7 @@ $lang["otp_reset_request"] = "Request for new OTP by phone/mail";
 $lang["password_reset_successfully"] = "Password reset successfully";
 $lang["mobile_not_verified"] = "Mobile not verified";
 /* FIELD EXISTS */
+$lang['account_exists'] = 'Your account already exists, Please login to continue';
 $lang["email_exists"] = "Email Exists";
 $lang["vendor_social_exists"] = "Vendor social id exists";
 $lang["mobile_exists"] = "Mobile Number Exists";
@@ -97,6 +99,7 @@ $lang['user_blocked'] = 'You have been blocked from using Seerve, please contact
 
 /* no data */
 $lang['no_records_found'] = 'No records found';
+$lang['no_results_found'] = 'No results found';
 $lang['incorrect_filter_type'] = 'filter type not exists';
 $lang['reset_link_sent_successfully'] = 'Reset Link Sent Successfully';
 $lang['something_went_Worng'] = 'Something Went Worng Please Try After SomeTime';
@@ -157,7 +160,7 @@ $lang['permission_denied'] = 'Permission Denied';
 $lang['link_expired'] = 'This link is expired';
 $lang['invalid_token'] = 'Token is not valid';
 $lang['invalid_request'] = 'Token is missing';
-$lang['account_blocked'] = 'Your account is blocked';
+$lang['account_blocked'] = 'Your account has been blocked';
 $lang['reset_success'] = 'Password successfully reseted';
 $lang['password_already_reset'] = 'You have already reset your password';
 
@@ -191,3 +194,4 @@ $lang['employee_accepted'] = "Employee request has been accepted, please check t
 $lang['employee_rejected'] = "Employee request has been rejected";
 
 $lang['room_fetched'] = "Rooms found";
+$lang['incorrect_password'] = 'Your password is incorrect, Please enter your correct password and Try again.';

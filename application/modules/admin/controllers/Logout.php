@@ -7,7 +7,7 @@ class Logout extends MX_Controller
     public function __construct()
     {
         $this->load->model("Common_model");
-       $this->load->helper(['url', 'cookie']);
+        $this->load->helper(['url', 'cookie']);
         $this->load->library("session");
     }
 
@@ -17,9 +17,10 @@ class Logout extends MX_Controller
      * @description:Logout the user
      */
 
-    public function index() {
+    public function index() 
+    {
         delete_cookie("rcc_appinventiv");
         $this->session->sess_destroy();
-       redirect(base_url() . 'admin/Admin');
+        redirect(base_url() . 'admin/Admin');
     }
 }

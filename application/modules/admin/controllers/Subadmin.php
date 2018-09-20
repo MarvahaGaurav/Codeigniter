@@ -1,16 +1,19 @@
 <?php
 
-if (!defined('BASEPATH'))
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
+}
 
 /**
  * @author     Appinventiv
  * @date       19-04-2017
  * @controller Admin 
  */
-class Subadmin extends MY_Controller {
+class Subadmin extends MY_Controller
+{
 
-    public function __construct() {
+    public function __construct() 
+    {
 
         parent::__construct();
         $this->load->helper(['url', 'form']);
@@ -24,14 +27,15 @@ class Subadmin extends MY_Controller {
         }
         $this->data = [];
         $this->data['admininfo'] = $this->admininfo;
-        if($this->admininfo['role_id'] == 2){
+        if($this->admininfo['role_id'] == 2) {
             $whereArr = ['where'=>['admin_id'=>$this->admininfo['admin_id']]];
             $access_detail = $this->Common_model->fetch_data('sub_admin', ['viewp', 'addp', 'editp', 'blockp', 'deletep', 'access_permission', 'admin_id', 'id'], $whereArr, false);
             $this->data['admin_access_detail'] = $access_detail;
         }
     }
 
-    public function add() {
+    public function add() 
+    {
 
         /*
          * Server Side validation
@@ -65,7 +69,7 @@ class Subadmin extends MY_Controller {
                     $this->load->helper("images");
                     try
                     {
-                        $adminInsertArr['admin_profile_pic'] = $imageName=s3_image_uploader(ABS_PATH.$post['imgurl'],$post['imgurl']);
+                        $adminInsertArr['admin_profile_pic'] = $imageName=s3_image_uploader(ABS_PATH.$post['imgurl'], $post['imgurl']);
                     } catch (Exception $e) {                                
                         $this->data['error'] = strip_tags($this->upload->display_errors());                                
                         $this->session->set_flashdata("flash-message", $e->getMessage());
@@ -84,31 +88,31 @@ class Subadmin extends MY_Controller {
                     if (!empty($post['permission'])) {
                         foreach ($post['permission'] as $key => $value) {
                             switch ($key) {
-                                case 'user':
-                                    $perType = 1;
-                                    break;
-                                case 'merchant':
-                                    $perType = 2;
-                                    break;
-                                case 'product':
-                                    $perType = 3;
-                                    break;
-                                case 'template':
-                                    $perType = 4;
-                                    break;
-                                case 'content':
-                                    $perType = 5;
-                                    break;
-                                case 'version':
-                                    $perType = 6;
-                                    break;
-                                case 'notification':
-                                    $perType = 7;
-                                    break;
-                                case 'messages':
-                                    $perType = 8;
-                                    break;
-                                default:
+                            case 'user':
+                                $perType = 1;
+                                break;
+                            case 'merchant':
+                                $perType = 2;
+                                break;
+                            case 'product':
+                                $perType = 3;
+                                break;
+                            case 'template':
+                                $perType = 4;
+                                break;
+                            case 'content':
+                                $perType = 5;
+                                break;
+                            case 'version':
+                                $perType = 6;
+                                break;
+                            case 'notification':
+                                $perType = 7;
+                                break;
+                            case 'messages':
+                                $perType = 8;
+                                break;
+                            default:
                             }
 
                             $permArr = [];
@@ -153,7 +157,8 @@ class Subadmin extends MY_Controller {
         }
     }
 
-    function check_email_avalibility() {
+    function check_email_avalibility() 
+    {
         if (!$this->input->is_ajax_request()) {
             exit('No direct script access allowed');
         }
@@ -168,7 +173,8 @@ class Subadmin extends MY_Controller {
     }
 
     //fetch the subadmin details
-    public function index() {
+    public function index() 
+    {
         $this->data['admininfo'] = $this->admininfo;
         $get = $this->input->get();
         $get = is_array($get) ? $get : array();
@@ -208,7 +214,8 @@ class Subadmin extends MY_Controller {
     }
 
     //fetch particular user detail
-    public function view() {
+    public function view() 
+    {
         $getDataArr = $this->input->get();
         $admin_id = encryptDecrypt($getDataArr['id'], 'decrypt');
         if (empty($admin_id)) {
@@ -243,14 +250,16 @@ class Subadmin extends MY_Controller {
         load_views('/subadmin/admin-view', $this->data);
     }
 
-    public function deleterecords() {
+    public function deleterecords() 
+    {
         $get = $this->input->get();
         $userId = $get['userId'];
         $this->Subadmin_model->delete_data($userId);
         redirect('/subadmin');
     }
 
-    public function edit() {
+    public function edit() 
+    {
 
         $getData = $this->input->get();
         $post = $this->input->post();
@@ -278,7 +287,7 @@ class Subadmin extends MY_Controller {
                     $this->load->helper("images");
                     try
                     {
-                        $subAdminUpdateArr['admin_profile_pic'] = $imageName=s3_image_uploader(ABS_PATH.$post['imgurl'],$post['imgurl']);
+                        $subAdminUpdateArr['admin_profile_pic'] = $imageName=s3_image_uploader(ABS_PATH.$post['imgurl'], $post['imgurl']);
                     } catch (Exception $e) {                                
                         $this->data['error'] = strip_tags($this->upload->display_errors());                                
                         $this->session->set_flashdata("flash-message", $e->getMessage());
@@ -301,31 +310,31 @@ class Subadmin extends MY_Controller {
                 if (!empty($post['permission'])) {
                     foreach ($post['permission'] as $key => $value) {
                         switch ($key) {
-                            case 'user':
-                                $perType = 1;
-                                break;
-                            case 'merchant':
-                                $perType = 2;
-                                break;
-                            case 'product':
-                                $perType = 3;
-                                break;
-                            case 'template':
-                                $perType = 4;
-                                break;
-                            case 'content':
-                                $perType = 5;
-                                break;
-                            case 'version':
-                                $perType = 6;
-                                break;
-                            case 'notification':
-                                $perType = 7;
-                                break;
-                            case 'messages':
-                                $perType = 8;
-                                break;
-                            default:
+                        case 'user':
+                            $perType = 1;
+                            break;
+                        case 'merchant':
+                            $perType = 2;
+                            break;
+                        case 'product':
+                            $perType = 3;
+                            break;
+                        case 'template':
+                            $perType = 4;
+                            break;
+                        case 'content':
+                            $perType = 5;
+                            break;
+                        case 'version':
+                            $perType = 6;
+                            break;
+                        case 'notification':
+                            $perType = 7;
+                            break;
+                        case 'messages':
+                            $perType = 8;
+                            break;
+                        default:
                         }
 
                         $permArr = [];
@@ -396,7 +405,8 @@ class Subadmin extends MY_Controller {
     }
 
     //........change status of user to block or active
-    public function block() {
+    public function block() 
+    {
         if (!$this->input->is_ajax_request()) {
             exit('No direct script access allowed');
         }

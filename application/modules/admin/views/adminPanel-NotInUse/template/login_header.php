@@ -14,9 +14,9 @@
         
         
     <?php
-            foreach ($css as $value) {
-                echo "<link href='{$value}' rel='stylesheet'>\n\t";
-            }
+    foreach ($css as $value) {
+        echo "<link href='{$value}' rel='stylesheet'>\n\t";
+    }
     ?>
         
         

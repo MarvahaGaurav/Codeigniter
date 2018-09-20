@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined("BASEPATH") or exit("No direct script access allowed");
 /**
  * @property array $data  array of values for view
@@ -7,8 +7,7 @@ defined("BASEPATH") or exit("No direct script access allowed");
  * @property array $session_data - session data
  */
 class BaseController extends MY_Controller
-{   
-    
+{
     protected $data;
     protected $userInfo;
     private $user_query_fields;
@@ -30,11 +29,16 @@ class BaseController extends MY_Controller
         $this->data['employee_permission'] = $this->employeePermission;
     }
 
-    protected function active_session_required()
+    /**
+     * Active session guard
+     *
+     * @return void
+     */
+    protected function activeSessionGuard()
     {
-        if(!empty($this->session_data) && ($this->session_data != '')) { 
+        if (!empty($this->session_data) && ($this->session_data != '')) {
             $sg_userinfo = $this->session_data;
-            if ( $sg_userinfo['status'] == BLOCKED ) {
+            if ($sg_userinfo['status'] == BLOCKED) {
                 $this->session->unset_userdata("sg_userinfo");
                 redirect(base_url());
             }
@@ -44,19 +48,28 @@ class BaseController extends MY_Controller
         }
     }
 
-    protected function inactive_session_required()
+    /**
+     * Inactive session guard
+     *
+     * @return void
+     */
+    protected function inactiveSessionGuard()
     {
-        if(isset($this->session_data) && !empty($this->session_data)) { 
+        if (isset($this->session_data) && !empty($this->session_data)) {
             redirect(base_url());
         }
     }
 
-    protected function neutral_session()
+    /**
+     * Neutral session guard, where if a user is logged in relevant data is fetched
+     *
+     * @return void
+     */
+    protected function neutralGuard()
     {
-        if(!empty($this->session_data) && ($this->session_data != '')) { 
+        if (!empty($this->session_data) && ($this->session_data != '')) {
             $sg_userinfo = $this->session_data;
-            $this->userInfo = $this->Common_model->fetch_data('ai_user', $this->user_query_fields , array('where' => array('user_id' => $sg_userinfo['user_id'],'status'=>1)), true);
+            $this->userInfo = $this->Common_model->fetch_data('ai_user', $this->user_query_fields, array('where' => array('user_id' => $sg_userinfo['user_id'],'status'=>1)), true);
         }
     }
-
 }

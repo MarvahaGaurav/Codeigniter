@@ -1,6 +1,7 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
   |--------------------------------------------------------------------------
@@ -12,7 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   | of this setting
   |
  */
-defined('SHOW_DEBUG_BACKTRACE') OR define('SHOW_DEBUG_BACKTRACE', TRUE);
+defined('SHOW_DEBUG_BACKTRACE') or define('SHOW_DEBUG_BACKTRACE', true);
 
 /*
   |--------------------------------------------------------------------------
@@ -27,10 +28,10 @@ defined('SHOW_DEBUG_BACKTRACE') OR define('SHOW_DEBUG_BACKTRACE', TRUE);
   | always be used to set the mode correctly.
   |
  */
-defined('FILE_READ_MODE') OR define('FILE_READ_MODE', 0644);
-defined('FILE_WRITE_MODE') OR define('FILE_WRITE_MODE', 0666);
-defined('DIR_READ_MODE') OR define('DIR_READ_MODE', 0755);
-defined('DIR_WRITE_MODE') OR define('DIR_WRITE_MODE', 0755);
+defined('FILE_READ_MODE') or define('FILE_READ_MODE', 0644);
+defined('FILE_WRITE_MODE') or define('FILE_WRITE_MODE', 0666);
+defined('DIR_READ_MODE') or define('DIR_READ_MODE', 0755);
+defined('DIR_WRITE_MODE') or define('DIR_WRITE_MODE', 0755);
 
 /*
   |--------------------------------------------------------------------------
@@ -40,14 +41,14 @@ defined('DIR_WRITE_MODE') OR define('DIR_WRITE_MODE', 0755);
   | These modes are used when working with fopen()/popen()
   |
  */
-defined('FOPEN_READ') OR define('FOPEN_READ', 'rb');
-defined('FOPEN_READ_WRITE') OR define('FOPEN_READ_WRITE', 'r+b');
-defined('FOPEN_WRITE_CREATE_DESTRUCTIVE') OR define('FOPEN_WRITE_CREATE_DESTRUCTIVE', 'wb'); // truncates existing file data, use with care
-defined('FOPEN_READ_WRITE_CREATE_DESTRUCTIVE') OR define('FOPEN_READ_WRITE_CREATE_DESTRUCTIVE', 'w+b'); // truncates existing file data, use with care
-defined('FOPEN_WRITE_CREATE') OR define('FOPEN_WRITE_CREATE', 'ab');
-defined('FOPEN_READ_WRITE_CREATE') OR define('FOPEN_READ_WRITE_CREATE', 'a+b');
-defined('FOPEN_WRITE_CREATE_STRICT') OR define('FOPEN_WRITE_CREATE_STRICT', 'xb');
-defined('FOPEN_READ_WRITE_CREATE_STRICT') OR define('FOPEN_READ_WRITE_CREATE_STRICT', 'x+b');
+defined('FOPEN_READ') or define('FOPEN_READ', 'rb');
+defined('FOPEN_READ_WRITE') or define('FOPEN_READ_WRITE', 'r+b');
+defined('FOPEN_WRITE_CREATE_DESTRUCTIVE') or define('FOPEN_WRITE_CREATE_DESTRUCTIVE', 'wb'); // truncates existing file data, use with care
+defined('FOPEN_READ_WRITE_CREATE_DESTRUCTIVE') or define('FOPEN_READ_WRITE_CREATE_DESTRUCTIVE', 'w+b'); // truncates existing file data, use with care
+defined('FOPEN_WRITE_CREATE') or define('FOPEN_WRITE_CREATE', 'ab');
+defined('FOPEN_READ_WRITE_CREATE') or define('FOPEN_READ_WRITE_CREATE', 'a+b');
+defined('FOPEN_WRITE_CREATE_STRICT') or define('FOPEN_WRITE_CREATE_STRICT', 'xb');
+defined('FOPEN_READ_WRITE_CREATE_STRICT') or define('FOPEN_READ_WRITE_CREATE_STRICT', 'x+b');
 
 /*
   |--------------------------------------------------------------------------
@@ -75,48 +76,48 @@ defined('FOPEN_READ_WRITE_CREATE_STRICT') OR define('FOPEN_READ_WRITE_CREATE_STR
   |
  */
 
-defined('BASE_URL') OR define('BASE_URL', $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST']).'/sguide'; // no errors
-defined('EXIT_SUCCESS') OR define('EXIT_SUCCESS', 0); // no errors
-defined('EXIT_ERROR') OR define('EXIT_ERROR', 1); // generic error
-defined('EXIT_CONFIG') OR define('EXIT_CONFIG', 3); // configuration error
-defined('EXIT_UNKNOWN_FILE') OR define('EXIT_UNKNOWN_FILE', 4); // file not found
-defined('EXIT_UNKNOWN_CLASS') OR define('EXIT_UNKNOWN_CLASS', 5); // unknown class
-defined('EXIT_UNKNOWN_METHOD') OR define('EXIT_UNKNOWN_METHOD', 6); // unknown class member
-defined('EXIT_USER_INPUT') OR define('EXIT_USER_INPUT', 7); // invalid user input
-defined('EXIT_DATABASE') OR define('EXIT_DATABASE', 8); // database error
-defined('EXIT__AUTO_MIN') OR define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
-defined('EXIT__AUTO_MAX') OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
+defined('BASE_URL') or define('BASE_URL', $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST']).'/sguide'; // no errors
+defined('EXIT_SUCCESS') or define('EXIT_SUCCESS', 0); // no errors
+defined('EXIT_ERROR') or define('EXIT_ERROR', 1); // generic error
+defined('EXIT_CONFIG') or define('EXIT_CONFIG', 3); // configuration error
+defined('EXIT_UNKNOWN_FILE') or define('EXIT_UNKNOWN_FILE', 4); // file not found
+defined('EXIT_UNKNOWN_CLASS') or define('EXIT_UNKNOWN_CLASS', 5); // unknown class
+defined('EXIT_UNKNOWN_METHOD') or define('EXIT_UNKNOWN_METHOD', 6); // unknown class member
+defined('EXIT_USER_INPUT') or define('EXIT_USER_INPUT', 7); // invalid user input
+defined('EXIT_DATABASE') or define('EXIT_DATABASE', 8); // database error
+defined('EXIT__AUTO_MIN') or define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
+defined('EXIT__AUTO_MAX') or define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
 /* HEADER STATUS CONSTANTS */
-defined("UNAUTHORIZED_ACCESS") OR define("UNAUTHORIZED_ACCESS", 401);
-defined("NOT_AUTHENTICATED") OR define("NOT_AUTHENTICATED", 403);
-defined("ACCESS_TOKEN_NOT_SET") OR define("ACCESS_TOKEN_NOT_SET", 406);
+defined("UNAUTHORIZED_ACCESS") or define("UNAUTHORIZED_ACCESS", 401);
+defined("NOT_AUTHENTICATED") or define("NOT_AUTHENTICATED", 403);
+defined("ACCESS_TOKEN_NOT_SET") or define("ACCESS_TOKEN_NOT_SET", 406);
 
 /* FIELD DOESNT MATCH */
-defined("OLD_PASSWORD_MISMATCH") OR define("OLD_PASSWORD_MISMATCH", 490);
-defined("PASSWORD_MISMATCH") OR define("PASSWORD_MISMATCH", 491);
-defined("NEW_PASSWORD_SAME") OR define("NEW_PASSWORD_SAME", 492);
+defined("OLD_PASSWORD_MISMATCH") or define("OLD_PASSWORD_MISMATCH", 490);
+defined("PASSWORD_MISMATCH") or define("PASSWORD_MISMATCH", 491);
+defined("NEW_PASSWORD_SAME") or define("NEW_PASSWORD_SAME", 492);
 
 /* User status */
-defined('ACTIVE') OR define('ACTIVE', 1);
-defined('BLOCKED') OR define('BLOCKED', 2);
-defined('DELETED') OR define('DELETED', 3);
-defined('INACTIVE') OR define('INACTIVE', 0);
-defined('DEFAULT_DB_DATE_TIME_FORMAT') OR define('DEFAULT_DB_DATE_TIME_FORMAT', date("Y-m-d H:i:s"));
-defined('COOKIE_EXPIRY_TIME') OR define("COOKIE_EXPIRY_TIME", 86400 * 7);
+defined('ACTIVE') or define('ACTIVE', 1);
+defined('BLOCKED') or define('BLOCKED', 2);
+defined('DELETED') or define('DELETED', 3);
+defined('INACTIVE') or define('INACTIVE', 0);
+defined('DEFAULT_DB_DATE_TIME_FORMAT') or define('DEFAULT_DB_DATE_TIME_FORMAT', date("Y-m-d H:i:s"));
+defined('COOKIE_EXPIRY_TIME') or define("COOKIE_EXPIRY_TIME", 86400 * 7);
 
 // device type
 
-defined('ANDROID') OR define('ANDROID', 1);
-defined('IPHONE') OR define('IPHONE', 2);
+defined('ANDROID') or define('ANDROID', 1);
+defined('IPHONE') or define('IPHONE', 2);
 
 //update type
-defined('NORMAL') OR define('NORMAL', 1);
-defined('SKIPPABLE') OR define('SKIPPABLE', 2);
-defined('FORCEFULLY') OR define('FORCEFULLY', 3);
+defined('NORMAL') or define('NORMAL', 1);
+defined('SKIPPABLE') or define('SKIPPABLE', 2);
+defined('FORCEFULLY') or define('FORCEFULLY', 3);
 
-defined('YES') OR define('YES', 1);
-defined('NO') OR define('NO', 0);
+defined('YES') or define('YES', 1);
+defined('NO') or define('NO', 0);
 
 /*
  * Basic Auth UserName and Password
@@ -137,16 +138,16 @@ define("THUMB_IMAGE_PATH", 'http://' . $_SERVER['HTTP_HOST'] . UPLOAD_PATH . "th
 define("DEFAULT_IMAGE", '/public/images/default.png');
 define("TIMEZONE", 'UTC');
 /* AWS S3  */
-defined("AWS_ACCESSKEY") or define('AWS_ACCESSKEY', 'AKIAIGTT2CNXI3KAGXSQ');
-defined('AWS_SECRET_KEY') or define('AWS_SECRET_KEY', '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');
+defined("AWS_ACCESSKEY") or define('AWS_ACCESSKEY', 'AKIAI5YANLJPWEKLH3PQ');
+defined('AWS_SECRET_KEY') or define('AWS_SECRET_KEY', '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');
 
 /* image constants */
 defined("AMAZONS3_BUCKET") or define("AMAZONS3_BUCKET", "appinventiv-development");
 
 /* Content Type */
-defined("CONTENT_TYPE_IMAGE") OR define("CONTENT_TYPE_IMAGE", 1);
-defined("CONTENT_TYPE_VIDEO") OR define("CONTENT_TYPE_VIDEO", 2);
-defined("CONTENT_TYPE_PDF") OR define("CONTENT_TYPE_PDF", 3);
+defined("CONTENT_TYPE_IMAGE") or define("CONTENT_TYPE_IMAGE", 1);
+defined("CONTENT_TYPE_VIDEO") or define("CONTENT_TYPE_VIDEO", 2);
+defined("CONTENT_TYPE_PDF") or define("CONTENT_TYPE_PDF", 3);
 
 //----------------ERROR MESSAGE CODE FOR CLIENT SIDE VALIDATIONS ---------------------------//
 
@@ -243,14 +244,14 @@ define('CHAT_PUSH', 7);
 /*
  * Encrypt Key
  */
-defined("OPEN_SSL_KEY") OR define('OPEN_SSL_KEY', '011b519a043dcb915314695e1ce560dd4e29dae06867cdb701ffc96350e18caf');
+defined("OPEN_SSL_KEY") or define('OPEN_SSL_KEY', '011b519a043dcb915314695e1ce560dd4e29dae06867cdb701ffc96350e18caf');
 
-defined("PRIVATE_USER") OR define("PRIVATE_USER", 1);
-defined("INSTALLER") OR define("INSTALLER", 2);
-defined("ARCHITECT") OR define("ARCHITECT", 3);
-defined("ELECTRICAL_PLANNER") OR define("ELECTRICAL_PLANNER", 4);
-defined("WHOLESALER") OR define("WHOLESALER", 5);
-defined("BUSINESS_USER") OR define("BUSINESS_USER", 6);
+defined("PRIVATE_USER") or define("PRIVATE_USER", 1);
+defined("INSTALLER") or define("INSTALLER", 2);
+defined("ARCHITECT") or define("ARCHITECT", 3);
+defined("ELECTRICAL_PLANNER") or define("ELECTRICAL_PLANNER", 4);
+defined("WHOLESALER") or define("WHOLESALER", 5);
+defined("BUSINESS_USER") or define("BUSINESS_USER", 6);
 
 /* ROLES */
 defined("ROLE_USER") or define("ROLE_USER", 0);
@@ -261,7 +262,7 @@ defined("ROLE_OWNER") or define("ROLE_OWNER", 2);
 defined("APPLICATION_RESIDENTIAL") or define("APPLICATION_RESIDENTIAL", 1);
 defined("APPLICATION_PROFESSIONAL") or define("APPLICATION_PROFESSIONAL", 2);
 
-define('ABS_PATH',getcwd().'/public/images/');
+define('ABS_PATH', getcwd().'/public/images/');
 
 defined("EMPLOYEE_REQUEST_PENDING") or define("EMPLOYEE_REQUEST_PENDING", 0);
 defined("EMPLOYEE_REQUEST_ACCEPTED") or define("EMPLOYEE_REQUEST_ACCEPTED", 1);

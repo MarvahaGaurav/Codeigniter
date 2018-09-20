@@ -343,12 +343,14 @@ button:focus {
 
 /* alert */
 .alert {
+    border-radius: 0 !important;
     position: fixed !important;
-    top: 7px !important;
-    right: 7px !important;
+    top: 0px !important;
+    right: 0px !important;
     z-index: 9999 !important;
     left: initial !important;
-    width: 300px !important;
+    width: 100vw !important;
+    height: 50px !important;
 }
 .alert h4 {
     margin: 0 0 12px 0;

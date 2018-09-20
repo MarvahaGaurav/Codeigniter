@@ -9,10 +9,10 @@
 <div class="inner-right-panel">
     <!--Filter Section -->
     <?php
-        if ($this->session->flashdata('message') != '') {
+    if ($this->session->flashdata('message') != '') {
 
-            echo $this->session->flashdata('message');
-        }
+        echo $this->session->flashdata('message');
+    }
     ?>
         <div class="form-item-wrap">
             <div class="form-item-title clearfix">

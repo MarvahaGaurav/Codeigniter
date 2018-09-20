@@ -162,9 +162,9 @@
             autoApply:true
         }
       );
-      <?php if(empty($detail['date_range'])){?>
+        <?php if(empty($detail['date_range'])) {?>
         $('#regDate').val('');
-      <?php } ?>
+        <?php } ?>
     })
 
 </script>

@@ -10,7 +10,8 @@
     <!--Filter Section -->
     <div class="form-item-wrap">
         <div class="form-item-title clearfix">
-            <h3 class="title">Technician Detail <button type="button" style="padding:0 20px" class="commn-btn save pull-right"><?php if($profile['user_type'] == 2){ echo ($profile['is_owner'] == '2')?"Owner":"Employee";} ?></button></h3>
+            <h3 class="title">Technician Detail <button type="button" style="padding:0 20px" class="commn-btn save pull-right"><?php if($profile['user_type'] == 2) { echo ($profile['is_owner'] == '2')?"Owner":"Employee";
+           } ?></button></h3>
         </div>
         <!-- title and form upper action end-->
         <div class="form-ele-wrapper clearfix">

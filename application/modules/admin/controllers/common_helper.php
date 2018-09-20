@@ -1,11 +1,13 @@
 <?php
 
-if (!defined('BASEPATH'))
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
+}
 
 if (!function_exists('pr')) {
 
-    function pr($d) {
+    function pr($d) 
+    {
         echo "<pre>";
         print_r($d);
         echo "</pre>";
@@ -14,14 +16,16 @@ if (!function_exists('pr')) {
 
 }
 
-function load_views($customView, $data = array()) {
+function load_views($customView, $data = array()) 
+{
     $CI = &get_instance();
     $CI->load->view('templates/header', $data);
     $CI->load->view($customView, $data);
     $CI->load->view('templates/footer', $data);
 }
 
-function getConfig($uploadPath, $acptFormat, $maxSize = 3000, $maxWidth = 1024, $maxHeight = 768, $encryptName = TRUE) {
+function getConfig($uploadPath, $acptFormat, $maxSize = 3000, $maxWidth = 1024, $maxHeight = 768, $encryptName = true) 
+{
     $config = [];
     $config['upload_path'] = $uploadPath;
     $config['allowed_types'] = $acptFormat;
@@ -32,7 +36,8 @@ function getConfig($uploadPath, $acptFormat, $maxSize = 3000, $maxWidth = 1024, 
     return $config;
 }
 
-function create_access_token($user_id = '1', $email = 'dummyemail@gmail.com') {
+function create_access_token($user_id = '1', $email = 'dummyemail@gmail.com') 
+{
     $session_private_key = chr(mt_rand(ord('a'), ord('z'))) . substr(md5(time()), 1);
     $session_public_key = encrypt($user_id . $email, $session_private_key, true);
     $access_token['private_key'] = base64_encode($session_private_key);
@@ -40,7 +45,8 @@ function create_access_token($user_id = '1', $email = 'dummyemail@gmail.com') {
     return $access_token;
 }
 
-function encrypt($text, $salt = 'A3p@pI#%!nVeNiT@#&vNaZiM', $isBaseEncode = true) {
+function encrypt($text, $salt = 'A3p@pI#%!nVeNiT@#&vNaZiM', $isBaseEncode = true) 
+{
     if ($isBaseEncode) {
         return trim(base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $salt, $text, MCRYPT_MODE_ECB, mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB), MCRYPT_RAND))));
     } else {
@@ -48,15 +54,18 @@ function encrypt($text, $salt = 'A3p@pI#%!nVeNiT@#&vNaZiM', $isBaseEncode = true
     }
 }
 
-function decrypt($text, $salt = 'A3p@pI#%!nVeNiT@#&vNaZiM') {
+function decrypt($text, $salt = 'A3p@pI#%!nVeNiT@#&vNaZiM') 
+{
     return trim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $salt, base64_decode($text), MCRYPT_MODE_ECB, mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB), MCRYPT_RAND)));
 }
 
-function datetime() {
+function datetime() 
+{
     return date('Y-m-d H:i:s');
 }
 
-function encryptDecrypt($string, $type = 'encrypt') {
+function encryptDecrypt($string, $type = 'encrypt') 
+{
 
     if ($type == 'decrypt') {
         $enc_string = decrypt_with_openssl($string);
@@ -67,7 +76,8 @@ function encryptDecrypt($string, $type = 'encrypt') {
     return $enc_string;
 }
 
-function decrypt_with_openssl($string, $urldecode = true) {
+function decrypt_with_openssl($string, $urldecode = true) 
+{
     $obj = new OpenSSLEncrypt($string);
     $obj->key = OPEN_SSL_KEY;
     $string = str_replace(array('Beee', 'Kiii', 'Per'), array('/', '=', '%'), $string);
@@ -83,7 +93,8 @@ function decrypt_with_openssl($string, $urldecode = true) {
     return $decryptedData;
 }
 
-function encrypt_with_openssl($string, $urlencode = true) {
+function encrypt_with_openssl($string, $urlencode = true) 
+{
     $obj = new OpenSSLEncrypt($string);
     $obj->key = OPEN_SSL_KEY;
     $iv = $obj->initializationVector;
@@ -93,13 +104,15 @@ function encrypt_with_openssl($string, $urlencode = true) {
     return $encryptedData;
 }
 
-function show404($error = "", $url = 'admin') {
+function show404($error = "", $url = 'admin') 
+{
     $error = (empty($error)) ? 'Invalid Request' : $error;
     echo $error;
     die('<a href="/admin/admin"><br>Click here to redirectss</a>');
 }
 
-function sendNotiViaCurl($pushData) {
+function sendNotiViaCurl($pushData) 
+{
     $header = array();
     $ch = curl_init();
     $timeout = 1;
@@ -107,8 +120,8 @@ function sendNotiViaCurl($pushData) {
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HEADER, false);
     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($pushData));
-//    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-//    curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+    //    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+    //    curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
 
     $data = curl_exec($ch);
     pr($data);
@@ -120,7 +133,8 @@ function sendNotiViaCurl($pushData) {
  * @params Array();
  */
 
-function sendIosPush($pushDataArr) {
+function sendIosPush($pushDataArr) 
+{
     $CI = &get_instance();
     $isSuccess = $CI->commonfn->iosPush($pushDataArr['deviceTokens'], $pushDataArr['payload']);
     return $isSuccess;
@@ -130,7 +144,8 @@ function sendIosPush($pushDataArr) {
  * @params Array();
  */
 
-function sendAndroidPush($pushDataArr) {
+function sendAndroidPush($pushDataArr) 
+{
     $CI = &get_instance();
     $isSuccess = $CI->commonfn->androidPush($pushDataArr['deviceTokens'], $pushDataArr['payload']);
     return $isSuccess;

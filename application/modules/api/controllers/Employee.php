@@ -2,15 +2,18 @@
 
 require APPPATH . 'libraries/REST_Controller.php';
 
-class Employee extends REST_Controller {
+class Employee extends REST_Controller
+{
 
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
         $this->load->model('Common_model');
         $this->load->library('form_validation');
     }
 
-    public function index_post() {
+    public function index_post()
+    {
         $postDataArr = $this->post();
         $config = [];
 
@@ -19,7 +22,7 @@ class Employee extends REST_Controller {
                 'field' => 'accesstoken',
                 'label' => 'Access Token',
                 'rules' => 'required'
-            )                       
+            )
         );
         
         $this->form_validation->set_rules($config);
@@ -49,15 +52,15 @@ class Employee extends REST_Controller {
                 if ($user_info['status'] == 2) {
                     $this->response(array('code' => ACCOUNT_BLOCKED, 'msg' => $this->lang->line('account_blocked'), 'result' => (object)[]));
                 }
-                if ($this->db->trans_status() === TRUE) {
+                if ($this->db->trans_status() === true) {
                     $this->db->trans_commit(); 
-                    if($user_info['company_id'] > 0 && $user_info['is_owner'] == '2'){
+                    if($user_info['company_id'] > 0 && $user_info['is_owner'] == '2') {
                         $fields = 'erm.er_id,erm.requested_by,u.user_id';
-                        $myemployeerequests = $this->Common_model->EemployeeRequestsbyUser($fields,$user_info['user_id'], $user_info['company_id'],'0');
+                        $myemployeerequests = $this->Common_model->EemployeeRequestsbyUser($fields, $user_info['user_id'], $user_info['company_id'], '0');
                         //pr($myemployeerequests);
                         //echo $this->db->last_query(); die;
-                        if($myemployeerequests){
-                            if(is_array($myemployeerequests[0])){
+                        if($myemployeerequests) {
+                            if(is_array($myemployeerequests[0])) {
                                 foreach($myemployeerequests as $req){
                                     $userreq[] = $req['user_id'];
                                 }                                                                
@@ -69,11 +72,11 @@ class Employee extends REST_Controller {
                         //pr($whereArr);
                         //$whereArr['where'] = ['company_id'=>$user_info['company_id'],'is_owner'=>'1'];
                         //$myEmployeeList =  $this->Common_model->fetch_data('ai_user', 'user_id,first_name,middle_name,last_name,email,user_type,is_owner,IF(image !="",image,"") as image,IF(image_thumb !="",image_thumb,"") as image_thumb', $whereArr, false); 
-                         $myEmployeeList = $this->Common_model->getMyEmployeesList('u.user_id,u.first_name,u.middle_name,u.last_name,u.email,u.user_type,u.is_owner,IF(u.image !="",u.image,"") as image,IF(u.image_thumb !="",u.image_thumb,"") as image_thumb',$user_info['user_id'],$user_info['company_id']);
+                         $myEmployeeList = $this->Common_model->getMyEmployeesList('u.user_id,u.first_name,u.middle_name,u.last_name,u.email,u.user_type,u.is_owner,IF(u.image !="",u.image,"") as image,IF(u.image_thumb !="",u.image_thumb,"") as image_thumb', $user_info['user_id'], $user_info['company_id']);
                         //echo $this->db->last_query(); die;
-                         if(!$myEmployeeList){
-                             $myEmployeeList = [];
-                         }
+                        if(!$myEmployeeList) {
+                            $myEmployeeList = [];
+                        }
                         $this->response(array('code' => SUCCESS_CODE, 'msg' => $this->lang->line('process_success'), 'result' => $myEmployeeList));
                     }else{
                         $myEmployeeList = [];
@@ -94,7 +97,8 @@ class Employee extends REST_Controller {
         }
     }
     
-    public function myemployeereuestlist_post() {
+    public function myemployeereuestlist_post() 
+    {
         $postDataArr = $this->post();
         $config = [];
 
@@ -134,14 +138,14 @@ class Employee extends REST_Controller {
                 if ($user_info['status'] == 2) {
                     $this->response(array('code' => ACCOUNT_BLOCKED, 'msg' => $this->lang->line('account_blocked'), 'result' => (object)[]));
                 }
-                if ($this->db->trans_status() === TRUE) {
+                if ($this->db->trans_status() === true) {
                     $this->db->trans_commit(); 
                     if($user_info['company_id'] > 0 && $user_info['is_owner'] == '2') {
                         $fields = 'erm.*,u.user_id,u.first_name,u.middle_name,u.last_name,email,user_type,is_owner,IF(image !="",image,"") as image,IF(image_thumb !="",image_thumb,"") as image_thumb';
-                        $myemployeerequests = $this->Common_model->EemployeeRequestsbyUser($fields,$user_info['user_id'], $user_info['company_id'],'0');
+                        $myemployeerequests = $this->Common_model->EemployeeRequestsbyUser($fields, $user_info['user_id'], $user_info['company_id'], '0');
                         //echo $this->db->last_query(); die;
-                       // print_r($myemployeerequests);
-                        if(!empty($myemployeerequests)){
+                        // print_r($myemployeerequests);
+                        if(!empty($myemployeerequests)) {
                             /*echo count($myemployeerequests); ;
                             var_dump(is_array($myemployeerequests[0]));die;
                             if(is_array($myemployeerequests[0]) === FALSE){
@@ -180,53 +184,56 @@ class Employee extends REST_Controller {
      *   operationId="actiononemployee_post",
      *   consumes ={"multipart/form-data"},
      *   produces={"application/json"},
-     *  @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="accesstoken",
      *     in="formData",
      *     description="Access token received during signup or login",
      *     required=true,
      *     type="string"
      *   ),
-     *  @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="employee_id",
      *     in="formData",
      *     description="Employee Id",
      *     required=true,
      *     type="string"
      *   ),
-     *  @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="action",
      *     in="formData",
      *     description="action",
      *     required=true,
      *     type="string"
      *   ),
-     *  @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="er_id",
      *     in="formData",
      *     description="er_id",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Response(response=200, description="Employee List"),
-     *   @SWG\Response(response=101, description="Account Blocked"),     
-     *   @SWG\Response(response=201, description="Header is missing"),        
-     *   @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
+     * @SWG\Response(response=200, description="Employee List"),
+     * @SWG\Response(response=101, description="Account Blocked"),     
+     * @SWG\Response(response=201, description="Header is missing"),        
+     * @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
      * )
      */
-    public function actiononemployee_post() {
+    public function actiononemployee_post() 
+    {
         $postDataArr = $this->post();
         $language_code = $this->langcode_validate();
         $config = [];
         $head = $this->head();
-        if ( (!isset($head['accesstoken']) || empty(trim($head['accesstoken']))) && (!isset($head['Accesstoken']) || empty(trim($head['Accesstoken']))) ) {
-            $this->response([
+        if ((!isset($head['accesstoken']) || empty(trim($head['accesstoken']))) && (!isset($head['Accesstoken']) || empty(trim($head['Accesstoken']))) ) {
+            $this->response(
+                [
                 "code" => HTTP_UNAUTHORIZED,
                 "api_code_result" => "UNAUTHORIZED",
                 "msg" => $this->lang->line("invalid_access_token")
-            ], HTTP_UNAUTHORIZED);
+                ], HTTP_UNAUTHORIZED
+            );
         }
-        if ( isset($head['Accesstoken']) && !empty($head['Accesstoken']) ) {
+        if (isset($head['Accesstoken']) && !empty($head['Accesstoken']) ) {
             $head['accesstoken'] = $head['Accesstoken'];
         }
         $config = array(
@@ -284,11 +291,11 @@ class Employee extends REST_Controller {
                 } else {
                      $this->response(array('code' => INVALID_REQUEST_ID, 'msg' => $this->lang->line('invalid_request_id'), 'result' => (object)[]));
                 }
-                if ($this->db->trans_status() === TRUE) {
+                if ($this->db->trans_status() === true) {
                     $this->db->trans_commit(); 
                     
                     /* I have to work in this area*/                    
-                    if($updaterequesr){
+                    if($updaterequesr) {
                         // $message = "";
                         // $alert = "";
                         // if ( $postDataArr['action'] == 1 ) {
@@ -364,7 +371,8 @@ class Employee extends REST_Controller {
         }
     }
 
-    public function employeedetail_post() {
+    public function employeedetail_post() 
+    {
         $postDataArr = $this->post();
         $config = [];
 
@@ -404,15 +412,15 @@ class Employee extends REST_Controller {
                     $this->response(array('code' => ACCOUNT_BLOCKED, 'msg' => $this->lang->line('account_blocked'), 'result' => (object)[]));
                 }
                 
-                if ($this->db->trans_status() === TRUE) {
+                if ($this->db->trans_status() === true) {
                     $this->db->trans_commit(); 
                     
                     /* I have to work in this area*/
                     $whereArr['where'] = ['user_id'=>$postDataArr['employee_id'],'is_owner'=>'1'];
                     $myEmployeeDetail =  $this->Common_model->fetch_data('ai_user', 'user_id,first_name,middle_name,last_name,email,company_id,IF(image !="",CONCAT("' . IMAGE_PATH . '","",image),"") as image,IF(image_thumb !="",CONCAT("' . THUMB_IMAGE_PATH . '","",image_thumb),"") as image_thumb', $whereArr, true); 
                         
-                    if($user_info['company_id'] > 0 && $user_info['is_owner'] == '2' && $user_info['company_id'] == $myEmployeeDetail['company_id']){
-                       $this->response(array('code' => SUCCESS_CODE, 'msg' => $this->lang->line('process_success'), 'result' => $myEmployeeDetail));
+                    if($user_info['company_id'] > 0 && $user_info['is_owner'] == '2' && $user_info['company_id'] == $myEmployeeDetail['company_id']) {
+                        $this->response(array('code' => SUCCESS_CODE, 'msg' => $this->lang->line('process_success'), 'result' => $myEmployeeDetail));
                     }else{
                         $myEmployeeDetail = [];
                         $this->response(array('code' => NO_DATA_FOUND, 'msg' => $this->lang->line('no_data_found'), 'result' => (object)$myEmployeeDetail));
@@ -441,123 +449,126 @@ class Employee extends REST_Controller {
      *   operationId="setpermissopnforemp_post",
      *   consumes ={"multipart/form-data"},
      *   produces={"application/json"},
-     *  @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="accesstoken",
      *     in="formData",
      *     description="",
      *     required=true,
      *     type="string"
      *   ),
-     *  @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="employee_id",
      *     in="formData",
      *     description="",
      *     required=true,
      *     type="string"
      *   ),
-     *  @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="quote_view",
      *     in="formData",
      *     description="",
      *     required=true,
      *     type="string"
      *   ),
-     *  @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="quote_add",
      *     in="formData",
      *     description="",
      *     required=true,
      *     type="string"
      *   ),
-     *  @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="quote_edit",
      *     in="formData",
      *     description="",
      *     required=true,
      *     type="string"
      *   ),
-     *  @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="quote_delete",
      *     in="formData",
      *     description="",
      *     required=true,
      *     type="string"
      *   ),
-     *  @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="insp_view",
      *     in="formData",
      *     description="",
      *     required=true,
      *     type="string"
      *   ),
-     *  @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="insp_delete",
      *     in="formData",
      *     description="",
      *     required=true,
      *     type="string"
      *   ),
-     *  @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="insp_add",
      *     in="formData",
      *     description="",
      *     required=true,
      *     type="string"
      *   ),
-     *  @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="insp_edit",
      *     in="formData",
      *     description="",
      *     required=true,
      *     type="string"
      *   ),
-     *  @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="project_view",
      *     in="formData",
      *     description="",
      *     required=true,
      *     type="string"
      *   ),
-     *  @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="project_add",
      *     in="formData",
      *     description="",
      *     required=true,
      *     type="string"
      *   ),
-     *  @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="project_edit",
      *     in="formData",
      *     description="",
      *     required=true,
      *     type="string"
      *   ),
-     *  @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="project_delete",
      *     in="formData",
      *     description="",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Response(response=200, description="Employee List"),
-     *   @SWG\Response(response=101, description="Account Blocked"),     
-     *   @SWG\Response(response=201, description="Header is missing"),        
-     *   @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
+     * @SWG\Response(response=200, description="Employee List"),
+     * @SWG\Response(response=101, description="Account Blocked"),     
+     * @SWG\Response(response=201, description="Header is missing"),        
+     * @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
      * )
      */
-    public function setpermissopnforemp_post() {
+    public function setpermissopnforemp_post() 
+    {
         $postDataArr = $this->post();
         $langugage_code = $this->langcode_validate();
         $config = [];
         $head = $this->head();
-        if ( (!isset($head['accesstoken']) || empty(trim($head['accesstoken']))) && (!isset($head['Accesstoken']) || empty(trim($head['Accesstoken']))) ) {
-            $this->response([
+        if ((!isset($head['accesstoken']) || empty(trim($head['accesstoken']))) && (!isset($head['Accesstoken']) || empty(trim($head['Accesstoken']))) ) {
+            $this->response(
+                [
                 "code" => HTTP_UNAUTHORIZED,
                 "api_code_result" => "UNAUTHORIZED",
                 "msg" => $this->lang->line("invalid_access_token")
-            ], HTTP_UNAUTHORIZED);
+                ], HTTP_UNAUTHORIZED
+            );
         }
-        if ( isset($head['Accesstoken']) && !empty($head['Accesstoken']) ) {
+        if (isset($head['Accesstoken']) && !empty($head['Accesstoken']) ) {
             $head['accesstoken'] = $head['Accesstoken'];
         }
         $config = array(
@@ -611,7 +622,7 @@ class Employee extends REST_Controller {
                 $insArr['project_add'] = $postDataArr['project_add'];
                 $insArr['project_edit'] = $postDataArr['project_edit'];
                 $insArr['project_delete'] = $postDataArr['project_delete'];
-                if(!empty($myEmployeepermissiondetail)){ 
+                if(!empty($myEmployeepermissiondetail)) { 
                     //die('update');
                     $insArr['modify_date'] = date('Y-m-d H:i:s');
                     $whereArr['where'] = ['pr_id'=>$myEmployeepermissiondetail['pr_id']];                
@@ -622,7 +633,7 @@ class Employee extends REST_Controller {
                     $insArr['employee_id'] = $postDataArr['employee_id'];
                     $insertrequesr =  $this->Common_model->insert_single('user_employee_permission', $insArr); 
                 }
-                if ($this->db->trans_status() === TRUE) {
+                if ($this->db->trans_status() === true) {
                     $this->db->trans_commit(); 
 
                     // $this->load->model("UtilModel");
@@ -692,26 +703,30 @@ class Employee extends REST_Controller {
         $language_code = trim($language_code);
         $valid_language_codes = ["en","da","nb","sv","fi","fr","nl","de"];
 
-        if ( empty($language_code) ) {
-            $this->response([
+        if (empty($language_code) ) {
+            $this->response(
+                [
                 'code' => HTTP_UNPROCESSABLE_ENTITY,
                 'api_code_result' => 'UNPROCESSABLE_ENTITY',
                 'msg' => $this->lang->line('header_missing'),
                 'extra_info' => [
                     "missing_parameter" => "language_code"
                 ]
-            ]);
+                ]
+            );
         }
 
-        if ( ! in_array($language_code, $valid_language_codes) ) {
-            $this->response([
+        if (! in_array($language_code, $valid_language_codes) ) {
+            $this->response(
+                [
                 'code' => HTTP_UNPROCESSABLE_ENTITY,
                 'api_code_result' => 'UNPROCESSABLE_ENTITY',
                 'msg' => $this->lang->line('invalid_header'),
                 'extra_info' => [
                     "missing_parameter" => $this->lang->line('invalid_language_code')
                 ]
-            ]);
+                ]
+            );
         }
 
         $language_map = [

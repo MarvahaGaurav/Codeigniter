@@ -8,7 +8,7 @@
 <!--breadcrumb wrap close-->
 <div class="inner-right-panel">
     <!--Filter Section -->
-    <?php echo form_open('',array('id'=>'password_change_form'));?>
+    <?php echo form_open('', array('id'=>'password_change_form'));?>
         <div class="form-item-wrap">
             <div class="form-item-title clearfix">
                 <h3 class="title">Admin Change Password</h3>
@@ -27,7 +27,7 @@
 
 
                                 <input type="password" class="form-control material-control" maxlength="55" name="oldpassword" value="<?php echo set_value('oldpassword');?>">
-                                <?php echo isset($error_message)?'<label class="alert-danger">'.$error_message.'</label>':form_error('oldpassword','<label class="alert-danger">','</label>');?>
+                                <?php echo isset($error_message)?'<label class="alert-danger">'.$error_message.'</label>':form_error('oldpassword', '<label class="alert-danger">', '</label>');?>
                                 <!-- <span class="error_wrap"></span> -->
                             </div>
                         </div>
@@ -41,7 +41,7 @@
 
 
                                 <input type="password" class="form-control material-control" maxlength="55" name="password" value="<?php echo set_value('password');?>" id="password">
-                                <?php echo form_error('password','<label class="alert-danger">','</label>');?>
+                                <?php echo form_error('password', '<label class="alert-danger">', '</label>');?>
                                 <!-- <span class="error_wrap"></span> -->
                             </div>
                         </div>
@@ -54,7 +54,7 @@
 
 
                                 <input type="password" class="form-control material-control" maxlength="55" name="confirm_password" value="<?php echo set_value('confirm_password');?>">
-                                <?php echo form_error('confirm_password','<label class="alert-danger">','</label>');?>
+                                <?php echo form_error('confirm_password', '<label class="alert-danger">', '</label>');?>
                                 <!-- <span class="error_wrap"></span> -->
                             </div>
                         </div>

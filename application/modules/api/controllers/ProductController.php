@@ -1,9 +1,9 @@
 <?php
-defined("BASEPATH") OR exit("No direct script access allowed");
+defined("BASEPATH") or exit("No direct script access allowed");
 
 require 'BaseController.php';
 
-class ProductController extends BaseController 
+class ProductController extends BaseController
 {
     public function __construct()
     {
@@ -18,32 +18,32 @@ class ProductController extends BaseController
      *   description="",
      *   operationId="application_products_get",
      *   produces={"application/json"},
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="X-Language-Code",
      *     in="header",
      *     description="en ,da ,nb ,sv ,fi ,fr ,nl ,de",
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="application_id",
      *     in="query",
      *     description="1-Residential and 2-Professional",
      *     type="string",
-     *     required = true 
-     *   ),  
-     *   @SWG\Parameter(
+     *     required = true
+     *   ),
+     * @SWG\Parameter(
      *     name="offset",
      *     in="query",
      *     description="offset paramters to paginate",
      *     type="string"
-     *   ),  
-     *   @SWG\Response(response=200, description="OK"),
-     *   @SWG\Response(response=401, description="Unauthorize"),
-     *   @SWG\Response(response=202, description="No data found"), 
+     *   ),
+     * @SWG\Response(response=200, description="OK"),
+     * @SWG\Response(response=401, description="Unauthorize"),
+     * @SWG\Response(response=202, description="No data found"),
      * )
      */
     public function application_products_get()
-    {   
+    {
         $language_code = $this->langcode_validate();
 
         $request_data = $this->get();
@@ -53,15 +53,17 @@ class ProductController extends BaseController
 
         $check = check_empty_parameters($request_data, $mandatory_fields);
 
-        if ( $check['error'] ) {
-            $this->response([
+        if ($check['error']) {
+            $this->response(
+                [
                 'code' => HTTP_UNPROCESSABLE_ENTITY,
                 'api_code_result' => 'UNPROCESSABLE_ENTITY',
                 'msg' => $this->lang->line('missing_parameter'),
                 'extra_info' => [
                     "missing_parameter" => $check['parameter']
                 ]
-            ]);
+                ]
+            );
         }
 
         $offset = isset($request_data['offset'])?(int)$request_data['offset']:0;
@@ -74,15 +76,17 @@ class ProductController extends BaseController
         $count = (int)$products['count'];
         $next_count = $offset + RECORDS_PER_PAGE;
 
-        if ( ! $products['result'] ) {
-            $this->response([
+        if (! $products['result']) {
+            $this->response(
+                [
                 "code" => NO_DATA_FOUND,
                 "api_code_result" => "NO_DATA_FOUND",
                 "msg" => $this->lang->line("no_records_found")
-            ]);
+                ]
+            );
         }
 
-        if ( $next_count < $count ) {
+        if ($next_count < $count) {
             $offset = $next_count;
             $link = "/api/v1/applications/{$request_data['application_id']}/products?offset={$next_count}";
             $alt_link = "/applications/{$request_data['application_id']}/products?offset={$next_count}";
@@ -104,7 +108,6 @@ class ProductController extends BaseController
         ];
 
         $this->response($response);
-        
     }
 
     /**
@@ -114,39 +117,39 @@ class ProductController extends BaseController
      *   description="",
      *   operationId="application_get",
      *   produces={"application/json"},
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="X-Language-Code",
      *     in="header",
      *     description="en ,da ,nb ,sv ,fi ,fr ,nl ,de",
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="product_id",
      *     in="query",
      *     description="Product id",
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="offset",
      *     in="query",
      *     description="",
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="search",
      *     in="query",
      *     description="Search key",
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="type",
      *     in="query",
      *     description="1-Residential, 2-Professional",
      *     type="string"
      *   ),
-     *   @SWG\Response(response=200, description="OK"),
-     *   @SWG\Response(response=401, description="Unauthorize"),
-     *   @SWG\Response(response=202, description="No data found"), 
+     * @SWG\Response(response=200, description="OK"),
+     * @SWG\Response(response=401, description="Unauthorize"),
+     * @SWG\Response(response=202, description="No data found"),
      * )
      */
     public function products_get()
@@ -171,7 +174,7 @@ class ProductController extends BaseController
         // }
 
         $product_listing = false;
-        if ( isset($request_data['product_id']) ) {
+        if (isset($request_data['product_id'])) {
             $params['product_id'] = $request_data['product_id'];
         } else {
             $product_listing = true;
@@ -182,7 +185,7 @@ class ProductController extends BaseController
             $params['language_code'] = $language_code;
         }
 
-        if ( isset($request_data['type']) ) {
+        if (isset($request_data['type'])) {
             $validTypes = [APPLICATION_RESIDENTIAL,APPLICATION_PROFESSIONAL];
             $params['type'] = in_array((int)$request_data['type'], $validTypes)?(int)$request_data['type']:APPLICATION_RESIDENTIAL;
             $products = $this->Product->productByType($params);
@@ -195,11 +198,11 @@ class ProductController extends BaseController
             "msg" => $this->lang->line("products_found")
         ];
 
-        if ( $product_listing ) {
+        if ($product_listing) {
             $count = (int)$products['count'];
             $next_count = $offset + RECORDS_PER_PAGE;
            
-            if ( $next_count < $count ) {
+            if ($next_count < $count) {
                 $offset = $next_count;
                 $type = isset($request_data['type'])&&in_array((int)$type, $validTypes)?"&type={$request_data['type']}":'';
                 $link = "/api/v1/products?offset={$next_count}" . $type;
@@ -215,12 +218,10 @@ class ProductController extends BaseController
                 "url" => $link,
                 "alternate_link" => $alt_link
             ];
-            
         } else {
             $response["data"] = $products;
         }
 
         $this->response($response);
     }
-
 }

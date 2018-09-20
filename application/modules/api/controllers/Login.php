@@ -2,9 +2,11 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 require APPPATH . '/libraries/REST_Controller.php';
 
-class Login extends REST_Controller {
+class Login extends REST_Controller
+{
 
-    function __construct() {
+    function __construct() 
+    {
         parent::__construct();
         $this->load->model('Common_model');
         $this->load->model('User');
@@ -20,46 +22,47 @@ class Login extends REST_Controller {
      *   operationId="login_post",
      *   consumes ={"multipart/form-data"},
      *   produces={"application/json"},
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="email",
      *     in="formData",
      *     description="Email",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="password",
      *     in="formData",
      *     description="Password",
      *     required=true,
      *     type="string"
      *   ),
-     *    @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="device_id",
      *     in="formData",
      *     description="Unique Device Id",
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="device_token",
      *     in="formData",
      *     description="Device Token required to send push",
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="platform",
      *     in="formData",
      *     description="1: Android and 2: iOS",
      *     type="string"
      *   ),
-     *   @SWG\Response(response=101, description="Account Blocked"),
-     *   @SWG\Response(response=200, description="Login Success"),
-     *   @SWG\Response(response=206, description="Unauthorized request"),     
-     *   @SWG\Response(response=207, description="Header is missing"),       
-     *   @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
+     * @SWG\Response(response=101, description="Account Blocked"),
+     * @SWG\Response(response=200, description="Login Success"),
+     * @SWG\Response(response=206, description="Unauthorized request"),     
+     * @SWG\Response(response=207, description="Header is missing"),       
+     * @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
      * )
      */
-    public function index_post() {
+    public function index_post() 
+    {
         $language_code = $this->langcode_validate();
         $postDataArr = $this->post();
 
@@ -132,7 +135,7 @@ class Login extends REST_Controller {
                                 throw new Exception($this->lang->line('try_again'));
                             }
                         }
-                        if ($this->db->trans_status() === TRUE) {
+                        if ($this->db->trans_status() === true) {
                             $this->db->trans_commit();
                             $userInfo['accesstoken'] = $accessToken['public_key'] . '||' . $accessToken['private_key'];
                             $this->response(array('code' => SUCCESS_CODE, 'msg' => $this->lang->line('login_successful'), 'result' => $userInfo));
@@ -163,26 +166,30 @@ class Login extends REST_Controller {
         $language_code = trim($language_code);
         $valid_language_codes = ["en","da","nb","sv","fi","fr","nl","de"];
 
-        if ( empty($language_code) ) {
-            $this->response([
+        if (empty($language_code) ) {
+            $this->response(
+                [
                 'code' => HTTP_UNPROCESSABLE_ENTITY,
                 'api_code_result' => 'UNPROCESSABLE_ENTITY',
                 'msg' => $this->lang->line('header_missing'),
                 'extra_info' => [
                     "missing_parameter" => "language_code"
                 ]
-            ]);
+                ]
+            );
         }
 
-        if ( ! in_array($language_code, $valid_language_codes) ) {
-            $this->response([
+        if (! in_array($language_code, $valid_language_codes) ) {
+            $this->response(
+                [
                 'code' => HTTP_UNPROCESSABLE_ENTITY,
                 'api_code_result' => 'UNPROCESSABLE_ENTITY',
                 'msg' => $this->lang->line('invalid_header'),
                 'extra_info' => [
                     "missing_parameter" => $this->lang->line('invalid_language_code')
                 ]
-            ]);
+                ]
+            );
         }
 
         $language_map = [

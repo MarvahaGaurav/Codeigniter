@@ -22,17 +22,17 @@
         </div>
 
         <!-- thumb view -->
-        <?php if ( ! empty($inspiration['media']) ) { ?>
+        <?php if (!empty($inspiration['media'])) { ?>
         <div class="thumbview-table">
             <div class="thumbview-tablecell thumbview-tablecell-one">
                 <div class="thumb-view-evenly">
                     <!-- thumbnail -->
                     <?php foreach ($inspiration['media'] as $key => $media) :?>
-                    <?php if ( CONTENT_TYPE_IMAGE === (int)$media['media_type']) { ?>
+                    <?php if (CONTENT_TYPE_IMAGE === (int)$media['media_type']) { ?>
                     <div id="thumb-tab<?php echo $key ?>" class="thumb-view-wrapper thumb-view-fullp active">
                         <div class="thumb-view thumb-viewfullheight-2" style="background-image:url('<?php echo $media['media'] ?>')"></div>
                     </div>
-                    <?php } else if ( CONTENT_TYPE_VIDEO === (int)$media['media_type']){ ?>
+                    <?php } else if (CONTENT_TYPE_VIDEO === (int)$media['media_type']) { ?>
                     <div id="thumb-tab<?php echo $key ?>" class="thumb-view-wrapper thumb-view-fullp">
                         <div class="thumb-view thumb-viewfullheight-2">
                             <video poster="<?php echo $media['video_thumbnail'] ?>" autoplay loop>
@@ -53,11 +53,11 @@
                         <li class="active">
                             <a href="#thumb-tab<?php echo $key ?>" data-toggle="tab">
                                 <div class="thumb-view-wrapper thumb-view-fullp">
-                                <?php if ( CONTENT_TYPE_IMAGE === (int)$media['media_type']) { ?>
+                                <?php if (CONTENT_TYPE_IMAGE === (int)$media['media_type']) { ?>
                                     <div class="thumb-view thumb-viewfullheight-1" style="background-image:url('<?php echo $media['media'] ?>')"></div>
-                                    <?php } else if ( CONTENT_TYPE_VIDEO === (int)$media['media_type']){ ?>
+                                <?php } else if (CONTENT_TYPE_VIDEO === (int)$media['media_type']) { ?>
                                     <div class="thumb-view thumb-viewfullheight-1" style="background-image:url('<?php echo $media['video_thumbnail'] ?>')"></div>
-                                    <?php }?>
+                                <?php }?>
                                 </div>
                             </a>
                         </li>

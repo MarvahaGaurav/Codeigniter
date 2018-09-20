@@ -1,7 +1,7 @@
 <?php
-    if ($this->session->flashdata('message') != '') {
-        echo $this->session->flashdata('message');
-    }
+if ($this->session->flashdata('message') != '') {
+    echo $this->session->flashdata('message');
+}
 ?>
 
 <div class="form-section">

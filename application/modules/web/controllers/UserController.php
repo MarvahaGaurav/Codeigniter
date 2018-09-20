@@ -2,6 +2,7 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 require_once "BaseController.php";
+
 class UserController extends BaseController
 {
 
@@ -9,42 +10,48 @@ class UserController extends BaseController
     public function __construct()
     {
         parent::__construct();
-        $this->active_session_required();
+        $this->activeSessionGuard();
     }
 
-    public function profile($user_id='')
+    /**
+     * User Profile
+     *
+     * @param string $user_id
+     * @return void
+     */
+    public function profile($user_id = '')
     {
-        try{
+        try {
             $this->data['userInfo'] = $this->userInfo;
             
             $userData = $this->validateUser($user_id);
-            if($userData['company_id'] > 0){
+            if ($userData['company_id'] > 0) {
                 $whereArr['where'] = ['company_id'=>$userData['company_id']];
                 $compnaydetail = $this->Common_model->fetch_data('company_master', '*', $whereArr, true);
-            }else{
+            } else {
                 $compnaydetail = [];
             }
             $this->data['user'] = $userData;
             $this->data['compnaydetail'] = $compnaydetail;
             $this->data['user_id'] = $user_id;
             $userTypeMap = [];
-            load_alternate_views("users/profile", $this->data);
-            
-        } catch ( DatabaseExceptions\SelectException $error ) {
-
+            load_website_views("users/profile", $this->data);
+        } catch (DatabaseExceptions\SelectException $error) {
         }
     }
 
-    public function edit_profile($user_id = "") 
+    public function edit_profile($user_id = "")
     {
         $this->data['userInfo'] = $this->userInfo;
 
         $userData = $this->validateUser($user_id);
         
-        if($userData['company_id'] > 0){
+        // dd($userData);
+
+        if ($userData['company_id'] > 0) {
             $whereArr['where'] = ['company_id'=>$userData['company_id']];
             $compnaydetail = $this->Common_model->fetch_data('company_master', '*', $whereArr, true);
-        }else{
+        } else {
             $compnaydetail = [];
         }
         $this->load->helper(["location", "input_data"]);
@@ -65,18 +72,21 @@ class UserController extends BaseController
         $rules = $validation_rules['basic_details'];
         $dataArr = $this->input->post();
         $dataArr = trim_input_parameters($dataArr);
-        if ( isset($dataArr['company_name']) ) {
+        if (isset($dataArr['company_name'])) {
             $rules = array_merge($rules, $validation_rules['company_details']);
         }
 
         $this->form_validation->set_rules($rules);
         $this->form_validation->set_data($dataArr);
-        
         // if ($this->input->post()) {
-        if ($this->form_validation->run()) {
-            //echo '<pre>'; print_r($dataArr); echo '</pre>';  die('here i m');
+        // dd($this->form_validation->run(), false);
+        // dd(validation_errors(), false);
+        // dd($dataArr);
+        // dd(validation_errors());
+        if (!empty($dataArr) && $this->form_validation->run()) {
+            // dd($dataArr);
             $this->db->trans_begin();
-            if(isset($dataArr['company_id']) && !empty($dataArr['company_id'])){
+            if (isset($dataArr['company_id']) && !empty($dataArr['company_id'])) {
                 /* Company update here */
                 $companyArr['company_reg_number'] = $dataArr['company_reg_number'];
                 $companyArr['company_name'] = $dataArr['company_name'];
@@ -86,20 +96,19 @@ class UserController extends BaseController
                 
                 if (isset($dataArr['company_image']) && !empty($dataArr['company_image'])) {
                     $this->load->helper("images");
-                    try
-                    {
-                        $companyArr['company_image'] = $imageName=s3_image_uploader(ABS_PATH.$dataArr['company_image'],$dataArr['company_image']);
-                    } catch (Exception $e) {                                
-                        $this->data['error'] = strip_tags($this->upload->display_errors());                                
+                    try {
+                        $companyArr['company_image'] = $imageName=s3_image_uploader(ABS_PATH.$dataArr['company_image'], $dataArr['company_image']);
+                    } catch (Exception $e) {
+                        $this->data['error'] = strip_tags($this->upload->display_errors());
                         $this->session->set_flashdata("flash-message", $e->getMessage());
                         $this->session->set_flashdata("flash-type", "danger");
                         load_alternatecropper_views("users/edit_profile", $this->data);
-                    }                
-                }else{
+                    }
+                } else {
                     //$companyArr['company_image'] = isset($dataArr['prevcompimg']) && !empty($dataArr['prevcompimg'])?$dataArr['prevcompimg']:"";
-                }                 
+                }
 
-                $this->Common_model->update_single('company_master',$companyArr, array('where'=>array('company_id'=>$dataArr['company_id'])));
+                $this->Common_model->update_single('company_master', $companyArr, array('where'=>array('company_id'=>$dataArr['company_id'])));
                 /* Company update here */
             }
             /* userdata update here */
@@ -113,51 +122,55 @@ class UserController extends BaseController
             $userDataArr['zipcode'] = $dataArr['zip_code'];
             if (isset($dataArr['imgurl']) && !empty($dataArr['imgurl'])) {
                 $this->load->helper("images");
-                try
-                {
-                    $userDataArr['image'] = $imageName=s3_image_uploader(ABS_PATH.$dataArr['imgurl'],$dataArr['imgurl']);
-                } catch (Exception $e) {                                
-                    $this->data['error'] = strip_tags($this->upload->display_errors());                                
+                try {
+                    $userDataArr['image'] = $imageName=s3_image_uploader(ABS_PATH.$dataArr['imgurl'], $dataArr['imgurl']);
+                } catch (Exception $e) {
+                    $this->data['error'] = strip_tags($this->upload->display_errors());
                     $this->session->set_flashdata("flash-message", $e->getMessage());
                     $this->session->set_flashdata("flash-type", "danger");
                     load_alternatecropper_views("users/edit_profile", $this->data);
-                }                
-            }else{
+                }
+            } else {
                 //$userData['image'] = isset($dataArr['previmg']) && !empty($dataArr['previmg'])?$dataArr['previmg']:"";
-            }            
+            }
             
             //echo '<pre>'; print_r($userDataArr);  die;
-            $updateuserdata = $this->Common_model->update_single('ai_user',$userDataArr, array('where'=>array('user_id'=>$userData['user_id'])));
-            if ($this->db->trans_status() === TRUE) {
+            $updateuserdata = $this->Common_model->update_single('ai_user', $userDataArr, array('where'=>array('user_id'=>$userData['user_id'])));
+            if ($this->db->trans_status() === true) {
                 $this->db->trans_commit();
-                if($updateuserdata){
+                if ($updateuserdata) {
                     $this->session->set_flashdata("flash-message", 'Profile Update Successfully');
                     $this->session->set_flashdata("flash-type", "success");
                     redirect(base_url("home/profile/" . $user_id));
                     //redirect(base_url("users/settings/" . encryptDecrypt($user_id)));
                     //load_alternatecropper_views("users/edit_profile", $this->data);
-                }else{
+                } else {
                     $this->session->set_flashdata("flash-message", 'Profile not updated!');
                     $this->session->set_flashdata("flash-type", "danger");
                     load_alternatecropper_views("users/edit_profile", $this->data);
                 }
-            }else{
-                $this->db->trans_rollback();                
+            } else {
+                $this->db->trans_rollback();
                 $this->session->set_flashdata("flash-message", 'Profile not updated!');
                 $this->session->set_flashdata("flash-type", "danger");
                 load_alternatecropper_views("users/edit_profile", $this->data);
-            } 
-            
+            }
         }
         load_alternatecropper_views("users/edit_profile", $this->data);
     }
 
-    public function settings($user_id='')
+    /**
+     * Handles User Settings
+     *
+     * @param string $user_id
+     * @return void
+     */
+    public function settings($user_id = '')
     {
         $this->data['userInfo'] = $this->userInfo;
 
         $session_user_id = $this->session->userdata("sg_userinfo");
-        if ( encryptDecrypt($user_id, 'decrypt') != $session_user_id['user_id']) {
+        if (encryptDecrypt($user_id, 'decrypt') != $session_user_id['user_id']) {
             show_404();
             exit;
         }
@@ -173,13 +186,13 @@ class UserController extends BaseController
         $this->form_validation->CI =& $this;
         $validation_rules = $this->setValidation();
         $rules = $validation_rules['settings'];
-        if ( isset($post['old_password']) && strlen($post['old_password']) >= 8 ) {
+        if (isset($post['old_password']) && strlen($post['old_password']) >= 8) {
             $rules = array_merge($rules, $validation_rules['change-password']);
         }
         $this->form_validation->set_rules($rules);
-        if ( $this->form_validation->run() ) {
+        if ($this->form_validation->run()) {
             $this->load->model("User");
-            if ( isset($post['old_password']) ) {
+            if (isset($post['old_password'])) {
                 $this->User->password = encrypt($post['new_password']);
             }
 
@@ -194,13 +207,13 @@ class UserController extends BaseController
         $this->data['user'] = $userData;
         $this->data['js'] = "settings";
         
-        load_alternate_views("users/settings", $this->data);
+        load_website_views("users/settings", $this->data);
     }
 
-    private function validateUser($user_id) 
+    private function validateUser($user_id)
     {
         $userId = encryptDecrypt($user_id, 'decrypt');
-        if ( !isset($userId) || empty($userId) ) {
+        if (!isset($userId) || empty($userId)) {
             show_404();
             exit;
         }
@@ -220,15 +233,16 @@ class UserController extends BaseController
             ]
         );
         
-        if ( empty($userData) ) {
+        if (empty($userData)) {
             show_404();
             exit;
-        } 
+        }
 
         return $userData;
     }
 
-    private function setValidation() {
+    private function setValidation()
+    {
         
         $rules = [
             'settings' => [
@@ -272,17 +286,19 @@ class UserController extends BaseController
         return $rules;
     }
 
-    public function old_password_check($password) {
+    public function old_password_check($password)
+    {
         $password = encrypt($password);
         $db_password = $this->userData['password'];
         
-        if ( $db_password != $password ) {
-            return FALSE;
+        if ($db_password != $password) {
+            return false;
         }
-        return TRUE;
+        return true;
     }
 
-    private function edit_profile_validation() {
+    private function edit_profile_validation()
+    {
         return [
             'basic_details' => [
                 [
@@ -340,5 +356,4 @@ class UserController extends BaseController
             ]
         ];
     }
-
 }

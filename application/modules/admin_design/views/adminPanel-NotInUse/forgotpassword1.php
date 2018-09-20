@@ -18,13 +18,13 @@ $Notsent = (isset($Notsent) && !empty($Notsent)) ? "$Notsent" : "";
             </div>
             <div class="form_inner_wrap">
                 
-                <?php if($this->session->flashdata('Success')!=''){
+                <?php if($this->session->flashdata('Success')!='') {
                     
                     echo $this->session->flashdata('Success');
                     
                 }?>
                 
-                 <?php echo form_open('',array('id'=>'forget_pwd_admin_form'))?>
+                    <?php echo form_open('', array('id'=>'forget_pwd_admin_form'))?>
 
 
                     <h1 class="index-comn-heading">Forgot Password  </h1>
@@ -32,7 +32,7 @@ $Notsent = (isset($Notsent) && !empty($Notsent)) ? "$Notsent" : "";
                     <div class="form-field-wrap" id="email_error">
                         <span class="ad-user"></span>
                         <input type="text" class="login_filed removespace" maxlength="65" placeholder="Email ID" name="email" id="email" value="<?php echo set_value('email');?>"> 
-                        <?php echo isset($error)?'<label class="alert-danger">'.$error.'</label>':form_error('email','<label class="alert-danger">','</label>');?>
+                        <?php echo isset($error)?'<label class="alert-danger">'.$error.'</label>':form_error('email', '<label class="alert-danger">', '</label>');?>
                     </div>
                     
 

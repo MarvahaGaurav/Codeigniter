@@ -1,11 +1,13 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class User extends MY_Controller {
+class User extends MY_Controller
+{
 
     private $validUserTypes;
     private $userTypes;
-    function __construct() {
+    function __construct() 
+    {
         parent::__construct();
         $this->load->helper(['url', 'custom_cookie', 'form', 'encrypt_openssl']);
         $this->load->model('Common_model');
@@ -41,7 +43,8 @@ class User extends MY_Controller {
      * @name index
      * @description This method is used to list all the customers.
      */
-    public function index() {
+    public function index() 
+    {
         $role_id = $this->admininfo['role_id'];
         /*
          * If logged user is sub admin check for his permission
@@ -101,13 +104,13 @@ class User extends MY_Controller {
             $params['offset'] = $offset;
         }
            $params['user_type'] = '1,6';
-           if ( ! empty($user_type) ) {
-                $params['user_type'] = $user_type;
-                $user_type = $get['user_type'];
-           }
+        if (! empty($user_type) ) {
+             $params['user_type'] = $user_type;
+             $user_type = $get['user_type'];
+        }
 
         $userInfo = $this->User_Model->userlist($params);
-//        pr($userInfo);die;
+        //        pr($userInfo);die;
         /*
          * Export to Csv
          */
@@ -150,21 +153,24 @@ class User extends MY_Controller {
         $this->data['totalrows'] = $totalrows;
         $this->data['user_type'] = $user_type;
         
-        $this->data['userlist'] = array_map(function($data) {
-            if ( in_array((int)$data['user_type'], $this->validUserTypes) ) {
-                $data['user_type'] = $this->userTypes[(int)$data['user_type']];
-            } else {
-                $data['user_type'] = "Invalid user";
-            }
-            return $data;
-        }, $this->data['userlist']);
+        $this->data['userlist'] = array_map(
+            function ($data) {
+                if (in_array((int)$data['user_type'], $this->validUserTypes) ) {
+                    $data['user_type'] = $this->userTypes[(int)$data['user_type']];
+                } else {
+                    $data['user_type'] = "Invalid user";
+                }
+                return $data;
+            }, $this->data['userlist']
+        );
         // pr($this->data['userlist']);die;
 
         $this->session->set_flashdata('message', $this->lang->line('success_prefix') . $this->lang->line('login_success') . $this->lang->line('success_suffix'));
         load_views("users/index", $this->data);
     }
 
-    public function detail() {
+    public function detail() 
+    {
 
         $get = $this->input->get();
         $userId = (isset($get['id']) && !empty($get['id'])) ? encryptDecrypt($get['id'], 'decrypt') : show_404();
@@ -178,7 +184,7 @@ class User extends MY_Controller {
         }
         
         $this->data['profile']['user_type_numeric'] = $this->data['profile']['user_type'];
-        if ( in_array((int)$this->data['profile']['user_type'], $this->validUserTypes) ) {
+        if (in_array((int)$this->data['profile']['user_type'], $this->validUserTypes) ) {
             $this->data['profile']['user_type'] = $this->userTypes[(int)$this->data['profile']['user_type']];
         } else {
             $this->data['profile']['user_type'] = 'Invalid user';
@@ -190,7 +196,8 @@ class User extends MY_Controller {
         load_views("users/user-detail", $this->data);
     }
 
-    public function exportUser($userData) {
+    public function exportUser($userData) 
+    {
 
         $fileName = 'userlist' . date('d-m-Y-g-i-h') . '.xls';
         // The function header by sending raw excel

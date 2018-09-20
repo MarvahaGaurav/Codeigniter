@@ -3,9 +3,11 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 require APPPATH . '/libraries/REST_Controller.php';
 
-class Logout extends REST_Controller {
+class Logout extends REST_Controller
+{
 
-    function __construct() {
+    function __construct() 
+    {
         parent::__construct();
         $this->load->model('Common_model');
         $this->load->library('form_validation');
@@ -19,31 +21,34 @@ class Logout extends REST_Controller {
      *   operationId="logout_put",
      *   consumes ={"multipart/form-data"},
      *   produces={"application/json"},
-     *  @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="accesstoken",
      *     in="query",
      *     description="Access token received during signup or login",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Response(response=200, description="Success"),
-     *   @SWG\Response(response=206, description="Unauthorized request"),     
-     *   @SWG\Response(response=207, description="Header is missing"),       
-     *   @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
+     * @SWG\Response(response=200, description="Success"),
+     * @SWG\Response(response=206, description="Unauthorized request"),     
+     * @SWG\Response(response=207, description="Header is missing"),       
+     * @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
      * )
      */
-    public function index_put() {
+    public function index_put() 
+    {
         $language_code = $this->langcode_validate();
         $putDataArr = $this->put();
         $head = $this->head();
-        if ( (!isset($head['accesstoken']) || empty(trim($head['accesstoken']))) && (!isset($head['Accesstoken']) || empty(trim($head['Accesstoken']))) ) {
-            $this->response([
+        if ((!isset($head['accesstoken']) || empty(trim($head['accesstoken']))) && (!isset($head['Accesstoken']) || empty(trim($head['Accesstoken']))) ) {
+            $this->response(
+                [
                 "code" => HTTP_UNAUTHORIZED,
                 "api_code_result" => "UNAUTHORIZED",
                 "msg" => $this->lang->line("invalid_access_token")
-            ], HTTP_UNAUTHORIZED);
+                ], HTTP_UNAUTHORIZED
+            );
         }
-        if ( isset($head['Accesstoken']) && !empty($head['Accesstoken']) ) {
+        if (isset($head['Accesstoken']) && !empty($head['Accesstoken']) ) {
             $head['accesstoken'] = $head['Accesstoken'];
         }
         $config = [];
@@ -72,7 +77,7 @@ class Logout extends REST_Controller {
             $accessTokenArr = explode("||", $accessToken);
             $whereArr = [];
             $whereArr['where'] = ['public_key' => $accessTokenArr[0], 'private_key' => $accessTokenArr[1]];
-//                pr($whereArr);
+            //                pr($whereArr);
             $isSuccess = $this->Common_model->update_single('ai_session', ['login_status' => 0], $whereArr);
             if ($isSuccess) {
                 $this->response(array('code' => SUCCESS_CODE, 'msg' => $this->lang->line('logout_successful'), 'result' => (object)[]));
@@ -92,26 +97,30 @@ class Logout extends REST_Controller {
         $language_code = trim($language_code);
         $valid_language_codes = ["en","da","nb","sv","fi","fr","nl","de"];
 
-        if ( empty($language_code) ) {
-            $this->response([
+        if (empty($language_code) ) {
+            $this->response(
+                [
                 'code' => HTTP_UNPROCESSABLE_ENTITY,
                 'api_code_result' => 'UNPROCESSABLE_ENTITY',
                 'msg' => $this->lang->line('header_missing'),
                 'extra_info' => [
                     "missing_parameter" => "language_code"
                 ]
-            ]);
+                ]
+            );
         }
 
-        if ( ! in_array($language_code, $valid_language_codes) ) {
-            $this->response([
+        if (! in_array($language_code, $valid_language_codes) ) {
+            $this->response(
+                [
                 'code' => HTTP_UNPROCESSABLE_ENTITY,
                 'api_code_result' => 'UNPROCESSABLE_ENTITY',
                 'msg' => $this->lang->line('invalid_header'),
                 'extra_info' => [
                     "missing_parameter" => $this->lang->line('invalid_language_code')
                 ]
-            ]);
+                ]
+            );
         }
 
         $language_map = [

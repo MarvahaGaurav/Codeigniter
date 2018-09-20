@@ -1,11 +1,13 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Technician extends MY_Controller {
+class Technician extends MY_Controller
+{
 
     private $validUserTypes;
     private $userTypes;
-    function __construct() {
+    function __construct() 
+    {
         parent::__construct();
         $this->load->helper(['url', 'custom_cookie', 'form', 'encrypt_openssl']);
         $this->load->model('Common_model');
@@ -23,7 +25,7 @@ class Technician extends MY_Controller {
         $this->data = [];
         $this->data['admininfo'] = $this->admininfo;
         
-        if($this->admininfo['role_id'] == 2){
+        if($this->admininfo['role_id'] == 2) {
             $whereArr = ['where'=>['admin_id'=>$this->admininfo['admin_id']]];
             $access_detail = $this->Common_model->fetch_data('sub_admin', ['viewp', 'addp', 'editp', 'blockp', 'deletep', 'access_permission', 'admin_id', 'id'], $whereArr, false);
             $this->data['admin_access_detail'] = $access_detail;
@@ -42,7 +44,8 @@ class Technician extends MY_Controller {
      * @name index
      * @description This method is used to list all the customers.
      */
-    public function index() {
+    public function index() 
+    {
         $role_id = $this->admininfo['role_id'];
         /*
          * If logged user is sub admin check for his permission
@@ -106,12 +109,12 @@ class Technician extends MY_Controller {
             $params['offset'] = $offset;
         }
         $params['user_type'] = '2,3,4,5';   
-        if ( ! empty($user_type) ) {
+        if (! empty($user_type) ) {
             $params['user_type'] = $user_type;
             $user_type = $get['user_type'];
         }
         $userInfo = $this->User_Model->userlist($params);
-//        pr($userInfo);die;
+        //        pr($userInfo);die;
         /*
          * Export to Csv
          */
@@ -121,15 +124,17 @@ class Technician extends MY_Controller {
         $totalrows = $userInfo['total'];
         $this->data['userlist'] = $userInfo['result'];
 
-        $this->data['userlist'] = array_map(function($data) {
-            $data['user_type_num'] = $data['user_type'];
-            if ( in_array((int)$data['user_type'], $this->validUserTypes) ) {
-                $data['user_type'] = $this->userTypes[(int)$data['user_type']];
-            } else {
-                $data['user_type'] = "Invalid user";
-            }
-            return $data;
-        }, $this->data['userlist']);
+        $this->data['userlist'] = array_map(
+            function ($data) {
+                $data['user_type_num'] = $data['user_type'];
+                if (in_array((int)$data['user_type'], $this->validUserTypes) ) {
+                    $data['user_type'] = $this->userTypes[(int)$data['user_type']];
+                } else {
+                    $data['user_type'] = "Invalid user";
+                }
+                return $data;
+            }, $this->data['userlist']
+        );
 
         /*
          * Manage Pagination
@@ -167,7 +172,8 @@ class Technician extends MY_Controller {
         load_views("technician/index", $this->data);
     }
 
-    public function detail() {
+    public function detail() 
+    {
 
         $get = $this->input->get();
         $this->load->helper(['input_data', 'datetime']);
@@ -184,7 +190,7 @@ class Technician extends MY_Controller {
             show_404();
         }
         $this->data['valid_inspiration_creators'] = [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER];
-        if ( in_array((int)$this->data['profile']['user_type'], $this->data['valid_inspiration_creators']) ) {
+        if (in_array((int)$this->data['profile']['user_type'], $this->data['valid_inspiration_creators']) ) {
             $this->load->model("Inspiration");
             $params['user_id'] = $this->data['user_id'];
             $page = isset($get['page']) && !empty((int)$get['page'])? (int)$get['page'] : 1; 
@@ -195,14 +201,16 @@ class Technician extends MY_Controller {
             $params['poster_details'] = true;
             $data = $this->Inspiration->get($params);
             $this->data['initial_count'] = (int)(1 * (($page - 1) * $limit)+1);
-            $data['result'] = array_map(function($result) use ($page, $limit) {
-                //pr($result);
-                $result['id'] = $result['inspiration_id'];
-                $result['id'] = encryptDecrypt($result['id']);
-                $result['created_at'] = convert_date_time_format("Y-m-d H:i:s", $result['created_at'], "d/m/Y g:i A");
-                $result['updated_at'] = convert_date_time_format("Y-m-d H:i:s", $result['updated_at'], "d/m/Y g:i A");
-                return $result;
-            }, $data['result']); 
+            $data['result'] = array_map(
+                function ($result) use ($page, $limit) {
+                    //pr($result);
+                    $result['id'] = $result['inspiration_id'];
+                    $result['id'] = encryptDecrypt($result['id']);
+                    $result['created_at'] = convert_date_time_format("Y-m-d H:i:s", $result['created_at'], "d/m/Y g:i A");
+                    $result['updated_at'] = convert_date_time_format("Y-m-d H:i:s", $result['updated_at'], "d/m/Y g:i A");
+                    return $result;
+                }, $data['result']
+            ); 
             //pr($data['result']);
             $this->data['total_inspirations'] = (int)$data['count'];
             $pageurl = "/admin/technician/detail?id=" . $get['id'];
@@ -213,7 +221,7 @@ class Technician extends MY_Controller {
         }
 
         $this->data['profile']['user_type_num'] = $this->data['profile']['user_type'];
-        if ( in_array((int)$this->data['profile']['user_type'], $this->validUserTypes) ) {
+        if (in_array((int)$this->data['profile']['user_type'], $this->validUserTypes) ) {
             $this->data['profile']['user_type'] = $this->userTypes[(int)$this->data['profile']['user_type']];
         } else {
             $this->data['profile']['user_type'] = 'Invalid user';
@@ -225,7 +233,8 @@ class Technician extends MY_Controller {
         load_views("technician/user-detail", $this->data);
     }
 
-    public function exportUser($userData) {
+    public function exportUser($userData) 
+    {
 
         $fileName = 'userlist' . date('d-m-Y-g-i-h') . '.xls';
         // The function header by sending raw excel

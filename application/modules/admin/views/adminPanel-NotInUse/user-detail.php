@@ -90,7 +90,7 @@
                             <div class="form-group">
                                 <label class="admin-label">Register Date</label>
                                 <div class="input-holder">
-                                    <span class="text-detail"><?php echo date("d M Y H:i a",strtotime($profile['registered_date']));?></span>
+                                    <span class="text-detail"><?php echo date("d M Y H:i a", strtotime($profile['registered_date']));?></span>
                                 </div>
                             </div>
                         </div>

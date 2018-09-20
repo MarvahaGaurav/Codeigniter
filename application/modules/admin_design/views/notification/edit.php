@@ -21,7 +21,7 @@
             <h3 class="title">Add Notification</h3>
         </div>
         <!-- title and form upper action end-->
-         <?php echo form_open_multipart();?>
+            <?php echo form_open_multipart();?>
             <div class="form-ele-wrapper clearfix">
 
                 <div class="row">
@@ -45,7 +45,7 @@
                                     <label class="admin-label">Title</label>
                                     <div class="input-holder">
                                         <input type="text" name="title" name="title" id="title" placeholder="Notification title">
-                                        <?php echo form_error('title','<label class="error">','</label>');?>
+                                        <?php echo form_error('title', '<label class="error">', '</label>');?>
                                         <span class="titleErr error"></span>
                                     </div>
                                 </div>
@@ -66,7 +66,7 @@
                                     <label class="admin-label">Message</label>
                                     <div class="input-holder">
                                         <textarea class="custom-textarea" style="resize:none;" maxlength="255" name="message" id="messagetext"></textarea>
-                                    <?php echo form_error('messagetext','<label class="alert-danger">','</label>');?>
+                                    <?php echo form_error('messagetext', '<label class="alert-danger">', '</label>');?>
                                     </div>
                                 </div>
                             </div>
@@ -77,7 +77,7 @@
                                     <label class="admin-label">Title</label>
                                     <div class="input-holder">
                                         <input type="text" name="title" name="title" id="title" placeholder="Notification title">
-                                        <?php echo form_error('title','<label class="error">','</label>');?>
+                                        <?php echo form_error('title', '<label class="error">', '</label>');?>
                                         <span class="titleErr error"></span>
                                     </div>
                                 </div>

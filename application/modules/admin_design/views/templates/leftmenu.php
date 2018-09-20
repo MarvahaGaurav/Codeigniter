@@ -16,7 +16,8 @@ $admindata = $this->Common_model->fetch_data('admin', 'admin_name,admin_profile_
             <div class="left-menu">
                 <ul>
                     <li>
-                        <a href="admin/dashboard" <?php if ($className == "dashboard" && $methodName == "index") { echo "class='active'";} ?>>
+                        <a href="admin/dashboard" <?php if ($className == "dashboard" && $methodName == "index") { echo "class='active'";
+                       } ?>>
                             <span class="dashboard_img comm-img"></span><label class="nav-txt">Dashboard</label>
                         </a>
                     </li>
@@ -27,12 +28,14 @@ $admindata = $this->Common_model->fetch_data('admin', 'admin_name,admin_profile_
                         </a>
                     </li>
                     <li>
-                        <a href="admin/cms" <?php if ($className == "cms" && in_array($methodName, ['edit', 'add', 'index'])) { echo "class='active'";} ?>>
+                        <a href="admin/cms" <?php if ($className == "cms" && in_array($methodName, ['edit', 'add', 'index'])) { echo "class='active'";
+                       } ?>>
                             <span class="activitylog comm-img"></span><label class="nav-txt">Content</label>
                         </a>
                     </li>
                     <li>
-                        <a href="admin/version" <?php if ($className == "version" && in_array($methodName, ['edit', 'add', 'index'])) { echo "class='active'"; } ?> >
+                        <a href="admin/version" <?php if ($className == "version" && in_array($methodName, ['edit', 'add', 'index'])) { echo "class='active'"; 
+                       } ?> >
                             <span class="copy_img comm-img"></span><label class="nav-txt">Manage Version</label>
                         </a>
                     </li>

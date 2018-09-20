@@ -21,39 +21,43 @@ class UtilityController extends BaseController
 
     public function delete_media_post() 
     {
-       $this->load->helper('s3');
+        $this->load->helper('s3');
 
-       $postData = $this->post();
+        $postData = $this->post();
        
-       $deleteErrormedia = [];
-       $media = $postData['media'];
-    //    print_r($media);die;
-    //    print_r($postData);die;
-       foreach ($media as $data) {
-           try {   
-               s3_delete_image($data);
+        $deleteErrormedia = [];
+        $media = $postData['media'];
+        //    print_r($media);die;
+        //    print_r($postData);die;
+        foreach ($media as $data) {
+            try {   
+                s3_delete_image($data);
             } catch ( S3Exception $error) {
                 $deleteErrormedia[] = [
-                    "media" => $data
+                   "media" => $data
                 ];
             }
         } 
         // print_r($deleteErrormedia);die;
-        if ( $deleteErrormedia ) {
+        if ($deleteErrormedia ) {
             try {
                 $this->UtilModel->insertBatch($deleteErrormedia, "media_to_delete");
             } catch ( InsertException $error ) {
-                $this->response([
+                $this->response(
+                    [
                     'code' => HTTP_INTERNAL_SERVER_ERROR,
                     'message' => "Error",
                     'info' => $error->getMessage()
-                ], HTTP_INTERNAL_SERVER_ERROR);
+                    ], HTTP_INTERNAL_SERVER_ERROR
+                );
             }
         }
 
-       $this->response([
-           'code' => HTTP_OK,
-           'message' => "OK"
-       ]);
+        $this->response(
+            [
+            'code' => HTTP_OK,
+            'message' => "OK"
+            ]
+        );
     }
 }

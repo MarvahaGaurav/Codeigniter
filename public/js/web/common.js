@@ -91,14 +91,14 @@ $(document).ready(function () {
             textAlign: "center",
             display: "block"
         });
-        $flashCard.css({
-            position: "fixed",
-            top: "15%",
-            left: "33.33%",
-            zIndex: "9999",
-            display: "block",
-            width: "30%"
-        });
+        // $flashCard.css({
+        //     position: "fixed",
+        //     top: "15%",
+        //     left: "33.33%",
+        //     zIndex: "9999",
+        //     display: "block",
+        //     width: "30%"
+        // });
 
         setTimeout(function(){
             $flashCard.fadeOut(300);

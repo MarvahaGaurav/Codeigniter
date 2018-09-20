@@ -34,12 +34,15 @@ $module = $this->router->fetch_module();
             <div class="col-lg-6 col-sm-6">
                 <div class="srch-wrap fawe-icon-position col-sm-space">
                     <span class="fawe-icon fawe-icon-position-left search-ico"><i class="fa fa-search"></i></span>
-                    <?php if(isset($searchlike) && !empty($searchlike)){?>
+                    <?php if(isset($searchlike) && !empty($searchlike)) {?>
                     <span class="fawe-icon fawe-icon-position-right show-close-ico" onclick="jQuery('.searchCloseBtn').trigger('click');"><i class="fa fa-times-circle"></i></span>
                     <?php }else{ ?>
                     <span class="fawe-icon fawe-icon-position-right close-ico"><i class="fa fa-times-circle"></i></span>
                     <?php } ?>
-                    <input type="text" maxlength="50" value="<?php echo (isset($searchlike) && !empty($searchlike))? $searchlike:''?>" <?php if(isset($searchlike) && !empty($searchlike)){ echo 'readonly';}?> class="search-box <?php if(isset($searchlike) && !empty($searchlike)){ echo 'searchCloseBtn'; }else{  echo 'searchlike'; }?>" placeholder="Search by title" id="searchuser" name="search">
+                    <input type="text" maxlength="50" value="<?php echo (isset($searchlike) && !empty($searchlike))? $searchlike:''?>" <?php if(isset($searchlike) && !empty($searchlike)) { echo 'readonly';
+                   }?> class="search-box <?php if(isset($searchlike) && !empty($searchlike)) { echo 'searchCloseBtn'; 
+}else{  echo 'searchlike'; 
+}?>" placeholder="Search by title" id="searchuser" name="search">
                 </div>
             </div>
 
@@ -48,7 +51,7 @@ $module = $this->router->fetch_module();
                     <a href="javascript:void(0)" id="filter-side-wrapper" class="tooltip-p">
                         <div class="circle-btn animate-btn">
                             <i class="fa fa-filter" aria-hidden="true"></i>
-                            <?php if(!empty($status) || !empty($user_type) || !empty($startDate) || !empty($endDate) || !empty($country)){ ?>
+                            <?php if(!empty($status) || !empty($user_type) || !empty($startDate) || !empty($endDate) || !empty($country)) { ?>
                             <i class="fa fa-close" aria-hidden="true"></i>
                             <?php } ?>
                         </div>
@@ -172,14 +175,14 @@ $module = $this->router->fetch_module();
                        <th>LUX Value</th>
                        <th>Added On</th>
                        <th>Last Updated</th>
-                    <?php if($accesspermission['deletep'] || $accesspermission['blockp']){ ?>
+                    <?php if($accesspermission['deletep'] || $accesspermission['blockp']) { ?>
                         <th>Action</th>
                     <?php } ?>
                     </tr>
                 </thead>
                 <tbody id="table_tr">
                     
-                <?php if(isset($templates) && count($templates)){ ?>
+                <?php if(isset($templates) && count($templates)) { ?>
                     <?php foreach( $templates as $key => $template) { 
 
                     ?>
@@ -192,16 +195,16 @@ $module = $this->router->fetch_module();
                         <td><?php echo $template['lux_value'] ?></td>
                         <td><?php echo $template['created_at'] ?></td>
                         <td><?php echo $template['updated_at'] ?></td>
-                        <?php if($accesspermission['viewp'] || $accesspermission['deletep'] || $accesspermission['blockp'] || $accesspermission['editp']){ ?>
+                        <?php if($accesspermission['viewp'] || $accesspermission['deletep'] || $accesspermission['blockp'] || $accesspermission['editp']) { ?>
                         <td class="text-nowrap table-action">
-                            <?php if($accesspermission['editp']){ ?>
+                            <?php if($accesspermission['editp']) { ?>
                                 <a class="f-delete" href="<?php echo base_url("admin/templates/{$template['template_id']}") ?>"><i class="fa fa-eye" title="Edit Detail" aria-hidden="true"></i></a>    
                             <?php }?>
-                            <?php if($accesspermission['editp']){ ?>
+                            <?php if($accesspermission['editp']) { ?>
                             <a class="f-pencil" href="<?php echo base_url("admin/templates/{$template['template_id']}/edit") ?>"><i class="fa fa-pencil" title="Edit Detail" aria-hidden="true"></i></a>
                             <?php }?>
-                            <?php if($accesspermission['blockp']){ ?>
-                                <?php if($value['status'] == BLOCKED){?>
+                            <?php if($accesspermission['blockp']) { ?>
+                                <?php if($value['status'] == BLOCKED) {?>
                                     <!-- <a class="f-unblock" href="javascript:void(0);" id ="unblock_<?php echo $value['user_id'];?>"><i class="fa fa-unlock" title="unblock" aria-hidden="true" onclick="blockUser('user',<?php echo ACTIVE;?>,'<?php echo encryptDecrypt($value['user_id']);?>','req/change-user-status','Do you really want to unblock this user?','Unblock');"></i></a>
                                     <a class="f-block" href="javascript:void(0);"  id ="block_<?php echo $value['user_id'];?>" style="display:none;"><i class="fa fa-ban" title="block" aria-hidden="true" onclick="blockUser('user',<?php echo BLOCKED;?>,'<?php echo encryptDecrypt($value['user_id']);?>','req/change-user-status','Do you really want to block this user?','Block');"></i></a> -->
                                 <?php }else{?>
@@ -209,7 +212,7 @@ $module = $this->router->fetch_module();
                                     <!-- <a class="f-unblock" href="javascript:void(0);" id ="unblock_<?php echo $value['user_id'];?>" style="display:none;"><i class="fa fa-unlock" title="unblock" aria-hidden="true" onclick="blockUser('user',<?php echo ACTIVE;?>,'<?php echo encryptDecrypt($value['user_id']);?>','req/change-user-status','Do you really want to unblock this user?','Unblock');"></i></a> -->
                                 <?php }?>
                             <?php }?>
-                            <?php if($accesspermission['deletep']){ ?>
+                            <?php if($accesspermission['deletep']) { ?>
                                 <!-- <a class="f-delete" href="javascript:void(0);"><i class="fa fa-trash" title="Delete" aria-hidden="true" onclick="deleteUser('user',<?php echo DELETED;?>,'<?php echo encryptDecrypt($value['user_id']);?>','req/change-user-status','Do you really want to delete this user?');"></i></a> -->
                             <?php } ?>
                         </td>
@@ -217,9 +220,10 @@ $module = $this->router->fetch_module();
                     </tr>
                 <?php 
                     $sno_start++;
-                } } else { ?>
+                    } 
+                } else { ?>
                     <tr><td colspan="9">No result found.</td></tr>
-                    <?php } ?>
+<?php } ?>
                 </tbody>
             </table>
         </div>

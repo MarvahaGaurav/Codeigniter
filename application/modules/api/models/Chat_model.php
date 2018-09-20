@@ -1,10 +1,12 @@
 <?php
 
-class Chat_model extends CI_Model {
+class Chat_model extends CI_Model
+{
 
     public $totalmsg;
 
-    public function __construct() {
+    public function __construct() 
+    {
         $this->load->database();
     }
 
@@ -15,9 +17,10 @@ class Chat_model extends CI_Model {
      * @param type $params
      * @return Array Getting user details
      */
-    public function getuserlist($limit, $offset, $params) {
-        $this->db->select('SQL_CALC_FOUND_ROWS user_id, middle_name,first_name,last_name, image', FALSE)
-                ->from('ai_user as u');
+    public function getuserlist($limit, $offset, $params) 
+    {
+        $this->db->select('SQL_CALC_FOUND_ROWS user_id, middle_name,first_name,last_name, image', false)
+            ->from('ai_user as u');
         if (!empty($params['searchlike'])) {
             $this->db->like('u.middle_name', $params['searchlike']);
         }
@@ -38,7 +41,8 @@ class Chat_model extends CI_Model {
      * @param type from_user_id , user_id , chat_created_time
      * @return Array Description chat insert in database
      */
-    public function insert_history($params) {
+    public function insert_history($params) 
+    {
         $sql = "insert into  ai_chat_history (to_user_id,from_user_id,created_date) values(" . $params['to_user_id'] . "," . $params['from_user_id'] . ",'" . $params['chat_created_time'] . "') ON DUPLICATE KEY UPDATE is_archived = 0,created_date = '" . $params['chat_created_time'] . "'";
         $result = $this->db->query($sql);
         $sql = "insert into  ai_chat_history (to_user_id,from_user_id,created_date) values(" . $params['from_user_id'] . "," . $params['to_user_id'] . ",'" . $params['chat_created_time'] . "') ON DUPLICATE KEY UPDATE is_archived = 0,created_date = '" . $params['chat_created_time'] . "'";
@@ -47,12 +51,13 @@ class Chat_model extends CI_Model {
 
     /**
      * 
-     * @param type $limit
-     * @param type $offset
+     * @param type                        $limit
+     * @param type                        $offset
      * @param type from_user_id , user_id
      * @return Array Get chat history between two user
      */
-    public function fetch_history($limit, $offset, $params) {
+    public function fetch_history($limit, $offset, $params) 
+    {
         $this->db->select('SQL_CALC_FOUND_ROWS getmessage(Max(msg_id)) as msg,getunreadcount(' . $params['user_id'] . ',u.user_id) as unread_count,getchattype(Max(msg_id)) as chat_type,Max(msg_id) as msg_id,c.to_user_id,c.from_user_id, middle_name,first_name,last_name, image,u.user_id,getrecentmsgtime(Max(msg_id)) as last_message_time', false);
         $this->db->from('ai_chat as c');
         $this->db->join('ai_user as u', '(IF(c.to_user_id = ' . $params['user_id'] . ',c.from_user_id,c.to_user_id) = u.user_id)', 'left', false);
@@ -75,12 +80,13 @@ class Chat_model extends CI_Model {
 
     /**
      * 
-     * @param type $limit
-     * @param type $offset
+     * @param type                        $limit
+     * @param type                        $offset
      * @param type from_user_id , user_id
      * @return Array Get chat list between two user
      */
-    public function fetch_chat_detail($limit, $offset, $params) {
+    public function fetch_chat_detail($limit, $offset, $params) 
+    {
         $this->db->select('SQL_CALC_FOUND_ROWS IF(to_user_id = ' . $params['user_id'] . ',"1","2") as type,getreadstatus(' . $params['from_user_id'] . ',c.msg_id) as is_read,u.user_id,c.msg,c.msg_id,c.chat_type,to_user_id,from_user_id,u.middle_name,u.first_name,u.last_name,c.media_url,c.media_thumb,c.chat_time as message_time', false);
         $this->db->from('ai_chat as c');
         $this->db->join('ai_user as u', '(IF(c.to_user_id = ' . $params['user_id'] . ',c.from_user_id,c.to_user_id) = u.user_id)', 'left', false);
@@ -114,14 +120,15 @@ class Chat_model extends CI_Model {
      * @param type from_user_id , user_id
      * @return Array Get chat list between two user 3 secont api
      */
-    public function fetch_chatdata($params) {
+    public function fetch_chatdata($params) 
+    {
         $this->db->select('SQL_CALC_FOUND_ROWS IF(to_user_id = ' . $params['to_user_id'] . ',"1","2") as type,c.msg,getreadstatus(' . $params['from_user_id'] . ',c.msg_id) as is_read,c.msg_id,c.chat_type,to_user_id,from_user_id,c.media_url,c.media_thumb,c.chat_time as message_time', false);
         $this->db->from('ai_chat as c');
         $this->db->where('((c.to_user_id = ' . $params['to_user_id'] . ' AND c.from_user_id = ' . $params['from_user_id'] . ') OR (c.to_user_id = ' . $params['from_user_id'] . ' AND c.from_user_id = ' . $params['to_user_id'] . '))');
         $this->db->where('NOT deleted_user_id like("%' . $params['to_user_id'] . '%")');
         if (!empty($params['last_msg_time'])) {
                 $this->db->where('c.chat_time > ' .$params['last_msg_time'] . '');
-//            $this->db->where('(UNIX_TIMESTAMP(CAST(c.chat_created_time AS DATETIME))*1000) > ' . $params['last_msg_time'] . '');
+            //            $this->db->where('(UNIX_TIMESTAMP(CAST(c.chat_created_time AS DATETIME))*1000) > ' . $params['last_msg_time'] . '');
         } else {
             $this->db->limit('1');
         }
@@ -143,7 +150,8 @@ class Chat_model extends CI_Model {
      * @Description in chat data list getting read msg
      * @return Array
      */
-    public function check_readmsg($params) {
+    public function check_readmsg($params) 
+    {
         $this->db->select('IF(c.read_user_id = ' . $params['from_user_id'] . ' && c.from_user_id = ' . $params['to_user_id'] . ',1,0) as is_read', false);
         $this->db->from('ai_chat as c');
         $this->db->where('to_user_id', $params['from_user_id']);
@@ -159,7 +167,8 @@ class Chat_model extends CI_Model {
      * @param type from_user_id , user_id
      * @return int delete users conversation
      */
-    public function delete_all($params) {
+    public function delete_all($params) 
+    {
         $updateddata = array();
         $updateddata['is_delete'] = 1;
         $updateddata['user_id'] = $params['user_id'];
@@ -176,7 +185,8 @@ class Chat_model extends CI_Model {
      * @param type msg_id , user_id
      * @return Array Delete chat 
      */
-    public function delete_specific($params) {
+    public function delete_specific($params) 
+    {
         $updateddata = array();
         try {
             $sql = "UPDATE ai_chat set deleted_user_id = (IF(deleted_user_id =''," . $params['user_id'] . ",concat(deleted_user_id,'," . $params['user_id'] . "'))) where msg_id IN(" . $params['msg_id'] . ")";
@@ -192,7 +202,8 @@ class Chat_model extends CI_Model {
      * @param type from_user_id , user_id
      * Update read status which is fetch
      */
-    public function mark_as_read($params) {
+    public function mark_as_read($params) 
+    {
         try {
             $sql = "UPDATE ai_chat set read_user_id = " . $params['user_id'] . " where (to_user_id = " . $params['user_id'] . " AND from_user_id = " . $params['from_user_id'] . ")";
             $this->db->query($sql);

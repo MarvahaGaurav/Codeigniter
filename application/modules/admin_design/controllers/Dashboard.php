@@ -2,9 +2,11 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Dashboard extends MY_Controller {
+class Dashboard extends MY_Controller
+{
 
-    function __construct() {
+    function __construct() 
+    {
         parent::__construct();
         $this->load->helper(['url', 'custom_cookie']);
         $this->load->model('Common_model');
@@ -23,7 +25,8 @@ class Dashboard extends MY_Controller {
 
     }
 
-    public function index() {
+    public function index() 
+    {
         $where = [];
         $dataCount = [];
         

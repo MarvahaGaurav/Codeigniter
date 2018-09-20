@@ -2,7 +2,7 @@
 
 /** 
  * @SWG\Swagger(
- *   @SWG\Info(
+ * @SWG\Info(
  *      description = "Smart Guide APIs, valid lanuage code's
  *          en : English
  *          da : Danish
@@ -26,7 +26,7 @@
  *   name="Authorization"
  * ),
  *
- *   @SWG\Tag(
+ * @SWG\Tag(
  *     name="User",
  *     description="",
  *   ),

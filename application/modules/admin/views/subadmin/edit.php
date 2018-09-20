@@ -19,7 +19,7 @@ $messagePermission = isset($permission[8])?$permission[8]:array();
                 <li><a href="admin/subadmin">Sub Admins</a></li>
                 <li class="active">Update Sub-admin</li>
             </ol>
-        </div>	
+        </div>    
         <div class="clear"></div>
 
         <div class="section">
@@ -77,9 +77,12 @@ $messagePermission = isset($permission[8])?$permission[8]:array();
                                 <label class="admin-label">Status</label>
                                 <div class="commn-select-wrap">
                                     <select class="selectpicker" name="status">
-                                        <option <?php if($admindetail['status'] == 0){echo 'selected';} ?> value="0">Inactive</option>
-                                        <option <?php if($admindetail['status'] == 1){echo 'selected';} ?> value="1">Active</option>
-                                        <option <?php if($admindetail['status'] == 2){echo 'selected';} ?> value="2">Block</option>
+                                        <option <?php if($admindetail['status'] == 0) {echo 'selected';
+                                       } ?> value="0">Inactive</option>
+                                        <option <?php if($admindetail['status'] == 1) {echo 'selected';
+                                       } ?> value="1">Active</option>
+                                        <option <?php if($admindetail['status'] == 2) {echo 'selected';
+                                       } ?> value="2">Block</option>
                                     </select>
                                     <?php echo form_error('status', '<label class="alert-danger">', '</label>'); ?>
                                 </div>
@@ -122,7 +125,7 @@ $messagePermission = isset($permission[8])?$permission[8]:array();
                                         </div>
                                     </li>
                                 </ul>
-                            </div>			
+                            </div>            
                             <div class="clear"></div>
                             <div class="custom-check main-check">
                                 <input id="main-check2" onchange="permission('merchant', 'main-check2')" name="merchant"  value="2" <?php echo (!empty($merchantPermission))?'checked':'' ?> type="checkbox">
@@ -159,7 +162,7 @@ $messagePermission = isset($permission[8])?$permission[8]:array();
                                         </div>
                                     </li>
                                 </ul>
-                            </div>			
+                            </div>            
                             <div class="clear"></div>
                             <div class="custom-check main-check">
                                 <input id="main-check3" onchange="permission('product', 'main-check3')" name="product"  value="3" <?php echo (!empty($productPermission))?'checked':'' ?> type="checkbox">
@@ -196,7 +199,7 @@ $messagePermission = isset($permission[8])?$permission[8]:array();
                                         </div>
                                     </li>
                                 </ul>
-                            </div>			
+                            </div>            
                             <div class="clear"></div>
                             <div class="custom-check main-check">
                                 <input id="main-check4" onchange="permission('template', 'main-check4')" name="template"  value="4" <?php echo (!empty($templatePermission))?'checked':'' ?> type="checkbox">
@@ -233,7 +236,7 @@ $messagePermission = isset($permission[8])?$permission[8]:array();
                                         </div>
                                     </li>
                                 </ul>
-                            </div>			
+                            </div>            
                             <div class="clear"></div>
                             <div class="custom-check main-check">
                                 <input id="main-check5" onchange="permission('content', 'main-check5')" name="content"  value="5" <?php echo (!empty($contentPermission))?'checked':'' ?> type="checkbox">
@@ -270,7 +273,7 @@ $messagePermission = isset($permission[8])?$permission[8]:array();
                                         </div>
                                     </li>
                                 </ul>
-                            </div>			
+                            </div>            
                             <div class="clear"></div>
                             <div class="custom-check main-check">
                                 <input id="main-check6" onchange="permission('version', 'main-check6')" name="version" value="6" <?php echo (!empty($versionPermission))?'checked':'' ?> type="checkbox">
@@ -307,7 +310,7 @@ $messagePermission = isset($permission[8])?$permission[8]:array();
                                         </div>
                                     </li>
                                 </ul>
-                            </div>			
+                            </div>            
                             <div class="clear"></div>
                             <div class="custom-check main-check">
                                 <input id="main-check7" onchange="permission('noti', 'main-check7')" name="noti"   value="7" <?php echo (!empty($notiPermission))?'checked':'' ?> type="checkbox">
@@ -344,7 +347,7 @@ $messagePermission = isset($permission[8])?$permission[8]:array();
                                         </div>
                                     </li>
                                 </ul>
-                            </div>			
+                            </div>            
                             <div class="clear"></div>
                             <div class="custom-check main-check">
                                 <input id="main-check8" onchange="permission('message', 'main-check8')" name="message" value="8" <?php echo (!empty($messagePermission))?'checked':'' ?> type="checkbox">
@@ -381,9 +384,9 @@ $messagePermission = isset($permission[8])?$permission[8]:array();
                                         </div>
                                     </li>
                                 </ul>
-                            </div>			
+                            </div>            
                             <div class="clear"></div>
-                        </div>			
+                        </div>            
                     </div>
                     </div>
                     <div class="col-sm-12 col-xs-12">

@@ -35,7 +35,7 @@
                                     <label class="admin-label">Name</label>
                                     <div class="input-holder">
                                         <input type="text" maxlength="100" name="Admin_Name" id="Admin_Name" value="<?php echo (isset($editdata['admin_name']) && !empty($editdata['admin_name'])) ? $editdata['admin_name'] : set_value('Admin_Name'); ?>" placeholder="Enter Name">
-                                        <?php echo form_error('Admin_Name','<label class="alert-danger">','</label>');?>
+                                        <?php echo form_error('Admin_Name', '<label class="alert-danger">', '</label>');?>
                                     </div>
                                 </div>
                             </div>
@@ -44,7 +44,7 @@
                                     <label class="admin-label">Mobile Number</label>
                                     <div class="input-holder">
                                         <input type="text" maxlength="100" name="Admin_Name" id="Admin_Name" value="<?php echo (isset($editdata['admin_name']) && !empty($editdata['admin_name'])) ? $editdata['admin_name'] : set_value('Admin_Name'); ?>" placeholder="Enter Name">
-                                        <?php echo form_error('Admin_Name','<label class="alert-danger">','</label>');?>
+                                        <?php echo form_error('Admin_Name', '<label class="alert-danger">', '</label>');?>
                                     </div>
                                 </div>
                             </div>
@@ -53,7 +53,7 @@
                                     <label class="admin-label">Email ID</label>
                                     <div class="input-holder">
                                         <input type="text" readonly maxlength="100" name="email" value="<?php echo (isset($editdata['admin_email']) && !empty($editdata['admin_email'])) ? $editdata['admin_email'] : set_value('email'); ?>" id="email" placeholder="Enter Email">
-                                        <?php echo form_error('email','<label class="alert-danger">','</label>');?>
+                                        <?php echo form_error('email', '<label class="alert-danger">', '</label>');?>
                                     </div>
                                 </div>
                             </div>

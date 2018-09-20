@@ -9,7 +9,7 @@
 <!--breadcrumb wrap close-->
 <div class="inner-right-panel">
     <!--Filter Section -->
-    <?php echo form_open_multipart('',array('id'=>'editadminprofile1'));?>
+    <?php echo form_open_multipart('', array('id'=>'editadminprofile1'));?>
         <div class="form-item-wrap">
             <div class="form-item-title clearfix">
                 <h3 class="title">Admin Edit Profile</h3>
@@ -53,7 +53,7 @@
                           <label class="admin-label">Name</label>
                           <div class="input-holder">
                               <input type="text" name="Admin_Name" id="Admin_Name" value="<?php echo (isset($editdata['admin_name']) && !empty($editdata['admin_name'])) ? $editdata['admin_name'] : set_value('Admin_Name'); ?>" placeholder="john samth">
-                              <?php echo form_error('Admin_Name','<label class="alert-danger">','</label>');?>
+                                <?php echo form_error('Admin_Name', '<label class="alert-danger">', '</label>');?>
 
                           </div>
 
@@ -65,7 +65,7 @@
                           <label class="admin-label">Email ID</label>
                           <div class="input-holder">
                               <input type="text" name="email" value="<?php echo (isset($editdata['admin_email']) && !empty($editdata['admin_email'])) ? $editdata['admin_email'] : set_value('email'); ?>" id="email" placeholder="RFID120@gmail.com">
-                              <?php echo form_error('email','<label class="alert-danger">','</label>');?>
+                                <?php echo form_error('email', '<label class="alert-danger">', '</label>');?>
                           </div>
 
                       </div>
@@ -76,7 +76,7 @@
                           <label class="admin-label">Mobile Number</label>
                           <div class="input-holder">
                               <input type="text" name="mobile_number" value="<?php echo (isset($editdata['phone']) && !empty($editdata['phone'])) ? $editdata['phone'] : set_value('phone') ?>" placeholder="+9145785566">
-                              <?php echo form_error('mobile_number','<label class="alert-danger">','</label>');?>
+                                <?php echo form_error('mobile_number', '<label class="alert-danger">', '</label>');?>
                           </div>
 
                       </div>

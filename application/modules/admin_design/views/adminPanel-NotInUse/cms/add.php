@@ -10,7 +10,7 @@
 </div>
 <!--breadcrumb wrap close-->
     <!--Filter Section -->
-    <?php echo form_open_multipart('',array('id'=>'cms_add_form'));?>
+    <?php echo form_open_multipart('', array('id'=>'cms_add_form'));?>
         <div class="white-wrapper">
             <div class="form-item-title clearfix">
                 <h3 class="title">Add Content</h3>
@@ -27,7 +27,7 @@
                             <label class="admin-label">Page Title</label>
                             <div class="input-holder">
                                 <!--<input type="password" class="form-control material-control" value="johndoe@gmail.com">-->
-                                <?php echo form_error('title','<label class="alert-danger">','</label>');?>
+                                <?php echo form_error('title', '<label class="alert-danger">', '</label>');?>
                                 <input type="text" class="form-control material-control" maxlength="150" name="title" value="<?php echo set_value('title');?>">
 
                                 <!-- <span class="error_wrap"></span> -->
@@ -38,7 +38,7 @@
                         <div class="form-group">
                             <label class="admin-label">Description</label>
                             <div class="input-holder">
-                                <?php echo form_error('page_desc','<label class="alert-danger">','</label>');?>
+                                <?php echo form_error('page_desc', '<label class="alert-danger">', '</label>');?>
                                 <textarea class="custom-textarea" name="page_desc" id="page_desc"><?php echo set_value('page_desc');?></textarea>
 
 
@@ -50,7 +50,7 @@
                         <div class="form-group">
                             <label class="admin-label">Status</label>
                             <div class="commn-select-wrap">
-                              <?php echo form_error('status','<label class="alert-danger">','</label>');?>
+                                <?php echo form_error('status', '<label class="alert-danger">', '</label>');?>
                                 <select class="selectpicker" name="status">
                                       <option value="">Select</option>
                                       <option value="<?php echo ACTIVE;?>">Active</option>

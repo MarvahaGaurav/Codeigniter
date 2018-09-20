@@ -35,13 +35,13 @@ class Templates extends MY_Controller
     {
         $this->load->helper("datetime");
         $get = $this->input->get();
-        if ( isset($get['startDate']) ) {
+        if (isset($get['startDate']) ) {
             $get['startDate'] = convert_date_time_format("d/m/Y", $get['startDate'], "Y-m-d");
         }
-        if ( isset($get['endDate']) ) {
+        if (isset($get['endDate']) ) {
             $get['endDate'] = convert_date_time_format("d/m/Y", $get['endDate'], "Y-m-d");
         }
-        if ( isset($get['building_type']) ) {
+        if (isset($get['building_type']) ) {
             $get['building_type'] = encryptDecrypt($get['building_type'], 'decrypt');
         }
         $get = trim_input_parameters($get);
@@ -88,11 +88,13 @@ class Templates extends MY_Controller
         $data = $this->Template->get($options);
         $application_data = $this->Application->get(['type' => '', 'language_code' => 'en']);
         
-        $application_data = array_map(function($data){
-            $data['id'] = $data['application_id'];
-            $data['application_id'] = encryptDecrypt($data['application_id']);
-            return $data;
-        }, $application_data);
+        $application_data = array_map(
+            function ($data) {
+                $data['id'] = $data['application_id'];
+                $data['application_id'] = encryptDecrypt($data['application_id']);
+                return $data;
+            }, $application_data
+        );
         //prepare view
         $this->data['applications'] = $application_data;
         $this->data['searchlike'] = $search;
@@ -115,17 +117,19 @@ class Templates extends MY_Controller
             1 => "Rectangular",
             2 => "Circular"   
         ];
-        $this->data['templates'] = array_map(function($template) use ($page, $counter){
-            // $template['page'] = $page - 1;
-            $template['dimensions'] = "{$template['room_length']}{$template['room_length_unit']}x" .
+        $this->data['templates'] = array_map(
+            function ($template) use ($page, $counter) {
+                // $template['page'] = $page - 1;
+                $template['dimensions'] = "{$template['room_length']}{$template['room_length_unit']}x" .
                                       "{$template['room_breath']}{$template['room_breath_unit']}x".
                                       "{$template['room_height']}{$template['room_height_unit']}";
-            $template['room_shape'] = in_array($template['room_shape'], array_keys($this->data['room_map']))?$this->data['room_map'][$template['room_shape']]:"";
-            $template['template_id'] = encryptDecrypt($template['id']);
-            $template['created_at'] = convert_date_time_format("Y-m-d H:i:s", $template['created_at'], "d M Y g:i A");
-            $template['updated_at'] = convert_date_time_format("Y-m-d H:i:s", $template['updated_at'], "d M Y g:i A");
-            return $template;
-        }, $this->data['templates']);
+                $template['room_shape'] = in_array($template['room_shape'], array_keys($this->data['room_map']))?$this->data['room_map'][$template['room_shape']]:"";
+                $template['template_id'] = encryptDecrypt($template['id']);
+                $template['created_at'] = convert_date_time_format("Y-m-d H:i:s", $template['created_at'], "d M Y g:i A");
+                $template['updated_at'] = convert_date_time_format("Y-m-d H:i:s", $template['updated_at'], "d M Y g:i A");
+                return $template;
+            }, $this->data['templates']
+        );
 
         
         $this->load->library("Commonfn");
@@ -140,21 +144,21 @@ class Templates extends MY_Controller
         $this->load->library("form_validation");
         $this->form_validation->set_rules($this->validation_rules());
         $post = $this->input->post();
-        if ( isset($post['room_type']) && !empty($post['room_type']) ) {
+        if (isset($post['room_type']) && !empty($post['room_type']) ) {
             $post['room_type'] = encryptDecrypt($post['room_type'], 'decrypt');
         }
-        if ( isset($post['category']) && !empty($post['category']) ) {
+        if (isset($post['category']) && !empty($post['category']) ) {
             $post['category'] = encryptDecrypt($post['category'], 'decrypt');
         }
         $post = trim_input_parameters($post);
         $this->form_validation->set_data($post);
-        if ( $this->form_validation->run() ) {
+        if ($this->form_validation->run() ) {
             $this->load->helper(['images']);
             $this->Template->room_id = $post['room_type'];
             $this->Template->category_id = $post['category'];
             $this->Template->type = $post['lighting'];
-            if ( isset($post['imgurl']) ) {
-                $this->Template->image = $imageName = s3_image_uploader(ABS_PATH.$post['imgurl'],$post['imgurl']);
+            if (isset($post['imgurl']) ) {
+                $this->Template->image = $imageName = s3_image_uploader(ABS_PATH.$post['imgurl'], $post['imgurl']);
             }
             $this->Template->room_length = $post['room_length'];
             $this->Template->room_length_unit = $post['room_length_unit'];
@@ -179,7 +183,7 @@ class Templates extends MY_Controller
         
         $this->data['category_data'] = [];
         $this->data['room_data'] = [];
-        if ( ! $this->form_validation->run() ) {
+        if (! $this->form_validation->run() ) {
             $this->load->model("UtilModel");
             $post['category'] = encryptDecrypt($post['category']);
             $this->data['category_data'] = $this->UtilModel->selectQuery(
@@ -192,14 +196,18 @@ class Templates extends MY_Controller
                 "rooms",
                 ["where" => ["application_id" => encryptDecrypt($post['category'], 'decrypt')]]
             );
-            $this->data['category_data'] = array_map(function($data){
-                $data['id'] = encryptDecrypt($data['id']);
-                return $data;
-            }, $this->data['category_data']);
-            $this->data['room_data'] = array_map(function($data){
-                $data['id'] = encryptDecrypt($data['id']);
-                return $data;
-            }, $this->data['room_data']);
+            $this->data['category_data'] = array_map(
+                function ($data) {
+                    $data['id'] = encryptDecrypt($data['id']);
+                    return $data;
+                }, $this->data['category_data']
+            );
+            $this->data['room_data'] = array_map(
+                function ($data) {
+                    $data['id'] = encryptDecrypt($data['id']);
+                    return $data;
+                }, $this->data['room_data']
+            );
             
         }
         load_views_cropper("project_templates/add", $this->data);
@@ -208,27 +216,27 @@ class Templates extends MY_Controller
     public function edit($template_id = 0)
     {
         $template_id = encryptDecrypt($template_id, 'decrypt');
-        if ( !isset($template_id) || empty($template_id) ) {
+        if (!isset($template_id) || empty($template_id) ) {
             error404("", base_url("admin"));
         }
         $this->load->library("form_validation");
         $this->form_validation->set_rules($this->validation_rules());
         $post = $this->input->post();
-        if ( isset($post['room_type']) && !empty($post['room_type']) ) {
+        if (isset($post['room_type']) && !empty($post['room_type']) ) {
             $post['room_type'] = encryptDecrypt($post['room_type'], 'decrypt');
         }
-        if ( isset($post['category']) && !empty($post['category']) ) {
+        if (isset($post['category']) && !empty($post['category']) ) {
             $post['category'] = encryptDecrypt($post['category'], 'decrypt');
         }
         $post = trim_input_parameters($post);
         $this->form_validation->set_data($post);
-        if ( $this->form_validation->run() ) {
+        if ($this->form_validation->run() ) {
             $this->Template->room_id = $post['room_type'];
             $this->Template->category_id = $post['category'];
             $this->Template->type = $post['lighting'];
-            if ( isset($post['imgurl']) ) {
+            if (isset($post['imgurl']) ) {
                 $this->load->helper(['images']);
-                $this->Template->image = $imageName = s3_image_uploader(ABS_PATH.$post['imgurl'],$post['imgurl']);
+                $this->Template->image = $imageName = s3_image_uploader(ABS_PATH.$post['imgurl'], $post['imgurl']);
             }
             $this->Template->room_length = $post['room_length'];
             $this->Template->room_length_unit = $post['room_length_unit'];
@@ -260,7 +268,7 @@ class Templates extends MY_Controller
 
         $this->load->model("UtilModel");
         
-        if ( ! $this->form_validation->run() ) {
+        if (! $this->form_validation->run() ) {
             $post['category'] = encryptDecrypt($post['category']);
             $application_id =  encryptDecrypt($post['category'], 'decrypt');
             $room_type = $post['lighting'];
@@ -281,14 +289,18 @@ class Templates extends MY_Controller
             ["where" => ["application_id" => $application_id]]
         );
         //format data
-        $this->data['category_data'] = array_map(function($data){
-            $data['id'] = encryptDecrypt($data['id']);
-            return $data;
-        }, $this->data['category_data']);
-        $this->data['room_data'] = array_map(function($data){
-            $data['id'] = encryptDecrypt($data['id']);
-            return $data;
-        }, $this->data['room_data']);
+        $this->data['category_data'] = array_map(
+            function ($data) {
+                $data['id'] = encryptDecrypt($data['id']);
+                return $data;
+            }, $this->data['category_data']
+        );
+        $this->data['room_data'] = array_map(
+            function ($data) {
+                $data['id'] = encryptDecrypt($data['id']);
+                return $data;
+            }, $this->data['room_data']
+        );
         $this->data['template_id'] = encryptDecrypt($data['id']);
         $this->data['template']['category_id'] = encryptDecrypt($this->data['template']['category_id']);
         $this->data['template']['room_id'] = encryptDecrypt($this->data['template']['room_id']);
@@ -298,7 +310,7 @@ class Templates extends MY_Controller
     public function details($template_id = "")
     {
         $template_id = encryptDecrypt($template_id, 'decrypt');
-        if ( !isset($template_id) || empty($template_id) ) {
+        if (!isset($template_id) || empty($template_id) ) {
             error404("", base_url("admin"));
         }
         
@@ -310,7 +322,7 @@ class Templates extends MY_Controller
         ];
 
         $data = $this->Template->get($options);
-        if ( empty($data) ) {
+        if (empty($data) ) {
             error404("", base_url("admin"));
         }
         // pd($data);

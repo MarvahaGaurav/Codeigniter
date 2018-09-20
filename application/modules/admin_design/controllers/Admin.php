@@ -2,9 +2,11 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Admin extends MY_Controller {
+class Admin extends MY_Controller
+{
 
-    function __construct() {
+    function __construct() 
+    {
         parent::__construct();
         $this->load->helper(['url', 'form', 'custom_cookie']);
         $this->load->model('Common_model');
@@ -28,13 +30,14 @@ class Admin extends MY_Controller {
      * @description:if email and password are correct then he can login
      */
 
-    public function index() {
+    public function index() 
+    {
         $data = [];
         if ($this->input->post()) {
             $postDataArr = $this->input->post();
             $this->form_validation->set_rules('email', $this->lang->line('email'), 'trim|required');
             $this->form_validation->set_rules('password', $this->lang->line('password'), 'trim|required');
-            if ($this->form_validation->run() == FALSE) {
+            if ($this->form_validation->run() == false) {
                 load_outer_views('/admin/login', $data);
             } else {
                 $email = $postDataArr['email'];
@@ -73,7 +76,7 @@ class Admin extends MY_Controller {
                         $cookieExpiryTime = time() + COOKIE_EXPIRY_TIME;
 
                         set_cookie(
-                                "rcc_appinventiv", "{$cookieData['cookie_selector']}:{$cookieData['cookie_validator']}", $cookieExpiryTime
+                            "rcc_appinventiv", "{$cookieData['cookie_selector']}:{$cookieData['cookie_validator']}", $cookieExpiryTime
                         );
 
                         $cookieData["cookie_validator"] = hash("sha256", $cookieData["cookie_validator"] . $adminInfo["create_date"]);
@@ -104,7 +107,8 @@ class Admin extends MY_Controller {
      * @description:if admin forget the password then he can reset his password
      */
 
-    public function forgot() {
+    public function forgot() 
+    {
         try {
             $data = array();
             $this->load->library("commonfn");
@@ -112,7 +116,7 @@ class Admin extends MY_Controller {
 
                 $this->form_validation->set_rules('email', $this->lang->line('email'), 'trim|required');
 
-                if ($this->form_validation->run() == FALSE) {
+                if ($this->form_validation->run() == false) {
                     load_outer_views('/admin/forgotpassword', $data);
                 } else {
 
@@ -171,7 +175,8 @@ class Admin extends MY_Controller {
      * @description:admin can set the password again
      */
 
-    public function reset() {
+    public function reset() 
+    {
         try {
             $post = $this->input->post();
             $token = $this->input->get('token');
@@ -227,7 +232,8 @@ class Admin extends MY_Controller {
      * @description:If email is exist in db or not
      */
 
-    public function check_email_avalibility() {
+    public function check_email_avalibility() 
+    {
 
         if (!$this->input->is_ajax_request()) {
             exit('No Direct Script allowed');

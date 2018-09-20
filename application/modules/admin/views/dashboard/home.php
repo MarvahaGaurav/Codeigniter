@@ -1,7 +1,7 @@
 <link href="<?php echo base_url()?>public/css/datepicker.min.css">
 
 <!-- alert -->
-<?php if ( null !== $this->session->flashdata("greetings")) { ?>
+<?php if (null !== $this->session->flashdata("greetings")) { ?>
 <div class="alert alert-success" role="alert">
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>

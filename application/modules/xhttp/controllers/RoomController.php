@@ -4,7 +4,8 @@ defined("BASEPATH") or exit("No direct script access allowed");
 require_once "BaseController.php";
 
 class RoomController extends BaseController
-{   
+{
+   
     
     public function __construct()
     {
@@ -16,33 +17,41 @@ class RoomController extends BaseController
     {
         $application_id = encryptDecrypt($application_id, 'decrypt');
         
-        if ( !isset($application_id) || empty($application_id) ) {
-            json_dump([
+        if (!isset($application_id) || empty($application_id) ) {
+            json_dump(
+                [
                 "success" => false,
                 "message" => $this->lang->line("internal_server_error")
-            ]);
+                ]
+            );
         }
 
         $this->load->model("UtilModel");
         $data = $this->UtilModel->selectQuery("id, title as text", "rooms", ["where" => ['application_id' => $application_id]]);
 
-        if ( empty($data) ) {
-            json_dump([
+        if (empty($data) ) {
+            json_dump(
+                [
                 "success" => false,
                 "message" => $this->lang->line("no_records_found")
-            ]);
+                ]
+            );
         }
 
-        $data = array_map(function($room) {
-            $room['id'] = encryptDecrypt($room['id']);
-            return $room;
-        }, $data);
+        $data = array_map(
+            function ($room) {
+                $room['id'] = encryptDecrypt($room['id']);
+                return $room;
+            }, $data
+        );
 
-        json_dump([
+        json_dump(
+            [
             "success" => true,
             "message" => $this->lang->line("room_fetched"),
             "data" => $data
-        ]);
+            ]
+        );
 
     }
 }

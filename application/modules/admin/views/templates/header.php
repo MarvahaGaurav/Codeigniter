@@ -86,7 +86,7 @@
     $sidebarState = isset($adminInfo["sidebar_state"]) ? $adminInfo["sidebar_state"] : "";
     $sideBar = get_cookie('sideBar');
     $sideBar = isset($sideBar) ? $sideBar : "";
-//        echo $controller;die('test');
+    //        echo $controller;die('test');
     //pr($admin_access_detail);
     $assignedmodules = array_column($admin_access_detail, 'access_permission');
         //pr($assignedmodules);
@@ -133,7 +133,7 @@
                                     </a>
                                 </li>
                             <?php } ?>
-                            <?php if(in_array('1',$assignedmodules) || $admininfo['role_id'] == 1){ ?>
+                            <?php if(in_array('1', $assignedmodules) || $admininfo['role_id'] == 1) { ?>
                             <li>
                                 <a href="admin/users" class="<?php echo ($controller == 'user') ? 'active' : ''; ?>">
                                     <img src="public/images/svg/user.svg" alt="Users">
@@ -141,7 +141,7 @@
                                 </a>
                             </li>
                             <?php } ?>
-                            <?php if(in_array('2',$assignedmodules) || $admininfo['role_id'] == 1){ ?>
+                            <?php if(in_array('2', $assignedmodules) || $admininfo['role_id'] == 1) { ?>
                             <li>
                                 <a href="admin/technician" <?php echo ($controller == "technician") ? "class='active'" : "" ?> >
                                     <img src="public/images/svg/cms.svg" alt="Merchant Management">
@@ -149,7 +149,7 @@
                                 </a>
                             </li>
                             <?php } ?>
-                            <?php if(in_array('3', $assignedmodules) || $admininfo['role_id'] == 1){ ?>
+                            <?php if(in_array('3', $assignedmodules) || $admininfo['role_id'] == 1) { ?>
                             <li>
                                 <a href="javascript:void(0)" <?php echo ($controller == "products") ? "class='active'" : "" ?> >
                                     <img src="public/images/svg/cms.svg" alt="Template Management">
@@ -157,7 +157,7 @@
                                 </a>
                             </li>
                             <?php } ?>
-                            <?php if(in_array('4',$assignedmodules) || $admininfo['role_id'] == 1){ ?>
+                            <?php if(in_array('4', $assignedmodules) || $admininfo['role_id'] == 1) { ?>
                             <li>
                                 <a href="<?php echo base_url("admin/templates") ?>" <?php echo ($controller == "templatecontroller") ? "class='active'" : "" ?> >
                                     <img src="public/images/svg/cms.svg" alt="Template Management">
@@ -165,7 +165,7 @@
                                 </a>
                             </li>
                             <?php } ?>
-                            <?php if(in_array('5',$assignedmodules) || $admininfo['role_id'] == 1){ ?>
+                            <?php if(in_array('5', $assignedmodules) || $admininfo['role_id'] == 1) { ?>
                             <li>
                                 <a href="admin/cms" class="<?php echo ($controller == 'cms') ? 'active' : ''; ?>" >
                                     <img src="public/images/svg/cms.svg" alt="Content Management">
@@ -173,7 +173,7 @@
                                 </a>
                             </li>
                             <?php } ?>
-                            <?php if(in_array('6',$assignedmodules) || $admininfo['role_id'] == 1){ ?>
+                            <?php if(in_array('6', $assignedmodules) || $admininfo['role_id'] == 1) { ?>
                             <li>
                                 <a href="admin/version" class="<?php echo ($controller == 'version') ? 'active' : ''; ?>" >
                                     <img src="public/images/svg/notification.svg" alt="Notification">
@@ -181,7 +181,7 @@
                                 </a>
                             </li>
                             <?php } ?>
-                            <?php if(in_array('7',$assignedmodules) || $admininfo['role_id'] == 1){ ?>
+                            <?php if(in_array('7', $assignedmodules) || $admininfo['role_id'] == 1) { ?>
                             <li>
                                 <a href="admin/notification" class="<?php echo ($controller == 'notification') ? 'active' : '';  ?>">
                                     <img src="public/images/svg/notification.svg" alt="Notification">
@@ -189,7 +189,7 @@
                                 </a>
                             </li>
                             <?php } ?>
-                            <?php if(in_array('8',$assignedmodules) || $admininfo['role_id'] == 1){ ?>
+                            <?php if(in_array('8', $assignedmodules) || $admininfo['role_id'] == 1) { ?>
                             <li>
                                 <a href="javascript:void(0)" <?php echo ($controller == "message") ? "class='active'" : "" ?> >
                                     <img src="public/images/svg/message.svg" alt="Message">

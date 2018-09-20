@@ -1,15 +1,15 @@
 requirejs.config({
-  baseUrl: 'public/js',
+  baseUrl: 'public',
   waitSeconds: 60,
   paths: {
-    jquery: 'jquery.min',
-    bootstrap: 'bootstrap.min',
-    common: 'web/common',
-    jqueryValidator: 'jquery.validate.min',
-    viewBuilder: 'lib/view-builder',
-    location: 'lib/location',
-    jqueryScrollbar: 'plugin/jquery.scrollbar.min',
-    easyAutoComplete: 'jquery.easy-autocomplete.min'
+    jquery: 'js/jquery.min',
+    bootstrap: 'js/bootstrap.min',
+    common: 'js/web/common',
+    jqueryValidator: 'js/jquery.validate.min',
+    viewBuilder: 'js/lib/view-builder',
+    location: 'js/lib/location',
+    jqueryScrollbar: 'js/plugin/jquery.scrollbar.min',
+    autocomplete: 'js/jquery.autocomplete.min'
   },
   shim: {
     //dependencies
@@ -17,9 +17,9 @@ requirejs.config({
     common: ['bootstrap'],
     viewBuilder: ['jquery'],
     jqueryValidator: ['jquery'],
-    location: ['viewBuilder'],
+    location: ['autocomplete'],
     jqueryScrollbar: ['jquery'],
-    easyAutoComplete: ['jquery']
+    autocomplete: ['jquery']
   }
 });
 
@@ -32,7 +32,7 @@ requirejs(
     'viewBuilder',
     'jqueryValidator',
     'location',
-    'easyAutoComplete'
+    'autocomplete'
   ],
   function($) {
     fetchLocation('/xhttp/cities');
@@ -89,6 +89,8 @@ requirejs(
         }
       }
     });
+
+
 
     if ( $companyName.length > 0 ) {
       $companyName.rules("add", {

@@ -66,7 +66,7 @@ $module = $this->router->fetch_module();
         </div>
     </label>
     <!-- Content -->
-    <input type="hidden" id="filterparams" value='<?php echo json_encode($queryString) ;?>'>	
+    <input type="hidden" id="filterparams" value='<?php echo json_encode($queryString);?>'>    
 
     <!-- Table Section -->
     <div class="section">
@@ -100,7 +100,7 @@ $module = $this->router->fetch_module();
                     </tr>
                 </tbody>
             </table>
-        </div>   	
+        </div>       
         <div class="clear"></div>
         <nav class="pagination-wrapper">
             <ul class="pagination">

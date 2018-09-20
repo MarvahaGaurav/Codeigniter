@@ -12,43 +12,29 @@
     function setAutoComplete($element, options){
         options = options || {};
         var location = options.location || "en";
+        console.log(location)
         var autoCompleteOptions = {
-            url: function(search) {
-                return domain2 + "/xhttp/cities?param=" + location + "&query=" + search;
-            },
-            listLocation: "data",
-            getValue: function(data) {
-                return data.name
-            },
-            ajaxSettings: {
-                dataType: "json",
-                success: function(response) {
-                    if ( ! response.success ) {
-                        $("#city-id").val('');
-                        $("ul.nolistdata").show();                      
-                    } else {
-                        $("ul.nolistdata").hide();
-                    }
-                }
-            },
-            list: {
-                maxNumberOfElements: 8,
-                match: {
-                    enabled: true
+            serviceUrl: domain2 + "/xhttp/cities",
+                params: {
+                    param: location,
+                    query: $selectCity.val()
                 },
-                sort: {
-                    enabled: true
+                dataType: 'json',
+                showNoSuggestionNotice: true,
+                noSuggestionNotice: "No result found",
+                onSelect: function (suggestion) {
+                    $("#city-id").val(suggestion.data)
                 },
-                onSelectItemEvent: function() {
-                    var value = $element.getSelectedItemData().id;
-                    $("#city-id").val(value);
+                transformResult: function (response) {
+                    // console.log(response);
+                   return ( {
+                        suggestions: response.data.map(function(data) {
+                            return {value: data.name, data: data.id}
+                        })
+                    })
                 }
-            },
-            theme: "square",
-            requestDelay: 70,
-            placeholder: "Please start typing your city..."
         };
-        $element.easyAutocomplete(autoCompleteOptions);
+        $element.autocomplete(autoCompleteOptions);
     }
     
     var fetchLocation = function (url, parent, source, target, events) {

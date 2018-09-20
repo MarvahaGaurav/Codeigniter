@@ -2,9 +2,11 @@
 
 require APPPATH . 'libraries/REST_Controller.php';
 
-class Notification extends REST_Controller {
+class Notification extends REST_Controller
+{
 
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
         $this->load->model('Common_model');
         $this->load->library('form_validation');
@@ -33,7 +35,8 @@ class Notification extends REST_Controller {
      *   @SWG\Response(response=501, description="Please try again"),
      * )
      */
-    public function index_post() {
+    public function index_post() 
+    {
         $postDataArr = $this->post();
         $config = [];
 
@@ -73,7 +76,7 @@ class Notification extends REST_Controller {
                 if ($user_info['status'] == 2) {
                     $this->response(array('code' => ACCOUNT_BLOCKED, 'msg' => $this->lang->line('account_blocked'), 'result' => (object)[]));
                 }
-                if ($this->db->trans_status() === TRUE) {
+                if ($this->db->trans_status() === true) {
                     $this->db->trans_commit(); 
                     $whereArr['where'] = ['reciever_id'=>$user_info['user_id']];
                     $whereArr['order_by'] = ['notify_time'=>'DESC'];
@@ -93,7 +96,8 @@ class Notification extends REST_Controller {
     }
     
     
-    public function readnotification_post() {
+    public function readnotification_post() 
+    {
 
         $postDataArr = $this->post();
         $config = [];
@@ -142,7 +146,7 @@ class Notification extends REST_Controller {
                 
                 $whereArr['where'] = ['n_id'=>$user_info['n_id']];                
                 $notificationlist =  $this->Common_model->update_single('users_notification_master', ['is_read'=>1], $whereArr);        
-                if ($this->db->trans_status() === TRUE) {
+                if ($this->db->trans_status() === true) {
                     $this->db->trans_commit();                                
                     $this->response(array('CODE' => SUCCESS_CODE, 'MESSAGE' => $this->lang->line('process_success'), 'result' => $notificationlist));
                 }

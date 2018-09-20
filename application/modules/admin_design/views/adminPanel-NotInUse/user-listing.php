@@ -195,7 +195,7 @@
 
                         if (isset($userlist['result']) && !empty($userlist['result'])) {
 
-                         $i=$offset+1;    foreach ($userlist['result'] as $key => $user_data)  {   
+                            $i=$offset+1;    foreach ($userlist['result'] as $key => $user_data)  {   
 
                                 ?>
 
@@ -203,7 +203,7 @@
 
                                     <td><?php echo $i ?></td>
 
-                                    <td><a href="admin/viewMerchant?user=<?php echo encrypt_with_openssl(new Encryption\OpenSSLEncrypt($user_data['user_id']),true);?>"><?php echo $user_data['first_name']?></a></td>
+                                    <td><a href="admin/viewMerchant?user=<?php echo encrypt_with_openssl(new Encryption\OpenSSLEncrypt($user_data['user_id']), true);?>"><?php echo $user_data['first_name']?></a></td>
 
                                     <td><?php echo $user_data['email']?></td>
 
@@ -213,19 +213,25 @@
 
                                     <td><?php echo $user_data['registered_date']?></td>
 
-                                    <td><?php if($user_data['type']=='1'){ echo"Customer";} else if($user_data['type']=='2'){ echo "Merchant";}?></td>
+                                    <td><?php if($user_data['type']=='1') { echo"Customer";
+                                   } else if($user_data['type']=='2') { echo "Merchant";
+}?></td>
 
-                                    <td><?php if($user_data['status']=='1'){ echo"Active";} else if($user_data['status']=='2'){ echo "Blocked";} else if($user_data['status']=='3'){ echo "Blocked";} else if($user_data['status']=='4'){echo"Deleted";}?></td>  
+                                    <td><?php if($user_data['status']=='1') { echo"Active";
+                                   } else if($user_data['status']=='2') { echo "Blocked";
+} else if($user_data['status']=='3') { echo "Blocked";
+} else if($user_data['status']=='4') {echo"Deleted";
+}?></td>  
 
                                     <td>  
 
-                                    <a href="admin/viewMerchant?user=<?php echo encrypt_with_openssl(new Encryption\OpenSSLEncrypt($user_data['user_id']),true);?>"><i class="fa fa-eye" aria-huser_idden="true"></i></a>
+                                    <a href="admin/viewMerchant?user=<?php echo encrypt_with_openssl(new Encryption\OpenSSLEncrypt($user_data['user_id']), true);?>"><i class="fa fa-eye" aria-huser_idden="true"></i></a>
 
-                                    <a href="javascript:vouser_id(0);" user_id="changestatus" data-block-status="<?php echo ($user_data['status'] == 1)? 2:1; ?>" class="form-hyperlink" onclick="changestatus('<?php echo encrypt_with_openssl(new Encryption\OpenSSLEncrypt($user_data['user_id']),true);?>',this);" data-toggle="modal" data-target="#myModal-block"><?php echo ($user_data['status'] == 1)?'Block':'Unblock'; ?></a>
+                                    <a href="javascript:vouser_id(0);" user_id="changestatus" data-block-status="<?php echo ($user_data['status'] == 1)? 2:1; ?>" class="form-hyperlink" onclick="changestatus('<?php echo encrypt_with_openssl(new Encryption\OpenSSLEncrypt($user_data['user_id']), true);?>',this);" data-toggle="modal" data-target="#myModal-block"><?php echo ($user_data['status'] == 1)?'Block':'Unblock'; ?></a>
 
-                                    <a href="javascript:vouser_id(0);" user_id="deleteuser" data-delete-status="3" class="form-hyperlink deleteuser" onclick="deleteuser('<?php echo encrypt_with_openssl(new Encryption\OpenSSLEncrypt($user_data['user_id']),true);?>',this);"><i class="fa fa-trash" aria-huser_idden="true" data-toggle="modal" data-target="#myModal-trash"></i></a>    
+                                    <a href="javascript:vouser_id(0);" user_id="deleteuser" data-delete-status="3" class="form-hyperlink deleteuser" onclick="deleteuser('<?php echo encrypt_with_openssl(new Encryption\OpenSSLEncrypt($user_data['user_id']), true);?>',this);"><i class="fa fa-trash" aria-huser_idden="true" data-toggle="modal" data-target="#myModal-trash"></i></a>    
 
-                                    <a  href="admin/editMerchant?user=<?php echo encrypt_with_openssl(new Encryption\OpenSSLEncrypt($user_data['user_id']),true);?>"><i class="fa fa-pencil-square-o" aria-huser_idden="true"></i></a>
+                                    <a  href="admin/editMerchant?user=<?php echo encrypt_with_openssl(new Encryption\OpenSSLEncrypt($user_data['user_id']), true);?>"><i class="fa fa-pencil-square-o" aria-huser_idden="true"></i></a>
 
 
 
@@ -233,9 +239,11 @@
 
                                 </tr>
 
-                            <?php $i++; } ?>
+                                <?php $i++; 
+                            } ?>
 
-                        <?php } else { ?><tr><td colspan="12"><?php echo "No result found";} ?></td></tr>
+                        <?php } else { ?><tr><td colspan="12"><?php echo "No result found";
+                        } ?></td></tr>
 
                      </tbody>
 
@@ -257,7 +265,7 @@
 
                            <!--<ul>-->
 
-                              <?php echo $link; ?>
+                                <?php echo $link; ?>
 
                            <!--</ul>-->
 

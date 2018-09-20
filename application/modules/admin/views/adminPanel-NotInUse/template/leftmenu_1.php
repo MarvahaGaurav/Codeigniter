@@ -2,7 +2,7 @@
     $className  =$this->router->fetch_class();
     $methodName  =$this->router->fetch_method();
 
-    $admindata  = $this->Common_model->fetch_data('admin','admin_name,admin_profile_pic',['where'=>['admin_id'=>$this->admininfo['id']]],true);
+    $admindata  = $this->Common_model->fetch_data('admin', 'admin_name,admin_profile_pic', ['where'=>['admin_id'=>$this->admininfo['id']]], true);
 
 ?>
 
@@ -20,13 +20,15 @@
                   <div class="left-menu">
                      <ul>
                          <li>
-                             <a href="admin/dashboard" <?php if($className=="dashboard" && $methodName=="index"){ echo "class='active'";}?>>
+                             <a href="admin/dashboard" <?php if($className=="dashboard" && $methodName=="index") { echo "class='active'";
+                            }?>>
                             <span class="dashboard_img comm-img"></span><label class="nav-txt">Dashboard</label>
                             </a>
                          </li>
 
                         <li>
-                            <a href="admin/users" <?php if($className=="User" && $methodName=="index"){ echo "class='active'";}?>>
+                            <a href="admin/users" <?php if($className=="User" && $methodName=="index") { echo "class='active'";
+                           }?>>
                            <span class="user_img comm-img"></span><label class="nav-txt">Users</label>
                            </a>
                         </li>
@@ -36,17 +38,20 @@
                            </a>
                         </li>-->
                         <li>
-                            <a href="admin/cms" <?php if($className=="cms" && in_array($methodName, ['edit','add','index'])){ echo "class='active'";}?>>
+                            <a href="admin/cms" <?php if($className=="cms" && in_array($methodName, ['edit','add','index'])) { echo "class='active'";
+                           }?>>
                             <span class="activitylog comm-img"></span><label class="nav-txt">Content</label>
                             </a>
                         </li>
                         <li>
-                            <a href="admin/version" <?php if($className=="version" && in_array($methodName, ['edit','add','index'])){ echo "class='active'";}?>>
+                            <a href="admin/version" <?php if($className=="version" && in_array($methodName, ['edit','add','index'])) { echo "class='active'";
+                           }?>>
                                 <span class="copy_img comm-img"></span><label class="nav-txt">Manage Version</label>
                            </a>
                         </li>
                         <li>
-                            <a href="admin/notification" <?php if($className=="notification" && in_array($methodName, ['edit','add','index'])){ echo "class='active'";}?>>
+                            <a href="admin/notification" <?php if($className=="notification" && in_array($methodName, ['edit','add','index'])) { echo "class='active'";
+                           }?>>
                                 <span class="notification_img comm-img"></span><label class="nav-txt">Notification</label>
                            </a>
                         </li>

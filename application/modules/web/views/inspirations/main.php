@@ -68,13 +68,13 @@
                                     </div>
                                     <?php }?>
                                     <?php endforeach ?>
-                                    <?php } else {?>
+                                <?php } else {?>
                                         <div class="item">
                                         <div class="thumb-view-wrapper thumb-view-fullp img-viewbdr-radius4">
                                             <div class="thumb-view thumb-viewfullheight-1" style="background:url('<?php echo $inspiration['media']  ?>')"></div>
                                         </div>
                                         </div>
-                                    <?php }?>
+                                <?php }?>
                                 </div>
                                 
                                 <!-- td carousel end -->
@@ -92,9 +92,9 @@
                             <ul class="inspiration-product">
                                 <?php foreach($inspiration['products'] as $key => $product) : ?>
                                 <li><?php echo $product['product_title'] ?></li>
-                                <?php if ( (int)$key > 3 ) {
+                                <?php if ((int)$key > 3 ) {
                                     break;
-                                }?>
+}?>
                                 <?php endforeach ?>
                             </ul>
                         </td>
@@ -102,7 +102,7 @@
                             <a href="<?php echo base_url("home/inspirations/" . $inspiration['inspiration_id']) ?>" class="tb-view-list" title="View">
                                 <i class="fa fa-eye" aria-hidden="true"></i>
                             </a>
-                            <?php if ( $inspiration['edit_inspiration'] ) { ?>
+                            <?php if ($inspiration['edit_inspiration'] ) { ?>
                             <a href="<?php echo base_url("home/inspirations/{$inspiration['inspiration_id']}/edit") ?>" class="tb-view-list" title="Edit">
                                 <i class="fa fa-pencil" aria-hidden="true"></i>
                             </a>
@@ -110,7 +110,7 @@
                         </td>
                     </tr>
                     <?php endforeach?>
-                    <?php if ( empty($inspirations) ) { ?>
+                    <?php if (empty($inspirations) ) { ?>
                         <tr>
                             <td colspan="5">No result found</td>
                         </tr>

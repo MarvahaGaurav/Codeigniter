@@ -71,7 +71,7 @@
 
             </thead>
             <tbody id="table_tr">
-              <?php if(isset($pages['result']) && count($pages['result'])>0):
+                <?php if(isset($pages['result']) && count($pages['result'])>0) :
 
                     foreach($pages['result'] as $key =>$value):
 
@@ -80,17 +80,17 @@
                   <tr id ="remove_<?php echo $value['id'];?>">
                     <td><?php echo ++$key; ?></td>
                     <td><?php echo ucfirst($value['name']); ?></td>
-                    <td><?php echo substr($value['content'],0,150);?></td>
+                    <td><?php echo substr($value['content'], 0, 150);?></td>
                     <td><?php echo ($value['status']==ACTIVE)?"Active":"Inactive";?></td>
                     <td>
                         <a class="table_icon" href="<?php echo base_url()?>admin/cms/edit?id=<?php echo $this->Common_model->mcrypt_data($value['id']);?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                        <a href="javascript:void(0);" class="table_icon"><i class="fa fa-trash" aria-hidden="true" onclick="deleteUser('cms',<?php echo DELETED;?>,'<?php echo encrypt_with_openssl(new Encryption\OpenSSLEncrypt($value['id']),true);?>','req/change-user-status','Do you really want to delete this page?');"></i></a>
+                        <a href="javascript:void(0);" class="table_icon"><i class="fa fa-trash" aria-hidden="true" onclick="deleteUser('cms',<?php echo DELETED;?>,'<?php echo encrypt_with_openssl(new Encryption\OpenSSLEncrypt($value['id']), true);?>','req/change-user-status','Do you really want to delete this page?');"></i></a>
                     </td>
                 </tr>
-          <?php
-              endforeach;
+            <?php
+                    endforeach;
               else:
-                  echo '<tr><td colspan="5">No result found.</td></tr>';
+                    echo '<tr><td colspan="5">No result found.</td></tr>';
               endif;?>
             </tbody>
         </table>

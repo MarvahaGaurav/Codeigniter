@@ -2,9 +2,11 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Cms extends MY_Controller {
+class Cms extends MY_Controller
+{
 
-    function __construct() {
+    function __construct() 
+    {
         parent::__construct();
         $this->load->helper(['url', 'custom_cookie', 'form', 'encrypt_openssl']);
         $this->load->model('Common_model');
@@ -30,7 +32,8 @@ class Cms extends MY_Controller {
      * @name index
      * @description This method is used to list all the customers.
      */
-    public function index() {
+    public function index() 
+    {
         $this->load->library('commonfn');
         /* Fetch List of users */
         $get = $this->input->get();
@@ -65,14 +68,15 @@ class Cms extends MY_Controller {
      * @name add
      * @description This method is used to add a new page to the cms.
      */
-    public function add() {
+    public function add() 
+    {
 
         $this->data = [];
         if ($this->input->post()) {
             $this->form_validation->set_rules('title', $this->lang->line('title'), 'required|trim');
             $this->form_validation->set_rules('page_desc', $this->lang->line('page_desc'), 'required');
             $this->form_validation->set_rules('status', $this->lang->line('status'), 'required|trim');
-            if ($this->form_validation->run() == FALSE) {
+            if ($this->form_validation->run() == false) {
                 load_views("cms/add", $this->data);
             } else {
                 $postedData = $this->input->post();
@@ -107,7 +111,8 @@ class Cms extends MY_Controller {
      * @param type $this->data
      * @return boolean
      */
-    protected function saveCmsData($data, $updateId = false) {
+    protected function saveCmsData($data, $updateId = false) 
+    {
 
         try {
             $this->db->trans_start();
@@ -116,7 +121,7 @@ class Cms extends MY_Controller {
             } else {
                 $this->Common_model->insert_single('page_master', $data);
             }
-            if ($this->db->trans_status() == TRUE) {
+            if ($this->db->trans_status() == true) {
                 $this->db->trans_complete();
                 return true;
             } else {
@@ -133,7 +138,8 @@ class Cms extends MY_Controller {
      * @description This method is used to edit the cms page.
      * @access public
      */
-    public function edit() {
+    public function edit() 
+    {
         $get = $this->input->get();
 
         // $this->data['page_id'] = $pageId = (isset($get['id']) && !empty($get['id'])) ? $this->Common_model->demcrypt_data(str_replace(' ', '+', $get['id'])) : show_404();
@@ -150,7 +156,7 @@ class Cms extends MY_Controller {
             $this->form_validation->set_rules('title', $this->lang->line('title'), 'required|trim');
             $this->form_validation->set_rules('page_desc', $this->lang->line('page_desc'), 'required');
             $this->form_validation->set_rules('status', $this->lang->line('status'), 'required|trim');
-            if ($this->form_validation->run() == FALSE) {
+            if ($this->form_validation->run() == false) {
                 load_views("cms/edit", $this->data);
             } else {
                 $postedData = $this->input->post();

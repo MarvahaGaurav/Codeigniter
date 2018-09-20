@@ -135,14 +135,14 @@
                             </td>
                         </tr>
                         <?php endforeach ?>
-                        <?php if ( empty($technicians) ) :?>
+                        <?php if (empty($technicians) ) :?>
                             <tr>
                                 <td colspan="5">No result found</td>
                             </tr>
                         <?php endif?>
                     </tbody>
                 </table>
-            </div>   	
+            </div>       
             <div class="pagination-wrap">
                 <?php echo $links ?>
             </div>

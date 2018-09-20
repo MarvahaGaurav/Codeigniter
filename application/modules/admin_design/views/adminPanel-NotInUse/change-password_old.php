@@ -10,9 +10,9 @@
                 <!--breadcrumb end-->
             </div>
             <!--breadcrumb-main-wrap-->
-                   <form method="post" action="admin/Admin_Profile/admin_change_password?user=<?php  echo encrypt_with_openssl(new Encryption\OpenSSLEncrypt($editdata['admin_id']),true);?>" name="changepassword" id="changepassword">
+                   <form method="post" action="admin/Admin_Profile/admin_change_password?user=<?php  echo encrypt_with_openssl(new Encryption\OpenSSLEncrypt($editdata['admin_id']), true);?>" name="changepassword" id="changepassword">
                     <input type="hidden" name="<?php echo $csrfName; ?>" id="<?php echo $csrfName; ?>" value="<?php echo $csrfToken; ?>">
-                    <input type="hidden" name="userid" id="userid" value="<?php  echo encrypt_with_openssl(new Encryption\OpenSSLEncrypt($editdata['admin_id']),true);?>">
+                    <input type="hidden" name="userid" id="userid" value="<?php  echo encrypt_with_openssl(new Encryption\OpenSSLEncrypt($editdata['admin_id']), true);?>">
             <div class="main-panel">
                 <!--container main wrapper-->
                 <div class="mycart-wrapper">

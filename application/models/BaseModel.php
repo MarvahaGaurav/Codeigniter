@@ -1,68 +1,64 @@
 <?php
-defined("BASEPATH") OR exit("No direct script access allowed");
+defined("BASEPATH") or exit("No direct script access allowed");
 
 use DatabaseExceptions\UpdateException;
 use DatabaseExceptions\SelectException;
 use DatabaseExceptions\InsertException;
 use DatabaseExceptions\DeleteException;
 
-class BaseModel extends CI_Model {
+class BaseModel extends CI_Model
+{
 
     protected $tableName;
     public $batch_data;
+    private $batchData;
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
+        $this->batchData = [];
         $this->load->database();
-        $this->load->helper("debuging");
     }
 
-    /* public function __get($method)
-    {
-        $method = "get_" . $method;
-        if ( method_exists($method) ) {
-            return $this->$method();
-        }
-    }
-
-    public function __set($method, $value)
-    {
-        $method = "set_" . $method;
-        if ( method_exists($method) ) {
-            $this->$method($value);
-        }
-    }
-
-    private function set_batch_data($value)
-    {
-        $this->batch_data = $value;
-    }
-    
-    private function get_batch_data()
-    {
-        return $this->batch_data;
-    } */
-
-    public function save() 
+    public function save()
     {
         unset($this->batch_data);
         $status = $this->db->insert($this->tableName, $this);
-        if ( ! $status ) {
+        if (! $status) {
             throw new InsertException($this->db->last_query(), 101);
         }
         return $this->db->insert_id();
     }
 
-    public function update($where) 
+    public function appendBatchData($data)
+    {
+        $this->batchData = array_merge($this->batchData, $data);
+    }
+
+    public function getBatchData()
+    {
+        return $this->batchData;
+    }
+
+    public function batchSave()
+    {
+        $this->db->reset_query();
+        $status = $this->db->insert_batch($this->tableName, $this->batchData);
+        if (! $status) {
+            throw new InsertException($this->db->last_query(), 101);
+        }
+    }
+
+    public function update($where)
     {
         unset($this->batch_data);
         $this->db->set($this);
-        foreach( $where as $key => $value ) {
+        foreach ($where as $key => $value) {
             $this->db->where($key, $value);
         }
         $status = $this->db->update($this->tableName);
 
-        if ( ! $status ) {
+        if (! $status) {
             throw new UpdateException($this->db->last_query(), 102);
         }
         /* if ( $this->db->affected_rows() == 0 ) {
@@ -70,8 +66,9 @@ class BaseModel extends CI_Model {
         } */
     }
 
-    public function delete($where, $where_in=[]) {
-        foreach( $where as $key => $value ) {
+    public function delete($where, $where_in = [])
+    {
+        foreach ($where as $key => $value) {
             $this->db->where($key, $value);
         }
         
@@ -81,21 +78,21 @@ class BaseModel extends CI_Model {
 
         $status = $this->db->delete($this->tableName);
 
-        if ( ! $status ) {
+        if (! $status) {
             throw new DeleteException($this->db->last_query(), 101);
         }
     }
 
-    public function batch_save() 
+    public function batch_save()
     {
         $this->db->reset_query();
         $status = $this->db->insert_batch($this->tableName, $this->batch_data);
-        if ( ! $status ) {
+        if (! $status) {
             throw new InsertException($this->db->last_query(), 101);
         }
     }
 
-    public function fetch() 
+    public function fetch()
     {
         $this->db->select("*")
         ->from($this->tableName);

@@ -1,8 +1,10 @@
 <?php
 
-class Review_model extends CI_Model {
+class Review_model extends CI_Model
+{
 
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
         /**
          * load database
@@ -12,12 +14,14 @@ class Review_model extends CI_Model {
 
     /**
      * get review list
-     * @param array
+     *
+     * @param  array
      * @return array
      */
-    public function getReviews($params) {
+    public function getReviews($params) 
+    {
 
-        $this->db->select('SQL_CALC_FOUND_ROWS id as review_id,IF(r.user_id=' . $params['user_id'] . ',1,0) as is_reviewed,CONCAT(first_name," ",last_name) as name,r.review,r.rating',false);
+        $this->db->select('SQL_CALC_FOUND_ROWS id as review_id,IF(r.user_id=' . $params['user_id'] . ',1,0) as is_reviewed,CONCAT(first_name," ",last_name) as name,r.review,r.rating', false);
         $this->db->from('ai_reviews as r');
         $this->db->join('ai_user as u', 'u.user_id = r.user_id', 'left');
         $this->db->where('post_id', $params['post_id']);

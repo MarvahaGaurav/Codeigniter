@@ -139,13 +139,13 @@
 
                 </thead>
                 <tbody id="table_tr">
-                <?php if(isset($cmsData) && count($cmsData)>0):
-                        foreach($cmsData as $key =>$value):  ?>
+                <?php if(isset($cmsData) && count($cmsData)>0) :
+                    foreach($cmsData as $key =>$value):  ?>
 
                     <tr id ="remove_<?php echo $value['id'];?>">
                         <td><?php echo ++$key; ?></td>
                         <td class="text-nowrap"><?php echo ucfirst($value['name']); ?></td>
-                        <td><?php echo substr($value['content'],0,150);?></td>
+                        <td><?php echo substr($value['content'], 0, 150);?></td>
                         <td class="text-nowrap">02-12-2017</td>
                         <td class="text-nowrap"><?php echo ($value['status']==ACTIVE)?"Active":"Inactive";?></td>
                         <td class="text-nowrap table-action">
@@ -157,7 +157,7 @@
                         </td>
                     </tr>
             <?php
-                endforeach;
+                    endforeach;
                 else:
                     echo '<tr><td colspan="5">No result found.</td></tr>';
                 endif;?>

@@ -2,9 +2,11 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Version extends MY_Controller {
+class Version extends MY_Controller
+{
 
-    function __construct() {
+    function __construct() 
+    {
         parent::__construct();
         $this->load->helper(['url', 'custom_cookie', 'form', 'encrypt_openssl']);
         $this->load->model('Common_model');
@@ -31,7 +33,8 @@ class Version extends MY_Controller {
      * @name index
      * @description This method is used to list all the customers.
      */
-    public function index() {
+    public function index() 
+    {
         $role_id = $this->admininfo['role_id'];
         /*
          * If logged user is sub admin check for his permission
@@ -80,7 +83,8 @@ class Version extends MY_Controller {
      * @name add
      * @description This method is used to add a new app version to the admin.
      */
-    public function add() {
+    public function add() 
+    {
 
         if ($this->input->post()) {
             $this->load->library('form_validation');
@@ -91,7 +95,7 @@ class Version extends MY_Controller {
             $this->form_validation->set_rules('update_type', $this->lang->line('update_type'), 'trim|required');
             $this->form_validation->set_rules('current_version', $this->lang->line('current_version'), 'trim|required');
 
-            if ($this->form_validation->run() == FALSE) {
+            if ($this->form_validation->run() == false) {
                 load_views("version/add", $this->data);
             } else {
                 $saveData = array(
@@ -139,7 +143,8 @@ class Version extends MY_Controller {
      * @name add
      * @description This method is used to add a new app version to the admin.
      */
-    public function edit() {
+    public function edit() 
+    {
 
         $get = $this->input->get();
         $this->data['version_id'] = $versionId = (isset($get['id']) && !empty($get['id'])) ? encryptDecrypt($get['id'], 'decrypt') : show_404();
@@ -168,7 +173,7 @@ class Version extends MY_Controller {
             $this->form_validation->set_rules('update_type', $this->lang->line('update_type'), 'trim|required');
             $this->form_validation->set_rules('current_version', $this->lang->line('current_version'), 'trim|required');
 
-            if ($this->form_validation->run() == FALSE) {
+            if ($this->form_validation->run() == false) {
 
                 load_views("version/edit", $this->data);
             } else {
@@ -208,7 +213,8 @@ class Version extends MY_Controller {
      * @param type array
      * @return boolean
      */
-    protected function saveVersionData($data, $updateId = false) {
+    protected function saveVersionData($data, $updateId = false) 
+    {
 
         try {
             $this->db->trans_start();
@@ -223,7 +229,7 @@ class Version extends MY_Controller {
                 $this->Common_model->update_single('app_version', ['is_cur_version' => NO], ['where' => ['vid !=' => $updateId, 'platform' => $this->data['platform']]]);
             }
 
-            if ($this->db->trans_status() == TRUE) {
+            if ($this->db->trans_status() == true) {
                 $this->db->trans_complete();
                 return true;
             } else {

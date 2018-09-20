@@ -3,16 +3,19 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 require APPPATH . '/libraries/REST_Controller.php';
 
-class Managefavorite extends REST_Controller {
+class Managefavorite extends REST_Controller
+{
 
-    function __construct() {
+    function __construct() 
+    {
         parent::__construct();
         $this->load->model('Common_model');
         $this->load->model('Favorite_model');
         $this->load->library('form_validation');
     }
 
-    public function index_post() {
+    public function index_post() 
+    {
 
         $postDataArr = $this->post();
         $config = [];
@@ -72,33 +75,33 @@ class Managefavorite extends REST_Controller {
                     if (!$isRequestSuccess) {
                         throw new Exception($this->lang->line('try_again'));
                     }
-                    if ($this->db->trans_status() === TRUE) {
+                    if ($this->db->trans_status() === true) {
                         $this->db->trans_commit();
                         /*
                          * Create Android Payload
                          */
-//                        $msg = "You profile has been set to favorite by " . $user_info['name'] . "";
-//                        $androidPayload = [];
-//                        $androidPayload['message'] = $msg;
-//                        $androidPayload['user_id'] = $postDataArr['user_id'];
-//                        $androidPayload['type'] = FAVORITE_PUSH;
-//                        $androidPayload['time'] = time();
-//                        /*
-//                         * Create Ios Payload
-//                         */
-//                        $iosPayload = [];
-//                        $iosPayload['alert'] = array('title' => $msg, 'user_id' => $postDataArr['user_id']);
-//                        $iosPayload['badge'] = 0;
-//                        $iosPayload['type'] = FAVORITE_PUSH;
-//                        $iosPayload['sound'] = 'beep.mp3';
-//
-//                        $pushData = [];
-//                        $pushData['receiver_id'] = $postDataArr['user_id'];
-//                        $pushData['androidPayload'] = $androidPayload;
-//                        $pushData['iosPayload'] = $iosPayload;
-//
-//                        $this->load->library('commonfn');
-//                        $this->commonfn->sendPush($pushData);
+                        //                        $msg = "You profile has been set to favorite by " . $user_info['name'] . "";
+                        //                        $androidPayload = [];
+                        //                        $androidPayload['message'] = $msg;
+                        //                        $androidPayload['user_id'] = $postDataArr['user_id'];
+                        //                        $androidPayload['type'] = FAVORITE_PUSH;
+                        //                        $androidPayload['time'] = time();
+                        //                        /*
+                        //                         * Create Ios Payload
+                        //                         */
+                        //                        $iosPayload = [];
+                        //                        $iosPayload['alert'] = array('title' => $msg, 'user_id' => $postDataArr['user_id']);
+                        //                        $iosPayload['badge'] = 0;
+                        //                        $iosPayload['type'] = FAVORITE_PUSH;
+                        //                        $iosPayload['sound'] = 'beep.mp3';
+                        //
+                        //                        $pushData = [];
+                        //                        $pushData['receiver_id'] = $postDataArr['user_id'];
+                        //                        $pushData['androidPayload'] = $androidPayload;
+                        //                        $pushData['iosPayload'] = $iosPayload;
+                        //
+                        //                        $this->load->library('commonfn');
+                        //                        $this->commonfn->sendPush($pushData);
                         $this->response(array('code' => SUCCESS_CODE, 'msg' => $this->lang->line('favorite_success'), 'result' => []));
                     }
                 } else {
@@ -116,7 +119,8 @@ class Managefavorite extends REST_Controller {
         }
     }
 
-    public function index_get() {
+    public function index_get() 
+    {
 
         $getDataArr = $this->input->get();
 
@@ -205,7 +209,8 @@ class Managefavorite extends REST_Controller {
         }
     }
 
-    public function index_delete() {
+    public function index_delete() 
+    {
         $deleteDataArr = $this->delete();
         $config = [];
         /*
@@ -267,7 +272,7 @@ class Managefavorite extends REST_Controller {
                 if (!$isDeleteSuccess) {
                     throw new Exception($this->lang->line('try_again'));
                 }
-                if ($this->db->trans_status() === TRUE) {
+                if ($this->db->trans_status() === true) {
                     $this->db->trans_commit();
                     $this->response(array('code' => SUCCESS_CODE, 'msg' => $this->lang->line('unfavorite_success'), 'result' => []));
                 }

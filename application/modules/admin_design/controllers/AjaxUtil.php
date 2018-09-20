@@ -2,9 +2,11 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class AjaxUtil extends MX_Controller {
+class AjaxUtil extends MX_Controller
+{
 
-    public function __construct() {
+    public function __construct() 
+    {
         $this->load->model("CommonModel");
         $this->load->model("Common_model");
         $this->load->library("session");
@@ -20,7 +22,8 @@ class AjaxUtil extends MX_Controller {
     /**
      * AJAX Handler for email exists 
      */
-    public function emailExistsAjax() {
+    public function emailExistsAjax() 
+    {
         $postData = $this->input->post();
         if (!isset($postData["email"]) || empty($postData["email"])) {
             $errorData = [
@@ -31,8 +34,8 @@ class AjaxUtil extends MX_Controller {
             $this->CommonModel->response($errorData);
         } else {
             if ($userData = $this->CommonModel->fetchData(
-                    ["id"], "users", ["email" => $postData["email"]]
-                    )
+                ["id"], "users", ["email" => $postData["email"]]
+            )
             ) {
                 $errorData = [
                     "error" => true,
@@ -54,7 +57,8 @@ class AjaxUtil extends MX_Controller {
     /**
      * AJAX HANDLER FOR MOBILE NUMBER EXISTS
      */
-    public function mobileExistsAjax() {
+    public function mobileExistsAjax() 
+    {
         $postData = $this->input->post();
         if (!isset($postData["mobile_number"]) || empty($postData["mobile_number"])) {
             $errorData = [
@@ -65,8 +69,8 @@ class AjaxUtil extends MX_Controller {
             $this->CommonModel->response($errorData);
         } else {
             if ($userData = $this->CommonModel->fetchData(
-                    ["id"], "users", ["mobile_number" => $postData["mobile_number"]]
-                    )
+                ["id"], "users", ["mobile_number" => $postData["mobile_number"]]
+            )
             ) {
                 $errorData = [
                     "error" => true,
@@ -90,7 +94,8 @@ class AjaxUtil extends MX_Controller {
      *
      */
 
-    public function profilePictureUpload() {
+    public function profilePictureUpload() 
+    {
 
         $image = $_FILES['image'];
         $imageSize = getimagesize($image['tmp_name']);
@@ -151,14 +156,16 @@ class AjaxUtil extends MX_Controller {
      * Handles location for google maps
      * https://maps.googleapis.com/maps/api/geocode/json?key=API_KEY&address=appinventiv%20noida
      */
-    public function getLocation() {
+    public function getLocation() 
+    {
         $postData = $this->input->post();
     }
 
     /**
      * AJAX Handler for email exists 
      */
-    public function oldpasswordExistsAjax() {
+    public function oldpasswordExistsAjax() 
+    {
         $postData = $this->input->post();
         $id = encryptDecrypt($postData['userid'], 'decrypt');
         if ((!isset($postData["oldpassword"]) || empty($postData["oldpassword"]))) {
@@ -171,8 +178,8 @@ class AjaxUtil extends MX_Controller {
             $this->CommonModel->response($errorData);
         } else {
             if ($userData = $this->CommonModel->fetchData(
-                    ["admin_id"], "admin", ["password" => hash("sha256", base64_decode($postData["oldpassword"])), 'admin_id' => $id]
-                    )
+                ["admin_id"], "admin", ["password" => hash("sha256", base64_decode($postData["oldpassword"])), 'admin_id' => $id]
+            )
             ) {
 
                 $errorData = [
@@ -193,7 +200,8 @@ class AjaxUtil extends MX_Controller {
     }
 
     //check edit mobile number 
-    public function editmobileExistsAjax() {
+    public function editmobileExistsAjax() 
+    {
         $postData = $this->input->post();
         $id = encryptDecrypt($postData['userid'], 'decrypt');
         if (!isset($postData["mobile_number"]) || empty($postData["mobile_number"])) {
@@ -205,8 +213,8 @@ class AjaxUtil extends MX_Controller {
             $this->CommonModel->response($errorData);
         } else {
             if ($userData = $this->CommonModel->fetchData(
-                    ["id"], "users", ["mobile_number" => $postData["mobile_number"], 'id!=' => $id]
-                    )
+                ["id"], "users", ["mobile_number" => $postData["mobile_number"], 'id!=' => $id]
+            )
             ) {
                 $errorData = [
                     "error" => true,
@@ -230,7 +238,8 @@ class AjaxUtil extends MX_Controller {
     /**
      * AJAX Handler for email exists 
      */
-    public function editemailExistsAjax() {
+    public function editemailExistsAjax() 
+    {
         $postData = $this->input->post();
         $id = encryptDecrypt($postData['userid'], 'decrypt');
 
@@ -243,8 +252,8 @@ class AjaxUtil extends MX_Controller {
             $this->CommonModel->response($errorData);
         } else {
             if ($userData = $this->CommonModel->fetchData(
-                    ["id"], "users", ["email" => $postData["email"], "id!=" => $id]
-                    )
+                ["id"], "users", ["email" => $postData["email"], "id!=" => $id]
+            )
             ) {
                 $errorData = [
                     "error" => true,
@@ -267,7 +276,8 @@ class AjaxUtil extends MX_Controller {
      * change the status of user to block or unblock
      */
 
-    public function changestatus() {
+    public function changestatus() 
+    {
         try {
             $resparr = array();
             $userid = $this->input->post('id');
@@ -290,13 +300,14 @@ class AjaxUtil extends MX_Controller {
         }
     }
 
-//-----------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------
     /**
      * @name getStatesByCountry
      * @description This method is used to get all the states name via country using the get method.
      * @access public
      */
-    public function getStatesByCountry() {
+    public function getStatesByCountry() 
+    {
         try {
             if ($this->input->is_ajax_request()) {
                 $req = $this->input->get();
@@ -309,13 +320,14 @@ class AjaxUtil extends MX_Controller {
         }
     }
 
-//-----------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------
     /**
      * @name getCityByState
      * @description This method is used to get all the cities as per the state using get method.
      * @access public.
      */
-    public function getCityByState() {
+    public function getCityByState() 
+    {
         try {
             if ($this->input->is_ajax_request()) {
                 $req = $this->input->get();
@@ -328,7 +340,8 @@ class AjaxUtil extends MX_Controller {
         }
     }
 
-    private function validatePermission($postDataArr) {
+    private function validatePermission($postDataArr) 
+    {
 
         $id = encryptDecrypt($postDataArr['id'], 'decrypt');
 
@@ -362,13 +375,13 @@ class AjaxUtil extends MX_Controller {
         }
     }
 
-//-----------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------
     /**
      * @name change-user-status
      * @description This action is used to handle all the block events.
-     * 
      */
-    public function changeUserStatus() {
+    public function changeUserStatus() 
+    {
         try {
 
             $req = $this->input->post();
@@ -386,45 +399,45 @@ class AjaxUtil extends MX_Controller {
             $alertMsg['text'] = $this->lang->line('delete_success');
             $alertMsg['type'] = $this->lang->line('success');
             switch ($req['type']) {
-                case 'user':
-                    $updateArr = [];
-                    $updateArr = ['status' => $req['new_status']];
-                    $updateId = $this->Common_model->update_single('ai_user', $updateArr, ['where' => ['user_id' => $id]]);
-                    if ($req['new_status'] == 2 || $req['new_status'] == 3) {
-                        $updateId = $this->Common_model->update_single('ai_session', ['login_status' => 0], ['where' => ['user_id' => $id]]);
-                    }
-                    if ($req['new_status'] == DELETED) {
-                        $updateArr['field'] = 'email';
-                        $updateArr['value'] = 'CONCAT(email,"-","deleted")';
-                        $updateId = $this->Common_model->update_single_withcurrent('ai_user', $updateArr, ['where' => ['user_id' => $id]]);
-                    }
-                    break;
-                case 'cms':
-                    $whereArr = [];
-                    $whereArr['where'] = ['id' => $id];
-                    $updateId = $this->Common_model->delete_data('page_master', $whereArr);
-                    break;
-                case 'version':
-                    $whereArr = [];
-                    $whereArr['where'] = ['vid' => $id];
-                    $updateId = $this->Common_model->delete_data('app_version', $whereArr);
-                    break;
-                case 'notification':
-                    $whereArr = [];
-                    $whereArr['where'] = ['id' => $id];
-                    $updateId = $this->Common_model->delete_data('admin_notification', $whereArr);
-                    break;
-                case 'subadmin':
-                    $updateArr = [];
-                    $updateArr = ['status' => $req['new_status']];
-                    $updateId = $this->Common_model->update_single('admin', $updateArr, ['where' => ['admin_id' => $id]]);
-                    $updateId = $this->Common_model->update_single('sub_admin', $updateArr, ['where' => ['admin_id' => $id]]);
-                    if ($req['new_status'] == DELETED) {
-                        $updateArr['field'] = 'admin_email';
-                        $updateArr['value'] = 'CONCAT(admin_email,"-","deleted")';
-                        $updateId = $this->Common_model->update_single_withcurrent('admin', $updateArr, ['where' => ['admin_id' => $id]]);
-                    }
-                    break;
+            case 'user':
+                $updateArr = [];
+                $updateArr = ['status' => $req['new_status']];
+                $updateId = $this->Common_model->update_single('ai_user', $updateArr, ['where' => ['user_id' => $id]]);
+                if ($req['new_status'] == 2 || $req['new_status'] == 3) {
+                    $updateId = $this->Common_model->update_single('ai_session', ['login_status' => 0], ['where' => ['user_id' => $id]]);
+                }
+                if ($req['new_status'] == DELETED) {
+                    $updateArr['field'] = 'email';
+                    $updateArr['value'] = 'CONCAT(email,"-","deleted")';
+                    $updateId = $this->Common_model->update_single_withcurrent('ai_user', $updateArr, ['where' => ['user_id' => $id]]);
+                }
+                break;
+            case 'cms':
+                $whereArr = [];
+                $whereArr['where'] = ['id' => $id];
+                $updateId = $this->Common_model->delete_data('page_master', $whereArr);
+                break;
+            case 'version':
+                $whereArr = [];
+                $whereArr['where'] = ['vid' => $id];
+                $updateId = $this->Common_model->delete_data('app_version', $whereArr);
+                break;
+            case 'notification':
+                $whereArr = [];
+                $whereArr['where'] = ['id' => $id];
+                $updateId = $this->Common_model->delete_data('admin_notification', $whereArr);
+                break;
+            case 'subadmin':
+                $updateArr = [];
+                $updateArr = ['status' => $req['new_status']];
+                $updateId = $this->Common_model->update_single('admin', $updateArr, ['where' => ['admin_id' => $id]]);
+                $updateId = $this->Common_model->update_single('sub_admin', $updateArr, ['where' => ['admin_id' => $id]]);
+                if ($req['new_status'] == DELETED) {
+                    $updateArr['field'] = 'admin_email';
+                    $updateArr['value'] = 'CONCAT(admin_email,"-","deleted")';
+                    $updateId = $this->Common_model->update_single_withcurrent('admin', $updateArr, ['where' => ['admin_id' => $id]]);
+                }
+                break;
             }
 
             $csrftoken = $this->security->get_csrf_hash();
@@ -445,37 +458,38 @@ class AjaxUtil extends MX_Controller {
         }
     }
 
-//    public function sidebar_state() {
-//        $adminInfo = $this->session->userdata("admininfo");
-//        $postData = $this->input->post();
-//        if ( !isset($postData["sidebar_state"]) || empty($postData["sidebar_state"]) ) {
-//            $this->CommonModel->response([
-//                "success" => false,
-//                "message" => $this->lang->line("missing_parameter"),
-//                "csrf_token" => $this->security->get_csrf_hash()
-//            ]);
-//        }
-//        $state = "";
-//        if ( $postData["sidebar_state"] == "expanded" ) {
-//            $adminInfo["sidebar_state"] = "left-panel-show";
-//            $this->session->set_userdata("admininfo", $adminInfo);
-//            $state = "minimized";
-//        } else if ( $postData["sidebar_state"] == "minimized" ) {
-//            $adminInfo["sidebar_state"] = "";
-//            $this->session->set_userdata("admininfo", $adminInfo);
-//            $state = "expanded";
-//        }
-//
-//        $this->CommonModel->response([
-//            "success" => true,
-//            "message" => $this->lang->line("success"),
-//            "state" => $state,
-//            "csrf_token" => $this->security->get_csrf_hash(),
-//            "admin" => $this->session->userdata()
-//        ]);
-//    }
+    //    public function sidebar_state() {
+    //        $adminInfo = $this->session->userdata("admininfo");
+    //        $postData = $this->input->post();
+    //        if ( !isset($postData["sidebar_state"]) || empty($postData["sidebar_state"]) ) {
+    //            $this->CommonModel->response([
+    //                "success" => false,
+    //                "message" => $this->lang->line("missing_parameter"),
+    //                "csrf_token" => $this->security->get_csrf_hash()
+    //            ]);
+    //        }
+    //        $state = "";
+    //        if ( $postData["sidebar_state"] == "expanded" ) {
+    //            $adminInfo["sidebar_state"] = "left-panel-show";
+    //            $this->session->set_userdata("admininfo", $adminInfo);
+    //            $state = "minimized";
+    //        } else if ( $postData["sidebar_state"] == "minimized" ) {
+    //            $adminInfo["sidebar_state"] = "";
+    //            $this->session->set_userdata("admininfo", $adminInfo);
+    //            $state = "expanded";
+    //        }
+    //
+    //        $this->CommonModel->response([
+    //            "success" => true,
+    //            "message" => $this->lang->line("success"),
+    //            "state" => $state,
+    //            "csrf_token" => $this->security->get_csrf_hash(),
+    //            "admin" => $this->session->userdata()
+    //        ]);
+    //    }
 
-    public function manageSideBar() {
+    public function manageSideBar() 
+    {
         $this->load->helper('cookie');
         $action = $this->input->post('action');
         set_cookie('sideBar', $action, time() + 3600);

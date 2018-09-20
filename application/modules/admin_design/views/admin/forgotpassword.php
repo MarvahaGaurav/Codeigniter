@@ -1,7 +1,7 @@
 <?php
-    if ($this->session->flashdata('Success') != '') {
-        echo $this->session->flashdata('Success');
-    }
+if ($this->session->flashdata('Success') != '') {
+    echo $this->session->flashdata('Success');
+}
 ?>
 
 <div class="form-section">

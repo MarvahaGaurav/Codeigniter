@@ -34,12 +34,15 @@ $module = $this->router->fetch_module();
             <div class="col-lg-6 col-sm-6">
                 <div class="srch-wrap fawe-icon-position col-sm-space">
                     <span class="fawe-icon fawe-icon-position-left search-ico"><i class="fa fa-search"></i></span>
-                    <?php if(isset($searchlike) && !empty($searchlike)){?>
+                    <?php if(isset($searchlike) && !empty($searchlike)) {?>
                     <span class="fawe-icon fawe-icon-position-right show-close-ico" onclick="jQuery('.searchCloseBtn').trigger('click');"><i class="fa fa-times-circle"></i></span>
                     <?php }else{ ?>
                     <span class="fawe-icon fawe-icon-position-right close-ico"><i class="fa fa-times-circle"></i></span>
                     <?php } ?>
-                    <input type="text" maxlength="50" value="<?php echo (isset($searchlike) && !empty($searchlike))? $searchlike:''?>" <?php if(isset($searchlike) && !empty($searchlike)){ echo 'readonly';}?> class="search-box <?php if(isset($searchlike) && !empty($searchlike)){ echo 'searchCloseBtn'; }else{  echo 'searchlike'; }?>" placeholder="Search by name, email" id="searchuser" name="search">
+                    <input type="text" maxlength="50" value="<?php echo (isset($searchlike) && !empty($searchlike))? $searchlike:''?>" <?php if(isset($searchlike) && !empty($searchlike)) { echo 'readonly';
+                   }?> class="search-box <?php if(isset($searchlike) && !empty($searchlike)) { echo 'searchCloseBtn'; 
+}else{  echo 'searchlike'; 
+}?>" placeholder="Search by name, email" id="searchuser" name="search">
                 </div>
             </div>
 
@@ -69,7 +72,7 @@ $module = $this->router->fetch_module();
         </div>
     </label>
     <!-- Content -->
-    <input type="hidden" id="filterparams" value='<?php echo json_encode($queryString) ;?>'>
+    <input type="hidden" id="filterparams" value='<?php echo json_encode($queryString);?>'>
 
     <div class="col-lg-6 col-sm-6 hide-mobile"></div>
     <div class="clear"></div>
@@ -119,14 +122,16 @@ $module = $this->router->fetch_module();
                                 <a class="f-delete" href="javascript:void(0);"><i class="fa fa-trash" title="Delete" aria-hidden="true" onclick="deleteUser('subadmin',3,'<?php echo encryptDecrypt($data['admin_id']);?>','req/change-user-status','Do you really want to delete this Sub-admin?');"></i></a>                       
                             </td>
                         </tr>
-                        <?php $i++;}}  else { ?> 
+                        <?php $i++;
+                        }
+                    }  else { ?> 
                             <tr>
                                 <td colspan="9" class="text-center">No Sub-admin exist</td>
                             </tr>
-                        <?php }?>
+<?php }?>
                 </tbody>
             </table>
-        </div>   	
+        </div>       
         <div class="clear"></div>
         <nav class="pagination-wrapper m-t-md">
             <ul class="pagination">

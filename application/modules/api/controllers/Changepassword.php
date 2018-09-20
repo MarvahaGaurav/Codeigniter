@@ -2,9 +2,11 @@
 
 require APPPATH . 'libraries/REST_Controller.php';
 
-class Changepassword extends REST_Controller {
+class Changepassword extends REST_Controller
+{
 
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
         $this->load->model('Common_model');
         $this->load->library('form_validation');
@@ -18,49 +20,52 @@ class Changepassword extends REST_Controller {
      *   operationId="changepassword_post",
      *   consumes ={"multipart/form-data"},
      *   produces={"application/json"},
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="oldpassword",
      *     in="formData",
      *     description="oldpassword",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="accesstoken",
      *     in="formData",
      *     description="Access Token",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="password",
      *     in="formData",
      *     description="New password",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Response(response=200, description="Reset Password Success"),
-     *   @SWG\Response(response=206, description="Unauthorized request"),     
-     *   @SWG\Response(response=207, description="Header is missing"),        
-     *   @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
-     *   @SWG\Response(response=490, description="Old password not matched"),
-     *   @SWG\Response(response=491, description="New and Old password are same"),
-     *   @SWG\Response(response=501, description="Please try again"),
+     * @SWG\Response(response=200, description="Reset Password Success"),
+     * @SWG\Response(response=206, description="Unauthorized request"),     
+     * @SWG\Response(response=207, description="Header is missing"),        
+     * @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
+     * @SWG\Response(response=490, description="Old password not matched"),
+     * @SWG\Response(response=491, description="New and Old password are same"),
+     * @SWG\Response(response=501, description="Please try again"),
      * )
      */
-    public function index_post() {
+    public function index_post() 
+    {
         $postDataArr = $this->post();
         $config = [];
         $head = $this->head();
         $language_code = $this->langcode_validate();
-        if ( (!isset($head['accesstoken']) || empty(trim($head['accesstoken']))) && (!isset($head['Accesstoken']) || empty(trim($head['Accesstoken']))) ) {
-            $this->response([
+        if ((!isset($head['accesstoken']) || empty(trim($head['accesstoken']))) && (!isset($head['Accesstoken']) || empty(trim($head['Accesstoken']))) ) {
+            $this->response(
+                [
                 "code" => HTTP_UNAUTHORIZED,
                 "api_code_result" => "UNAUTHORIZED",
                 "msg" => $this->lang->line("invalid_access_token")
-            ], HTTP_UNAUTHORIZED);
+                ], HTTP_UNAUTHORIZED
+            );
         }
-        if ( isset($head['Accesstoken']) && !empty($head['Accesstoken']) ) {
+        if (isset($head['Accesstoken']) && !empty($head['Accesstoken']) ) {
             $head['accesstoken'] = $head['Accesstoken'];
         }
         $config = array(
@@ -117,7 +122,7 @@ class Changepassword extends REST_Controller {
                         throw new Exception($this->lang->line('try_again'));
                     }
                 }
-                if ($this->db->trans_status() === TRUE) {
+                if ($this->db->trans_status() === true) {
                     $this->db->trans_commit();
                     $this->response(array('CODE' => SUCCESS_CODE, 'MESSAGE' => $this->lang->line('password_change_success'), 'result' => (object)[]));
                 }
@@ -139,26 +144,30 @@ class Changepassword extends REST_Controller {
         $language_code = trim($language_code);
         $valid_language_codes = ["en","da","nb","sv","fi","fr","nl","de"];
 
-        if ( empty($language_code) ) {
-            $this->response([
+        if (empty($language_code) ) {
+            $this->response(
+                [
                 'code' => HTTP_UNPROCESSABLE_ENTITY,
                 'api_code_result' => 'UNPROCESSABLE_ENTITY',
                 'msg' => $this->lang->line('header_missing'),
                 'extra_info' => [
                     "missing_parameter" => "language_code"
                 ]
-            ]);
+                ]
+            );
         }
 
-        if ( ! in_array($language_code, $valid_language_codes) ) {
-            $this->response([
+        if (! in_array($language_code, $valid_language_codes) ) {
+            $this->response(
+                [
                 'code' => HTTP_UNPROCESSABLE_ENTITY,
                 'api_code_result' => 'UNPROCESSABLE_ENTITY',
                 'msg' => $this->lang->line('invalid_header'),
                 'extra_info' => [
                     "missing_parameter" => $this->lang->line('invalid_language_code')
                 ]
-            ]);
+                ]
+            );
         }
 
         $language_map = [

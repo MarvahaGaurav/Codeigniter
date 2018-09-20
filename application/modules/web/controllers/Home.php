@@ -2,9 +2,11 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Home extends MY_Controller {
+class Home extends MY_Controller
+{
 
-    function __construct() {		
+    function __construct() 
+    {        
         parent::__construct();
         $this->load->helper(['url', 'form', 'custom_cookie']);
         $this->load->model('Common_model');
@@ -24,7 +26,8 @@ class Home extends MY_Controller {
      * @description:Home page of the website
      */
 
-    public function index() {	
+    public function index() 
+    {    
         $data = [];        
         $data['userInfo'] = $this->userInfo;
         load_views('/home/index', $data);

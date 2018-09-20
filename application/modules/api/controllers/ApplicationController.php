@@ -3,7 +3,7 @@ defined("BASEPATH") OR exit("No direct script access allowed");
 
 require 'BaseController.php';
 
-class ApplicationController extends BaseController 
+class ApplicationController extends BaseController
 {
     public function __construct()
     {
@@ -18,21 +18,21 @@ class ApplicationController extends BaseController
      *   description="",
      *   operationId="application_get",
      *   produces={"application/json"},
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="X-Language-Code",
      *     in="header",
      *     description="en ,da ,nb ,sv ,fi ,fr ,nl ,de",
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="type",
      *     in="query",
      *     description="1-Residential and 2-Professional",
      *     type="string"
      *   ),*  
-     *   @SWG\Response(response=200, description="OK"),
-     *   @SWG\Response(response=401, description="Unauthorize"),
-     *   @SWG\Response(response=202, description="No data found"), 
+     * @SWG\Response(response=200, description="OK"),
+     * @SWG\Response(response=401, description="Unauthorize"),
+     * @SWG\Response(response=202, description="No data found"), 
      * )
      */
     public function application_get()
@@ -47,12 +47,14 @@ class ApplicationController extends BaseController
 
         $data = $this->Application->get($params);
 
-        if ( empty($data) ) {
-            $this->response([
+        if (empty($data) ) {
+            $this->response(
+                [
                 "code" => NO_DATA_FOUND,
                 "api_code_result" => "NO_DATA_FOUND",
                 "msg" => $this->lang->line("no_records_found")
-            ]);
+                ]
+            );
         }
 
         $response = [

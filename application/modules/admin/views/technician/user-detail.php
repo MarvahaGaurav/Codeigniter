@@ -87,7 +87,8 @@
                             <div class="form-group">
                                 <label class="admin-label">User Role</label>
                                 <div class="input-holder">
-                                    <span class="text-detail"><?php if($value['user_type_num'] != 1 ){ echo ($profile['is_owner'] == '2')?"Owner":"Employee";} ?></span>
+                                    <span class="text-detail"><?php if($value['user_type_num'] != 1 ) { echo ($profile['is_owner'] == '2')?"Owner":"Employee";
+                                   } ?></span>
                                 </div>
                             </div>
                         </div>
@@ -173,7 +174,7 @@
     <div class="row">
         <div class="col-lg-12 col-sm-12 col-xs-12">
                 <?php
-                if ( in_array((int)$profile['user_type_num'], $valid_inspiration_creators) ) { ?>
+                if (in_array((int)$profile['user_type_num'], $valid_inspiration_creators) ) { ?>
                 <div class="section clearfix">
                     <p class="tt-count">Total Inspirations: <?php echo $total_inspirations ?></p>
                     <div class="table-responsive table-wrapper">
@@ -191,8 +192,8 @@
                             </thead>
                             <tbody id="table_tr">
                                 
-                            <?php if(isset($inspiration_list) && count($inspiration_list)){
-                                    foreach($inspiration_list as $value) : ?>
+                            <?php if(isset($inspiration_list) && count($inspiration_list)) {
+                                foreach($inspiration_list as $value) : ?>
                                     
                                     <tr id ="remove_<?php echo $value['user_id'];?>" >
                                     <td><?php echo $initial_count; ?></td>
@@ -208,13 +209,13 @@
                                         <a class="f-delete" href="javascript:void(0);"><i class="fa fa-trash" title="Delete" aria-hidden="true" onclick="deleteUser('user',<?php echo DELETED;?>,'<?php echo $value['id'] ?>','','Do you really want to delete this Inspiration?');"></i></a> -->
                                     </td>
                                     <?php $initial_count++; ?>
-                                    <?php endforeach ?>
+                                <?php endforeach ?>
                                 </tr>
                                 <?php 
                                 $i++; 
-                                }else { ?>
+                            }else { ?>
                                 <tr><td colspan="7">No result found.</td></tr> 
-                                <?php } ?>
+<?php } ?>
                                 </tbody>
                                     </table>
                                 </div>
@@ -222,9 +223,9 @@
                                     <?php echo $link;?>
                                 </div>
                             </div>  
-                            <?php } else { ?>
+                <?php } else { ?>
                                 <!-- <tr><td colspan="7">No result found.</td></tr>  -->
-                                <?php } ?>
+                <?php } ?>
                             
             </div>
         </div>

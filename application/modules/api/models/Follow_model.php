@@ -1,8 +1,10 @@
 <?php
 
-class Follow_model extends CI_Model {
+class Follow_model extends CI_Model
+{
 
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
         /**
          * load database
@@ -12,10 +14,12 @@ class Follow_model extends CI_Model {
 
     /**
      * get review list
-     * @param array
+     *
+     * @param  array
      * @return array
      */
-    public function getList($params) {
+    public function getList($params) 
+    {
         /*
          * req type 1 get followers and 2 get following
          */

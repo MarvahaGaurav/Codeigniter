@@ -4,7 +4,8 @@ defined("BASEPATH") or exit("No direct script access allowed");
 require_once "BaseController.php";
 
 class EmployeeController extends BaseController
-{   
+{
+   
     
     public function __construct()
     {
@@ -18,11 +19,13 @@ class EmployeeController extends BaseController
 
         $employee_id = encryptDecrypt($employee_id, 'decrypt');
         
-        if ( !isset($employee_id) || empty($employee_id) ) {
-            json_dump([
+        if (!isset($employee_id) || empty($employee_id) ) {
+            json_dump(
+                [
                 "success" => false,
                 "message" => $this->lang->line("request_error")
-            ]);
+                ]
+            );
         }
         
         $this->load->model("User");
@@ -33,15 +36,19 @@ class EmployeeController extends BaseController
             $this->User->update(['user_id' => $employee_id]);
             $this->session->set_flashdata("flash-message", $this->lang->line('employee_removed'));
             $this->session->set_flashdata("flash-type", "success");
-            json_dump([
+            json_dump(
+                [
                 "success" => true,
                 "message" => $this->lang->line('employee_removed')
-            ]);
+                ]
+            );
         } catch ( \Exception $error ) {
-            json_dump([
+            json_dump(
+                [
                 "success" => false,
                 "message" => $this->lang->line("request_error")
-            ]);
+                ]
+            );
         }
         
     }
@@ -54,12 +61,15 @@ class EmployeeController extends BaseController
         $action = $this->input->post("action");
         $validActions = ['accept', 'reject'];
         
-        if ( (!isset($employee_id) || empty($employee_id)) ||
-            (!isset($action) || !in_array($action, $validActions)) ) {
-            json_dump([
+        if ((!isset($employee_id) || empty($employee_id)) 
+            || (!isset($action) || !in_array($action, $validActions)) 
+        ) {
+            json_dump(
+                [
                 "success" => false,
                 "message" => $this->lang->line("request_error")
-            ]);
+                ]
+            );
         }
 
         $actionMap = [
@@ -83,15 +93,19 @@ class EmployeeController extends BaseController
             // $this->User->update(['user_id' => $employee_id]);
             $this->session->set_flashdata("flash-message", $message);
             $this->session->set_flashdata("flash-type", "success");
-            json_dump([
+            json_dump(
+                [
                 "success" => true,
                 "message" => $message
-            ]);
+                ]
+            );
         } catch ( \Exception $error ) {
-            json_dump([
+            json_dump(
+                [
                 "success" => false,
                 "message" => $this->lang->line("request_error")
-            ]);
+                ]
+            );
         }
     }
     

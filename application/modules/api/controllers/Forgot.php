@@ -3,9 +3,11 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 require APPPATH . '/libraries/REST_Controller.php';
 
-class Forgot extends REST_Controller {
+class Forgot extends REST_Controller
+{
 
-    function __construct() {
+    function __construct() 
+    {
         parent::__construct();
 
         $this->load->model('Common_model');
@@ -22,22 +24,23 @@ class Forgot extends REST_Controller {
      *   operationId="index_post",
      *   consumes ={"multipart/form-data"},
      *   produces={"application/json"},
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="email",
      *     in="formData",
      *     description="Email",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Response(response=200, description="Forgot Email Send Success"),
-     *   @SWG\Response(response=206, description="Unauthorized request"),     
-     *   @SWG\Response(response=207, description="Header is missing"),   
-     *   @SWG\Response(response=211, description="Email Send failed"),   
-     *   @SWG\Response(response=302, description="Email in not registered"),       
-     *   @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
+     * @SWG\Response(response=200, description="Forgot Email Send Success"),
+     * @SWG\Response(response=206, description="Unauthorized request"),     
+     * @SWG\Response(response=207, description="Header is missing"),   
+     * @SWG\Response(response=211, description="Email Send failed"),   
+     * @SWG\Response(response=302, description="Email in not registered"),       
+     * @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
      * )
      */
-    public function index_post() {
+    public function index_post() 
+    {
         $language_code = $this->langcode_validate();
         $post_data = $this->post();
 
@@ -93,7 +96,7 @@ class Forgot extends REST_Controller {
                     if (!$isSuccess) {
                         throw new Exception($this->email->print_debugger());
                     }*/
-                    if ($this->db->trans_status() === TRUE) {
+                    if ($this->db->trans_status() === true) {
                         $this->db->trans_commit();
                         $this->response(array('code' => SUCCESS_CODE, 'msg' => $this->lang->line('email_otp_sent'), 'result' => ['otp_code' => $otpcode, 'user_id' => $userInfo['user_id']]));
                     }
@@ -122,30 +125,31 @@ class Forgot extends REST_Controller {
      *   operationId="verifyotp_post",
      *   consumes ={"multipart/form-data"},
      *   produces={"application/json"},
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="otp",
      *     in="formData",
      *     description="863666",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="User_id",
      *     in="formData",
      *     description="1",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Response(response=200, description="OTP Verify Success"),
-     *   @SWG\Response(response=206, description="Unauthorized request"),     
-     *   @SWG\Response(response=207, description="Header is missing"),   
-     *   @SWG\Response(response=211, description="Email Send failed"),   
-     *   @SWG\Response(response=424, description="OTP Expired/Invalid OTP"),       
-     *   @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
+     * @SWG\Response(response=200, description="OTP Verify Success"),
+     * @SWG\Response(response=206, description="Unauthorized request"),     
+     * @SWG\Response(response=207, description="Header is missing"),   
+     * @SWG\Response(response=211, description="Email Send failed"),   
+     * @SWG\Response(response=424, description="OTP Expired/Invalid OTP"),       
+     * @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
      * )
      */
 
-    public function verifyotp_post() {
+    public function verifyotp_post() 
+    {
         $language_code = $this->langcode_validate();
         $post_data = $this->post();
 
@@ -170,9 +174,9 @@ class Forgot extends REST_Controller {
                    
                     // checking otp expired or not
                     $curtime = date('Y-m-d H:i:s');
-                    $prevTime = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s")." -10 minutes"));
+                    $prevTime = date("Y-m-d H:i:s", strtotime(date("Y-m-d H:i:s")." -10 minutes"));
                     $otpsendtime = strtotime($userInfo['otp_sent_time']);
-                    if($otpsendtime < strtotime($prevTime)){
+                    if($otpsendtime < strtotime($prevTime)) {
                          $this->response(array('code' => INVALID_OTP, 'msg' => $this->lang->line('expired_otp'), 'result' => (object)[]));
                     }
                                                             
@@ -188,7 +192,7 @@ class Forgot extends REST_Controller {
                         throw new Exception($this->lang->line('try_again'));
                     }
 
-                    if ($this->db->trans_status() === TRUE) {
+                    if ($this->db->trans_status() === true) {
                         $this->db->trans_commit();
                         $this->response(array('code' => SUCCESS_CODE, 'msg' => $this->lang->line('valid_otp'), 'result' => ['user_id'=>$userInfo['user_id']]));
                     }
@@ -217,20 +221,21 @@ class Forgot extends REST_Controller {
      *   operationId="resendotp_post",
      *   consumes ={"multipart/form-data"},
      *   produces={"application/json"},
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="User_id",
      *     in="formData",
      *     description="1",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Response(response=200, description="OTP Sent Success"),
-     *   @SWG\Response(response=206, description="Unauthorized request"),     
-     *   @SWG\Response(response=207, description="Header is missing"),   
-     *   @SWG\Response(response=424, description="Invalid OTP"),       
+     * @SWG\Response(response=200, description="OTP Sent Success"),
+     * @SWG\Response(response=206, description="Unauthorized request"),     
+     * @SWG\Response(response=207, description="Header is missing"),   
+     * @SWG\Response(response=424, description="Invalid OTP"),       
      * )
      */
-    public function resendotp_post() {
+    public function resendotp_post() 
+    {
         $language_code = $this->langcode_validate();
         $post_data = $this->post();        
         $config = array(
@@ -282,7 +287,7 @@ class Forgot extends REST_Controller {
                     sendGetRequest($data);
                     
 
-                    if ($this->db->trans_status() === TRUE) {
+                    if ($this->db->trans_status() === true) {
                         $this->db->trans_commit();
                         $this->response(array('code' => SUCCESS_CODE, 'msg' => $this->lang->line('email_otp_sent'), 'result' => ['otp_code' => $otpcode, 'user_id' => $userInfo['user_id']]));
                     }
@@ -309,26 +314,30 @@ class Forgot extends REST_Controller {
         $language_code = trim($language_code);
         $valid_language_codes = ["en","da","nb","sv","fi","fr","nl","de"];
 
-        if ( empty($language_code) ) {
-            $this->response([
+        if (empty($language_code) ) {
+            $this->response(
+                [
                 'code' => HTTP_UNPROCESSABLE_ENTITY,
                 'api_code_result' => 'UNPROCESSABLE_ENTITY',
                 'msg' => $this->lang->line('header_missing'),
                 'extra_info' => [
                     "missing_parameter" => "language_code"
                 ]
-            ]);
+                ]
+            );
         }
 
-        if ( ! in_array($language_code, $valid_language_codes) ) {
-            $this->response([
+        if (! in_array($language_code, $valid_language_codes) ) {
+            $this->response(
+                [
                 'code' => HTTP_UNPROCESSABLE_ENTITY,
                 'api_code_result' => 'UNPROCESSABLE_ENTITY',
                 'msg' => $this->lang->line('invalid_header'),
                 'extra_info' => [
                     "missing_parameter" => $this->lang->line('invalid_language_code')
                 ]
-            ]);
+                ]
+            );
         }
 
         $language_map = [

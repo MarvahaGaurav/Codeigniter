@@ -105,10 +105,10 @@ $module = $this->router->fetch_module();
             <div class="fltr-field-wrap">
                 <label class="admin-label">Push Date</label>
                 <div class="inputfield-wrap">
-                    <input type="text" value="<?php echo !empty($startDate)?date('m/d/Y',strtotime($startDate)):"" ?>" class="form-date_wrap startDate" data-provide="datepicker" id="from_date" placeholder="From">
+                    <input type="text" value="<?php echo !empty($startDate)?date('m/d/Y', strtotime($startDate)):"" ?>" class="form-date_wrap startDate" data-provide="datepicker" id="from_date" placeholder="From">
                 </div>
                 <div class="inputfield-wrap">
-                    <input type="text" value="<?php echo !empty($endDate)?date('m/d/Y',strtotime($endDate)):"" ?>" class="form-date_wrap endDate" data-provide="datepicker" id="to_date" placeholder="To">
+                    <input type="text" value="<?php echo !empty($endDate)?date('m/d/Y', strtotime($endDate)):"" ?>" class="form-date_wrap endDate" data-provide="datepicker" id="to_date" placeholder="To">
                 </div>
 
             </div>
@@ -146,7 +146,7 @@ $module = $this->router->fetch_module();
                 <tbody>
                     
                     <?php if (!empty($notiList)) { 
-                        if ($page > 1){
+                        if ($page > 1) {
                             $i = (($page * $limit)- $limit) + 1;
                         } else {
                             $i = 1;
@@ -161,7 +161,7 @@ $module = $this->router->fetch_module();
                                 <td><?php echo ($list['platform'] == 1)?'All':(($list['platform'] == 2)?'Android':'iOS'); ?></td>
                                 <td><a href="javascript:void(0)">Resend</td>
                                 <td><?php echo $list['total_sents'] ?></td>
-                                <td><?php echo date('d-m-Y',strtotime($list['created_at'])) ?></td>
+                                <td><?php echo date('d-m-Y', strtotime($list['created_at'])) ?></td>
                                 <?php if($accesspermission['deletep'] || $accesspermission['editp']) { ?>
                                 <td class="text-nowrap table-action">
                                     <?php if($accesspermission['editp']) { ?>
@@ -175,9 +175,11 @@ $module = $this->router->fetch_module();
                                 </td>
                                 <?php } ?>
                             </tr>
-                        <?php $i++; } } else { ?>
+                        <?php $i++; 
+                        } 
+                    } else { ?>
                         <td colspan="9">No notifications found</td>
-                        <?php } ?>
+<?php } ?>
                 </tbody>
             </table>
                 </div>

@@ -9,7 +9,7 @@
                 <li><a href="admin/subadmin">Sub Admins</a></li>
                 <li class="active">Add Sub-admin</li>
             </ol>
-        </div>	
+        </div>    
         <div class="clear"></div>
 
         <div class="section">
@@ -19,7 +19,7 @@
                         <h3 class="title">Fill the below form</h3>
                     </div>
                     <!-- title and form upper action end-->
-                    <?php echo form_open_multipart('',array('id'=>'subadmin_add'));?>
+                    <?php echo form_open_multipart('', array('id'=>'subadmin_add'));?>
                     <br><br>
                     <div class="row">
                         <div class="col-lg-3 col-sm-4">
@@ -123,7 +123,7 @@
                                                             </div>
                                                         </li>
                                                     </ul>
-                                                </div>			
+                                                </div>            
                                                 <div class="clear"></div>
                                                 <div class="custom-check main-check">
                                                     <input id="main-check2" name="merchant" onchange="permission('merchant', 'main-check2')"  value="2"   type="checkbox">
@@ -160,7 +160,7 @@
                                                             </div>
                                                         </li>
                                                     </ul>
-                                                </div>			
+                                                </div>            
                                                 <div class="clear"></div>
                                                 <div class="custom-check main-check">
                                                     <input id="main-check3" name="product" onchange="permission('product', 'main-check3')"  value="3"   type="checkbox">
@@ -197,7 +197,7 @@
                                                             </div>
                                                         </li>
                                                     </ul>
-                                                </div>			
+                                                </div>            
                                                 <div class="clear"></div>
                                                 <div class="custom-check main-check">
                                                     <input id="main-check4" name="template" onchange="permission('template', 'main-check4')"  value="4"   type="checkbox">
@@ -234,7 +234,7 @@
                                                             </div>
                                                         </li>
                                                     </ul>
-                                                </div>			
+                                                </div>            
                                                 <div class="clear"></div>
                                                 <div class="custom-check main-check">
                                                     <input id="main-check5" name="content" onchange="permission('content', 'main-check5')"  value="5"   type="checkbox">
@@ -271,7 +271,7 @@
                                                             </div>
                                                         </li>
                                                     </ul>
-                                                </div>			
+                                                </div>            
                                                 <div class="clear"></div>
                                                 <div class="custom-check main-check">
                                                     <input id="main-check6" name="option" onchange="permission('Version', 'main-check6')" value="6" type="checkbox">
@@ -309,7 +309,7 @@
                                                         </li>
 
                                                     </ul>
-                                                </div>			
+                                                </div>            
                                                 <div class="clear"></div>
                                                 <div class="custom-check main-check">
                                                     <input id="main-check7" name="portfolio" onchange="permission('Notification', 'main-check7')" value="7"  type="checkbox">
@@ -344,7 +344,7 @@
                                                                 <input id="subcheck7-5" name="permission[notification][delete]" value="1" class="Notification"  type="checkbox">
                                                                 <label for="subcheck7-5"><span></span>Delete</label>
                                                             </div>
-                                                        </li>				
+                                                        </li>                
                                                     </ul>
                                                 </div>
                                                 <div class="clear"></div>
@@ -384,9 +384,9 @@
                                                         </li>
 
                                                     </ul>
-                                                </div>			
-                                                			
-                                            </div>			
+                                                </div>            
+                                                            
+                                            </div>            
                                         </div>
                                     </div>
                                 </div>

@@ -3,9 +3,11 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 require APPPATH . '/libraries/REST_Controller.php';
 
-class Signup extends REST_Controller {
+class Signup extends REST_Controller
+{
 
-    function __construct() {
+    function __construct() 
+    {
         parent::__construct();
         $this->load->model('Common_model');
         $this->load->helper('security');
@@ -21,168 +23,169 @@ class Signup extends REST_Controller {
      *   operationId="signup_post",
      *   consumes ={"multipart/form-data"},
      *   produces={"application/json"},
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="first_name",
      *     in="formData",
      *     description="Architech",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="last_name",
      *     in="formData",
      *     description="employe",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="email",
      *     in="formData",
      *     description="architectemployee@yopmail.com",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="password",
      *     in="formData",
      *     description="123456",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="device_id",
      *     in="formData",
      *     description="6516516265265",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="device_token",
      *     in="formData",
      *     description="sdvdsdsfsdadc wv zsd zv56z5s ad ad ad35165a1 6as asv5as1v6asd5 1",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="Platform",
      *     in="formData",
      *     description="1 //1=Android, 2=IOS, 3-Web",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="User_type",
      *     in="formData",
      *     description="3 //1=Private User, 2=Technician, 3=Architect, 4=Electrical Planner, 5=Wholesaler,6=Business User",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="Is_owner",
      *     in="formData",
      *     description="1 //0=user, 1 =  employee , 2 = owner",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="profile_image",
      *     in="formData",
      *     description="image",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="company_name",
      *     in="formData",
      *     description="Architech Company",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="company_reg_number",
      *     in="formData",
      *     description="IT51651651",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="company_image",
      *     in="formData",
      *     description="company image",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="prm_user_countrycode",
      *     in="formData",
      *     description="91",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="phone",
      *     in="formData",
      *     description="9015417310",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="alt_user_countrycode",
      *     in="formData",
      *     description="91",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="alt_userphone",
      *     in="formData",
      *     description="9654379323",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="country",
      *     in="formData",
      *     description="DK, NL, SW, NO, etc..",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="state",
      *     in="formData",
      *     description="2184",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="city",
      *     in="formData",
      *     description="1210455",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="zipcode",
      *     in="formData",
      *     description="22215",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="company_id",
      *     in="formData",
      *     description="4",
      *     required=true,
      *     type="string"
      *   ),
-     *   @SWG\Response(response=200, description="Signup Success"),
-     *   @SWG\Response(response=206, description="Unauthorized request"),     
-     *   @SWG\Response(response=207, description="Header is missing"),     
-     *   @SWG\Response(response=421, description="File Upload Failed"),     
-     *   @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
+     * @SWG\Response(response=200, description="Signup Success"),
+     * @SWG\Response(response=206, description="Unauthorized request"),     
+     * @SWG\Response(response=207, description="Header is missing"),     
+     * @SWG\Response(response=421, description="File Upload Failed"),     
+     * @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
      * )
      */
-    public function index_post() {
+    public function index_post() 
+    {
         $language_code = $this->langcode_validate();
         $postDataArr = $this->post();
 
@@ -217,10 +220,10 @@ class Signup extends REST_Controller {
             )
         );
         
-        if($postDataArr['user_type']!='1'){
+        if($postDataArr['user_type']!='1') {
             $required_fields_arr[] = array('field' => 'is_owner','label' => 'Owner','rules' => 'trim|required');
        
-            if($postDataArr['is_owner'] == '2'){
+            if($postDataArr['is_owner'] == '2') {
                 $required_fields_arr[] = array('field' => 'company_name','label' => 'Company Name','rules' => 'trim|required');
                 $required_fields_arr[] = array('field' => 'company_reg_number','label' => 'Company Registration Number','rules' => 'trim|required');
                 //$required_fields_arr[] = array('field' => 'company_address','label' => 'Company Address','rules' => 'trim|required');
@@ -324,7 +327,7 @@ class Signup extends REST_Controller {
                 $signupArr["is_owner"] = $postDataArr['is_owner'];
                 $signupArr["user_type"] = $postDataArr['user_type'];
 
-                if($postDataArr['is_owner'] == '2'){
+                if($postDataArr['is_owner'] == '2') {
                     $companyArr['company_name'] = isset($postDataArr['company_name']) ? $postDataArr['company_name'] : "";
                     $companyArr['company_reg_number'] = isset($postDataArr['company_reg_number']) ? $postDataArr['company_reg_number'] : "";
                     //$companyArr['prm_country_code'] = isset($postDataArr['prm_country_code']) ? $postDataArr['prm_country_code'] : "";
@@ -364,7 +367,7 @@ class Signup extends REST_Controller {
                         $companyArr["company_image_thumb"] = $compthumbName;
                     }*/
                     $companyId = $this->Common_model->insert_single('company_master', $companyArr);
-                    if($companyId){
+                    if($companyId) {
                         $signupArr["company_id"] = $companyId;
                     }else{
                         throw new Exception($this->lang->line('try_again'));
@@ -381,10 +384,10 @@ class Signup extends REST_Controller {
                 }
                 $postDataArr['user_id'] = $userId;
                 
-                if($postDataArr['is_owner'] == '1'){
+                if($postDataArr['is_owner'] == '1') {
                     $whereArr['where'] = ['is_owner' => 2, 'company_id' => $signupArr['company_id']];
                     $companyowner_info = $this->Common_model->fetch_data('ai_user', ['user_id'], $whereArr, true);
-                    if($companyowner_info){
+                    if($companyowner_info) {
                         // adding in notification master table
                         $requestedbyname = $postDataArr['first_name'].' '.$postDataArr['middle_name'].' '.$postDataArr['last_name'];
                         $msg = "" . $requestedbyname . " has requested to join your company as employee.";
@@ -434,12 +437,12 @@ class Signup extends REST_Controller {
                 } else {
                     $sessionId = $this->Common_model->insert_single('ai_session', $sessionArr);
                 }
-                if ($this->db->trans_status() === TRUE) {
+                if ($this->db->trans_status() === true) {
                     $this->db->trans_commit();
-                    if($postDataArr['is_owner'] == '1'){
+                    if($postDataArr['is_owner'] == '1') {
                         $whereArr['where'] = ['is_owner' => 2, 'company_id' => $postDataArr['company_id']];
                         $companyowner_info = $this->Common_model->fetch_data('ai_user', ['user_id'], $whereArr, true);
-                        if($companyowner_info){
+                        if($companyowner_info) {
                             /*
                             * Create Android Payload
                             */
@@ -494,7 +497,7 @@ class Signup extends REST_Controller {
                         $signupArr['project_edit'] = 0;
                         $signupArr['project_delete'] = 0;
 
-                        if ( ROLE_EMPLOYEE === (int)$signupArr["is_owner"] ) {
+                        if (ROLE_EMPLOYEE === (int)$signupArr["is_owner"] ) {
                             $this->load->library("PushNotification");
                             $this->load->model("UtilModel");
                             
@@ -506,18 +509,24 @@ class Signup extends REST_Controller {
                                     "join" => ["ai_session" => "ai_user.user_id=ai_session.user_id"]
                                 ]
                             );
-                            $ios_user_data = array_filter($user_data, function($data){
-                                return IPHONE === (int)$data["platform"]?true:false;
-                            });
-                            $android_user_data = array_filter($user_data, function($data){
-                                return ANDROID === (int)$data["platform"]?true:false;
-                            });
+                            $ios_user_data = array_filter(
+                                $user_data, function ($data) {
+                                    return IPHONE === (int)$data["platform"]?true:false;
+                                }
+                            );
+                            $android_user_data = array_filter(
+                                $user_data, function ($data) {
+                                    return ANDROID === (int)$data["platform"]?true:false;
+                                }
+                            );
 
-                            $android_tokens = array_map(function($data){
-                                return $data['device_token'];
-                            }, $android_user_data);
+                            $android_tokens = array_map(
+                                function ($data) {
+                                    return $data['device_token'];
+                                }, $android_user_data
+                            );
 
-                            if ( $android_tokens ) {
+                            if ($android_tokens ) {
                                 $android_payload_data = [
                                     'badge' => 1,
                                     'sound' => 'default',
@@ -528,7 +537,7 @@ class Signup extends REST_Controller {
                                 ];
                                 $this->pushnotification->androidMultiplePush($android_tokens, $android_payload_data);
                             }
-                            if ( $ios_user_data ) {
+                            if ($ios_user_data ) {
                                 $ios_payload_data = [
                                     'badge' => 1,
                                     'alert' => "New Employee Request",
@@ -563,7 +572,8 @@ class Signup extends REST_Controller {
     
     
     
-    public function sendWelcomeMail($mailData) {
+    public function sendWelcomeMail($mailData) 
+    {
 
         $this->load->helper('url');
         $data = [];
@@ -576,7 +586,8 @@ class Signup extends REST_Controller {
      * @param: Phone number
      */
 
-    public function validate_phone($phone) {
+    public function validate_phone($phone) 
+    {
 
         if (isset($phone) && !preg_match("/^[0-9]{10}$/", $phone) && !empty($phone)) {
             $this->response(array('code' => PARAM_REQ, 'msg' => $this->lang->line('invalid_phone'), 'result' => (object)[]));
@@ -590,7 +601,8 @@ class Signup extends REST_Controller {
      * @param: user dob
      */
 
-    public function validate_dob($dob) {
+    public function validate_dob($dob) 
+    {
         if (!(isValidDate($dob, 'm-d-Y'))) {
             $this->response(array('code' => PARAM_REQ, 'msg' => $this->lang->line('invalid_dob'), 'result' => (object)[]));
         } else {
@@ -603,26 +615,30 @@ class Signup extends REST_Controller {
         $language_code = trim($language_code);
         $valid_language_codes = ["en","da","nb","sv","fi","fr","nl","de"];
 
-        if ( empty($language_code) ) {
-            $this->response([
+        if (empty($language_code) ) {
+            $this->response(
+                [
                 'code' => HTTP_UNPROCESSABLE_ENTITY,
                 'api_code_result' => 'UNPROCESSABLE_ENTITY',
                 'msg' => $this->lang->line('header_missing'),
                 'extra_info' => [
                     "missing_parameter" => "language_code"
                 ]
-            ]);
+                ]
+            );
         }
 
-        if ( ! in_array($language_code, $valid_language_codes) ) {
-            $this->response([
+        if (! in_array($language_code, $valid_language_codes) ) {
+            $this->response(
+                [
                 'code' => HTTP_UNPROCESSABLE_ENTITY,
                 'api_code_result' => 'UNPROCESSABLE_ENTITY',
                 'msg' => $this->lang->line('invalid_header'),
                 'extra_info' => [
                     "missing_parameter" => $this->lang->line('invalid_language_code')
                 ]
-            ]);
+                ]
+            );
         }
 
         $language_map = [

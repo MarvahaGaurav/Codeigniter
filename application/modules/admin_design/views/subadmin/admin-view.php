@@ -13,7 +13,7 @@ $notiPermission = isset($permission[3])?$permission[3]:array();
                 <li class="breadcrumb-item"><a href="admin/subadmin">Sub Admins</a></li>
                 <li class="active">Sub-Admin Profile</li>
             </ol>
-        </div>	
+        </div>    
         <div class="clear"></div>
 
         <div class="section">

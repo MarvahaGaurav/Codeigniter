@@ -15,21 +15,21 @@
                             <div class="login-error">
                                 <span class="error"></span>
                             </div>
-                            <?php echo form_open('',array('id'=>'login_admin_form'))?>
+                            <?php echo form_open('', array('id'=>'login_admin_form'))?>
                                
                                 <h1 class="index-comn-heading">Login  </h1>
                                 <p class="index-note">Enter Your Details below to access your account </p>
                                 <div class="form-field-wrap">
                                     <span class="ad-user"></span>
                                     <input type="text" class="login_filed removespace" maxlength="40" placeholder="User ID" onfocus="this.removeAttribute('readonly');" readonly name="email" value="<?php echo isset($email) ? $email : set_value('email'); ?>"  autocomplete="off" /> 
-                                    <?php echo isset($error)?'<label class="alert-danger">'.$error.'</label>':form_error('email','<label class="alert-danger">','</label>')?>
+                                    <?php echo isset($error)?'<label class="alert-danger">'.$error.'</label>':form_error('email', '<label class="alert-danger">', '</label>')?>
                                     
 
                                 </div>
                                 <div class="form-field-wrap" id="passworderr">
                                     <span class="ad-password"></span>
                                     <input type="password" class="login_filed removespace" maxlength="20" placeholder="Password" onfocus="this.removeAttribute('readonly');" readonly name="password" value="<?php echo isset($password) ? $password : set_value('password'); ?>"  autocomplete="off" required />
-                                    <?php echo form_error('password','<label class="alert-danger">','</label>')?>
+                                    <?php echo form_error('password', '<label class="alert-danger">', '</label>')?>
                                     
                                 </div>
                                 <div class="form-field-wrap">

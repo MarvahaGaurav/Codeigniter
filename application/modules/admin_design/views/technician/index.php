@@ -97,12 +97,14 @@ $module = $this->router->fetch_module();
                 <div class="commn-select-wrap">
                     <select class="selectpicker filter country" name="country" data-live-search="true">
                     <option value="">Select Country</option>
-                    <?php if(!empty($countries)){
+                    <?php if(!empty($countries)) {
                         foreach($countries as $key=>$val){
                     ?>
-                    <option <?php if(isset($country) && $country == $val['id']){ echo "selected='selected'";}?> value="<?php echo $val['id'];?>"><?php echo $val['name'];?></option>
+                    <option <?php if(isset($country) && $country == $val['id']) { echo "selected='selected'";
+                   }?> value="<?php echo $val['id'];?>"><?php echo $val['name'];?></option>
                        
-                    <?php }} ?>
+                        <?php }
+                    } ?>
                     </select>
                 </div>
             </div>
@@ -147,20 +149,20 @@ $module = $this->router->fetch_module();
                     </th>
                     <th style="width:13%">User Type</th>
                     <th style="width:13%">status</th>
-                    <?php if($accesspermission['deletep'] || $accesspermission['blockp']){ ?>
+                    <?php if($accesspermission['deletep'] || $accesspermission['blockp']) { ?>
                         <th width="100px">Action</th>
                     <?php } ?>
                 </tr>
             </thead>
             <tbody id="table_tr">
                 
-            <?php if(isset($userlist) && count($userlist)){
-                    if ($page > 1){
-                        $i = (($page * $limit)- $limit) + 1;
-                    } else {
-                        $i = 1;
-                    }
-                    foreach($userlist as $value){ ?>
+            <?php if(isset($userlist) && count($userlist)) {
+                if ($page > 1) {
+                    $i = (($page * $limit)- $limit) + 1;
+                } else {
+                    $i = 1;
+                }
+                foreach($userlist as $value){ ?>
                     
                     <tr id ="remove_<?php echo $value['user_id'];?>" >
                     <td><?php echo $i; ?></td>
@@ -173,13 +175,14 @@ $module = $this->router->fetch_module();
                     </td>
                     <td><?php echo $value['email'];?></td>
                     <td><?php echo !empty($value['phone'])?$value['phone']:"Not Available";?></td>
-                    <td><?php echo date("d M Y H:i A",strtotime($value['registered_date']));?></td>
-                    <td><?php echo ($value['user_type'] == 2)?"Electrician":(($value['user_type'] == 3)?"Architect":(($value['user_type'] == 4)?"Planner":(($value['user_type'] == 5)?"Whole Seller":"App User")));?><?php if($value['user_type'] == 2){ echo ($value['is_owner'] == '2')?" <strong>( Owner )</strong>":" <strong>( Employee )</strong>";} ?></td>
+                    <td><?php echo date("d M Y H:i A", strtotime($value['registered_date']));?></td>
+                    <td><?php echo ($value['user_type'] == 2)?"Electrician":(($value['user_type'] == 3)?"Architect":(($value['user_type'] == 4)?"Planner":(($value['user_type'] == 5)?"Whole Seller":"App User")));?><?php if($value['user_type'] == 2) { echo ($value['is_owner'] == '2')?" <strong>( Owner )</strong>":" <strong>( Employee )</strong>";
+                   } ?></td>
                     <td id ="status_<?php echo $value['user_id'];?>"><?php echo ($value['status'] == ACTIVE)?"Active":"Blocked";?></td>
-                     <?php if($accesspermission['deletep'] || $accesspermission['blockp']){ ?>
+                        <?php if($accesspermission['deletep'] || $accesspermission['blockp']) { ?>
                     <td>
-                        <?php if($accesspermission['blockp']){ ?>
-                            <?php if($value['status'] == BLOCKED){?>
+                        <?php if($accesspermission['blockp']) { ?>
+                            <?php if($value['status'] == BLOCKED) {?>
                                 <a href="javascript:void(0);" id ="unblock_<?php echo $value['user_id'];?>" class="table_icon"><i class="fa fa-unlock" aria-hidden="true" onclick="blockUser('user',<?php echo ACTIVE;?>,'<?php echo encryptDecrypt($value['user_id']);?>','req/change-user-status','Do you really want to unblock this user?','Unblock');"></i></a>
                                 <a href="javascript:void(0);"  id ="block_<?php echo $value['user_id'];?>" style="display:none;" class="table_icon"><i class="fa fa-ban" aria-hidden="true" onclick="blockUser('user',<?php echo BLOCKED;?>,'<?php echo encryptDecrypt($value['user_id']);?>','req/change-user-status','Do you really want to block this user?','Block');"></i></a>
                             <?php }else{?>
@@ -187,17 +190,18 @@ $module = $this->router->fetch_module();
                                 <a href="javascript:void(0);" id ="unblock_<?php echo $value['user_id'];?>" style="display:none;" class="table_icon"><i class="fa fa-unlock" aria-hidden="true" onclick="blockUser('user',<?php echo ACTIVE;?>,'<?php echo encryptDecrypt($value['user_id']);?>','req/change-user-status','Do you really want to unblock this user?','Unblock');"></i></a>
                             <?php }?>
                         <?php }?>
-                        <?php if($accesspermission['deletep']){ ?>
+                        <?php if($accesspermission['deletep']) { ?>
                             <a href="javascript:void(0);" class="table_icon"><i class="fa fa-trash" aria-hidden="true" onclick="deleteUser('user',<?php echo DELETED;?>,'<?php echo encryptDecrypt($value['user_id']);?>','req/change-user-status','Do you really want to delete this user?');"></i></a>
                         <?php } ?>
                     </td>
-                     <?php } ?>
+                        <?php } ?>
                 </tr>
-                 <?php 
-                $i++; 
-                } } else { ?>
+                    <?php 
+                    $i++; 
+                } 
+            } else { ?>
                 <tr><td colspan="9">No result found.</td></tr
-                <?php } ?>
+<?php } ?>
             </tbody>
         </table>
     </div>

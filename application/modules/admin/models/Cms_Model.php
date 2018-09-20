@@ -1,10 +1,12 @@
 <?php
 
-class Cms_Model extends CI_Model {
+class Cms_Model extends CI_Model
+{
 
     public $finalrole = array();
 
-    public function __construct() {
+    public function __construct() 
+    {
         $this->load->database();
         $this->load->library('session');
         $this->load->library('pagination');
@@ -20,10 +22,11 @@ class Cms_Model extends CI_Model {
      * @param type $params
      * @return type
      */
-    public function pagelist($limit, $offset, $params) {
+    public function pagelist($limit, $offset, $params) 
+    {
 
 
-        $this->db->select("SQL_CALC_FOUND_ROWS u.*", False);
+        $this->db->select("SQL_CALC_FOUND_ROWS u.*", false);
         $this->db->from('page_master as u');
         $this->db->order_by("u.created_date", "DESC");
         $this->db->limit($limit, $offset);
@@ -42,7 +45,8 @@ class Cms_Model extends CI_Model {
 
     /* common function for paggination */
 
-    function paginaton_link_custom($total_rows, $pageurl, $limit = 2, $per_page = 1) {
+    function paginaton_link_custom($total_rows, $pageurl, $limit = 2, $per_page = 1) 
+    {
         $ci = & get_instance();
         $current_page_total = $limit * $per_page;
         $current_page_start = ($current_page_total - $limit) + 1;
@@ -55,10 +59,10 @@ class Cms_Model extends CI_Model {
         $config['per_page'] = $limit;
         $config['full_tag_open'] = "<div class='row pagination_display'> <div class='col-lg-6 col-sm-6 col-xs-6'><div id='data-count'><span class='count-text'>Showing $current_page_start to $current_page_total of $total_rows entries  </span></div></div><div class='col-lg-6 col-sm-6 col-xs-6'> <div class='paination-wraper pull-right'> <ul id='custom_pagination'>";
         $config['full_tag_close'] = "</ul> </div> </div> </div>";
-        $config['page_query_string'] = TRUE;
+        $config['page_query_string'] = true;
         $config['num_links'] = 20;
         $config['uri_segment'] = 2;
-        $config['use_page_numbers'] = TRUE;
+        $config['use_page_numbers'] = true;
         $config['cur_tag_open'] = '<li><a href="javascript:void(0);" class="active" >';
         $config['cur_tag_close'] = '</a></li>';
         $config['next_link'] = 'Next';

@@ -2,9 +2,11 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Ajax extends CI_Controller {
+class Ajax extends CI_Controller
+{
 
-    function __construct() {
+    function __construct() 
+    {
         parent::__construct();
         $this->load->model('Common_model');
         $this->load->library('encrypt');
@@ -16,7 +18,8 @@ class Ajax extends CI_Controller {
         }
     }
 
-    public function reset() {
+    public function reset() 
+    {
 
         $token = $this->input->post('token');
         $password = $this->input->post('password');

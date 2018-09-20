@@ -2,9 +2,11 @@
 
 require APPPATH . 'libraries/REST_Controller.php';
 
-class Profile extends REST_Controller {
+class Profile extends REST_Controller
+{
 
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
         $this->load->model('Common_model');
         $this->load->library('form_validation');
@@ -18,33 +20,36 @@ class Profile extends REST_Controller {
      *   operationId="profile_post",
      *   consumes ={"multipart/form-data"},
      *   produces={"application/json"},
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="accesstoken",
      *     in="header",
      *     description="Access Token",
      *     required=true,
      *     type="string"
      *   ),  
-     *   @SWG\Response(response=200, description="Profile Update Success"),
-     *   @SWG\Response(response=206, description="Unauthorized request"),     
-     *   @SWG\Response(response=207, description="Header is missing"),        
-     *   @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
-     *   @SWG\Response(response=490, description="Invalid User"),
-     *   @SWG\Response(response=501, description="Please try again"),
+     * @SWG\Response(response=200, description="Profile Update Success"),
+     * @SWG\Response(response=206, description="Unauthorized request"),     
+     * @SWG\Response(response=207, description="Header is missing"),        
+     * @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
+     * @SWG\Response(response=490, description="Invalid User"),
+     * @SWG\Response(response=501, description="Please try again"),
      * )
      */
-    public function index_get() {
+    public function index_get() 
+    {
         $postDataArr = $this->get();
         $config = [];
         $head = $this->head();
-        if ( (!isset($head['accesstoken']) || empty(trim($head['accesstoken']))) && (!isset($head['Accesstoken']) || empty(trim($head['Accesstoken']))) ) {
-            $this->response([
+        if ((!isset($head['accesstoken']) || empty(trim($head['accesstoken']))) && (!isset($head['Accesstoken']) || empty(trim($head['Accesstoken']))) ) {
+            $this->response(
+                [
                 "code" => HTTP_UNAUTHORIZED,
                 "api_code_result" => "UNAUTHORIZED",
                 "msg" => $this->lang->line("invalid_access_token")
-            ], HTTP_UNAUTHORIZED);
+                ], HTTP_UNAUTHORIZED
+            );
         }
-        if ( isset($head['Accesstoken']) && !empty($head['Accesstoken']) ) {
+        if (isset($head['Accesstoken']) && !empty($head['Accesstoken']) ) {
             $head['accesstoken'] = $head['Accesstoken'];
         }
         try {
@@ -71,7 +76,7 @@ class Profile extends REST_Controller {
             if ($user_info['status'] == BLOCKED) {
                 $this->response(array('code' => HTTP_FORBIDDEN, 'msg' => $this->lang->line('account_blocked'), 'result' => (object) []));
             }
-            if ($this->db->trans_status() === TRUE) {
+            if ($this->db->trans_status() === true) {
                 $this->db->trans_commit();
                 $whereArr['where'] = ['company_id' => $user_info['company_id']];
                 $companyDetail = $this->Common_model->fetch_data('company_master', 'company_id,company_name,company_reg_number,company_image,company_image_thumb', $whereArr, true);
@@ -137,7 +142,8 @@ class Profile extends REST_Controller {
         }
     }
 
-    public function companylist_get() {
+    public function companylist_get() 
+    {
 
         $getDataArr = $this->input->get();
         
@@ -206,147 +212,150 @@ class Profile extends REST_Controller {
      *   operationId="profile_post",
      *   consumes ={"multipart/form-data"},
      *   produces={"application/json"},
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="accesstoken",
      *     in="header",
      *     description="Access Token",
      *     required=true,
      *     type="string"
      *   ),  
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="first_name",
      *     in="formData",
      *     description="First name",
      *     type="string"
      *   ),  
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="prm_user_countrycode",
      *     in="formData",
      *     description="Prm user countrycode",
      *     type="string"
      *   ),  
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="phone",
      *     in="formData",
      *     description="Phone",
      *     type="string"
      *   ),  
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="alt_user_countrycode",
      *     in="formData",
      *     description="Alt user countrycode",
      *     type="string"
      *   ),  
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="alt_userphone",
      *     in="formData",
      *     description="Alt userphone",
      *     type="string"
      *   ),  
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="image",
      *     in="formData",
      *     description="Image",
      *     type="string"
      *   ),  
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="image_thumb",
      *     in="formData",
      *     description="Image thumb",
      *     type="string"
      *   ),  
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="country",
      *     in="formData",
      *     description="Country",
      *     type="string"
      *   ),  
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="country",
      *     in="formData",
      *     description="Country",
      *     type="string"
      *   ),  
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="state",
      *     in="formData",
      *     description="State",
      *     type="string"
      *   ),  
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="state",
      *     in="formData",
      *     description="State",
      *     type="string"
      *   ),  
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="city",
      *     in="formData",
      *     description="City",
      *     type="string"
      *   ),  
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="city",
      *     in="formData",
      *     description="City",
      *     type="string"
      *   ),  
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="zipcode",
      *     in="formData",
      *     description="Zipcode",
      *     type="string"
      *   ),  
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="zipcode",
      *     in="formData",
      *     description="Zipcode",
      *     type="string"
      *   ),  
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="company_id",
      *     in="formData",
      *     description="Company id",
      *     type="string"
      *   ),  
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="company_name",
      *     in="formData",
      *     description="Company name",
      *     type="string"
      *   ),  
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="company_image",
      *     in="formData",
      *     description="Company image",
      *     type="string"
      *   ),  
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="company_image_remove",
      *     in="formData",
      *     description="Company image",
      *     type="string"
      *   ),  
-     *   @SWG\Response(response=200, description="Profile Update Success"),
-     *   @SWG\Response(response=206, description="Unauthorized request"),     
-     *   @SWG\Response(response=207, description="Header is missing"),        
-     *   @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
-     *   @SWG\Response(response=490, description="Invalid User"),
-     *   @SWG\Response(response=501, description="Please try again"),
+     * @SWG\Response(response=200, description="Profile Update Success"),
+     * @SWG\Response(response=206, description="Unauthorized request"),     
+     * @SWG\Response(response=207, description="Header is missing"),        
+     * @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
+     * @SWG\Response(response=490, description="Invalid User"),
+     * @SWG\Response(response=501, description="Please try again"),
      * )
      */
-    public function profileupdate_put() {
+    public function profileupdate_put() 
+    {
         $postDataArr = $this->put();
         $config = [];
         $head = $this->head();
-        if ( (!isset($head['accesstoken']) || empty(trim($head['accesstoken']))) && (!isset($head['Accesstoken']) || empty(trim($head['Accesstoken']))) ) {
-            $this->response([
+        if ((!isset($head['accesstoken']) || empty(trim($head['accesstoken']))) && (!isset($head['Accesstoken']) || empty(trim($head['Accesstoken']))) ) {
+            $this->response(
+                [
                 "code" => HTTP_UNAUTHORIZED,
                 "api_code_result" => "UNAUTHORIZED",
                 "msg" => $this->lang->line("invalid_access_token")
-            ], HTTP_UNAUTHORIZED);
+                ], HTTP_UNAUTHORIZED
+            );
         }
-        if ( isset($head['Accesstoken']) && !empty($head['Accesstoken']) ) {
+        if (isset($head['Accesstoken']) && !empty($head['Accesstoken']) ) {
             $head['accesstoken'] = $head['Accesstoken'];
         }
         try {
@@ -435,7 +444,7 @@ class Profile extends REST_Controller {
 
             $whereArr['where'] = ['user_id' => $user_info['user_id']];
             $updaterequesr = $this->Common_model->update_single('ai_user', $updateArr, $whereArr);
-            if ($this->db->trans_status() === TRUE) {
+            if ($this->db->trans_status() === true) {
                 $this->db->trans_commit();
 
                 $userdata = $this->Common_model->getUserInfoWithAddress($head['accesstoken'], ['u.user_id', 'u.country_id as u_country_id', 'u.city_id as u_city_id', 'u.zipcode', 'cl.name as u_country_name', 'cyl.name as u_city_name', 'login_time', 'login_status', 'status', 'first_name', 'middle_name', 'last_name', 'email', 'prm_user_countrycode', 'phone', 'alt_user_countrycode', 'alt_userphone', 'company_id', 'is_owner', 'user_type', 'IF(image !="",image,"") as image', 'IF(image_thumb !="",image_thumb,"") as image_thumb']);

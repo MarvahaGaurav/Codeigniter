@@ -1,7 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class InspirationController extends MY_Controller {
+class InspirationController extends MY_Controller
+{
 
     public function __construct()
     {
@@ -21,7 +22,7 @@ class InspirationController extends MY_Controller {
         }
         $this->data = [];
         $this->data['admininfo'] = $this->admininfo;
-        if($this->admininfo['role_id'] == 2){
+        if($this->admininfo['role_id'] == 2) {
             $whereArr = ['where'=>['admin_id'=>$this->admininfo['admin_id']]];
             $access_detail = $this->Common_model->fetch_data('sub_admin', ['viewp', 'addp', 'editp', 'blockp', 'deletep', 'access_permission', 'admin_id', 'id'], $whereArr, false);
             $this->data['admin_access_detail'] = $access_detail;

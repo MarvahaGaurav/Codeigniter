@@ -10,7 +10,7 @@
     <!--breadcrumb wrap close-->
 
     <!--Filter Section -->
-    <?php echo form_open_multipart(base_url().'admin/cms/edit?id='.encryptDecrypt($page_id),array('id'=>'cms_add_form'));?>
+    <?php echo form_open_multipart(base_url().'admin/cms/edit?id='.encryptDecrypt($page_id), array('id'=>'cms_add_form'));?>
         <div class="section">
 
             <div class="row">
@@ -19,7 +19,7 @@
                         <label class="admin-label">Page Title</label>
                         <div class="input-holder">
                             <!--<input type="password" class="form-control material-control" value="johndoe@gmail.com">-->
-                            <?php echo form_error('title','<label class="alert-danger">','</label>');?>
+                            <?php echo form_error('title', '<label class="alert-danger">', '</label>');?>
                             <input type="text" class="form-control material-control" maxlength="150" name="title" placeholder="Enter the title" value="<?php echo isset($pages['name'])?$pages['name']:set_value('title');?>">
 
                             <!-- <span class="error_wrap"></span> -->
@@ -30,7 +30,7 @@
                     <div class="form-group">
                         <label class="admin-label">Description</label>
                         <div class="input-holder">
-                            <?php echo form_error('page_desc','<label class="alert-danger">','</label>');?>
+                            <?php echo form_error('page_desc', '<label class="alert-danger">', '</label>');?>
                             <textarea class="custom-textarea" name="page_desc" maxlength="5000" placeholder="Enter the description" id="page_desc"><?php echo isset($pages['content'])?$pages['content']:set_value('page_desc');?></textarea>
                             <!-- <span class="error_wrap"></span> -->
                         </div>
@@ -40,7 +40,7 @@
                     <div class="form-group">
                         <label class="admin-label">Status</label>
                         <div class="commn-select-wrap">
-                        <?php echo form_error('status','<label class="alert-danger">','</label>');?>
+                        <?php echo form_error('status', '<label class="alert-danger">', '</label>');?>
                             <select class="selectpicker" name="status">
                                 <option value="">Select</option>
                                 <option <?php echo($pages['status'] == ACTIVE)?  "selected='selected'":""; ?> value="<?php echo ACTIVE;?>">Active</option>

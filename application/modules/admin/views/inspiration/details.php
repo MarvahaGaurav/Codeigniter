@@ -79,7 +79,7 @@
                                 <div class="gallery-thumb-list">
                                     <ul>
                                         <?php foreach ($inspiration_data['media'] as $value) : ?>
-                                            <?php if ( $value['media_type'] == CONTENT_TYPE_IMAGE ) {?>
+                                            <?php if ($value['media_type'] == CONTENT_TYPE_IMAGE ) {?>
                                                 <!-- <div class="image-view-wrapper img-view200p img-viewbdr-radius4p img-mb">
                                                     <div class="profile-pic image-view img-view200" style="background-image:url('<?php echo (!empty($value['media'])) ? $value['media'] : DEFAULT_IMAGE ?>');"></div>
                                                 </div> -->
@@ -88,7 +88,7 @@
                                                         <div class="image-view img-view200" style="background-image:url('<?php echo (!empty($value['media'])) ? $value['media'] : DEFAULT_IMAGE ?>');"></div>
                                                     </div>
                                                 </li>
-                                            <?php } else if ( $value['media_type'] == CONTENT_TYPE_VIDEO ) { ?>
+                                            <?php } else if ($value['media_type'] == CONTENT_TYPE_VIDEO ) { ?>
                                                 <!-- <video width="320" height="240" poster="<?php echo $value['video_thumbnail'] ?>" controls>
                                                     <source src="<?php //echo $value['media'] ?>" type="video/mp4">
                                                     <source src="<?php //echo $value['media'] ?>" type="video/ogg">

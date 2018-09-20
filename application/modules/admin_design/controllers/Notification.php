@@ -2,9 +2,11 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Notification extends MY_Controller {
+class Notification extends MY_Controller
+{
 
-    function __construct() {
+    function __construct() 
+    {
         parent::__construct();
         $this->load->helper(['url', 'custom_cookie', 'encrypt_openssl']);
         $this->load->model('Common_model');
@@ -23,7 +25,8 @@ class Notification extends MY_Controller {
         $this->data['admininfo'] = $this->admininfo;
     }
 
-    public function index() {
+    public function index() 
+    {
         $role_id = $this->admininfo['role_id'];
         /*
          * If logged user is sub admin check for his permission
@@ -74,7 +77,8 @@ class Notification extends MY_Controller {
         load_views("notification/index", $this->data);
     }
 
-    public function add() {
+    public function add() 
+    {
 
         /*
          * If logged user is sub admin check for his permission
@@ -97,7 +101,8 @@ class Notification extends MY_Controller {
         load_views("notification/add", $this->data);
     }
 
-    public function edit() {
+    public function edit() 
+    {
         /*
          * If logged user is sub admin check for his permission
          */
@@ -133,7 +138,8 @@ class Notification extends MY_Controller {
         }
     }
 
-    public function resendNotification() {
+    public function resendNotification() 
+    {
         $notiId = $this->input->get('notiToken');
         $notiId = encryptDecrypt($notiId, 'decrypt');
         $whereArr = [];
@@ -145,7 +151,8 @@ class Notification extends MY_Controller {
         $this->sendNotification($notiDetail, true);
     }
 
-    private function sendNotification($dataArr, $isResend = false) {
+    private function sendNotification($dataArr, $isResend = false) 
+    {
 
         $params = [];
         $params['platform'] = isset($dataArr['platform']) ? $dataArr['platform'] : "";
@@ -239,7 +246,8 @@ class Notification extends MY_Controller {
         }
     }
 
-    public function sendNotiViaCurl($chunkId) {
+    public function sendNotiViaCurl($chunkId) 
+    {
 
         $url = base_url() . 'admin/notify?chunkId=' . $chunkId;
         $header = array();

@@ -5,7 +5,7 @@
 </div>
 <script src="public/js/web/global-msg.js"></script>
 <script src="public/js/jquery.validate.min.js"></script>
-<?php if ( isset($additional_js) && !empty($additional_js) && is_array($additional_js) ) { ?>
+<?php if (isset($additional_js) && !empty($additional_js) && is_array($additional_js) ) { ?>
     <?php foreach($additional_js as $js):?>
 
 <script src="<?php echo $js ?>"></script>

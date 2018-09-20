@@ -10,10 +10,10 @@ class InspirationController extends BaseController
     public function __construct()
     {
         parent::__construct();
-        $this->active_session_required();
+        $this->activeSessionGuard();
         $this->load->model("Inspiration");
         $this->data['userInfo'] = $this->userInfo;
-/*         if (!isset($this->userInfo['user_type']) ||
+        /*         if (!isset($this->userInfo['user_type']) ||
             !in_array($this->userInfo['user_type'], [INSTALLER, WHOLESALER, ARCHITECT, ELECTRICAL_PLANNER]) ||
             ROLE_OWNER !== (int)$this->userInfo['is_owner']) {
             error404();
@@ -41,28 +41,33 @@ class InspirationController extends BaseController
         $this->load->library("Commonfn");
         $technicianTypes = [INSTALLER => "Installer", ARCHITECT => "Architect", ELECTRICAL_PLANNER => "Electrical Planner", WHOLESALER => "Wholesaler"];
         $this->data['links'] = $this->commonfn->pagination("home/inspirations", $data['count'], $limit);
-        $result = array_map(function($row) use ($technicianTypes){
-            // $row['image'] = empty($row['image']) ? base_url("public/images/missing_avatar.svg") : $row['image'];
-            $row['inspiration_id'] = encryptDecrypt($row['inspiration_id']);
-            $row['description'] = strlen($row['description']) > 140 ? substr($row['description'], 0, 140) . "...": $row['description'];
-            $row['products'] = json_decode("[{$row['products']}]", true);
-            $row['media'] = json_decode("[{$row['media']}]", true);
-            $row['media'] = !empty($row['media'])?$row['media']:base_url("public/images/missing_avatar.svg");
-            if (isset($this->userInfo['user_type']) &&
-            in_array($this->userInfo['user_type'], [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER]) &&
-            (ROLE_OWNER === (int)$this->userInfo['is_owner'] || (isset($this->employeePermission['insp_edit']) && (int)$this->employeePermission['insp_edit'] === 1)) &&
-            ( (int)$this->userInfo['company_id'] === (int)$row['company_id'] )) {
-                $row['edit_inspiration'] = true;
-            } else {
-                $row['edit_inspiration'] = false;
-            }
-            return $row;
-        }, $data['result']);
+        $result = array_map(
+            function ($row) use ($technicianTypes) {
+                // $row['image'] = empty($row['image']) ? base_url("public/images/missing_avatar.svg") : $row['image'];
+                $row['inspiration_id'] = encryptDecrypt($row['inspiration_id']);
+                $row['title'] = strlen($row['title']) > 50 ? substr($row['title'], 0, 50) . "...": $row['title'];
+                $row['description'] = strlen($row['description']) > 50 ? substr($row['description'], 0, 50) . "...": $row['description'];
+                $row['products'] = json_decode("[{$row['products']}]", true);
+                $row['media'] = json_decode("[{$row['media']}]", true);
+                $row['media'] = !empty($row['media'])?$row['media']:base_url("public/images/missing_avatar.svg");
+                if (isset($this->userInfo['user_type'])
+                    && in_array($this->userInfo['user_type'], [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER])
+                    && (ROLE_OWNER === (int)$this->userInfo['is_owner'] || (isset($this->employeePermission['insp_edit']) && (int)$this->employeePermission['insp_edit'] === 1))
+                    && ( (int)$this->userInfo['company_id'] === (int)$row['company_id'] )
+                ) {
+                    $row['edit_inspiration'] = true;
+                } else {
+                    $row['edit_inspiration'] = false;
+                }
+                return $row;
+            },
+            $data['result']
+        );
         $this->data['js'] = "inspirations";
         $this->data['owl'] = true;
         $this->data['inspirations'] = $result;
         $this->data['search'] = $search;
-        load_alternate_views("inspirations/main", $this->data);
+        load_website_views("inspirations/main", $this->data);
     }
 
     public function details($inspiration_id = "")
@@ -70,7 +75,7 @@ class InspirationController extends BaseController
         $id = $inspiration_id;
         $inspiration_id = encryptDecrypt($inspiration_id, 'decrypt');
 
-        if ( ! isset($inspiration_id) || empty($inspiration_id) ) {
+        if (! isset($inspiration_id) || empty($inspiration_id)) {
             error404("", base_url());
             exit;
         }
@@ -82,7 +87,7 @@ class InspirationController extends BaseController
 
         $data = $this->Inspiration->get($options);
 
-        if ( empty($data) ) {
+        if (empty($data)) {
             error404("", base_url());
             exit;
         }
@@ -91,16 +96,15 @@ class InspirationController extends BaseController
         $data['media'] = json_decode("[{$data['media']}]", true);
         $this->data['inspiration'] = $data;
         // pd($data);
-        load_alternate_views("inspirations/details", $this->data);
+        load_website_views("inspirations/details", $this->data);
     }
 
-    public function add() 
+    public function add()
     {
-        $this->active_session_required();
-        
-        if (!isset($this->userInfo['user_type']) ||
-            !in_array($this->userInfo['user_type'], [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER]) ||
-            (ROLE_OWNER !== (int)$this->userInfo['is_owner'] && (!isset($this->employeePermission['insp_add']) || (int)$this->employeePermission['insp_add'] == 0))) {
+        if (!isset($this->userInfo['user_type'])
+            || !in_array($this->userInfo['user_type'], [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER])
+            || (ROLE_OWNER !== (int)$this->userInfo['is_owner'] && (!isset($this->employeePermission['insp_add']) || (int)$this->employeePermission['insp_add'] == 0))
+        ) {
             error404("", base_url());
             exit;
         }
@@ -108,7 +112,7 @@ class InspirationController extends BaseController
         $this->form_validation->CI =& $this;
         $rules = $this->addInspirationValidation();
         $this->form_validation->set_rules($rules);
-        if ( $this->form_validation->run() ) {
+        if ($this->form_validation->run()) {
             $this->load->helper("input_data");
             $post = $this->input->post();
             $post = trim_input_parameters($post);
@@ -130,23 +134,22 @@ class InspirationController extends BaseController
         $this->data['js'] = 'inspiration-add';
         $this->data['custom_select'] = true;
         $this->data['image_video_uploader'] = true;
-        load_alternate_views("inspirations/add", $this->data);
+        load_website_views("inspirations/add", $this->data);
     }
     
-    public function edit($inspiration_id = '') 
+    public function edit($inspiration_id = '')
     {
-        $this->active_session_required();
-        
-        if (!isset($this->userInfo['user_type']) ||
-            !in_array($this->userInfo['user_type'], [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER]) ||
-            (ROLE_OWNER !== (int)$this->userInfo['is_owner'] && (!isset($this->employeePermission['insp_edit']) || (int)$this->employeePermission['insp_edit'] == 0))) {
+        if (!isset($this->userInfo['user_type'])
+            || !in_array($this->userInfo['user_type'], [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER])
+            || (ROLE_OWNER !== (int)$this->userInfo['is_owner'] && (!isset($this->employeePermission['insp_edit']) || (int)$this->employeePermission['insp_edit'] == 0))
+        ) {
             error404("", base_url());
             exit;
         }
 
         $inspiration_id = encryptDecrypt($inspiration_id, 'decrypt');
 
-        if ( ! isset($inspiration_id) || empty($inspiration_id) ) {
+        if (! isset($inspiration_id) || empty($inspiration_id)) {
             error404("", base_url());
             exit;
         }
@@ -158,7 +161,7 @@ class InspirationController extends BaseController
 
         $data = $this->Inspiration->get($options);
 
-        if ( empty($data) ) {
+        if (empty($data)) {
             error404("", base_url());
             exit;
         }
@@ -166,7 +169,7 @@ class InspirationController extends BaseController
         $data['products'] = json_decode("[{$data['products']}]", true);
         $data['media'] = json_decode("[{$data['media']}]", true);
 
-        if ( (int)$data['company_id'] !== (int)$this->userInfo['company_id'] ) {
+        if ((int)$data['company_id'] !== (int)$this->userInfo['company_id']) {
             error404("", base_url());
             exit;
         }
@@ -177,7 +180,7 @@ class InspirationController extends BaseController
         $rules = $this->addInspirationValidation();
         $this->form_validation->set_rules($rules);
 
-        if ( $this->form_validation->run() ) {
+        if ($this->form_validation->run()) {
             $this->load->helper("input_data");
             $post = $this->input->post();
             $post = trim_input_parameters($post);
@@ -200,10 +203,11 @@ class InspirationController extends BaseController
         $this->data['custom_select'] = true;
         $this->data['image_video_uploader'] = true;
 
-        load_alternate_views("inspirations/edit", $this->data);
+        load_website_views("inspirations/edit", $this->data);
     }
 
-    private function addInspirationValidation() {
+    private function addInspirationValidation()
+    {
         $rules = [
                 [
                     'field' => 'title',

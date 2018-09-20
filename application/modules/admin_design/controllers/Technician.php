@@ -1,9 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Technician extends MY_Controller {
+class Technician extends MY_Controller
+{
 
-    function __construct() {
+    function __construct() 
+    {
         parent::__construct();
         $this->load->helper(['url', 'custom_cookie', 'form', 'encrypt_openssl']);
         $this->load->model('Common_model');
@@ -26,7 +28,8 @@ class Technician extends MY_Controller {
      * @name index
      * @description This method is used to list all the customers.
      */
-    public function index() {
+    public function index() 
+    {
         $role_id = $this->admininfo['role_id'];
         /*
          * If logged user is sub admin check for his permission
@@ -80,7 +83,7 @@ class Technician extends MY_Controller {
         }
         $params['user_type'] = 2;   
         $userInfo = $this->User_Model->userlist($params);
-//        pr($userInfo);die;
+        //        pr($userInfo);die;
         /*
          * Export to Csv
          */
@@ -125,7 +128,8 @@ class Technician extends MY_Controller {
         load_views("technician/index", $this->data);
     }
 
-    public function detail() {
+    public function detail() 
+    {
 
         $get = $this->input->get();
         $userId = (isset($get['id']) && !empty($get['id'])) ? encryptDecrypt($get['id'], 'decrypt') : show_404();
@@ -143,7 +147,8 @@ class Technician extends MY_Controller {
         load_views("technician/user-detail", $this->data);
     }
 
-    public function exportUser($userData) {
+    public function exportUser($userData) 
+    {
 
         $fileName = 'userlist' . date('d-m-Y-g-i-h') . '.xls';
         // The function header by sending raw excel

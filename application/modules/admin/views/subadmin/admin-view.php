@@ -108,7 +108,7 @@ $messagePermission = isset($permission[8])?$permission[8]:array();
                                                                 </div>
                                                             </li>
                                                         </ul>
-                                                    </div>			
+                                                    </div>            
                                                     <div class="clear"></div>
                                                     <div class="custom-check main-check">
                                                         <input id="main-check2" name="merchant" disabled="true"  value="1" <?php echo (!empty($merchantPermission))?'checked':'' ?> type="checkbox">
@@ -145,7 +145,7 @@ $messagePermission = isset($permission[8])?$permission[8]:array();
                                                                 </div>
                                                             </li>
                                                         </ul>
-                                                    </div>			
+                                                    </div>            
                                                     <div class="clear"></div>
                                                     <div class="custom-check main-check">
                                                         <input id="main-check3" name="product" disabled="true"  value="1" <?php echo (!empty($productPermission))?'checked':'' ?> type="checkbox">
@@ -182,7 +182,7 @@ $messagePermission = isset($permission[8])?$permission[8]:array();
                                                                 </div>
                                                             </li>
                                                         </ul>
-                                                    </div>			
+                                                    </div>            
                                                     <div class="clear"></div>
                                                     <div class="custom-check main-check">
                                                         <input id="main-check4" name="template" disabled="true"  value="1" <?php echo (!empty($templatePermission))?'checked':'' ?> type="checkbox">
@@ -219,7 +219,7 @@ $messagePermission = isset($permission[8])?$permission[8]:array();
                                                                 </div>
                                                             </li>
                                                         </ul>
-                                                    </div>			
+                                                    </div>            
                                                     <div class="clear"></div>
                                                     <div class="custom-check main-check">
                                                         <input id="main-check5" name="content" disabled="true"  value="1" <?php echo (!empty($contentPermission))?'checked':'' ?> type="checkbox">
@@ -256,7 +256,7 @@ $messagePermission = isset($permission[8])?$permission[8]:array();
                                                                 </div>
                                                             </li>
                                                         </ul>
-                                                    </div>			
+                                                    </div>            
                                                     <div class="clear"></div>
                                                     <div class="custom-check main-check">
                                                         <input id="main-check6" name="version" disabled="true"  value="1" <?php echo (!empty($versionPermission))?'checked':'' ?> type="checkbox">
@@ -293,7 +293,7 @@ $messagePermission = isset($permission[8])?$permission[8]:array();
                                                                 </div>
                                                             </li>
                                                         </ul>
-                                                    </div>			
+                                                    </div>            
                                                     <div class="clear"></div>
                                                     <div class="custom-check main-check">
                                                         <input id="main-check7" name="noti" disabled="true"  value="1" <?php echo (!empty($notiPermission))?'checked':'' ?> type="checkbox">
@@ -330,7 +330,7 @@ $messagePermission = isset($permission[8])?$permission[8]:array();
                                                                 </div>
                                                             </li>
                                                         </ul>
-                                                    </div>			
+                                                    </div>            
                                                     <div class="clear"></div>
                                                     <div class="custom-check main-check">
                                                         <input id="main-check8" name="message" disabled="true"  value="1" <?php echo (!empty($messagePermission))?'checked':'' ?> type="checkbox">
@@ -367,9 +367,9 @@ $messagePermission = isset($permission[8])?$permission[8]:array();
                                                                 </div>
                                                             </li>
                                                         </ul>
-                                                    </div>			
+                                                    </div>            
                                                     <div class="clear"></div>
-                                                </div>			
+                                                </div>            
                                             </div>
                                         </div>
                                     </div>

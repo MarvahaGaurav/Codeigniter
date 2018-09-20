@@ -1,8 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Notification extends MY_Controller {
+class Notification extends MY_Controller
+{
 
-    function __construct() {
+    function __construct() 
+    {
         parent::__construct();
         $this->load->helper(['url', 'custom_cookie', 'encrypt_openssl']);
         $this->load->helper(array('form', 'url', 'date'));
@@ -22,14 +24,15 @@ class Notification extends MY_Controller {
         }
         $this->data = [];
         $this->data['admininfo'] = $this->admininfo;
-        if($this->admininfo['role_id'] == 2){
+        if($this->admininfo['role_id'] == 2) {
             $whereArr = ['where'=>['admin_id'=>$this->admininfo['admin_id']]];
             $access_detail = $this->Common_model->fetch_data('sub_admin', ['viewp', 'addp', 'editp', 'blockp', 'deletep', 'access_permission', 'admin_id', 'id'], $whereArr, false);
             $this->data['admin_access_detail'] = $access_detail;
         }
     }
 
-    public function index() {
+    public function index() 
+    {
         $role_id = $this->admininfo['role_id'];
         /*
          * If logged user is sub admin check for his permission
@@ -80,7 +83,8 @@ class Notification extends MY_Controller {
         load_views("notification/index", $this->data);
     }
 
-    public function add() {
+    public function add() 
+    {
 
         /*
          * If logged user is sub admin check for his permission
@@ -102,7 +106,7 @@ class Notification extends MY_Controller {
                 $this->load->library('commonfn');
                 try
                 {
-                    $postDataArr['image'] = $imageName=s3_image_uploader(ABS_PATH.$postDataArr['imgurl'],$postDataArr['imgurl']);
+                    $postDataArr['image'] = $imageName=s3_image_uploader(ABS_PATH.$postDataArr['imgurl'], $postDataArr['imgurl']);
                 } catch (Exception $e) {
                     $this->data['imageErr'] = $e->getMessage();
                     $this->data['imageErr'] = strip_tags($this->upload->display_errors());
@@ -117,7 +121,8 @@ class Notification extends MY_Controller {
         load_views_cropper("notification/add", $this->data);
     }
 
-    public function edit() {
+    public function edit() 
+    {
         /*
          * If logged user is sub admin check for his permission
          */
@@ -143,7 +148,7 @@ class Notification extends MY_Controller {
                 $this->load->library('commonfn');
                 try
                 {
-                    $postDataArr['image'] = $imageName=s3_image_uploader(ABS_PATH.$postDataArr['imgurl'],$postDataArr['imgurl']);
+                    $postDataArr['image'] = $imageName=s3_image_uploader(ABS_PATH.$postDataArr['imgurl'], $postDataArr['imgurl']);
                 } 
                 catch (Exception $e) {
                     $this->data['imageErr'] = $e->getMessage();
@@ -171,7 +176,8 @@ class Notification extends MY_Controller {
         }
     }
 
-    public function resendNotification() {
+    public function resendNotification() 
+    {
         $notiId = $this->input->get('notiToken');
         $notiId = encryptDecrypt($notiId, 'decrypt');
         $whereArr = [];
@@ -183,7 +189,8 @@ class Notification extends MY_Controller {
         $this->sendNotification($notiDetail, true);
     }
 
-    private function sendNotification($dataArr, $isResend = false) {
+    private function sendNotification($dataArr, $isResend = false) 
+    {
 
         $params = [];
         $params['platform'] = isset($dataArr['platform']) ? $dataArr['platform'] : "";
@@ -278,7 +285,8 @@ class Notification extends MY_Controller {
         }
     }
 
-    public function sendNotiViaCurl($chunkId) {
+    public function sendNotiViaCurl($chunkId) 
+    {
 
         $url = base_url() . 'admin/notify?chunkId=' . $chunkId;
         $header = array();

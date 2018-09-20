@@ -1,15 +1,18 @@
-<?php 
-defined("BASEPATH") OR exit("No direct script access allowed");
+<?php
+defined("BASEPATH") or exit("No direct script access allowed");
 /**
  * DD - Dump & Die
  * @param mixed $mixed data
- * @param bool $exit if it should exit default true 
+ * @param bool $exit if it should exit default true
  */
-if ( ! function_exists( "dd" ) ) {
-    function dd($mixed, $exit = true) {
+if (! function_exists("dd")) {
+    function dd($mixed, $exit = true)
+    {
+        echo "<pre>";
         var_dump($mixed);
-        if ( $exit ) {
-            exit; 
+        echo "<pre>";
+        if ($exit) {
+            exit;
         }
     }
 }
@@ -17,15 +20,16 @@ if ( ! function_exists( "dd" ) ) {
 /**
  * PD - Print & Die
  * @param mixed $mixed data
- * @param bool $exit if it should exit default true 
+ * @param bool $exit if it should exit default true
  */
-if ( ! function_exists( "pd" ) ) {
-    function pd($mixed, $exit = true) {
+if (! function_exists("pd")) {
+    function pd($mixed, $exit = true)
+    {
         echo "<pre>";
         print_r($mixed);
         echo "</pre>";
-        if ( $exit ) {
-            exit; 
+        if ($exit) {
+            exit;
         }
     }
 }

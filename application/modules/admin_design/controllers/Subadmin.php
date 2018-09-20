@@ -1,16 +1,19 @@
 <?php
 
-if (!defined('BASEPATH'))
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
+}
 
 /**
  * @author     Appinventiv
  * @date       19-04-2017
  * @controller Admin 
  */
-class Subadmin extends MY_Controller {
+class Subadmin extends MY_Controller
+{
 
-    public function __construct() {
+    public function __construct() 
+    {
 
         parent::__construct();
         $this->load->helper(['url', 'form']);
@@ -26,7 +29,8 @@ class Subadmin extends MY_Controller {
         $this->data['admininfo'] = $this->admininfo;
     }
 
-    public function add() {
+    public function add() 
+    {
 
         /*
          * Server Side validation
@@ -64,16 +68,16 @@ class Subadmin extends MY_Controller {
                     if (!empty($post['permission'])) {
                         foreach ($post['permission'] as $key => $value) {
                             switch ($key) {
-                                case 'user':
-                                    $perType = 1;
-                                    break;
-                                case 'version':
-                                    $perType = 2;
-                                    break;
-                                case 'notification':
-                                    $perType = 3;
-                                    break;
-                                default:
+                            case 'user':
+                                $perType = 1;
+                                break;
+                            case 'version':
+                                $perType = 2;
+                                break;
+                            case 'notification':
+                                $perType = 3;
+                                break;
+                            default:
                             }
 
                             $permArr = [];
@@ -118,7 +122,8 @@ class Subadmin extends MY_Controller {
         }
     }
 
-    function check_email_avalibility() {
+    function check_email_avalibility() 
+    {
         if (!$this->input->is_ajax_request()) {
             exit('No direct script access allowed');
         }
@@ -133,7 +138,8 @@ class Subadmin extends MY_Controller {
     }
 
     //fetch the subadmin details
-    public function index() {
+    public function index() 
+    {
         $this->data['admininfo'] = $this->admininfo;
         $get = $this->input->get();
         $get = is_array($get) ? $get : array();
@@ -173,7 +179,8 @@ class Subadmin extends MY_Controller {
     }
 
     //fetch particular user detail
-    public function view() {
+    public function view() 
+    {
         $getDataArr = $this->input->get();
         $admin_id = encryptDecrypt($getDataArr['id'], 'decrypt');
         if (empty($admin_id)) {
@@ -208,14 +215,16 @@ class Subadmin extends MY_Controller {
         load_views('/subadmin/admin-view', $this->data);
     }
 
-    public function deleterecords() {
+    public function deleterecords() 
+    {
         $get = $this->input->get();
         $userId = $get['userId'];
         $this->Subadmin_model->delete_data($userId);
         redirect('/subadmin');
     }
 
-    public function edit() {
+    public function edit() 
+    {
 
         $getData = $this->input->get();
         $post = $this->input->post();
@@ -244,16 +253,16 @@ class Subadmin extends MY_Controller {
             if (!empty($post['permission'])) {
                 foreach ($post['permission'] as $key => $value) {
                     switch ($key) {
-                        case 'user':
-                            $perType = 1;
-                            break;
-                        case 'version':
-                            $perType = 2;
-                            break;
-                        case 'notification':
-                            $perType = 3;
-                            break;
-                        default:
+                    case 'user':
+                        $perType = 1;
+                        break;
+                    case 'version':
+                        $perType = 2;
+                        break;
+                    case 'notification':
+                        $perType = 3;
+                        break;
+                    default:
                     }
 
                     $permArr = [];
@@ -322,7 +331,8 @@ class Subadmin extends MY_Controller {
     }
 
     //........change status of user to block or active
-    public function block() {
+    public function block() 
+    {
         if (!$this->input->is_ajax_request()) {
             exit('No direct script access allowed');
         }

@@ -263,9 +263,9 @@
                                 </select> -->
                             <input type="text" class='form-control' id="select-city" name="city_name" value="<?php echo set_value("city_name", '') ?>" <?php echo empty(set_value('cities'))?"disabled":"" ?>>
                             <input type="hidden" name="cities" id="city-id" value="<?php echo set_value('cities', '') ?>">
-                            <ul class="nolistdata" style="display:none;">
+                            <!-- <ul class="nolistdata" style="display:none;">
                                 <li>No cities found</li>
-                            </ul>
+                            </ul> -->
                             
                             <span class="sg-loader hidden"><img style="height:40px;" src="/public/images/preloader.gif" /></span>
                         </div>
@@ -313,7 +313,8 @@
             $(parent).on(events, source, function () {
                 
                 var $self = $(this),
-                        selfValue = $self.val();
+                    selfValue = $self.val(),
+                    $cityId = $('#city-id');
 
                 if ( selfValue.length > 0 ) {
                     $selectCity.prop("disabled", false);
@@ -337,7 +338,7 @@
                         if (response.success) {
                             $selectCity.val("");
                             $selectCity.prop("placeholder", "Please start typing your location...");
-                            var data = response.data
+                            var data = response.data;
                             data = data.map(function (row) {
                                 return {id: row.id, text: row.name};
                             });
@@ -416,7 +417,6 @@
         }
 
     </script>
-    <script src="public/cropper/cropper.js"></script>
     <script src="public/cropper/cropper.min.js"></script>
     <script src="public/cropper/main.js"></script>
     <script src="public/js/web/plugins/bootstrap-select.js"></script>
@@ -433,6 +433,13 @@
     </script>
 
     <style>
+        .autocomplete-suggestions {background-color: #FFF;border: 1px solid #999;overflow: auto;}
+        .autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; cursor:pointer; overflow: hidden; }
+        .autocomplete-selected { background: #F0F0F0; }
+        .autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+        .autocomplete-group { padding: 2px 5px; }
+        .autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+        .autocomplete-no-suggestion {padding: 2px 0px 0px 2px;}
         .myloader{
             width: 16%;
             position: absolute;
@@ -472,7 +479,7 @@
             margin: -40px;
         }
     </style>
-    <script src="<?php echo base_url("public/js/jquery.easy-autocomplete.min.js") ?>"></script>
+    <script src="<?php echo base_url("public/js/jquery.autocomplete.min.js") ?>"></script>
     <script>
         <?php if ( ! empty(set_value('cities', '')) ) :?>
         var cityOptions = {
@@ -483,43 +490,63 @@
         function setAutoComplete($element, options){
             options = options || {};
             var location = options.location || "en";
-			var autoCompleteOptions = {
-				url: function(search) {
-					return domain2 + "/xhttp/cities?param=" + location + "&query=" + search;
-				},
-				listLocation: "data",
-				getValue: function(data) {
-                    return data.name
-				},
-				ajaxSettings: {
-					dataType: "json",
-					success: function(response) {
-						if ( ! response.success ) {
-                            $("#city-id").val('');
-                            $("ul.nolistdata").show();                      
-						} else {
-                            $("ul.nolistdata").hide();
-                        }
-					}
-				},
-				list: {
-                    maxNumberOfElements: 8,
-					match: {
-						enabled: true
-					},
-					sort: {
-						enabled: true
-                    },
-                    onSelectItemEvent: function() {
-                        var value = $element.getSelectedItemData().id;
-                        $("#city-id").val(value);
-                    }
-				},
-				theme: "square",
-				requestDelay: 70,
-                placeholder: "Please start typing your city..."
-			};
-			$element.easyAutocomplete(autoCompleteOptions);
-		}
+            // var autoCompleteOptions = {
+            //     url: function(search) {
+            //         return domain2 + "/xhttp/cities?param=" + location + "&query=" + search;
+            //     },
+            //     listLocation: "data",
+            //     getValue: function(data) {
+            //         return data.name
+            //     },
+            //     ajaxSettings: {
+            //         dataType: "json",
+            //         success: function(data) {
+            //             if ( ! data.success ) {
+            //                 $("#city-id").val('');
+            //             } else {
+            //             }
+            //         }
+            //     },
+            //     list: {
+            //         maxNumberOfElements: 8,
+            //         match: {
+            //             enabled: true
+            //         },
+            //         sort: {
+            //             enabled: true
+            //         },
+            //         onSelectItemEvent: function() {
+            //             var value = $element.getSelectedItemData().id;
+            //             $("#city-id").val(value);
+            //         }
+            //     },
+            //     theme: "square",
+            //     requestDelay: 70,
+            //     placeholder: "Please start typing your city..."
+            // };
+            var autoCompleteOptions = {
+                serviceUrl: domain2 + "/xhttp/cities",
+                params: {
+                    param: location,
+                    query: $selectCity.val()
+                },
+                dataType: 'json',
+                showNoSuggestionNotice: true,
+                noSuggestionNotice: "<?php echo $this->lang->line('no_results_found') ?>",
+                onSelect: function (suggestion) {
+                    $("#city-id").val(suggestion.data)
+                },
+                transformResult: function (response) {
+                    // console.log(response);
+                   return ( {
+                        suggestions: response.data.map(function(data) {
+                            return {value: data.name, data: data.id}
+                        })
+                    })
+                }
+            };
+            // $element.easyAutocomplete(autoCompleteOptions);
+            $element.autocomplete(autoCompleteOptions)
+        }
     </script>
 </body>

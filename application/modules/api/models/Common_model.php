@@ -1,10 +1,12 @@
 <?php
 
-class Common_model extends CI_Model {
+class Common_model extends CI_Model
+{
 
     public $totalrows = array();
 
-    public function __construct() {
+    public function __construct() 
+    {
         $this->load->database();
         $this->load->library('session');
     }
@@ -12,13 +14,14 @@ class Common_model extends CI_Model {
     /**
      * Fetch data from any table based on different conditions
      *
-     * @access	public
-     * @param	string
-     * @param	string
-     * @param	array
-     * @return	bool
+     * @access public
+     * @param  string
+     * @param  string
+     * @param  array
+     * @return bool
      */
-    public function fetch_data($table, $fields = '*', $conditions = array(), $returnRow = false) {
+    public function fetch_data($table, $fields = '*', $conditions = array(), $returnRow = false) 
+    {
         //Preparing query
         $this->db->select($fields, false);
         $this->db->from($table);
@@ -28,10 +31,10 @@ class Common_model extends CI_Model {
             $this->condition_handler($conditions);
         }
         $query = $this->db->get();
-//        if ($table == 'city_list') {
-//           echo $this->db->last_query();
-//            die;
-//        }
+        //        if ($table == 'city_list') {
+        //           echo $this->db->last_query();
+        //            die;
+        //        }
         //echo $this->db->last_query();die;
         $this->totalrows = $this->db->query('SELECT FOUND_ROWS() count;')->row()->count;
         return $returnRow ? $query->row_array() : $query->result_array();
@@ -40,34 +43,36 @@ class Common_model extends CI_Model {
     /**
      * Insert data in DB
      *
-     * @access	public
-     * @param	string
-     * @param	array
-     * @param	string
-     * @return	string
+     * @access public
+     * @param  string
+     * @param  array
+     * @param  string
+     * @return string
      */
-    public function insert_single($table, $data = array()) {
+    public function insert_single($table, $data = array()) 
+    {
         //Check if any data to insert
         if (count($data) < 1) {
             return false;
         }
 
         $this->db->insert($table, $data);
-//        echo $this->db->last_query();die;
+        //        echo $this->db->last_query();die;
         return $this->db->insert_id();
     }
 
     /**
      * Insert batch data
      *
-     * @access	public
-     * @param	string
-     * @param	array
-     * @param	array
-     * @param	bool
-     * @return	bool
+     * @access public
+     * @param  string
+     * @param  array
+     * @param  array
+     * @param  bool
+     * @return bool
      */
-    public function insert_batch($table, $defaultArray, $dynamicArray = array(), $updatedTime = false) {
+    public function insert_batch($table, $defaultArray, $dynamicArray = array(), $updatedTime = false) 
+    {
         //Check if default array has values
         if (count($dynamicArray) < 1) {
             return false;
@@ -88,13 +93,14 @@ class Common_model extends CI_Model {
     /**
      * Delete data from DB
      *
-     * @access	public
-     * @param	string
-     * @param	array
-     * @param	string
-     * @return	string
+     * @access public
+     * @param  string
+     * @param  array
+     * @param  string
+     * @return string
      */
-    public function delete_data($table, $conditions = array()) {
+    public function delete_data($table, $conditions = array()) 
+    {
         //If there are conditions
         if (count($conditions) > 0) {
             $this->condition_handler($conditions);
@@ -106,11 +112,12 @@ class Common_model extends CI_Model {
     /**
      * Handle different conditions of query
      *
-     * @access	public
-     * @param	array
-     * @return	bool
+     * @access public
+     * @param  array
+     * @return bool
      */
-    private function condition_handler($conditions) {
+    private function condition_handler($conditions) 
+    {
         //Custom Where
         if (array_key_exists('customWhere', $conditions)) {
             $this->db->where($conditions['customWhere']);
@@ -194,12 +201,13 @@ class Common_model extends CI_Model {
     /**
      * Update Batch
      *
-     * @access	public
-     * @param	string
-     * @param	array
-     * @return	boolean
+     * @access public
+     * @param  string
+     * @param  array
+     * @return boolean
      */
-    public function update_batch_data($table, $defaultArray, $dynamicArray = array(), $key) {
+    public function update_batch_data($table, $defaultArray, $dynamicArray = array(), $key) 
+    {
         //Check if any data
         if (count($dynamicArray) < 1) {
             return false;
@@ -215,23 +223,25 @@ class Common_model extends CI_Model {
     /**
      * Update details in DB
      *
-     * @access	public
-     * @param	string
-     * @param	array
-     * @param	array
-     * @return	string
+     * @access public
+     * @param  string
+     * @param  array
+     * @param  array
+     * @return string
      */
-    public function update_single($table, $updates, $conditions = array()) {
+    public function update_single($table, $updates, $conditions = array()) 
+    {
         //If there are conditions
         if (count($conditions) > 0) {
             $this->condition_handler($conditions);
         }
         $this->db->update($table, $updates);
-//        echo $this->db->last_query();die;
+        //        echo $this->db->last_query();die;
         return $this->db->affected_rows();
     }
 
-    public function updateTableData($data, $tableName, $where) {
+    public function updateTableData($data, $tableName, $where) 
+    {
         $this->db->set($data);
         foreach ($where as $key => $value) {
             $this->db->where($key, $value);
@@ -246,11 +256,12 @@ class Common_model extends CI_Model {
     /**
      * Count all records
      *
-     * @access	public
-     * @param	string
-     * @return	array
+     * @access public
+     * @param  string
+     * @return array
      */
-    public function fetch_count($table, $conditions = array()) {
+    public function fetch_count($table, $conditions = array()) 
+    {
         $this->db->from($table);
         //If there are conditions
         if (count($conditions) > 0) {
@@ -262,28 +273,29 @@ class Common_model extends CI_Model {
     /**
      * For sending mail
      *
-     * @access	public
-     * @param	string
-     * @param	string
-     * @param	string
-     * @param	boolean
-     * @return	array
+     * @access public
+     * @param  string
+     * @param  string
+     * @param  string
+     * @param  boolean
+     * @return array
      */
-//    public function sendmail($email, $subject, $message, $single = true) {
-//        if ($single == true) {
-//            $this->load->library('email');
-//        }
-//
-//        $this->config->load('email');
-//        $this->email->from($this->config->item('from'), $this->config->item('from_name'));
-//        $this->email->reply_to($this->config->item('repy_to'), $this->config->item('reply_to_name'));
-//        $this->email->to($email);
-//        $this->email->subject($subject);
-//        $this->email->message($message);
-//        return $this->email->send() ? true : false;
-//    }
+    //    public function sendmail($email, $subject, $message, $single = true) {
+    //        if ($single == true) {
+    //            $this->load->library('email');
+    //        }
+    //
+    //        $this->config->load('email');
+    //        $this->email->from($this->config->item('from'), $this->config->item('from_name'));
+    //        $this->email->reply_to($this->config->item('repy_to'), $this->config->item('reply_to_name'));
+    //        $this->email->to($email);
+    //        $this->email->subject($subject);
+    //        $this->email->message($message);
+    //        return $this->email->send() ? true : false;
+    //    }
 
-    public function sendmailnew($email, $subject, $message = false, $single = true, $param = false, $templet = false) {
+    public function sendmailnew($email, $subject, $message = false, $single = true, $param = false, $templet = false) 
+    {
         if ($single == true) {
             $this->load->library('email');
         }
@@ -294,7 +306,7 @@ class Common_model extends CI_Model {
         $this->email->to($email);
         $this->email->subject($subject);
         if ($param && $templet) {
-            $body = $this->load->view('mail/' . $templet, $param, TRUE);
+            $body = $this->load->view('mail/' . $templet, $param, true);
             $this->email->message($body);
         } else {
             $this->email->message($message);
@@ -305,14 +317,15 @@ class Common_model extends CI_Model {
     /**
      * For sending mail
      *
-     * @access	public
-     * @param	string
-     * @param	string
-     * @param	string
-     * @param	boolean
-     * @return	array
+     * @access public
+     * @param  string
+     * @param  string
+     * @param  string
+     * @param  boolean
+     * @return array
      */
-    public function sendmail($email, $subject, $message = false, $single = true, $param = false, $templet = false) {
+    public function sendmail($email, $subject, $message = false, $single = true, $param = false, $templet = false) 
+    {
 
         if ($single == true) {
             $this->load->library('email');
@@ -323,7 +336,7 @@ class Common_model extends CI_Model {
         $this->email->reply_to($this->config->item('Reply-To'), $this->config->item('reply_to_name'));
 
         $email1 = $this->email->to($email);
-//       echo "<pre>"; print_r($email1);die;
+        //       echo "<pre>"; print_r($email1);die;
         $this->email->subject($subject);
         if ($templet) {
 
@@ -335,7 +348,8 @@ class Common_model extends CI_Model {
         return $this->email->send() ? true : false;
     }
 
-    function mcrypt_data($input) {
+    function mcrypt_data($input) 
+    {
         /* Return mcrypted data */
         $key1 = "ShareSpark";
         $key2 = "Org";
@@ -345,7 +359,8 @@ class Common_model extends CI_Model {
         return $encrypted;
     }
 
-    function demcrypt_data($input) {
+    function demcrypt_data($input) 
+    {
         /* Return De-mcrypted data */
         $key1 = "ShareSpark";
         $key2 = "Org";
@@ -354,13 +369,15 @@ class Common_model extends CI_Model {
         return $decrypted;
     }
 
-    function bcrypt_data($input) {
+    function bcrypt_data($input) 
+    {
         $salt = substr(str_replace('+', '.', base64_encode(sha1(microtime(true), true))), 0, 22);
         $hash = crypt($input, '$2a$12$' . $salt);
         return $hash;
     }
 
-    public function simplify_array($array, $key) {
+    public function simplify_array($array, $key) 
+    {
         $returnArray = array();
         foreach ($array as $val) {
             $returnArray[] = $val[$key];
@@ -369,13 +386,15 @@ class Common_model extends CI_Model {
     }
 
     //Validate date
-    function validateDate($date, $format = 'Y-m-d H:i:s') {
+    function validateDate($date, $format = 'Y-m-d H:i:s') 
+    {
         $d = DateTime::createFromFormat($format, $date);
         return $d && $d->format($format) == $date;
     }
 
     // for layout
-    function load_views($customView, $data = array()) {
+    function load_views($customView, $data = array()) 
+    {
         // $this->load->view('admin/templates/left_panel', $data);
         $this->load->view('admin/templates/header', $data);
         $this->load->view($customView, $data);
@@ -385,9 +404,10 @@ class Common_model extends CI_Model {
     /**
      * Handle Pagination
      *
-     * @access	public
+     * @access public
      */
-    public function handlePagination($totalRows) {
+    public function handlePagination($totalRows) 
+    {
 
         //Load Pagination Library
         $this->load->config('pagination');
@@ -433,9 +453,10 @@ class Common_model extends CI_Model {
     /**
      * Logout User
      *
-     * @access	public
+     * @access public
      */
-    public function logout1() {
+    public function logout1() 
+    {
         $array_items = array('adminUserId', 'adminUserName', 'adminUserEmail');
         $this->session->unset_userdata($array_items);
         // $this->session->unset($_SESSION['user_id']);
@@ -450,7 +471,8 @@ class Common_model extends CI_Model {
       return $a = mt_rand(100000, 999999);
       } */
 
-    public function sendSMS($toArray, $text, $values = array()) {
+    public function sendSMS($toArray, $text, $values = array()) 
+    {
 
         /* Send SMS using PHP */
 
@@ -482,13 +504,15 @@ class Common_model extends CI_Model {
 
         // init the resource
         $ch = curl_init();
-        curl_setopt_array($ch, array(
+        curl_setopt_array(
+            $ch, array(
             CURLOPT_URL => $url,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_POST => true,
             CURLOPT_POSTFIELDS => $postData
                 //,CURLOPT_FOLLOWLOCATION => true
-        ));
+            )
+        );
 
 
         //Ignore SSL certificate verification
@@ -509,7 +533,8 @@ class Common_model extends CI_Model {
         echo $output;
     }
 
-    public function generateRandomString($length = 30) {
+    public function generateRandomString($length = 30) 
+    {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
@@ -519,7 +544,8 @@ class Common_model extends CI_Model {
         return $randomString;
     }
 
-    function sendIphonePushMessage($deviceToken, $payload) {
+    function sendIphonePushMessage($deviceToken, $payload) 
+    {
 
         $date = @strtotime(date('Y-m-d'));
         $data['aps'] = $payload;
@@ -537,8 +563,9 @@ class Common_model extends CI_Model {
         //$fp = stream_socket_client( $apnsHost, $err, $errstr, 60, STREAM_CLIENT_CONNECT|STREAM_CLIENT_PERSISTENT, $ctx);
         $fp = stream_socket_client('ssl://' . $apnsHost . ':' . $apnsPort, $error, $errorString, 60, STREAM_CLIENT_CONNECT | STREAM_CLIENT_PERSISTENT, $ctx);
         //var_dump($fp); die;
-        if (!$fp)
+        if (!$fp) {
             return false;
+        }
 
 
         $sec_payload = json_encode($data);
@@ -556,7 +583,8 @@ class Common_model extends CI_Model {
         fclose($fp);
     }
 
-    public function andriodPush($deviceToken, $payload) {
+    public function andriodPush($deviceToken, $payload) 
+    {
 
         ini_set('display_errors', '1');
         $registrationIDs = array($deviceToken);
@@ -588,7 +616,8 @@ class Common_model extends CI_Model {
         return $result;
     }
 
-    public function checkParameters($arrdata) {
+    public function checkParameters($arrdata) 
+    {
         foreach ($arrdata as $key => $ar) {
             if ($ar[$key] == '') {
 
@@ -598,11 +627,13 @@ class Common_model extends CI_Model {
     }
 
     //to validate email
-    public function validate_email($e) {
+    public function validate_email($e) 
+    {
         return (bool) preg_match("`^[a-z0-9!#$%&'*+\/=?^_\`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_\`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$`i", trim($e));
     }
 
-    public function encrypt($text, $salt, $isBaseEncode = true) {
+    public function encrypt($text, $salt, $isBaseEncode = true) 
+    {
         if ($isBaseEncode) {
             return trim(base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $salt, $text, MCRYPT_MODE_ECB, mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB), MCRYPT_RAND))));
         } else {
@@ -610,7 +641,8 @@ class Common_model extends CI_Model {
         }
     }
 
-    public function sendMailToUser($email, $message, $subject = 'No Subject', $from = FROM, $replyTo = NO_REPLY) {
+    public function sendMailToUser($email, $message, $subject = 'No Subject', $from = FROM, $replyTo = NO_REPLY) 
+    {
         $extraKey = '-f' . $replyTo;
 
         $headers = 'MIME-Version: 1.0' . "\r\n";
@@ -655,10 +687,11 @@ class Common_model extends CI_Model {
      * @data            18-11-2016
      * @return          boolean
      */
-    public function getUserInfoByTable($table, $Id, $idColumn) {
+    public function getUserInfoByTable($table, $Id, $idColumn) 
+    {
         $this->db->select('t.userId,t.fullName,t.email,u.deviceType,u.deviceToken,u.notificationSetting')
-                ->from($table . ' as t')
-                ->join('user as u', 'u.userId = t.userId', 'LEFT');
+            ->from($table . ' as t')
+            ->join('user as u', 'u.userId = t.userId', 'LEFT');
 
 
         if ($Id) {
@@ -680,23 +713,24 @@ class Common_model extends CI_Model {
      * @param string $where
      * @return arrray
      */
-    public function fetch_using_join($select, $from, $join, $where, $asArray = NULL, $offset = NULL, $orderBy = NULL) {
+    public function fetch_using_join($select, $from, $join, $where, $asArray = null, $offset = null, $orderBy = null) 
+    {
 
-        $this->db->select($select, FALSE);
+        $this->db->select($select, false);
         $this->db->from($from);
         for ($i = 0; $i < count($join); $i++) {
             $this->db->join($join[$i]["table"], $join[$i]["condition"], $join[$i]["type"]);
         }
         $this->db->where($where);
-        if (isset($orderBy['order']) && $orderBy !== NULL) {
+        if (isset($orderBy['order']) && $orderBy !== null) {
             $this->db->order_by($orderBy["order"], $orderBy["sort"]);
         }
 
-        if ($offset !== NULL) {
+        if ($offset !== null) {
             $this->db->limit(PAGINATION_LIMIT, $offset);
         }
         $query = $this->db->get();
-        return ($asArray !== NULL) ? $query->row() : $query->result_array();
+        return ($asArray !== null) ? $query->row() : $query->result_array();
     }
 
     /**
@@ -705,9 +739,10 @@ class Common_model extends CI_Model {
      * @description  Performs raw query. Optionally gives in array or object format
      * @return array/object
      */
-    public function rawquery($data, $resultArray = NULL) {
+    public function rawquery($data, $resultArray = null) 
+    {
         $query = $this->db->query($data);
-        return ($resultArray !== NULL) ? $query->result_array() : $query->row();
+        return ($resultArray !== null) ? $query->result_array() : $query->row();
     }
 
     /**
@@ -718,7 +753,8 @@ class Common_model extends CI_Model {
      * @param type $foldername
      * @return boolean
      */
-    public function uploadfile($filename = '', $filearr, $restype = 'name', $foldername = '', $allowedType = NULL) {
+    public function uploadfile($filename = '', $filearr, $restype = 'name', $foldername = '', $allowedType = null) 
+    {
 
         if (!is_dir(COMMON_UPLOAD_PATH . '/' . $foldername)) {
             mkdir(COMMON_UPLOAD_PATH . '/' . $foldername);
@@ -756,7 +792,8 @@ class Common_model extends CI_Model {
      * @param type $foldername
      * @return string
      */
-    public function createvideothumb($vidurl, $restype = 'name', $foldername) {
+    public function createvideothumb($vidurl, $restype = 'name', $foldername) 
+    {
 
         $newthumbnail = time() . '_video_thumbnail.jpg';
         $thumbnail = COMMON_UPLOAD_PATH . $foldername . '/' . $newthumbnail;
@@ -778,7 +815,8 @@ class Common_model extends CI_Model {
      * @param type $foldername
      * @return string
      */
-    public function createImagethumb($filename, $restype = 'name', $foldername) {
+    public function createImagethumb($filename, $restype = 'name', $foldername) 
+    {
 
         $newthumbnail = date('Y/m/d') . time() . '_image_thumbnail.jpg';
         $thumbnail = COMMON_UPLOAD_PATH . $foldername . '/' . $newthumbnail;
@@ -787,8 +825,8 @@ class Common_model extends CI_Model {
             'image_library' => 'gd2',
             'source_image' => COMMON_UPLOAD_PATH . $foldername . '/' . $filename,
             'new_image' => $thumbnail,
-            'maintain_ratio' => False,
-            'create_thumb' => False,
+            'maintain_ratio' => false,
+            'create_thumb' => false,
             'width' => 100,
             'height' => 100
         );
@@ -806,15 +844,17 @@ class Common_model extends CI_Model {
      * @name  insertAll
      * @description function for insert_batch
      * @param string $table
-     * @param array $data
+     * @param array  $data
      * @return boolean
      */
-    public function insertAll($table, $data) {
+    public function insertAll($table, $data) 
+    {
 
         return $this->db->insert_batch($table, $data);
     }
 
-    public function sendFCMNotification($devices, $message) {
+    public function sendFCMNotification($devices, $message) 
+    {
         $url = 'https://fcm.googleapis.com/fcm/send';
         $fields = array(
             'registration_ids' => $devices,
@@ -840,7 +880,7 @@ class Common_model extends CI_Model {
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         //finally executing the curl request
         $result = curl_exec($ch);
-        if ($result === FALSE) {
+        if ($result === false) {
             die('Curl failed: ' . curl_error($ch));
         }
         //Now close the connection
@@ -856,7 +896,8 @@ class Common_model extends CI_Model {
      * @param type $to
      * @param type $body
      */
-    public function sendsmsbytwillio($To, $message) {
+    public function sendsmsbytwillio($To, $message) 
+    {
         $To = $To;
         $from = "+12016764982
 ";
@@ -878,7 +919,8 @@ class Common_model extends CI_Model {
      * @return array ["error"=> true|false, "message"=> error_message|"data" => image_name]
      */
 
-    public function uploadImage($files, $fieldName, $uploadPath, $fileSize = 2097152, $validImage = ["image/jpg", "image/jpeg", "image/png"], $rename = true) {
+    public function uploadImage($files, $fieldName, $uploadPath, $fileSize = 2097152, $validImage = ["image/jpg", "image/jpeg", "image/png"], $rename = true) 
+    {
 
         $image = getimagesize($files[$fieldName]["tmp_name"]);
 
@@ -920,7 +962,8 @@ class Common_model extends CI_Model {
         }
     }
 
-    public function uploadImagefile($filename = '', $filearr, $restype = 'name', $foldername = '', $uploadPath = NULL, $allowedType = NULL) {
+    public function uploadImagefile($filename = '', $filearr, $restype = 'name', $foldername = '', $uploadPath = null, $allowedType = null) 
+    {
 
         if (!is_dir($uploadPath . '/' . $foldername)) {
             mkdir($uploadPath . '/' . $foldername);
@@ -954,12 +997,13 @@ class Common_model extends CI_Model {
         }
     }
 
-    public function removeSpace($str) {
+    public function removeSpace($str) 
+    {
 
         return str_replace(' ', '', $str);
     }
 
-// check Age for user
+    // check Age for user
     /*
      * Checks for valid date and age
      * 
@@ -972,7 +1016,8 @@ class Common_model extends CI_Model {
      *  
      * @return array An array with "error" status and relavent message
      */
-    public function checkAge($day, $month, $year, $requiredAge = 18) {
+    public function checkAge($day, $month, $year, $requiredAge = 18) 
+    {
         $returnArray = [];
         if (checkdate($month, $day, $year)) {
             $age = ( ( ( (time() - strtotime("{$year}-{$month}-{$day}"))/* timestamp */ / 365 )/* 365 */ / 24 )/* 24 */ / 60 )/* 60 */ / 60;
@@ -1009,7 +1054,8 @@ class Common_model extends CI_Model {
      * @returns bool|int|string Returns TRUE|Last Insert Id on successful insertion, FALSE otherwise. 
      */
 
-    public function insertTableData($data, $tableName, $returnLastInsertId = false) {
+    public function insertTableData($data, $tableName, $returnLastInsertId = false) 
+    {
         if ($this->db->set($data)->insert($tableName)) {
 
             if ($this->db->affected_rows()) {
@@ -1028,7 +1074,8 @@ class Common_model extends CI_Model {
 
     /* notification table insert data */
 
-    public function notificationTable($notificationData) {
+    public function notificationTable($notificationData) 
+    {
         try {
             $id = $this->insertTableData($notificationData, "user_notification", true);
             return $id;
@@ -1039,7 +1086,8 @@ class Common_model extends CI_Model {
 
     /* push notification coomon function */
 
-    public function sendPushToiphonesp($device_detail_ios, $notificationData, $userdetail) {
+    public function sendPushToiphonesp($device_detail_ios, $notificationData, $userdetail) 
+    {
 
         $this->load->config("notification_message");
 
@@ -1066,7 +1114,8 @@ class Common_model extends CI_Model {
         }
     }
 
-    public function sendPushToandroidsp($device_detail_android, $notificationData, $userdetail) {
+    public function sendPushToandroidsp($device_detail_android, $notificationData, $userdetail) 
+    {
 
         $this->load->config("notification_message");
         $notificationMessages = $this->config->item("notification_messages");
@@ -1092,7 +1141,8 @@ class Common_model extends CI_Model {
         }
     }
 
-    public function s3_uplode($filename, $temp_name) {
+    public function s3_uplode($filename, $temp_name) 
+    {
         $name = explode('.', $filename);
         $ext = array_pop($name);
         $name = 'Bonapp-' . hash('sha1', shell_exec("date +%s%N")) . '.' . $ext;
@@ -1108,9 +1158,11 @@ class Common_model extends CI_Model {
 
     /**
      * Generates unique token 
+     *
      * @return array
      */
-    public function generateRandomTokenPair() {
+    public function generateRandomTokenPair() 
+    {
         $uniqueToken = uniqid("", true);
         $uniqueToken = hash("sha1", $uniqueToken);
 
@@ -1122,7 +1174,8 @@ class Common_model extends CI_Model {
         return $tokenPair;
     }
 
-    public function sendNotification($params) {
+    public function sendNotification($params) 
+    {
         $this->db->select('first_name,u.user_id,s.device_token,s.platform');
         $this->db->from('ai_user as u');
         $this->db->join('ai_session as s', 'u.user_id=s.user_id', 'left');
@@ -1133,20 +1186,21 @@ class Common_model extends CI_Model {
         if (!empty($params['gender'])) {
             $this->db->where('u.gender', $params['gender']);
         }
-//        if (!empty($params['regDate'])) {
-//            $regDate = explode('-', $params['regDate']);
-//            $regStartDate = date('Y-m-d', strtotime(trim($regDate[0])));
-//            $regEndDate = date('Y-m-d', strtotime(trim($regDate[1])));
-//            $this->db->where("DATE(registered_date) >= '" . $regStartDate . "' AND DATE(registered_date) <= '" . $regEndDate . "' ");
-//        }
+        //        if (!empty($params['regDate'])) {
+        //            $regDate = explode('-', $params['regDate']);
+        //            $regStartDate = date('Y-m-d', strtotime(trim($regDate[0])));
+        //            $regEndDate = date('Y-m-d', strtotime(trim($regDate[1])));
+        //            $this->db->where("DATE(registered_date) >= '" . $regStartDate . "' AND DATE(registered_date) <= '" . $regEndDate . "' ");
+        //        }
         $this->db->where('s.login_status = 1');
         $query = $this->db->get();
-//        echo $this->db->last_query();
-//        die;
+        //        echo $this->db->last_query();
+        //        die;
         return $query->result_array();
     }
 
-    public function getRequest($params) {
+    public function getRequest($params) 
+    {
 
         $this->db->select('SQL_CALC_FOUND_ROWS CONCAT(first_name," ",last_name) as name,u.user_id,IF(f.status IS NULL,"",f.status) as status', false);
         $this->db->from('ai_friend_request as f');
@@ -1172,7 +1226,8 @@ class Common_model extends CI_Model {
         return $respArr;
     }
 
-    public function getUserList($params) {
+    public function getUserList($params) 
+    {
         $userlist_type = isset($params['userlist_type']) ? $params['userlist_type'] : 1;
         if ($userlist_type == 1) {
             $sql = 'SQL_CALC_FOUND_ROWS CONCAT(first_name," ",last_name) as name,u.user_id,IF(f.status IS NULL,"",f.status) as status';
@@ -1196,15 +1251,16 @@ class Common_model extends CI_Model {
         }
         $this->db->limit($params['limit'], $params['offset']);
         $query = $this->db->get();
-//        echo $this->db->last_query();die;
+        //        echo $this->db->last_query();die;
         $respArr = [];
         $respArr['result'] = $query->result_array();
         $respArr['count'] = $this->db->query('SELECT FOUND_ROWS() count;')->row()->count;
         return $respArr;
     }
 
-    public function getCurrentUserInfoWithAddress($field, $where) {
-        $this->db->select($field, FALSE);
+    public function getCurrentUserInfoWithAddress($field, $where) 
+    {
+        $this->db->select($field, false);
         $this->db->from('ai_session as a');
         $this->db->join('ai_user as u', 'u.user_id=a.user_id', 'LEFT');
         $this->db->join('country_list as cl', 'cl.country_code1=u.country_id', 'LEFT');
@@ -1215,7 +1271,8 @@ class Common_model extends CI_Model {
         return $query->row_array();
     }
 
-    public function getUserInfoWithAddress($accessToken, $field = ['u.user_id']) {
+    public function getUserInfoWithAddress($accessToken, $field = ['u.user_id']) 
+    {
         $respArr = [];
         $accessTokenArr = explode("||", $accessToken);
         if (count($accessTokenArr) != 2) {
@@ -1232,7 +1289,8 @@ class Common_model extends CI_Model {
         return $respArr;
     }
 
-    public function getUserInfo($accessToken, $field = ['u.user_id']) {
+    public function getUserInfo($accessToken, $field = ['u.user_id']) 
+    {
         $respArr = [];
         $accessTokenArr = explode("||", $accessToken);
         if (count($accessTokenArr) != 2) {
@@ -1249,8 +1307,9 @@ class Common_model extends CI_Model {
         return $respArr;
     }
 
-    public function getCurrentUserInfo($field, $where) {
-        $this->db->select($field, FALSE);
+    public function getCurrentUserInfo($field, $where) 
+    {
+        $this->db->select($field, false);
         $this->db->from('ai_session as a');
         $this->db->join('ai_user as u', 'u.user_id=a.user_id', 'LEFT');
         $this->db->where($where);
@@ -1259,7 +1318,8 @@ class Common_model extends CI_Model {
         return $query->row_array();
     }
 
-    public function EemployeeRequestsbyUser($fields = 'erm.*,u.*', $userid, $companyid = false, $reueststatus = 0, $offset) {
+    public function EemployeeRequestsbyUser($fields = 'erm.*,u.*', $userid, $companyid = false, $reueststatus = 0, $offset) 
+    {
         $this->db->select($fields, false);
         $this->db->from('employee_request_master as erm');
         $this->db->join('ai_user as u', 'u.user_id=erm.requested_by', 'left');
@@ -1279,7 +1339,8 @@ class Common_model extends CI_Model {
     }
     
 
-    public function getMyEmployeesList($fields = 'erm.*,u.*', $userid, $companyid = false, $offset=0) {
+    public function getMyEmployeesList($fields = 'erm.*,u.*', $userid, $companyid = false, $offset=0) 
+    {
         $this->db->select($fields);
         $this->db->from('ai_user as u');
         $this->db->join('employee_request_master as erm', 'erm.requested_by=u.user_id', 'left');
@@ -1288,7 +1349,7 @@ class Common_model extends CI_Model {
         $this->db->where('erm.status!=', 0);
         $this->db->where('erm.status!=', 2);
         $this->db->limit(RECORDS_PER_PAGE);
-        if ( ! empty($offset) ) {
+        if (! empty($offset) ) {
             $this->db->offset($offset);
         }
 
@@ -1303,7 +1364,8 @@ class Common_model extends CI_Model {
         return $result;
     }
 
-    public function Randomstring($length = 6) {
+    public function Randomstring($length = 6) 
+    {
         $characters = '0123456789';
         $charactersLength = strlen($characters);
         $randomString = '';

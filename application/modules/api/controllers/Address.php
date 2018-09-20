@@ -3,10 +3,11 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 require APPPATH . '/libraries/REST_Controller.php';
 
-class Address extends REST_Controller 
+class Address extends REST_Controller
 {
 
-    function __construct() {
+    function __construct() 
+    {
         parent::__construct();
         $this->load->model('Common_model');
     }
@@ -18,25 +19,26 @@ class Address extends REST_Controller
      *   description="Get country,state and city list",
      *   operationId="address_get",
      *   produces={"application/json"},
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="country_code",
      *     in="query",
      *     description="hit with country code to get list of state belongs to it",
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     * @SWG\Parameter(
      *     name="state_code",
      *     in="query",
      *     description="hit it with country code to get list of city belongs to it",
      *     type="string"
      *   ),
-     *   @SWG\Response(response=200, description="Success"),
-     *   @SWG\Response(response=201, description="Please try again"),       
-     *   @SWG\Response(response=206, description="Unauthorized request"),     
-     *   @SWG\Response(response=207, description="Header is missing"),             
+     * @SWG\Response(response=200, description="Success"),
+     * @SWG\Response(response=201, description="Please try again"),       
+     * @SWG\Response(response=206, description="Unauthorized request"),     
+     * @SWG\Response(response=207, description="Header is missing"),             
      * )
      */
-    public function index_get() {
+    public function index_get() 
+    {
         $language_code = $this->langcode_validate();
         $getDataArr = $this->input->get();
         /*
@@ -89,7 +91,8 @@ class Address extends REST_Controller
         }
     }
     
-    public function versionupdate_post() {
+    public function versionupdate_post() 
+    {
 
         $postDataArr = $this->post();
         $config = [];
@@ -132,26 +135,30 @@ class Address extends REST_Controller
         $language_code = trim($language_code);
         $valid_language_codes = ["en","da","nb","sv","fi","fr","nl","de"];
 
-        if ( empty($language_code) ) {
-            $this->response([
+        if (empty($language_code) ) {
+            $this->response(
+                [
                 'code' => HTTP_UNPROCESSABLE_ENTITY,
                 'api_code_result' => 'UNPROCESSABLE_ENTITY',
                 'msg' => $this->lang->line('header_missing'),
                 'extra_info' => [
                     "missing_parameter" => "language_code"
                 ]
-            ]);
+                ]
+            );
         }
 
-        if ( ! in_array($language_code, $valid_language_codes) ) {
-            $this->response([
+        if (! in_array($language_code, $valid_language_codes) ) {
+            $this->response(
+                [
                 'code' => HTTP_UNPROCESSABLE_ENTITY,
                 'api_code_result' => 'UNPROCESSABLE_ENTITY',
                 'msg' => $this->lang->line('invalid_header'),
                 'extra_info' => [
                     "missing_parameter" => $this->lang->line('invalid_language_code')
                 ]
-            ]);
+                ]
+            );
         }
 
         $language_map = [

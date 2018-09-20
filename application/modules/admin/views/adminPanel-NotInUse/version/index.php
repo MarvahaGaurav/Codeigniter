@@ -74,7 +74,7 @@
 
             </thead>
             <tbody id="table_tr">
-              <?php if(isset($versions['result']) && count($versions['result'])>0):
+                <?php if(isset($versions['result']) && count($versions['result'])>0) :
 
                     foreach($versions['result'] as $key =>$value):
 
@@ -84,7 +84,9 @@
                     <td><?php echo ++$key; ?></td>
                     <td><?php echo $value['version_name']; ?></td>
                     <td><?php echo $value['versiob_title'];?></td>
-                    <td><?php if (!empty($value['version_desc'])) {echo substr($value['version_desc'],0,155); if(strlen($value['version_desc']) > 154){echo '...';} } ?></td>
+                    <td><?php if (!empty($value['version_desc'])) {echo substr($value['version_desc'], 0, 155); if(strlen($value['version_desc']) > 154) {echo '...';
+                   } 
+                   } ?></td>
                     <td><?php echo ($value['platform']==ANDROID)?"Andorid":"Iphone"; ?></td>
                     <td><?php echo ($value['update_type']==NORMAL)?"Normal":(($value['update_type']==SKIPPABLE)?"Skippable":"Forcefully"); ?></td>
                     <td><?php echo ($value['is_cur_version']==YES)?"Yes":"No"; ?></td>
@@ -92,13 +94,13 @@
 
                     <td>
                         <a class="table_icon" href="<?php echo base_url()?>admin/version/edit?id=<?php echo $this->Common_model->mcrypt_data($value['vid']);?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                        <a href="javascript:void(0);" class="table_icon"><i class="fa fa-trash" aria-hidden="true" onclick="deleteUser('version',<?php echo DELETED;?>,'<?php echo encrypt_with_openssl(new Encryption\OpenSSLEncrypt($value['vid']),true);?>','req/change-user-status','Do you really want to delete this version?');"></i></a>
+                        <a href="javascript:void(0);" class="table_icon"><i class="fa fa-trash" aria-hidden="true" onclick="deleteUser('version',<?php echo DELETED;?>,'<?php echo encrypt_with_openssl(new Encryption\OpenSSLEncrypt($value['vid']), true);?>','req/change-user-status','Do you really want to delete this version?');"></i></a>
                     </td>
                 </tr>
-          <?php
-              endforeach;
+            <?php
+                    endforeach;
               else:
-                  echo '<tr><td colspan="9">No result found.</td></tr>';
+                    echo '<tr><td colspan="9">No result found.</td></tr>';
               endif;?>
             </tbody>
         </table>

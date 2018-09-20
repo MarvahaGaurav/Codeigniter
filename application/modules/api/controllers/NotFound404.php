@@ -12,38 +12,46 @@ class NotFound404 extends BaseController
 
     public function index_post()
     {
-        $this->response([
+        $this->response(
+            [
             "code" => HTTP_NOT_FOUND,
             "api_code_result" => "NOT_FOUND",
             "msg" => $this->lang->line("invalid_url")
-        ], HTTP_NOT_FOUND);
+            ], HTTP_NOT_FOUND
+        );
     }
     
     public function index_get()
     {
-        $this->response([
+        $this->response(
+            [
             "code" => HTTP_NOT_FOUND,
             "api_code_result" => "NOT_FOUND",
             "msg" => $this->lang->line("invalid_url")
-        ], HTTP_NOT_FOUND);
+            ], HTTP_NOT_FOUND
+        );
     }
 
     public function index_delete()
     {
-        $this->response([
+        $this->response(
+            [
             "code" => HTTP_NOT_FOUND,
             "api_code_result" => "NOT_FOUND",
             "msg" => $this->lang->line("invalid_url")
-        ], HTTP_NOT_FOUND);
+            ], HTTP_NOT_FOUND
+        );
     }
 
     public function index_put()
     {
-        $this->response([
+        $this->response(
+            [
             "code" => HTTP_NOT_FOUND,
             "api_code_result" => "NOT_FOUND",
             "msg" => $this->lang->line("invalid_url")
-        ] , HTTP_NOT_FOUND);
+            ], HTTP_NOT_FOUND
+        );
     }
 
 }

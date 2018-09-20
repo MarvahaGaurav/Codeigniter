@@ -98,7 +98,7 @@
                                         <!--<input type="text" value="<?php //echo $user['prm_user_countrycode']; ?>" name="prmccode" class="ccode" placeholder="Country Code">-->
                                         <select class="selectpicker select-filed-name2 ccode" name="prmccode" data-live-search="true">
                                             <?php foreach ($countries as $country) : ?>
-                                                <option value="<?php echo $country['calling_code'] ?>" <?php echo ($country['calling_code'] == $user['prm_user_countrycode']) ? "selected" : "" ?> ><?php echo '('.$country['country_code1'].') '.$country['name'] ?></option>
+                                                <option value="<?php echo $country['calling_code'] ?>" <?php echo ($country['calling_code'] == $user['prm_user_countrycode']) ? "selected" : "" ?> ><?php echo '('.$country['calling_code'].') '.$country['name'] ?></option>
                                             <?php endforeach ?>
                                         </select>
                                     </div>
@@ -116,7 +116,7 @@
                                         <!--<input type="text" value="<?php //echo $user['alt_user_countrycode']; ?>" name="altccode" class="ccode" placeholder="Country Code">-->
                                         <select class="selectpicker select-filed-name2 ccode" name="altccode" data-live-search="true">
                                             <?php foreach ($countries as $country) : ?>
-                                                <option value="<?php echo $country['calling_code'] ?>" <?php echo ($country['calling_code'] == $user['alt_user_countrycode']) ? "selected" : "" ?> ><?php echo '('.$country['country_code1'].') '.$country['name'] ?></option>
+                                                <option value="<?php echo $country['calling_code'] ?>" <?php echo ($country['calling_code'] == $user['alt_user_countrycode']) ? "selected" : "" ?> ><?php echo '('.$country['calling_code'].') '.$country['name'] ?></option>
                                             <?php endforeach ?>
                                         </select>
                                     </div>
@@ -187,9 +187,9 @@
                                     <label class="p-label">City</label>
                                     <div class="form-group-field">
                                         <div class="input-wrapper">
-                                            <input type="text" id="select-city" name="city_name" data-country="<?php echo $country['country_code1'] ?>" value="<?php echo $cities[0]['name'] ?>" <?php echo empty($user['country_id'])?"disabled":"" ?> >
+                                            <input type="text" id="select-city" name="city_name" data-country="<?php echo $user['country_id'] ?>" value="<?php echo $cities[0]['name'] ?>" <?php echo empty($user['country_id'])?"disabled":"" ?> >
                                         </div>
-                                        <input type="hidden" name="city" id="city-id" value="<?php echo $cities['id'] ?>">
+                                        <input type="hidden" name="city" id="city-id" value="<?php echo $user['city_id'] ?>">
                                         <ul class="nolistdata" style="display:none;">
                                             <li>No cities found</li>
                                         </ul>
@@ -218,7 +218,7 @@
                             <div class="col-xs-12">
                                 <div class="button-wrapper">
                                     <input type="submit" id="addshopbtn" value="Save" class="custom-btn btn-margin btn-width save">
-                                    <button type="submit" class="custom-btn btn-margin btn-width cancel">Cancel</button>
+                                    <button class="custom-btn btn-margin btn-width cancel">Cancel</button>
                                 </div>
                             </div>
                             <!-- button wrapper end -->

@@ -2,9 +2,11 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Admin_Profile extends MY_Controller {
+class Admin_Profile extends MY_Controller
+{
 
-    function __construct() {
+    function __construct() 
+    {
         parent::__construct();
         $this->load->helper('url');
         $this->load->model('Common_model');
@@ -27,7 +29,8 @@ class Admin_Profile extends MY_Controller {
      * @description Admin pofile view
      * @access public.
      */
-    public function admin_profile() {
+    public function admin_profile() 
+    {
 
         $this->data["csrfName"] = $this->security->get_csrf_token_name();
         $this->data["csrfToken"] = $this->security->get_csrf_hash();
@@ -39,7 +42,8 @@ class Admin_Profile extends MY_Controller {
      * @name admin_change_password
      * @description This method is used to change admin password.
      */
-    public function admin_change_password() {
+    public function admin_change_password() 
+    {
 
         $postdata = $this->input->post();
 
@@ -49,7 +53,7 @@ class Admin_Profile extends MY_Controller {
             $this->form_validation->set_rules('password', $this->lang->line('password'), 'trim|required');
             $this->form_validation->set_rules('confirm_password', $this->lang->line('con_pass'), 'trim|required');
 
-            if ($this->form_validation->run() == FALSE) {
+            if ($this->form_validation->run() == false) {
                 load_views("profile/change-password", $this->data);
             } else {
                 $isExists = $this->Common_model->fetch_data('admin', 'admin_password', ['where' => ['admin_password' => hash("sha256", $postdata["oldpassword"]), 'admin_id' => $this->admininfo['admin_id']]], true);
@@ -78,14 +82,15 @@ class Admin_Profile extends MY_Controller {
      * @name Admin Profile
      * @description This method is used to edit admin profile.
      */
-    public function edit_profile() {
+    public function edit_profile() 
+    {
         $postdata = $this->input->post();
         $get = $this->input->get();
 
         if (isset($postdata) && !empty($postdata)) {
             $this->form_validation->set_rules('Admin_Name', $this->lang->line('name_missing'), 'trim|required');
             /* Client side validation false it will redirect to form */
-            if ($this->form_validation->run() == FALSE) {
+            if ($this->form_validation->run() == false) {
                 /* Csrf token check */
                 $this->data["csrfName"] = $this->security->get_csrf_token_name();
                 $this->data["csrfToken"] = $this->security->get_csrf_hash();
@@ -130,7 +135,7 @@ class Admin_Profile extends MY_Controller {
             if ($isSuccess) {
                 $newAdminInfo = $this->admininfo;
                 $newAdminInfo['admin_name'] = $adminData['admin_name'];
-                if(!empty($adminData['admin_profile_pic'])){
+                if(!empty($adminData['admin_profile_pic'])) {
                     $newAdminInfo['admin_profile_pic'] = $adminData['admin_profile_pic'];
                     $newAdminInfo['admin_profile_thumb'] = $adminData['admin_profile_thumb'];
                 }

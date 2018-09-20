@@ -14,7 +14,7 @@
             <h1 class="page-title">My Profile</h1>
         </div>
          <?php //echo '<pre>'; print_r($user); echo '</pre>'; ?>
-         <?php //echo '<pre>'; print_r($compnaydetail); echo '</pre>'; ?>
+            <?php //echo '<pre>'; print_r($compnaydetail); echo '</pre>'; ?>
         <!-- Technician Profile Detail -->
         <div class="technician-profile-wrapper">
             <div class="row">
@@ -28,7 +28,7 @@
                         <h3 class="profile-username"><?php echo $user['first_name'] ?></h3>
                         <p></p>
                     </div>
-                    <?php if(!empty($compnaydetail)){?>
+                    <?php if(!empty($compnaydetail)) {?>
                     <hr>
                     <div class="profile-thumb">
                         
@@ -80,7 +80,7 @@
                     </div>
                     <!-- User detail Block wise end -->
 
-                    <?php if(!empty($compnaydetail)){?>
+                    <?php if(!empty($compnaydetail)) {?>
                     <!-- User detail Block wise -->
                     <div class="user-detail-block">
                         <div class="row">

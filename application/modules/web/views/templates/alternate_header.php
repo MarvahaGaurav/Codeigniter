@@ -47,7 +47,6 @@
     </head>
 
     <body>
-
         <!-- header -->
         <header>
             <nav class="navbar navbar-default navbar-inverse" role="navigation">
@@ -117,8 +116,8 @@
                                 </li>
                                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Companies</a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="#">All Companies</a></li>
-                                        <li><a href="#">Favourite Companies</a></li>
+                                        <li><a href="<?php echo base_url('home/companies') ?>">All Companies</a></li>
+                                        <li><a href="<?php echo base_url('home/companies/favorites') ?>">Favourite Companies</a></li>
                                     </ul>
                                 </li>
                                 <li class="dropdown"><a href="" class="dropdown-toggle" data-toggle="dropdown">Quotes</a>

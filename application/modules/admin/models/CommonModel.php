@@ -2,9 +2,11 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class CommonModel extends CI_Model {
+class CommonModel extends CI_Model
+{
 
-    public function __construct() {
+    public function __construct() 
+    {
         $this->load->database();
         $this->load->library("session");
         $this->load->helper("cookie");
@@ -13,12 +15,13 @@ class CommonModel extends CI_Model {
     /**
      * Removes empty fields if they are empty or not set.
      *
-     * @param array $dataArray holds the data for which the fields will be unset should they be empty
+     * @param array $dataArray      holds the data for which the fields will be unset should they be empty
      * @param array $referenceArray holds field key to identify checks
      * 
      * @return array new dataArray for update field
      */
-    public function removeEmptyFields($dataArray, $referenceArray) {
+    public function removeEmptyFields($dataArray, $referenceArray) 
+    {
         foreach ($referenceArray as $reference) {
             if (isset($dataArray[$reference]) && !empty($dataArray[$reference])) {
                 $dataArray[$reference] = trim($dataArray[$reference]);
@@ -34,12 +37,13 @@ class CommonModel extends CI_Model {
      * checks for required field in an post, put or in general array
      * 
      * @access public
-     * @param array $data POST or PUT array
-     * @param array $mandatory Mandatory fields in a POST or PUT array
+     * @param  array $data      POST or PUT array
+     * @param  array $mandatory Mandatory fields in a POST or PUT array
      * 
      * @return array error status and missing field
      */
-    public function checkRequiredFields($data, $mandatory, $checkForEmpty = false) {
+    public function checkRequiredFields($data, $mandatory, $checkForEmpty = false) 
+    {
         $error = false;
         foreach ($mandatory as $value) {
             if (!array_key_exists($value, $data) || empty($data[$value])) {
@@ -82,12 +86,13 @@ class CommonModel extends CI_Model {
     /**
      * Checks for Null or Empty value using reference array
      *
-     * @param array $data DATA to check
+     * @param array $data           DATA to check
      * @param array $referenceArray Reference array to check from
      *
      * @return bool returns true if all values of $referenceArray are set and not empty in $data, false otherwise.
      */
-    public function nullOrEmpty($data, $referenceArray) {
+    public function nullOrEmpty($data, $referenceArray) 
+    {
         foreach ($referenceArray as $value) {
             if (!isset($data[$value]) || empty($data[$value])) {
                 return true;
@@ -98,6 +103,7 @@ class CommonModel extends CI_Model {
 
     /**
      * Converts Datetime formate form one timezone to another
+     *
      * @param string $dateFormat 
      * @param string $dateTime
      * @param string $requiredFormat
@@ -106,7 +112,8 @@ class CommonModel extends CI_Model {
      * 
      * @return string 
      */
-    public function convertDateTimeFormat($dateFormat, $dateTime, $requriedFormat = "Y-m-d H:i:s", $timezoneFrom = "UTC", $timezoneTo = "UTC") {
+    public function convertDateTimeFormat($dateFormat, $dateTime, $requriedFormat = "Y-m-d H:i:s", $timezoneFrom = "UTC", $timezoneTo = "UTC") 
+    {
         try {
             $date = DateTime::createFromFormat($dateFormat, $dateTime, new DateTimeZone($timezoneFrom));
         } catch (Exception $error) {
@@ -126,23 +133,26 @@ class CommonModel extends CI_Model {
      * Validates Email Field
      * 
      * @access public
-     * @param string $email email string
+     * @param  string $email email string
      * 
      * @return bool return true if valid email format, false otherwise
      */
-    public function validateEmail($email) {
+    public function validateEmail($email) 
+    {
         return (bool) preg_match("`^[a-z0-9!#$%&'*+\/=?^_\`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_\`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$`i", trim($email));
     }
 
     /**
      * Validates field values with regexp patterns 
+     *
      * @access public
-     * @param array $field Field values key with pattern value array 
-     *                     [$postData['field1']=>'^\d+$', $postData['field2']=>'^[a-zA-Z]+$']
+     * @param  array $field Field values key with pattern value array 
+     *                      [$postData['field1']=>'^\d+$', $postData['field2']=>'^[a-zA-Z]+$']
      * 
      * @return bool true if no error, false otherwise
      */
-    public function validateField($field) {
+    public function validateField($field) 
+    {
         $success = true;
         foreach ($field as $key => $value) {
             if (!preg_match($value, $key)) {
@@ -160,14 +170,15 @@ class CommonModel extends CI_Model {
      * 
      * @access public
      * 
-     * @param int $day Day
-     * @param int $month Month
-     * @param int $year Year
+     * @param int $day         Day
+     * @param int $month       Month
+     * @param int $year        Year
      * @param int $requiredAge Minimum Required Age, defaults to 18
      *  
      * @return array An array with "error" status and relavent message
      */
-    public function checkAge($day, $month, $year, $requiredAge = 18) {
+    public function checkAge($day, $month, $year, $requiredAge = 18) 
+    {
         $returnArray = [];
         if (checkdate($month, $day, $year)) {
             $age = ( ( ( (time() - strtotime("{$year}-{$month}-{$day}"))/*                     * timestamp */ / 365 )/*                     * 365 */ / 24 )/*                     * 24 */ / 60 )/*                     * 60 */ / 60;
@@ -197,12 +208,13 @@ class CommonModel extends CI_Model {
     /**
      * Validates Names according to regexp pattern
      * 
-     * @param string $name name string
+     * @param string $name    name string
      * @param string $pattern regexp pattern, defaults to "^[a-zA-Z0-9\s]+$"
      * 
      * @return bool true if valid name, false otherwise
      */
-    public function validateName($name, $pattern = "^[a-zA-Z0-9][a-zA-Z0-9\s]{0,99}$") {
+    public function validateName($name, $pattern = "^[a-zA-Z0-9][a-zA-Z0-9\s]{0,99}$") 
+    {
         return (bool) preg_match("/{$pattern}/", $name);
     }
 
@@ -212,11 +224,12 @@ class CommonModel extends CI_Model {
      * @access public
      *
      * @param bool $base64encode If random string should be base64encoded
-     * @param int $length length of random string
+     * @param int  $length       length of random string
      *
      * @return string Random string
      */
-    public function generateRandomString($base64encode = false, $length = 10) {
+    public function generateRandomString($base64encode = false, $length = 10) 
+    {
         $sourceString = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         $randomString = "";
         for ($i = 0; $i < $length; $i++) {
@@ -233,13 +246,14 @@ class CommonModel extends CI_Model {
     /**
      * HANDLES CURL REQUESTS
      * 
-     * @param string $url Enter URL to which curl will send request
-     * @param array $data Data to be sent as post parameters, ["field" => "value"]
-     * @param array $headers HTTP header strings ["header1", "header2"]
+     * @param string $url     Enter URL to which curl will send request
+     * @param array  $data    Data to be sent as post parameters, ["field" => "value"]
+     * @param array  $headers HTTP header strings ["header1", "header2"]
      * 
      * @return mixed curl response
      */
-    public function curlPostRequest($url, $data, $headers = []) {
+    public function curlPostRequest($url, $data, $headers = []) 
+    {
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         if (count($headers) > 0) {
@@ -257,13 +271,15 @@ class CommonModel extends CI_Model {
 
     /**
      * Sends Async CURL requests
-     * @param string $url Enter URL to which curl will send request
-     * @param array $data Data to be sent as post parameters, ["field" => "value"]
-     * @param array $headers HTTP header strings ["header1", "header2"]
+     *
+     * @param string $url     Enter URL to which curl will send request
+     * @param array  $data    Data to be sent as post parameters, ["field" => "value"]
+     * @param array  $headers HTTP header strings ["header1", "header2"]
      * 
      * @return mixed curl response
      */
-    public function asyncCurlPost($url, $data, $headers = []) {
+    public function asyncCurlPost($url, $data, $headers = []) 
+    {
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, false);
         if (count($headers) > 0) {
@@ -273,9 +289,9 @@ class CommonModel extends CI_Model {
         curl_setopt($curl, CURLOPT_AUTOREFERER, true);
         curl_setopt($curl, CURLOPT_TIMEOUT, 1);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_FRESH_CONNECT, true);   // Always ensure the connection is fresh				
-        curl_setopt($curl, CURLOPT_HEADER, false);         // Don't retrieve headers				
-        curl_setopt($curl, CURLOPT_NOBODY, true);          // Don't retrieve the body				
+        curl_setopt($curl, CURLOPT_FRESH_CONNECT, true);   // Always ensure the connection is fresh                
+        curl_setopt($curl, CURLOPT_HEADER, false);         // Don't retrieve headers                
+        curl_setopt($curl, CURLOPT_NOBODY, true);          // Don't retrieve the body                
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
         ignore_user_abort(true);
         $contents = curl_exec($curl);
@@ -294,9 +310,9 @@ class CommonModel extends CI_Model {
      * @param
      * @param
      * @param
-     *
      */
-    public function convertDate() {
+    public function convertDate() 
+    {
         
     }
 
@@ -304,14 +320,15 @@ class CommonModel extends CI_Model {
      * Send Mail using PHPMailer
      *
      * @access private
-     * @param array $toName Name and Email as Key Value Pair eg. ["John" => "john@aol.com"]
-     * @param string $subject Subject of Mail
-     * @param string $body Body of Mail
-     * @param string $altBody Alternate Body should the user be using a Mail client that doesn't render HTML
+     * @param  array  $toName  Name and Email as Key Value Pair eg. ["John" => "john@aol.com"]
+     * @param  string $subject Subject of Mail
+     * @param  string $body    Body of Mail
+     * @param  string $altBody Alternate Body should the user be using a Mail client that doesn't render HTML
      *
      * @return array with message status ["error"=>true, "message" => "error message"]
      */
-    public function sendMail($toName, $subject, $body, $altBody = "") {
+    public function sendMail($toName, $subject, $body, $altBody = "") 
+    {
         $mail = new PHPMailer;
 
         //$mail->SMTPDebug = 3;                               
@@ -351,13 +368,14 @@ class CommonModel extends CI_Model {
     /**
      * Inserts Data into database
      *
-     * @param array $data Data to be inserted into database
-     * @param string $tableName Table Name
-     * @param bool $returnLastInsertId Return Last Insert Id when set to true
+     * @param array  $data               Data to be inserted into database
+     * @param string $tableName          Table Name
+     * @param bool   $returnLastInsertId Return Last Insert Id when set to true
      * 
      * @return bool|int|string Return TRUE|Last Insert Id on successful insertion, FALSE otherwise. 
      */
-    public function insertData($data, $tableName, $returnLastInsertId = false) {
+    public function insertData($data, $tableName, $returnLastInsertId = false) 
+    {
         if ($this->db->set($data)->insert($tableName)) {
             if ($this->db->affected_rows()) {
                 if ($returnLastInsertId == true) {
@@ -376,13 +394,14 @@ class CommonModel extends CI_Model {
     /**
      * Inserts Data into database but throws exception
      *
-     * @param array $data Data to be inserted into database
-     * @param string $tableName Table Name
-     * @param bool $returnLastInsertId Return Last Insert Id when set to true
+     * @param array  $data               Data to be inserted into database
+     * @param string $tableName          Table Name
+     * @param bool   $returnLastInsertId Return Last Insert Id when set to true
      * 
      * @return bool|int|string Return TRUE|Last Insert Id on successful insertion, FALSE otherwise. 
      */
-    public function insertTableData($data, $tableName, $returnLastInsertId = false) {
+    public function insertTableData($data, $tableName, $returnLastInsertId = false) 
+    {
         // $this->db->set($data)->insert($tableName);
         // print_r($this->db->last_query());die;
         if ($this->db->set($data)->insert($tableName)) {
@@ -403,12 +422,13 @@ class CommonModel extends CI_Model {
     /**
      * Updates Data in Database   
      *   
-     * @param array $data Data to be inserted   
-     * @param string $tableName Table Name to be inserted
-     * @param array $where Key Value pair of field and data eg. ["email" =>"john@aol.com"]
+     * @param  array  $data      Data to be inserted   
+     * @param  string $tableName Table Name to be inserted
+     * @param  array  $where     Key Value pair of field and data eg. ["email" =>"john@aol.com"]
      * @return bool TRUE on successfull Update, FALSE otherwise.
      */
-    public function updateData($data, $tableName, $where) {
+    public function updateData($data, $tableName, $where) 
+    {
         $this->db->set($data);
         foreach ($where as $key => $value) {
             $this->db->where($key, $value);
@@ -427,12 +447,13 @@ class CommonModel extends CI_Model {
     /**
      * Updates Data in Database but throws exception when there's an error
      *   
-     * @param array $data Data to be inserted   
-     * @param string $tableName Table Name to be inserted
-     * @param array $where Key Value pair of field and data eg. ["email" =>"john@aol.com"]
+     * @param  array  $data      Data to be inserted   
+     * @param  string $tableName Table Name to be inserted
+     * @param  array  $where     Key Value pair of field and data eg. ["email" =>"john@aol.com"]
      * @return bool TRUE on successfull Update, FALSE otherwise.
      */
-    public function updateTableData($data, $tableName, $where) {
+    public function updateTableData($data, $tableName, $where) 
+    {
         $this->db->set($data);
         foreach ($where as $key => $value) {
             $this->db->where($key, $value);
@@ -447,15 +468,16 @@ class CommonModel extends CI_Model {
     /**
      * Fetches data from table
      *
-     * @param array $fields Fields to fetch
+     * @param array  $fields    Fields to fetch
      * @param string $tableName 
-     * @param array $where Key Value pair of field and data eg. ["email" =>"john@aol.com"]
+     * @param array  $where     Key Value pair of field and data eg. ["email" =>"john@aol.com"]
      *
      * @return array|bool Result Set, false if no data
      */
-    public function fetchData($fields, $tableName, $where = [], $others = []) {
+    public function fetchData($fields, $tableName, $where = [], $others = []) 
+    {
         $this->db->select(implode(",", $fields), false)
-                ->from($tableName);
+            ->from($tableName);
         foreach ($where as $key => $value) {
             $this->db->where($key, $value);
         }
@@ -519,13 +541,14 @@ class CommonModel extends CI_Model {
     /**
      * Fetches row count 
      *
-     * @param array $fields
+     * @param array  $fields
      * @param string $tableName
-     * @param array $others
+     * @param array  $others
      *
      * @return integer row count
      */
-    public function fetchCount($fields, $tableName, $others = []) {
+    public function fetchCount($fields, $tableName, $others = []) 
+    {
         $this->db->select(implode(",", $fields))->from($tableName);
         if (count($others) > 0) {
             $this->variationHandler($others);
@@ -540,7 +563,8 @@ class CommonModel extends CI_Model {
      * 
      * @param array $others
      */
-    private function variationHandler($others) {
+    private function variationHandler($others) 
+    {
         if (count($others) > 0) {
             if (isset($others["where"]) && !empty($others["where"])) {
                 foreach ($others["where"] as $key => $value) {
@@ -585,12 +609,13 @@ class CommonModel extends CI_Model {
      *
      * @access public
      *
-     * @param array $data Data Array
+     * @param array  $data      Data Array
      * @param string $tableName Table Name
      *
      * @return bool Return true on insert, false otherwise.
      */
-    public function insertBatch($data, $tableName, $throwException = false) {
+    public function insertBatch($data, $tableName, $throwException = false) 
+    {
 
         if ($this->db->insert_batch($tableName, $data)) {
             return true;
@@ -606,11 +631,12 @@ class CommonModel extends CI_Model {
     /**
      * Checks for running session, i.e. session data is set and redirect to required URL.
      * use for checks after user has logged out. website signup, login etc.
-     * @param string $field datafield
-     * @param string $redirectURL 
      *
+     * @param string $field       datafield
+     * @param string $redirectURL 
      * */
-    public function checkRunningSession($field, $redirectURL) {
+    public function checkRunningSession($field, $redirectURL) 
+    {
         if (null !== $this->session->userdata($field)) {
             redirect($redirectURL);
         }
@@ -619,11 +645,12 @@ class CommonModel extends CI_Model {
     /**
      * Checks for closesd session, i.e. session data is null and redirect to required URL.
      * use for checks after user has logged in. user home, profile, account page etc.
-     * @param string $field datafield
-     * @param string $redirectURL 
      *
+     * @param string $field       datafield
+     * @param string $redirectURL 
      * */
-    public function checkClosedSession($field, $redirectURL) {
+    public function checkClosedSession($field, $redirectURL) 
+    {
         if (null === $this->session->userdata($field)) {
             redirect($redirectURL);
         }
@@ -631,10 +658,11 @@ class CommonModel extends CI_Model {
 
     /**
      * Echos JSON encoded string and exits
+     *
      * @param array $data 
-     * 
      */
-    public function response($data) {
+    public function response($data) 
+    {
         echo json_encode($data);
         exit;
     }
@@ -642,12 +670,13 @@ class CommonModel extends CI_Model {
     /**
      * Builds http query
      *
-     * @param array $params query params key value pair
-     * @param bool $prependAmp prepends & if true.
+     * @param array $params     query params key value pair
+     * @param bool  $prependAmp prepends & if true.
      *
      * @return string http query string
      */
-    public function httpQuery($params, $prependAmp = false) {
+    public function httpQuery($params, $prependAmp = false) 
+    {
         $httpString = "";
         if ($prependAmp && count($params) > 0) {
             $httpString .= "&";
@@ -661,13 +690,14 @@ class CommonModel extends CI_Model {
     /**
      * Runs Select query with given options
      *
-     * @param mixed $field accept array or string
+     * @param mixed  $field     accept array or string
      * @param string $tableName table name
-     * @param array $options other options
+     * @param array  $options   other options
      *
      * @return array Data in multidimensional array
      */
-    public function selectQuery($fields, $tableName = "", $options = []) {
+    public function selectQuery($fields, $tableName = "", $options = []) 
+    {
         if (is_array($fields)) {
             $this->db->select(implode(",", $fields));
         } else {
@@ -694,7 +724,8 @@ class CommonModel extends CI_Model {
         }
     }
 
-    private function optionHandler($options) {
+    private function optionHandler($options) 
+    {
         $arrayFlag = true;
         if (count($options) === 0 || empty($options) || null === $options) {
             $arrayFlag = false;
@@ -771,12 +802,14 @@ class CommonModel extends CI_Model {
 
     /**
      * Get vendor service provider subcategory lists 
-     * @param int|string $userType
+     *
+     * @param  int|string $userType
      * @return array
      */
-    public function getCategory($userId) {
+    public function getCategory($userId) 
+    {
         $data = $this->selectQuery(
-                "sub_category_id, sub_category_name", "user_category", [
+            "sub_category_id, sub_category_name", "user_category", [
             "where" => [
                 "user_id" => $userId,
                 "is_approved" => 1
@@ -797,15 +830,17 @@ class CommonModel extends CI_Model {
 
     /**
      * Validates given Cookie
+     *
      * @param string $cookieName
      * @param string $tableName 
-     * @param array $sessionFields Session fields
-     * @param array $dataFields DB data field
-     * @param string $dataFields DB data field
+     * @param array  $sessionFields Session fields
+     * @param array  $dataFields    DB data field
+     * @param string $dataFields    DB data field
      * 
      * @return array|bool returns array if valid cookie
      */
-    public function validateCookie($cookieName, $tableName, $sessionFields, $dataFields, $hashingField = "create_date") {
+    public function validateCookie($cookieName, $tableName, $sessionFields, $dataFields, $hashingField = "create_date") 
+    {
         $loginCookie = get_cookie($cookieName);
         $tableFields = implode(",", $dataFields);
         $additionalField = !empty($hashingField) ? "," . $hashingField : "";
@@ -825,13 +860,15 @@ class CommonModel extends CI_Model {
 
     /**
      * Gets user data from given cookie
+     *
      * @access public
-     * @param string $cookie 
-     * @param string $tableName 
-     * @param string $fields 
+     * @param  string $cookie 
+     * @param  string $tableName 
+     * @param  string $fields 
      * @return bool|array
      */
-    public function getDataFromCookie($cookie, $tableName, $fields) {
+    public function getDataFromCookie($cookie, $tableName, $fields) 
+    {
         if (!isset($cookie) || empty($cookie)) {
             return false;
         }
@@ -843,11 +880,13 @@ class CommonModel extends CI_Model {
             return false;
         }
 
-        $cookieData = $this->selectQuery($fields, $tableName, [
+        $cookieData = $this->selectQuery(
+            $fields, $tableName, [
             "where" => [
                 "cookie_selector" => $loginCookie[0]
             ]
-        ]);
+            ]
+        );
 
         if (!$cookieData) {
             return false;

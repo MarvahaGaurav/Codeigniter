@@ -2,9 +2,11 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Notify extends MY_Controller {
+class Notify extends MY_Controller
+{
 
-    function __construct() {
+    function __construct() 
+    {
         parent::__construct();
         $this->load->helper('url');
         $this->load->model('Common_model');
@@ -15,7 +17,8 @@ class Notify extends MY_Controller {
      * @name index
      * @description This method is used to list all the customers.
      */
-    public function index() {
+    public function index() 
+    {
         $getDataArr = [];
         $getDataArr = $this->input->get();
         $chunkId = (isset($getDataArr['chunkId']) && !empty($getDataArr['chunkId'])) ? $getDataArr['chunkId'] : "1";
@@ -41,7 +44,8 @@ class Notify extends MY_Controller {
      * @param type: Array()
      */
 
-    private function sendAndroidBulkPush($pushDataArr) {
+    private function sendAndroidBulkPush($pushDataArr) 
+    {
         /*
          * Create Android Payload
          */
@@ -61,7 +65,8 @@ class Notify extends MY_Controller {
         return $isSuccess;
     }
 
-    private function sendIosBulkPush($pushDataArr) {
+    private function sendIosBulkPush($pushDataArr) 
+    {
 
         /*
          * Create iOS Payload
@@ -87,7 +92,8 @@ class Notify extends MY_Controller {
      * @params Array();
      */
 
-    public function sendIosPush(){
+    public function sendIosPush()
+    {
         $pushDataArr = $this->input->post();
         $isSuccess = $this->commonfn->iosPush($pushDataArr['deviceTokens'], $pushDataArr['payload']);
         return $isSuccess;
@@ -97,7 +103,8 @@ class Notify extends MY_Controller {
      * @params Array();
      */
 
-    public function sendAndroidPush() {
+    public function sendAndroidPush() 
+    {
         $pushDataArr = $this->input->post();
         $isSuccess = $this->commonfn->androidPush($pushDataArr['deviceTokens'], $pushDataArr['payload']);
         return $isSuccess;

@@ -10,13 +10,13 @@
             <li class="breadcrumb-item"><a href="admin/subadmin/view">Sub-Admin Profile</a></li>
             <li class="active">Create Sub-Admin Profile</li>
         </ol>
-    </div>	
+    </div>    
     <div class="clear"></div>
 
     <div class="section">
 
         <!-- form-->
-        <?php echo form_open_multipart('',array('id'=>'subadmin_add'));?>
+        <?php echo form_open_multipart('', array('id'=>'subadmin_add'));?>
         <div class="row">
 
             <div class="col-sm-3 col-xs-12">
@@ -114,7 +114,7 @@
                                                         </div>
                                                     </li>
                                                 </ul>
-                                            </div>			
+                                            </div>            
                                             <div class="clear"></div>
                                             <div class="custom-check main-check">
                                                 <input id="main-check2" name="version" <?php echo (!empty($versionPermission)) ? 'checked' : '' ?> onchange="permission('Version')" value="2" type="checkbox">
@@ -152,7 +152,7 @@
                                                     </li>
 
                                                 </ul>
-                                            </div>			
+                                            </div>            
                                             <div class="clear"></div>
                                             <div class="custom-check main-check">
                                                 <input id="main-check3" name="notification" onchange="permission('Notification')" <?php echo (!empty($notiPermission)) ? 'checked' : '' ?> value="3"  type="checkbox">
@@ -187,7 +187,7 @@
                                                             <input id="subcheck3-5"  name="permission[notification][delete]" <?php echo (!empty($notiPermission['deletep'])) ? 'checked' : '' ?> value="1" <?php echo (!empty($notiPermission)) ? '' : 'disabled="true"' ?> class="Notification"  type="checkbox">
                                                             <label for="subcheck3-5"><span></span>Delete</label>
                                                         </div>
-                                                    </li>				
+                                                    </li>                
                                                 </ul>
                                             </div>
                                             <div class="clear"></div>
@@ -224,7 +224,7 @@
                                                             <input id="subcheck4-5"  name="permission[notification][delete]" <?php echo (!empty($notiPermission['deletep'])) ? 'checked' : '' ?> value="1" <?php echo (!empty($notiPermission)) ? '' : 'disabled="true"' ?> class="Notification"  type="checkbox">
                                                             <label for="subcheck4-5"><span></span>Delete</label>
                                                         </div>
-                                                    </li>				
+                                                    </li>                
                                                 </ul>
                                             </div>
                                             <div class="clear"></div>
@@ -261,10 +261,10 @@
                                                             <input id="subcheck5-5"  name="permission[notification][delete]" <?php echo (!empty($notiPermission['deletep'])) ? 'checked' : '' ?> value="1" <?php echo (!empty($notiPermission)) ? '' : 'disabled="true"' ?> class="Notification"  type="checkbox">
                                                             <label for="subcheck5-5"><span></span>Delete</label>
                                                         </div>
-                                                    </li>				
+                                                    </li>                
                                                 </ul>
-                                            </div>	
-                                        </div>			
+                                            </div>    
+                                        </div>            
                                     </div>
                                 </div>
                             </div>
