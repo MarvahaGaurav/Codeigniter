@@ -186,8 +186,9 @@
                                 <div class="form-group">
                                     <label class="p-label">City</label>
                                     <div class="form-group-field">
-                                        <div class="input-wrapper">
-                                            <input type="text" id="select-city" name="city_name" data-country="<?php echo $user['country_id'] ?>" value="<?php echo $cities[0]['name'] ?>" <?php echo empty($user['country_id'])?"disabled":"" ?> >
+                                        <div class="input-wrapper city-wrapper">
+                                            <span class="fa fa-spin fa-circle-o-notch city-loader concealable"></span>
+                                            <input type="text" placeholder="Please start typing your city..." id="select-city" name="city_name" data-country="<?php echo $user['country_id'] ?>" value="<?php echo $cities[0]['name'] ?>">
                                         </div>
                                         <input type="hidden" name="city" id="city-id" value="<?php echo $user['city_id'] ?>">
                                         <ul class="nolistdata" style="display:none;">

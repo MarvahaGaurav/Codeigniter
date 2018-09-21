@@ -112,7 +112,7 @@ class TechnicianController extends BaseController
             }
             $this->session->set_flashdata("flash-message", $this->lang->line("employee_permissions_updated"));
             $this->session->set_flashdata("flash-type", "success");
-            redirect(base_url("home/technicians/". encryptDecrypt($employee_id)));
+            redirect(base_url("home/technicians"));
         }
         $this->data['js'] = 'technician';
         

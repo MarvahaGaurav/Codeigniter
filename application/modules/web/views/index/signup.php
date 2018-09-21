@@ -257,11 +257,12 @@
                             </select>
                             <span class="customArrow"></span>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group city-wrapper">
                                 <!-- <select class="cities selectpicker" id="citiesselbox" name="cities" data-live-search="true" required="">
                                     <option value="">Select City</option>
                                 </select> -->
-                            <input type="text" class='form-control' id="select-city" name="city_name" value="<?php echo set_value("city_name", '') ?>" <?php echo empty(set_value('cities'))?"disabled":"" ?>>
+                            <span class="fa fa-spin fa-circle-o-notch city-loader concealable"></span>
+                            <input type="text" class='form-control' id="select-city" name="city_name" value="<?php echo set_value("city_name", '') ?>">
                             <input type="hidden" name="cities" id="city-id" value="<?php echo set_value('cities', '') ?>">
                             <!-- <ul class="nolistdata" style="display:none;">
                                 <li>No cities found</li>
@@ -304,58 +305,22 @@
         }
         var $selectCity = $("#select-city");
         function fetchLocation(url, parent, source, target, events) {
-            
             var parent = parent || "body";
             var source = source || ".country";
             var target = target || ".cities";
             var events = events || "change";
 
             $(parent).on(events, source, function () {
-                
                 var $self = $(this),
-                    selfValue = $self.val(),
-                    $cityId = $('#city-id');
-
-                if ( selfValue.length > 0 ) {
-                    $selectCity.prop("disabled", false);
-                } else {
-                    $selectCity.prop("disabled", false);
-                    return false;
+                    selfValue = $self.val();
+                if (!selfValue || (typeof selfValue == "string" && selfValue.length == 0)) {
+                    return 0;
                 }
-                $.ajax({
-                    url: '<?php echo base_url(); ?>xhttp/cities',
-                    method: "GET",                       
-                    data: {
-                        param: selfValue
-                    },
-                    dataType: "json",
-                    beforeSend:function(){
-                        $('span.sg-loader').removeClass('hidden');
-                        
-                    },
-                    success: function (response) {
-                        
-                        if (response.success) {
-                            $selectCity.val("");
-                            $selectCity.prop("placeholder", "Please start typing your location...");
-                            var data = response.data;
-                            data = data.map(function (row) {
-                                return {id: row.id, text: row.name};
-                            });
-                            //$(target).html(optionsViewBuilder(data, "Select a city"));
-                            $('#citiesselbox').html(optionsViewBuilder(data, "Select a city"));
-                            $('.selectpicker').selectpicker('refresh');
-                            $('span.sg-loader').addClass('hidden');
-                            var cityOptions = {
-                                location: selfValue
-                            };
-                            setAutoComplete($selectCity, cityOptions);
-                        }
-                    },
-                    error: function () {
-
-                    }
-                });
+                var cityOptions = {
+                    location: selfValue
+                };
+                setAutoComplete($selectCity, cityOptions);
+                return 0;
             });
         }
         fetchLocation();
@@ -490,45 +455,20 @@
         function setAutoComplete($element, options){
             options = options || {};
             var location = options.location || "en";
-            // var autoCompleteOptions = {
-            //     url: function(search) {
-            //         return domain2 + "/xhttp/cities?param=" + location + "&query=" + search;
-            //     },
-            //     listLocation: "data",
-            //     getValue: function(data) {
-            //         return data.name
-            //     },
-            //     ajaxSettings: {
-            //         dataType: "json",
-            //         success: function(data) {
-            //             if ( ! data.success ) {
-            //                 $("#city-id").val('');
-            //             } else {
-            //             }
-            //         }
-            //     },
-            //     list: {
-            //         maxNumberOfElements: 8,
-            //         match: {
-            //             enabled: true
-            //         },
-            //         sort: {
-            //             enabled: true
-            //         },
-            //         onSelectItemEvent: function() {
-            //             var value = $element.getSelectedItemData().id;
-            //             $("#city-id").val(value);
-            //         }
-            //     },
-            //     theme: "square",
-            //     requestDelay: 70,
-            //     placeholder: "Please start typing your city..."
-            // };
+            
             var autoCompleteOptions = {
                 serviceUrl: domain2 + "/xhttp/cities",
                 params: {
                     param: location,
                     query: $selectCity.val()
+                },
+                ajaxSettings: {
+                    beforeSend: function () {
+                        $selectCity.siblings('.city-loader').addClass('city-loader-show').removeClass('concealable');
+                    },
+                    success: function () {
+                        $selectCity.siblings('.city-loader').removeClass('city-loader-show').addClass('concealable');
+                    }
                 },
                 dataType: 'json',
                 showNoSuggestionNotice: true,

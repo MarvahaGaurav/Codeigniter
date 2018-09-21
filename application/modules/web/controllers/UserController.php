@@ -99,7 +99,7 @@ class UserController extends BaseController
                     try {
                         $companyArr['company_image'] = $imageName=s3_image_uploader(ABS_PATH.$dataArr['company_image'], $dataArr['company_image']);
                     } catch (Exception $e) {
-                        $this->data['error'] = strip_tags($this->upload->display_errors());
+                        $this->data['error'] = strip_tags($this->form_validation->display_errors());
                         $this->session->set_flashdata("flash-message", $e->getMessage());
                         $this->session->set_flashdata("flash-type", "danger");
                         load_alternatecropper_views("users/edit_profile", $this->data);

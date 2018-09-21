@@ -13,25 +13,26 @@
         <!-- Css Plugins -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="public/css/easy-autocomplete.min.css">
-        <?php if ( isset($owl) ) { ?>
+        <link rel="stylesheet" href="public/css/plugin/font-awesome.min.css">
+        <?php if (isset($owl)) { ?>
             <link rel="stylesheet" href="public/css/jquery.scrollbar.css">
             <link rel="stylesheet" href="public/css/owl.carousel.min.css" >
         <?php } ?>
         
-        <?php if ( isset($selectpicker) ) { ?>
+        <?php if (isset($selectpicker)) { ?>
             <link rel="stylesheet" href="public/css/bootstrap-select.min.css" >
         <?php } ?>
 
-        <?php if ( isset($custom_select) ) { ?>
+        <?php if (isset($custom_select)) { ?>
             <link rel="stylesheet" href="public/css/select2.min.css">
         <?php } ?>
             
-        <?php if ( isset($image_video_uploader) ) { ?>
+        <?php if (isset($image_video_uploader)) { ?>
             <link rel="stylesheet" href="public/css/image.video.uploader.css">
         <?php } ?>
 
         <!-- Custom Css Plugin -->
-        <link rel="stylesheet" href="public/css/web/common.css">        
+        <link rel="stylesheet" href="public/css/web/common.css">
         <link rel="stylesheet" href="public/css/web/style.css">
         <link rel="stylesheet" href="public/css/web/sgmedia.css">
         <script src="public/js/jquery.min.js"></script>

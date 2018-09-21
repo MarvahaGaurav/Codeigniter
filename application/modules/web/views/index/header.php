@@ -13,6 +13,7 @@
         <!-- Css Plugins -->
         <link rel="stylesheet" href="public/css/web/plugins/bootstrap.min.css">
         <link rel="stylesheet" href="public/css/web/plugins/bootstrap-select.min.css">
+        <link rel="stylesheet" href="public/css/plugin/font-awesome.min.css">
         <link rel="stylesheet" href="public/css/ajax-bootstrap-select.min.css">
         <link rel="stylesheet" href="public/css/easy-autocomplete.min.css">
         <!-- Custom Css Plugin -->

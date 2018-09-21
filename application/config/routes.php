@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------------
@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | and its corresponding controller class/method. The segments in a
 | URL normally follow this pattern:
 |
-|	example.com/class/method/id/
+|   example.com/class/method/id/
 |
 | In some instances, however, you may want to remap this relationship
 | so that a different class/function is called than the one
@@ -19,7 +19,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 | Please see the user guide for complete details:
 |
-|	https://codeigniter.com/user_guide/general/routing.html
+|   https://codeigniter.com/user_guide/general/routing.html
 |
 | -------------------------------------------------------------------------
 | RESERVED ROUTES
@@ -27,18 +27,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 | There are three reserved routes:
 |
-|	$route['default_controller'] = 'welcome';
+|   $route['default_controller'] = 'welcome';
 |
 | This route indicates which controller class should be loaded if the
 | URI contains no data. In the above example, the "welcome" class
 | would be loaded.
 |
-|	$route['404_override'] = 'errors/page_missing';
+|   $route['404_override'] = 'errors/page_missing';
 |
 | This route will tell the Router which controller/method to use if those
 | provided in the URL cannot be matched to a valid route.
 |
-|	$route['translate_uri_dashes'] = FALSE;
+|   $route['translate_uri_dashes'] = FALSE;
 |
 | This is not exactly a route, but allows you to automatically route
 | controller and method names that contain dashes. '-' isn't a valid
@@ -46,19 +46,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | When you set this option to TRUE, it will replace ALL dashes in the
 | controller and method URI segments.
 |
-| Examples:	my-controller/index	-> my_controller/index
-|		my-controller/my-method	-> my_controller/my_method
+| Examples: my-controller/index -> my_controller/index
+|       my-controller/my-method -> my_controller/my_method
 */
-if (isset($_SERVER["REQUEST_URI"]) && preg_match('/.*\/(api)\/.*/', $_SERVER["REQUEST_URI"] ) == TRUE) {
+if (isset($_SERVER["REQUEST_URI"]) && preg_match('/.*\/(api)\/.*/', $_SERVER["REQUEST_URI"]) == true) {
     $route['404_override'] = 'api/NotFound404';
-} else if (isset($_SERVER["REQUEST_URI"]) && preg_match('/.*\/admin\/.*/', $_SERVER["REQUEST_URI"] ) == TRUE) {
-   // $route['404_override'] = 'admin/Page404';    
+} elseif (isset($_SERVER["REQUEST_URI"]) && preg_match('/.*\/admin\/.*/', $_SERVER["REQUEST_URI"]) == true) {
+   // $route['404_override'] = 'admin/Page404';
 } else {
     //$route['404_override'] = 'website/Page404';
 }
 
 $route['default_controller'] = 'web/ProjectController';
-$route['translate_uri_dashes'] = FALSE;
+$route['translate_uri_dashes'] = false;
 
 $route['home/profile/(.+)/edit'] = 'web/UserController/edit_profile/$1';
 $route['home/profile/(.+)'] = 'web/UserController/profile/$1';
@@ -110,7 +110,7 @@ $route['api/v1/user/profile']['put'] = 'api/Profile/profileupdate'; //update swa
 $route['api/manage-friend'] = 'api/managefriends';
 $route['api/v1/employee/request']["GET"] = 'api/EmployeeController/request'; //update swagger
 $route['api/v1/employee/request']["POST"] = 'api/Employee/actiononemployee'; //update swagger
-$route['api/v1/employee/permission']["POST"] = 'api/Employee/setpermissopnforemp'; 
-$route['api/v1/employee/permission']["GET"] = 'api/EmployeeController/employeePermissions'; 
+$route['api/v1/employee/permission']["POST"] = 'api/Employee/setpermissopnforemp';
+$route['api/v1/employee/permission']["GET"] = 'api/EmployeeController/employeePermissions';
 
 $route['warranty'] = 'website/warranty';

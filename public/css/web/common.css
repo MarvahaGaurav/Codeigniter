@@ -606,3 +606,26 @@ input:-ms-input-placeholder {
     -ms-transform: translateX(26px);
     transform: translateX(26px);
 }
+
+.city-wrapper {
+    position: relative;
+}
+
+.city-loader-show {
+    position: absolute;
+    right: 7px;
+    top: 9px;
+    font-size: 24px;
+}
+
+.concealable {
+    display: none;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.non-clickable {
+    cursor: not-allowed;
+}

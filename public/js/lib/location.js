@@ -12,12 +12,19 @@
     function setAutoComplete($element, options){
         options = options || {};
         var location = options.location || "en";
-        console.log(location)
         var autoCompleteOptions = {
             serviceUrl: domain2 + "/xhttp/cities",
                 params: {
                     param: location,
                     query: $selectCity.val()
+                },
+                ajaxSettings: {
+                    beforeSend: function () {
+                        $selectCity.siblings('.city-loader').addClass('city-loader-show').removeClass('concealable');
+                    },
+                    success: function () {
+                        $selectCity.siblings('.city-loader').removeClass('city-loader-show').addClass('concealable');
+                    }
                 },
                 dataType: 'json',
                 showNoSuggestionNotice: true,
@@ -26,7 +33,6 @@
                     $("#city-id").val(suggestion.data)
                 },
                 transformResult: function (response) {
-                    // console.log(response);
                    return ( {
                         suggestions: response.data.map(function(data) {
                             return {value: data.name, data: data.id}
@@ -46,34 +52,14 @@
         $(parent).on(events, source, function () {
             var $self = $(this),
                 selfValue = $self.val();
-            $.ajax({
-                url: domain2 + url,
-                method: "GET",
-                data: {
-                    param: selfValue
-                },
-                dataType: "json",
-                beforeSend: function() {
-                    $selectCity.prop("disabled", false);
-                    $selectCity.val("");
-                },
-                success: function (response) {
-                    if ( response.success ) {
-                        var data = response.data
-                        data = data.map(function(row){
-                            return {id: row.id, text: row.name};
-                        });
-                        var cityOptions = {
-                            location: selfValue
-                        };
-                        setAutoComplete($selectCity, cityOptions);
-                        // $(target).html(optionsViewBuilder(data, "Select a city"));
-                    }
-                }, 
-                error: function() {
-
-                }
-            });
+            if (!selfValue || (typeof selfValue == "string" && selfValue.length == 0)) {
+                return 0;
+            }
+            var cityOptions = {
+                location: selfValue
+            };
+            setAutoComplete($selectCity, cityOptions);
+            return 0;
         });
     }
 
