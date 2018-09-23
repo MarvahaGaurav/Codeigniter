@@ -9,7 +9,11 @@
         <meta name="author" content="Smart Guide">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <link href="public/images/favicon.png" type="image/png" rel="icon">
-
+        <?php if (isset($css) && is_array($css) && !empty($css)) { ?>
+            <?php foreach ($css as $value) { ?>
+        <link rel="stylesheet" href="<?php echo $value ?>">
+            <?php } ?>
+        <?php } else { ?>
         <!-- Css Plugins -->
         <link rel="stylesheet" href="public/css/web/plugins/bootstrap.min.css">
         <link rel="stylesheet" href="public/css/web/plugins/bootstrap-select.min.css">
@@ -19,6 +23,7 @@
         <!-- Custom Css Plugin -->
         <link rel="stylesheet" href="public/css/web/common.css">
         <link rel="stylesheet" href="public/css/web/form.css">
+        <?php } ?>
 
         <!-- Js Plugins -->
         <script src="public/js/jquery.min.js"></script>

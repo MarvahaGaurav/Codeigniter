@@ -262,24 +262,3 @@
     // Selectpicker
     $('.selectpicker').selectpicker();
 </script>
-<style>
-    /* span.pluscode {
-        width: 3%;
-        float: left;
-        padding: 10px 0px;
-        font-weight: bold;
-    }
-    input.ccode {
-        width: 34%;
-        float: left;
-    }
-    select.ccode {
-        width: 34% !important;
-        float: left;
-    }
-    input.codephone {
-        width: 62%;
-        float: left;
-        margin-left: 1%;
-    } */
-</style>

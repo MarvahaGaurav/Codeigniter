@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="public/css/web/plugins/bootstrap-select.min.css">
 
+
 <body class="form-backgournd">
 
     <div class="form-bg"></div>
@@ -51,7 +52,7 @@
                 <div class="business">
                     <div class="form-group-inline clearfix">
                         <div class="form-group">
-                            <select name="user_type" id="user_type">
+                            <select name="user_type" class="selectpicker" id="user_type" data-live-search="true" data-live-search-style="startsWith" >
                                 <option value="">Select User type</option>
                                 <option <?php if (set_value('user_type') == '1') {
                     echo 'selected';
@@ -72,12 +73,12 @@
                     echo 'selected';
                 } ?> value="6">Business</option>
                             </select>
-                            <span class="fs-caret"></span>
+                            
                         </div>
 <?php echo form_error('user_type', '<label class="alert alert-danger">', '</label>') ?>
                     </div>
                     <div class="form-group clearfix hidden" id="confirm_div">
-                        <h3 class="account-heading">Are you owner of this company?</h3>
+                        <h3 class="account-heading">Are you owner of the company?</h3>
                         <!-- Account Type -->
                         <div class="account-type-wrapper">
                             <!-- <div class="custom-control custom-radio">
@@ -197,7 +198,7 @@
                             <div class="image-wrapper image-mb">
                                 <div class="image-view-box img-view130p img-viewbdr-radius">
                                     <!--<div id="image-view" class="image-view img-view130" style="background-image:url(public/images/user.png);"></div>-->
-                                    <img style="width: 100%;height: 100%;" class="profile-pic2" id="profile_image2" src="<?php echo set_value('company_logo'); ?>">
+                                    <img style="width: 100%;height: 100%;" class="profile-pic2" id="profile_image2" src="<?php echo !empty(set_value('company_logo'))?set_value('company_logo'):DEFAULT_IMAGE; ?>">
 
                                 </div>
                                 <!--<div class="upload-btn">
@@ -229,15 +230,14 @@
                     <div class="company_id_div hidden" id="company_id_div">
                         <h3 class="account-heading">Your Company</h3>
                         <div class="form-group">
-                            <select name="company_id" id="company_id">
+                            <select name="company_id" class="selectpicker" id="company_id" data-live-search="true" data-live-search-style="startsWith" >
                                 <option value="">Select Company</option>   
                                 <?php if($companies){ ?>
                                     <?php foreach($companies as $comp){ ?>
                                         <option <?php if (set_value('company_id') == $comp['company_id']){ echo 'selected';} ?> value="<?php echo $comp['company_id']; ?>"><?php echo $comp['company_name']; ?></option>  
                                     <?php } ?>
                                 <?php } ?>
-                            </select>
-                            <span class="fs-caret"></span>
+                            </select>                            
                         </div>
 <?php echo form_error('company_id', '<label class="alert alert-danger">', '</label>'); ?>
                     </div>
@@ -257,21 +257,16 @@
                             </select>
                             <span class="customArrow"></span>
                         </div>
-                        <div class="form-group">
-                            <?php if(!empty(set_value('cities'))){?>
-                                
-                                <select class="cities selectpicker" name="cities" data-live-search="true" required="">
+                        <div class="form-group city-wrapper">
+                                <!-- <select class="cities selectpicker" id="citiesselbox" name="cities" data-live-search="true" required="">
                                     <option value="">Select City</option>
-                                    <?php if($allcities){
-                                        foreach($allcities as $cty){?>
-                                        <option <?php if($cty['id'] == set_value('cities')){ echo 'selected';} ?> value="<?php echo $cty['id'] ?>"><?php echo $cty['name']; ?></option>
-                                    <?php }} ?>
-                                </select>
-                            <?php }else{ ?>
-                                <select class="cities selectpicker" name="cities" data-live-search="true" required="">
-                                    <option value="">Select City</option>
-                                </select>
-                            <?php } ?>
+                                </select> -->
+                            <span class="fa fa-spin fa-circle-o-notch city-loader concealable"></span>
+                            <input type="text" class='form-control' id="select-city" name="city_name" value="<?php echo set_value("city_name", '') ?>">
+                            <input type="hidden" name="cities" id="city-id" value="<?php echo set_value('cities', '') ?>">
+                            <!-- <ul class="nolistdata" style="display:none;">
+                                <li>No cities found</li>
+                            </ul> -->
                             
                             <span class="sg-loader hidden"><img style="height:40px;" src="/public/images/preloader.gif" /></span>
                         </div>
@@ -288,7 +283,7 @@
                 </div>
 
                 <div class="form-group form-btn-wrap">
-                    <button class="form-btn save" type="submit">Signup</button>
+                    <button class="form-btn save" id="submit-signup" type="submit">Signup</button>
                 </div>
 <?php echo form_close(); ?>
             </div>
@@ -298,6 +293,9 @@
     </div>
 
 <script>
+        $("#signupwebform").on("submit", function(){
+            $("#submit-signup").prop("disabled", true);
+        });
         function optionsViewBuilder(data, defaultText) {            
             var html = data.reduce(function (accumulator, currentValue) {
                 return accumulator + '<option value="' + currentValue.id + '">' + currentValue.text + "</option>";
@@ -305,50 +303,28 @@
 
             return html;
         }
-
+        var $selectCity = $("#select-city");
         function fetchLocation(url, parent, source, target, events) {
-            $('span.sg-loader').removeClass('hidden');
             var parent = parent || "body";
             var source = source || ".country";
             var target = target || ".cities";
             var events = events || "change";
 
             $(parent).on(events, source, function () {
-                
                 var $self = $(this),
-                        selfValue = $self.val();
-                $.ajax({
-                    url: '<?php echo base_url(); ?>xhttp/cities',
-                    method: "GET",                       
-                    data: {
-                        param: selfValue
-                    },
-                    dataType: "json",
-                    
-                    success: function (response) {
-
-                        if (response.success) {
-                            var data = response.data
-                            data = data.map(function (row) {
-                                return {id: row.id, text: row.name};
-                            });
-                            $(target).html(optionsViewBuilder(data, "Select a city"));
-                            $('.selectpicker').selectpicker('refresh');
-                            $('span.sg-loader').addClass('hidden');
-                        }
-                    },
-                    error: function () {
-
-                    }
-                });
+                    selfValue = $self.val();
+                if (!selfValue || (typeof selfValue == "string" && selfValue.length == 0)) {
+                    return 0;
+                }
+                var cityOptions = {
+                    location: selfValue
+                };
+                setAutoComplete($selectCity, cityOptions);
+                return 0;
             });
         }
         fetchLocation();
         $(document).ready(function () {
-            /*$('.selectpicker').selectpicker({
-                style: 'btn-info',
-                size: 4
-            });*/
 
             //show pop up on from select options
             $('select#user_type').change(function () {
@@ -406,7 +382,6 @@
         }
 
     </script>
-    <script src="public/cropper/cropper.js"></script>
     <script src="public/cropper/cropper.min.js"></script>
     <script src="public/cropper/main.js"></script>
     <script src="public/js/web/plugins/bootstrap-select.js"></script>
@@ -419,10 +394,17 @@
         }
 
         // Selectpicker
-        $('.selectpicker').selectpicker(refresh);
+        $('.selectpicker').selectpicker('refresh');
     </script>
 
     <style>
+        .autocomplete-suggestions {background-color: #FFF;border: 1px solid #999;overflow: auto;}
+        .autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; cursor:pointer; overflow: hidden; }
+        .autocomplete-selected { background: #F0F0F0; }
+        .autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+        .autocomplete-group { padding: 2px 5px; }
+        .autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+        .autocomplete-no-suggestion {padding: 2px 0px 0px 2px;}
         .myloader{
             width: 16%;
             position: absolute;
@@ -462,5 +444,49 @@
             margin: -40px;
         }
     </style>
-    
+    <script src="<?php echo base_url("public/js/jquery.autocomplete.min.js") ?>"></script>
+    <script>
+        <?php if ( ! empty(set_value('cities', '')) ) :?>
+        var cityOptions = {
+            location: '<?php echo set_value('country') ?>'
+        };
+        setAutoComplete($selectCity, cityOptions);
+        <?php endif?>
+        function setAutoComplete($element, options){
+            options = options || {};
+            var location = options.location || "en";
+            
+            var autoCompleteOptions = {
+                serviceUrl: domain2 + "/xhttp/cities",
+                params: {
+                    param: location,
+                    query: $selectCity.val()
+                },
+                ajaxSettings: {
+                    beforeSend: function () {
+                        $selectCity.siblings('.city-loader').addClass('city-loader-show').removeClass('concealable');
+                    },
+                    success: function () {
+                        $selectCity.siblings('.city-loader').removeClass('city-loader-show').addClass('concealable');
+                    }
+                },
+                dataType: 'json',
+                showNoSuggestionNotice: true,
+                noSuggestionNotice: "<?php echo $this->lang->line('no_results_found') ?>",
+                onSelect: function (suggestion) {
+                    $("#city-id").val(suggestion.data)
+                },
+                transformResult: function (response) {
+                    // console.log(response);
+                   return ( {
+                        suggestions: response.data.map(function(data) {
+                            return {value: data.name, data: data.id}
+                        })
+                    })
+                }
+            };
+            // $element.easyAutocomplete(autoCompleteOptions);
+            $element.autocomplete(autoCompleteOptions)
+        }
+    </script>
 </body>
