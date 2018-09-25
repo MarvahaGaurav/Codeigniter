@@ -22,7 +22,7 @@ class CategoriesController extends BaseController
         $language_code = $this->language_code;
 
         foreach ($language_code as $language) {
-                $response = get_request_handler("{$language}/productCategories");
+                $response = get_sg_data("{$language}/productCategories");
                 $response = json_decode($response, true);
                 $response = array_map(
                     function ($data) use ($language) {

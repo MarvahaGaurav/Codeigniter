@@ -25,7 +25,7 @@ class ProductCategoriesController extends BaseController
         $category_data = $this->Category->fetch();
 
         foreach ($category_data as $category) {
-            $response = get_request_handler("{$category['language_code']}/productCategories/{$category['category_id']}/products");
+            $response = get_sg_data("{$category['language_code']}/productCategories/{$category['category_id']}/products");
             $response = json_decode($response, true);
             $language = $category['language_code'];
             $response = array_map(

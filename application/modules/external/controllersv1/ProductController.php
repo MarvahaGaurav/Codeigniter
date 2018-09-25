@@ -25,7 +25,7 @@ class ProductController extends BaseController
         $application_data = $this->Application->fetch();
 
         foreach ($application_data as $application) {
-            $response = get_request_handler("{$application['language_code']}/applications/{$application['application_id']}/products");
+            $response = get_sg_data("{$application['language_code']}/applications/{$application['application_id']}/products");
             $response = json_decode($response, true);
             $language = $application['language_code'];
             $response = array_map(

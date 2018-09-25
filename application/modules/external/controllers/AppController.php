@@ -11,6 +11,7 @@ class AppController extends BaseController
     {
         parent::__construct();
         $this->load->model("Category");
+        $this->load->helper('url');
     }
 
     public function insertApplication_post()
@@ -18,7 +19,7 @@ class AppController extends BaseController
         try {
             $insertData = [];
             foreach ($this->language_code as $language) {
-                $response = get_request_handler("{$language}/applications");
+                $response = get_sg_data("{$language}/applications");
                 $data = json_decode($response, true);
 
                 $applicationData = array_map(function ($application) use ($language) {
@@ -26,7 +27,7 @@ class AppController extends BaseController
                     $data['type'] =
                         $application['type'] == 'residential'? APPLICATION_RESIDENTIAL: APPLICATION_PROFESSIONAL;
                     $data['title'] = $application['title'];
-                    $data['slug'] = preg_replace("/\s+/", "-", trim(strtolower(convert_accented_characters($application['title'])))). "-" . $language;
+                    $data['slug'] = url_title(preg_replace("/\s+/", "-", trim(strtolower(convert_accented_characters($application['title'])))). "-" . $language);
                     $data['subtitle'] = $application['subTitle'];
                     $data['body'] = $application['body'];
                     $data['language_code'] = $language;

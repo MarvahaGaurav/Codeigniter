@@ -31,7 +31,7 @@ class ApplicationController extends BaseController
      * 3) Fetch product details
      * 4) Fetch product speification from data recieved in product details
      *
-     * Consider the layering to begin when get_request_handler() function is called
+     * Consider the layering to begin when get_sg_data() function is called
      * which fetches the data form the URI resource
      *
      * @return string JSON response
@@ -46,7 +46,7 @@ class ApplicationController extends BaseController
             $product_gallery = [];
             foreach ($language_code as $language) {
                 //Layer 1 - fetch application data
-                $response = get_request_handler("{$language}/applications");
+                $response = get_sg_data("{$language}/applications");
                 $response = json_decode($response, true);
 
                 $response = array_map(
@@ -77,7 +77,7 @@ class ApplicationController extends BaseController
                     $application_id = $this->Application->save();
 
                     //Layer - 2 Fetch product listing
-                    $product_response = get_request_handler("{$data['language_code']}/applications/{$data['id']}/products");
+                    $product_response = get_sg_data("{$data['language_code']}/applications/{$data['id']}/products");
                     $product_response = json_decode($product_response, true);
 
                     $product_data = $this->Product->fetch();
@@ -95,7 +95,7 @@ class ApplicationController extends BaseController
                             continue;
                         }
                         //layer 3 - fetch product details
-                        $product_details = get_request_handler("{$data['language_code']}/products/{$product['id']}");
+                        $product_details = get_sg_data("{$data['language_code']}/products/{$product['id']}");
                         $product_details = json_decode($product_details, true);
 
                         if (empty($product_details)) {
@@ -157,7 +157,7 @@ class ApplicationController extends BaseController
                         $specification_batch_data = [];
                         foreach ($articlecodes as $articlecode) {
                             //Layer 4 - Specifications Data
-                            $specification_response = get_request_handler("{$data['language_code']}/specifications/{$product['id']}/{$articlecode}");
+                            $specification_response = get_sg_data("{$data['language_code']}/specifications/{$product['id']}/{$articlecode}");
                             $specification_data = json_decode($specification_response, true);
                             $specification_batch_data[] = $this->mapSpecifictionsData($specification_data, $product_id, $data['language_code']);
                         }
@@ -190,7 +190,7 @@ class ApplicationController extends BaseController
         $data["ean"]= $specification_data["ean"];
         $data["title"]= $specification_data["title"];
         $data["title"]= $specification_data["title"];
-        $data["slug"]= preg_replace("/\s+/", "-", trim(strtolower(convert_accented_characters($specification_data['title'])))). "-" . $language_code;
+        $data["slug"]= url_title(preg_replace("/\s+/", "-", trim(strtolower(convert_accented_characters($specification_data['title'])))). "-" . $language_code);
         $data["uld"]= $specification_data["uld"];
         $data["ldt"]= $specification_data["ldt"];
         $data["price"]= $specification_data["price"];

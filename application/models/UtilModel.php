@@ -208,4 +208,9 @@ class UtilModel extends CI_Model
             throw new InsertException("insert error");
         }
     }
+
+    public function updateBatch($tableName, $data, $where)
+    {
+        $this->db->update_batch($tableName, $data, $where);
+    }
 }

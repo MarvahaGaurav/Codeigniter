@@ -1,5 +1,5 @@
 <?php
-defined("BASEPATH") OR exit("No direct script access allowed");
+defined("BASEPATH") or exit("No direct script access allowed");
 
 require 'BaseController.php';
 
@@ -29,10 +29,10 @@ class ApplicationController extends BaseController
      *     in="query",
      *     description="1-Residential and 2-Professional",
      *     type="string"
-     *   ),*  
+     *   ),*
      * @SWG\Response(response=200, description="OK"),
      * @SWG\Response(response=401, description="Unauthorize"),
-     * @SWG\Response(response=202, description="No data found"), 
+     * @SWG\Response(response=202, description="No data found"),
      * )
      */
     public function application_get()
@@ -44,10 +44,11 @@ class ApplicationController extends BaseController
 
         $params['type'] = isset($request_data['type'])&&!empty($request_data['type'])?$request_data['type']:0;
         $params['language_code'] = $language_code;
+        $this->response(
 
         $data = $this->Application->get($params);
 
-        if (empty($data) ) {
+        if (empty($data)) {
             $this->response(
                 [
                 "code" => NO_DATA_FOUND,
@@ -65,6 +66,5 @@ class ApplicationController extends BaseController
         ];
         
         $this->response($response);
-
     }
 }

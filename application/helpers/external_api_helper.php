@@ -1,8 +1,8 @@
 <?php
 // defined('BASEPATH') OR exit('No direct script access allowed');
 
-if (! function_exists("get_request_handler")) {
-    function get_request_handler($url)
+if (! function_exists("get_sg_data")) {
+    function get_sg_data($url)
     {
         $curl = curl_init();
         $url = "https://sg-as.com/api/v1/" . $url;
@@ -27,5 +27,26 @@ if (! function_exists("get_request_handler")) {
             $response = trim($response);
             return $response;
         }
+    }
+}
+
+if (! function_exists("mounting_type_str_to_num")) {
+    function mounting_type_str_to_num($type)
+    {
+        $mountingMap = [
+            'Suspended' => MOUNTING_SUSPENDED,
+            'Recessed' => MOUNTING_RECESSED,
+            'Surface' => MOUNTING_SURFACE,
+            'Downlight' => MOUNTING_DOWNLIGHT,
+            'Downlight Isosafe' => MOUNTING_DOWNLIGHT_ISOSAFE,
+            'Pendant' => MOUNTING_PENDANT,
+            'Tracks' => MOUNTING_TRACKS
+        ];
+
+        if (in_array($type, array_keys($mountingMap))) {
+            return $mountingMap[$type];
+        }
+
+        return '';
     }
 }
