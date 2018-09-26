@@ -193,7 +193,7 @@ class Index extends BaseController
             $this->load->config('css_config');
             $data['css'] = $this->config->item('signup');
             $data['js'] = 'signup';
-            load_outerwebcropper_views('/index/signup', $data);
+            website_noauth_view('/index/signup', $data);
         } catch (Exception $e) {
             echo $e->getMessage();
         }

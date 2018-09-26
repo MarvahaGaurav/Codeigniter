@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined("BASEPATH") or exit("No direct script access allowed");
 
 require_once 'BaseController.php';
@@ -15,7 +15,6 @@ class InspirationController extends BaseController
     {
         parent::__construct();
         $this->load->model('Inspiration');
-        
     }
 
     /**
@@ -68,8 +67,8 @@ class InspirationController extends BaseController
      *     required=true
      *   ),
      * @SWG\Response(response=422, description="Missing parameters"),
-     * @SWG\Response(response=200, description="Inspiration added"),     
-     * @SWG\Response(response=500, description="Internal server error")        
+     * @SWG\Response(response=200, description="Inspiration added"),
+     * @SWG\Response(response=500, description="Internal server error")
      * )
      */
     public function inspiration_post()
@@ -83,7 +82,7 @@ class InspirationController extends BaseController
 
         $check = check_empty_parameters($request_data, $mandatoryFields);
 
-        if ($check['error'] ) {
+        if ($check['error']) {
             $this->response(
                 [
                 'code' => HTTP_UNPROCESSABLE_ENTITY,
@@ -96,7 +95,7 @@ class InspirationController extends BaseController
             );
         }
 
-        if (isset($request_data['media']) && !empty($request_data['media']) ) {
+        if (isset($request_data['media']) && !empty($request_data['media'])) {
             // $request_data['media'] = trim($this->post("media"));
             $this->load->model("InspirationMedia");
             $media = json_decode($request_data['media'], true);
@@ -112,19 +111,19 @@ class InspirationController extends BaseController
 
 
         $add_products = false;
-        if (isset($request_data['product_ids']) ) {
+        if (isset($request_data['product_ids'])) {
             $request_data['product_ids'] = json_decode($request_data['product_ids']);
-            if (is_array($request_data['product_ids']) ) {
+            if (is_array($request_data['product_ids'])) {
                 $add_products = true;
             }
         }
-        
+
         try {
             $this->db->trans_begin();
             $inspirationId = $this->Inspiration->save();
             if ($add_products) {
                 $this->load->model("InspirationProduct");
-                foreach($request_data['product_ids'] as $product_id) {
+                foreach ($request_data['product_ids'] as $product_id) {
                     $this->InspirationProduct->batch_data[] = [
                         "inspiration_id" => $inspirationId,
                         "product_id" => $product_id
@@ -134,15 +133,15 @@ class InspirationController extends BaseController
                 $this->InspirationProduct->batch_save();
             }
             //if media data is available, prepare batch
-            if (! empty($media) && is_array($media) ) {
-                foreach ( $media as $key => $value ) {
-                    if (! is_array($value) ) {
+            if (! empty($media) && is_array($media)) {
+                foreach ($media as $key => $value) {
+                    if (! is_array($value)) {
                         $value = [];
                     }
                     $value = trim_input_parameters($value);
                     $mandatory_json = ["type", "media"];
                     $check_json = check_empty_parameters($value, $mandatory_json);
-                    if ($check_json['error'] ) {
+                    if ($check_json['error']) {
                         $this->response(
                             [
                             'code' => HTTP_UNPROCESSABLE_ENTITY,
@@ -162,9 +161,9 @@ class InspirationController extends BaseController
                         "media" => $value['media'],
                         "video_thumbnail" => ""
                     ];
-                    if (CONTENT_TYPE_VIDEO === (int)$value['type'] && !isset($value['video_thumbnail'])  ) {
+                    if (CONTENT_TYPE_VIDEO === (int)$value['type'] && !isset($value['video_thumbnail'])) {
                         $content['video_thumbnail'] = generate_video_thumbnail($value['media']);
-                    } else if (CONTENT_TYPE_VIDEO === (int)$value['type'] && isset($value['video_thumbnail']) ) {
+                    } elseif (CONTENT_TYPE_VIDEO === (int)$value['type'] && isset($value['video_thumbnail'])) {
                         $content['video_thumbnail'] = $value['video_thumbnail'];
                     }
                     $this->InspirationMedia->batch_data[] = $content;
@@ -179,7 +178,7 @@ class InspirationController extends BaseController
                 'msg' => $this->lang->line("inspiration_added")
                 ]
             );
-        } catch ( InsertException $error ) {
+        } catch (InsertException $error) {
             $this->db->trans_rollback();
             $this->response(
                 [
@@ -190,20 +189,20 @@ class InspirationController extends BaseController
                     'info' => 'Insert Error',
                     'query' => $error->getMessage()
                 ]
-                ], HTTP_INTERNAL_SERVER_ERROR
+                ],
+                HTTP_INTERNAL_SERVER_ERROR
             );
-        }  catch (\Exception $error) {
+        } catch (\Exception $error) {
             $this->db->trans_rollback();
             $this->response(
                 [
                 'code' => HTTP_INTERNAL_SERVER_ERROR,
                 'api_code_result' => 'INTERNAL_SERVER_ERROR',
                 'msg' => $this->lang->line('internal_server_error')
-                ], HTTP_INTERNAL_SERVER_ERROR
+                ],
+                HTTP_INTERNAL_SERVER_ERROR
             );
         }
-        
-        
     }
 
     /**
@@ -232,8 +231,8 @@ class InspirationController extends BaseController
      *     type="string"
      *   ),
      * @SWG\Response(response=202, description="No data found"),
-     * @SWG\Response(response=200, description="Inspiration added"),     
-     * @SWG\Response(response=500, description="Internal server error")   
+     * @SWG\Response(response=200, description="Inspiration added"),
+     * @SWG\Response(response=500, description="Internal server error")
      * )
      */
     public function inspiration_get()
@@ -255,24 +254,24 @@ class InspirationController extends BaseController
         ];
 
         $is_single_row = false;
-        if (isset($request_data['inspiration_id']) ) {
+        if (isset($request_data['inspiration_id'])) {
             $is_single_row = true;
             $options['inspiration_id'] = $request_data['inspiration_id'];
             unset($options['offset']);
         }
 
         $result = $this->Inspiration->get($options);
-        if ($is_single_row ) {
+        if ($is_single_row) {
             $data = $result;
         } else {
             $data = $result['result'];
             $offset = (int)$offset + RECORDS_PER_PAGE;
-            if ((int)$offset >= (int)$result['count'] ) {
+            if ((int)$offset >= (int)$result['count']) {
                 $offset = -1;
             }
         }
 
-        if (empty($data) ) {
+        if (empty($data)) {
             $this->response(
                 [
                 "code" => NO_DATA_FOUND,
@@ -282,7 +281,7 @@ class InspirationController extends BaseController
             );
         }
 
-        if ($is_single_row ) {
+        if ($is_single_row) {
             $data['media'] = "[" . $data['media'] . "]";
             $data['media'] = json_decode($data['media'], true);
             $data['products'] = "[" . $data['products'] . "]";
@@ -302,7 +301,8 @@ class InspirationController extends BaseController
                     unset($inspiration['media_type']);
                     unset($inspiration['video_thumbnail']);
                     return $inspiration;
-                }, $data
+                },
+                $data
             );
         }
 
@@ -313,7 +313,7 @@ class InspirationController extends BaseController
             "data" => $data
         ];
 
-        if (! $is_single_row ) {
+        if (! $is_single_row) {
             $response['offset'] = $offset;
         }
         
@@ -379,8 +379,8 @@ class InspirationController extends BaseController
      *     type="string"
      *   ),
      * @SWG\Response(response=422, description="Missing parameters/Nothing to update"),
-     * @SWG\Response(response=200, description="Inspiration updated"),     
-     * @SWG\Response(response=500, description="Internal server error")   
+     * @SWG\Response(response=200, description="Inspiration updated"),
+     * @SWG\Response(response=500, description="Internal server error")
      * )
      */
     public function inspiration_put()
@@ -394,16 +394,16 @@ class InspirationController extends BaseController
         $media_remove_list = [];
         $add_media_data = [];
 
-        if (isset($request_data['media_to_delete']) ) {
+        if (isset($request_data['media_to_delete'])) {
             $media_remove_list = json_decode($request_data['media_to_delete'], true);
-            if (isset($media_remove_list) && ! empty($media_remove_list) ) {
+            if (isset($media_remove_list) && ! empty($media_remove_list)) {
                 $remove_media = true;
             }
         }
 
-        if (isset($request_data['media']) ) {
+        if (isset($request_data['media'])) {
             $add_media_data = json_decode($request_data['media'], true);
-            if (isset($add_media_data) && ! empty($add_media_data) ) {
+            if (isset($add_media_data) && ! empty($add_media_data)) {
                 $add_media = true;
             }
         }
@@ -412,7 +412,7 @@ class InspirationController extends BaseController
 
         $check = check_empty_parameters($request_data, $mandatoryFields);
 
-        if ($check['error'] ) {
+        if ($check['error']) {
             $this->response(
                 [
                 'code' => HTTP_UNPROCESSABLE_ENTITY,
@@ -427,7 +427,7 @@ class InspirationController extends BaseController
         $check = $request_data;
         unset($check['inspiration_id']);
 
-        if (empty($check) ) {
+        if (empty($check)) {
             $this->response(
                 [
                 'code' => HTTP_UNPROCESSABLE_ENTITY,
@@ -446,7 +446,7 @@ class InspirationController extends BaseController
             ]
         );
 
-        if (! $inspirationData ) {
+        if (! $inspirationData) {
             $this->response(
                 [
                 "code" => NO_DATA_FOUND,
@@ -456,13 +456,14 @@ class InspirationController extends BaseController
             );
         }
 
-        if ($inspirationData['company_id'] != $user_data['company_id'] ) {
+        if ($inspirationData['company_id'] != $user_data['company_id']) {
             $this->response(
                 [
                 "code" => HTTP_FORBIDDEN,
                 "api_code_result" => "FORBIDDEN",
                 "msg" => $this->lang->line("cannot_update_inspiration")
-                ], HTTP_FORBIDDEN
+                ],
+                HTTP_FORBIDDEN
             );
         }
 
@@ -471,28 +472,27 @@ class InspirationController extends BaseController
             "description" => "description"
         ];
 
-        foreach ( $inspiration_update_map as $request_key => $db_key  ) {
-            if (isset($request_data[$request_key]) && !empty($request_data[$request_key]) ) {
+        foreach ($inspiration_update_map as $request_key => $db_key) {
+            if (isset($request_data[$request_key]) && !empty($request_data[$request_key])) {
                 $this->Inspiration->$db_key = $request_data[$request_key];
             }
         }
 
         $this->load->model("InspirationMedia");
-        if ($remove_media ) {
+        if ($remove_media) {
             $remove_media_where = ['id' => $media_remove_list];
         }
 
-        if ($add_media ) {
-            
-            foreach ( $add_media_data as $key => $value ) {
-                if (! is_array($value) ) {
+        if ($add_media) {
+            foreach ($add_media_data as $key => $value) {
+                if (! is_array($value)) {
                     $value = [];
                 }
                 
                 $value = trim_input_parameters($value);
                 $mandatory_json = ["type", "media"];
                 $check_json = check_empty_parameters($value, $mandatory_json);
-                if ($check_json['error'] ) {
+                if ($check_json['error']) {
                     $this->response(
                         [
                         'code' => HTTP_UNPROCESSABLE_ENTITY,
@@ -512,9 +512,9 @@ class InspirationController extends BaseController
                     "media" => $value['media'],
                     "video_thumbnail" => ""
                 ];
-                if (CONTENT_TYPE_VIDEO === (int)$value['type'] && !isset($value['video_thumbnail'])  ) {
+                if (CONTENT_TYPE_VIDEO === (int)$value['type'] && !isset($value['video_thumbnail'])) {
                     $content['video_thumbnail'] = generate_video_thumbnail($value['media']);
-                } else if (CONTENT_TYPE_VIDEO === (int)$value['type'] && isset($value['video_thumbnail']) ) {
+                } elseif (CONTENT_TYPE_VIDEO === (int)$value['type'] && isset($value['video_thumbnail'])) {
                     $content['video_thumbnail'] = $value['video_thumbnail'];
                 }
                 
@@ -528,44 +528,44 @@ class InspirationController extends BaseController
 
         //add more products
         $add_products = false;
-        if (isset($request_data['product_ids']) ) {
+        if (isset($request_data['product_ids'])) {
             $request_data['product_ids'] = json_decode($request_data['product_ids']);
-            if (is_array($request_data['product_ids']) ) {
+            if (is_array($request_data['product_ids'])) {
                 $add_products = true;
             }
         }
 
          //add more products
          $remove_products = false;
-        if (isset($request_data['remove_product_ids']) ) {
+        if (isset($request_data['remove_product_ids'])) {
             $request_data['remove_product_ids'] = json_decode($request_data['remove_product_ids']);
-            if (is_array($request_data['remove_product_ids']) ) {
+            if (is_array($request_data['remove_product_ids'])) {
                 $remove_products = true;
             }
         }
         
         try {
             $this->db->trans_begin();
-            if (isset($request_data['title']) || isset($request_data['description']) ) {
+            if (isset($request_data['title']) || isset($request_data['description'])) {
                 $this->Inspiration->update($where);
             }
-            if ($add_media ) {
+            if ($add_media) {
                 $this->InspirationMedia->batch_save();
             }
 
-            if ($remove_products || $add_products ) {
+            if ($remove_products || $add_products) {
                 $this->load->model("InspirationProduct");
             }
 
-            if ($remove_products ) {
+            if ($remove_products) {
                 $this->InspirationProduct->delete(
-                    ["inspiration_id" => $request_data['inspiration_id']], 
+                    ["inspiration_id" => $request_data['inspiration_id']],
                     ["product_id" => $request_data['remove_product_ids']]
                 );
             }
 
             if ($add_products) {
-                foreach($request_data['product_ids'] as $product_id) {
+                foreach ($request_data['product_ids'] as $product_id) {
                     $this->InspirationProduct->batch_data[] = [
                         "inspiration_id" => $request_data['inspiration_id'],
                         "product_id" => $product_id
@@ -575,7 +575,7 @@ class InspirationController extends BaseController
                 $this->InspirationProduct->batch_save();
             }
             
-            if ($remove_media ) {
+            if ($remove_media) {
                 $this->InspirationMedia->delete(['inspiration_id' => $request_data['inspiration_id']], $remove_media_where);
             }
             $this->db->trans_commit();
@@ -588,7 +588,7 @@ class InspirationController extends BaseController
             );
         } catch (UpdateException $error) {
             $this->db->rollback();
-            if ($error->code == 101 ) { // zero rows affected
+            if ($error->code == 101) { // zero rows affected
                 //success
                 $this->response(
                     [
@@ -610,7 +610,7 @@ class InspirationController extends BaseController
                     ]
                 );
             }
-        }  catch (\Exception $error) {
+        } catch (\Exception $error) {
             $this->db->rollback();
             $this->response(
                 [
@@ -644,12 +644,12 @@ class InspirationController extends BaseController
      *     type="string"
      *   ),
      * @SWG\Response(response=422, description="Missing parameters/Nothing to update"),
-     * @SWG\Response(response=200, description="Inspiration updated"),     
+     * @SWG\Response(response=200, description="Inspiration updated"),
      * @SWG\Response(response=500, description="Internal server error")
      * )
      */
     public function inspiration_delete()
-    {   
+    {
         $userData = $this->accessTokenCheck('company_id');
         $language_code = $this->langcode_validate();
         try {
@@ -660,7 +660,7 @@ class InspirationController extends BaseController
 
             $check = check_empty_parameters($request_data, $mandatory);
 
-            if ($check['error'] ) {
+            if ($check['error']) {
                 $this->response(
                     [
                     'code' => HTTP_UNPROCESSABLE_ENTITY,
@@ -682,7 +682,7 @@ class InspirationController extends BaseController
                 ]
             );
 
-            if (! $inspirationData ) {
+            if (! $inspirationData) {
                 $this->response(
                     [
                     "code" => NO_DATA_FOUND,
@@ -693,13 +693,14 @@ class InspirationController extends BaseController
             }
             // print_r((int)$inspirationData);
             // print_r((int)$userData);die;
-            if ((int)$inspirationData['company_id'] !== (int)$userData['company_id'] ) {
+            if ((int)$inspirationData['company_id'] !== (int)$userData['company_id']) {
                 $this->response(
                     [
                     "code" => HTTP_FORBIDDEN,
                     "api_code_result" => "FORBIDDEN",
                     "msg" => $this->lang->line("cannot_delete_inspiration")
-                    ], HTTP_FORBIDDEN
+                    ],
+                    HTTP_FORBIDDEN
                 );
             }
 
@@ -713,7 +714,8 @@ class InspirationController extends BaseController
             $media_to_delete = array_map(
                 function ($data) {
                     return $data['media'];
-                }, $media
+                },
+                $media
             );
         
             $this->db->trans_begin();
@@ -731,7 +733,9 @@ class InspirationController extends BaseController
             );
             
             $response = $http_client->request(
-                'POST', 'UtilityController/delete_media', [
+                'POST',
+                'UtilityController/delete_media',
+                [
                 'auth' => [ AUTH_USER, AUTH_PASS ],
                 'form_params' => [
                     'media' => $media_to_delete,
@@ -740,12 +744,11 @@ class InspirationController extends BaseController
                 ]
             );
             
-            if ($response->getStatusCode() == 200 ) {
+            if ($response->getStatusCode() == 200) {
                 $body = $response->getBody();
                 $content = $body->getContents();
                 // print_r($content);die;
             } else {
-
             }
             $this->response(
                 [
@@ -754,7 +757,7 @@ class InspirationController extends BaseController
                 'msg' => $this->lang->line("inspiration_removed")
                 ]
             );
-        } catch ( DeleteException $error ) {
+        } catch (DeleteException $error) {
             $this->db->trans_rollback();
             $this->response(
                 [

@@ -24,6 +24,13 @@ function load_views($customView, $data = array())
     $CI->load->view('templates/footer', $data);
 }
 
+/**
+ * Admin Views
+ *
+ * @param string $customView
+ * @param array $data
+ * @return void
+ */
 function load_views_cropper($customView, $data = array())
 {
     $CI = &get_instance();
@@ -32,6 +39,14 @@ function load_views_cropper($customView, $data = array())
     $CI->load->view('templates/cropper');
     $CI->load->view('templates/footer', $data);
 }
+
+/**
+ * Admmin Views
+ *
+ * @param string $customView
+ * @param array $data
+ * @return void
+ */
 function load_outer_views($customView, $data = array())
 {
     $CI = &get_instance();
@@ -55,6 +70,14 @@ function load_outerwebcropper_views($customView, $data = array())
     $CI->load->view($customView, $data);
     $CI->load->view('/index/cropper');
     $CI->load->view('/index/footer', $data);
+}
+
+function website_noauth_view($customView, $data = [])
+{
+    $CI = &get_instance();
+    $CI->load->view('/index/header', $data);
+    $CI->load->view($customView, $data);
+    $CI->load->view('/index/bundle_footer', $data);
 }
 /**
  * Loads alternate views which depends on the require js modules
