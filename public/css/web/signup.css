@@ -1,0 +1,10 @@
+select.contact-number {
+    display: inline-block;
+    width: 22%;
+}
+
+input.contact-number {
+    display: inline-block;
+    width: 76%;
+    margin-left: 0.88%;
+}
