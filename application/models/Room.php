@@ -23,7 +23,9 @@ class Room extends BaseModel
             $this->db->where("rooms.id", $options['room_id']);
             $singleRow = true;
         } else {
-            $query = "SQL_CALC_FOUND_ROWS room_id, title, image, icon";
+            $query = "SQL_CALC_FOUND_ROWS room_id, title, image, icon, ugr, uo, reflection_values_wall,
+                    reflection_values_ceiling, reflection_values_floor, maintainance_factor, lux_values,
+                    reference_height";
         }
 
         $this->db->select($query, false)
