@@ -247,11 +247,11 @@ define('CHAT_PUSH', 7);
 defined("OPEN_SSL_KEY") or define('OPEN_SSL_KEY', '011b519a043dcb915314695e1ce560dd4e29dae06867cdb701ffc96350e18caf');
 
 defined("PRIVATE_USER") or define("PRIVATE_USER", 1);
+defined("BUSINESS_USER") or define("BUSINESS_USER", 6);
 defined("INSTALLER") or define("INSTALLER", 2);
 defined("ARCHITECT") or define("ARCHITECT", 3);
 defined("ELECTRICAL_PLANNER") or define("ELECTRICAL_PLANNER", 4);
 defined("WHOLESALER") or define("WHOLESALER", 5);
-defined("BUSINESS_USER") or define("BUSINESS_USER", 6);
 
 /* ROLES */
 defined("ROLE_USER") or define("ROLE_USER", 0);
@@ -280,3 +280,6 @@ defined("MOUNTING_DOWNLIGHT") or define("MOUNTING_DOWNLIGHT", 4);
 defined("MOUNTING_DOWNLIGHT_ISOSAFE") or define("MOUNTING_DOWNLIGHT_ISOSAFE", 5);
 defined("MOUNTING_PENDANT") or define("MOUNTING_PENDANT", 6);
 defined("MOUNTING_TRACKS") or define("MOUNTING_TRACKS", 7);
+
+defined("NO") or define("NO", 0);
+defined("YES") or define("YES", 1);

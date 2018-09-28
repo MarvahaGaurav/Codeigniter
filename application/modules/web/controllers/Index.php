@@ -190,9 +190,25 @@ class Index extends BaseController
     {
         try {
             $data = [];
+            $this->load->helper(['location', 'form']);
+            $this->lang->load(['sg', 'forms'], 'french');
             $this->load->config('css_config');
+            $data['countries'] = fetch_countries();
             $data['css'] = $this->config->item('signup');
             $data['js'] = 'signup';
+            if ($this->input->post()) {
+                $userType = $this->input->post('user_type');
+                $this->form_validation->set_rules($this->signupValidationRules());
+                if (in_array((int)$userType, [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER, WHOLESALER], true)) {
+                    $this->form_validation->set_rules($this->technicianEmployeeRules());
+                    $isCompanyOwner = $this->input->post('is_company_owner');
+                    if (is_numeric($isCompanyOwner) && (int)$isCompanyOwner === 1) {
+                        $this->form_validation->set_rules($this->compannyOwnerRules());
+                    }
+                }
+                $this->form_validation->run();
+                pd(validation_errors());
+            }
             website_noauth_view('/index/signup', $data);
         } catch (Exception $e) {
             echo $e->getMessage();
@@ -376,5 +392,98 @@ class Index extends BaseController
         $data = [];
         $data['url'] = base_url() . 'request/welcomeMail?email=' . $mailData['email'] . '&name=' . urlencode($mailData['name']);
         sendGetRequest($data);
+    }
+
+    private function signupValidationRules()
+    {
+        return [
+            [
+                'label' => $this->lang->line('user_type'),
+                'field' => 'user_type',
+                'rules' => 'trim|required|regex_match[/^(1|2|3|4|5|6)$/]'
+            ],
+            [
+                'label' => $this->lang->line('fullname'),
+                'field' => 'fullname',
+                'rules' => 'trim|required'
+            ],
+            [
+                'label' => $this->lang->line('email'),
+                'field' => 'email',
+                'rules' => 'trim|required|valid_email'
+            ],
+            [
+                'label' => $this->lang->line('password'),
+                'field' => 'password',
+                'rules' => 'trim|required|min_length[6]'
+            ],
+            [
+                'label' => $this->lang->line('confirm_password'),
+                'field' => 'confirm_password',
+                'rules' => 'trim|matches[password]'
+            ],
+            [
+                'label' => $this->lang->line('contact_number_code'),
+                'field' => 'contact_number_code',
+                'rules' => 'trim|required'
+            ],
+            [
+                'label' => $this->lang->line('contact_number'),
+                'field' => 'contact_number',
+                'rules' => 'trim|required|numeric'
+            ],
+            [
+                'label' => $this->lang->line('alternate_contact_number_code'),
+                'field' => 'alternate_contact_number_code',
+                'rules' => 'trim|required'
+            ],
+            [
+                'label' => $this->lang->line('alternate_contact_number'),
+                'field' => 'alternate_contact_number',
+                'rules' => 'trim|required|numeric'
+            ],
+            [
+                'label' => $this->lang->line('country'),
+                'field' => 'country',
+                'rules' => 'trim|required'
+            ],
+            [
+                'label' => $this->lang->line('city'),
+                'field' => 'city',
+                'rules' => 'trim|required'
+            ],
+            [
+                'label' => $this->lang->line('zipcode'),
+                'field' => 'zipcode',
+                'rules' => 'trim|required'
+            ],
+        ];
+    }
+
+    private function technicianEmployeeRules()
+    {
+        return [
+            [
+                'label' => '',
+                'field' => 'is_company_owner',
+                'rules' => 'trim|required'
+            ],
+            [
+                'label' => $this->lang->line('company_name'),
+                'field' => 'company_name',
+                'rules' => 'trim|required'
+            ]
+        ];
+    }
+
+    private function compannyOwnerRules()
+    {
+        return [
+            [
+                'label' => $this->lang->line('company_registration_number'),
+                'field' => 'company_registration_number',
+                'rules' => 'trim|required'
+            ]
+        ];
     }
 }

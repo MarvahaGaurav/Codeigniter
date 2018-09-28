@@ -3,7 +3,7 @@
     var domain = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + '/admin';
     var domain2 = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
     
-    if ( $selectCity.attr('data-country').length > 0 ) {
+    if ( $selectCity.attr('data-country') && $selectCity.attr('data-country').length > 0 ) {
         var cityOptions = {
             location: $selectCity.attr('data-country')
         };
@@ -52,6 +52,7 @@
         $(parent).on(events, source, function () {
             var $self = $(this),
                 selfValue = $self.val();
+            $selectCity.val('');
             if (!selfValue || (typeof selfValue == "string" && selfValue.length == 0)) {
                 return 0;
             }

@@ -19,7 +19,7 @@ class Application extends BaseModel
         $this->db->select("application_id, type, title, subtitle, image")
         ->from("applications as app")
         ->where("app.language_code", $params['language_code']);
-        if ( isset($params['type']) && !empty($params['type']) ) {
+        if (isset($params['type']) && !empty($params['type'])) {
             $this->db->where("app.type", $params["type"]);
         }
 
@@ -29,5 +29,4 @@ class Application extends BaseModel
 
         return $result;
     }
-
 }

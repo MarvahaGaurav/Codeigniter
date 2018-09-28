@@ -1,5 +1,5 @@
 <?php
-defined("BASEPATH") OR exit("No direct script access allowed");
+defined("BASEPATH") or exit("No direct script access allowed");
 
 require 'BaseController.php';
 
@@ -55,7 +55,7 @@ class CompanyController extends BaseController
      *   ),
      * @SWG\Response(response=200, description="OK"),
      * @SWG\Response(response=401, description="Unauthorize"),
-     * @SWG\Response(response=202, description="No data found"), 
+     * @SWG\Response(response=202, description="No data found"),
      * )
      */
     public function company_get()
@@ -65,19 +65,20 @@ class CompanyController extends BaseController
         $accessTokenSet = (isset($header['accesstoken']) && !empty(trim($header['accesstoken'])) || isset($header['Accesstoken']) && !empty(trim($header['Accesstoken']))) ? true: false;
         
         $getData = $this->get();
-        $getData = trim_input_parameters($getData); 
+        $getData = trim_input_parameters($getData);
         $offset = isset($getData['offset'])&&!empty((int)$getData['offset'])?(int)$getData['offset']:0;
         $paginate = isset($getData['paginate'])&&(int)$getData['paginate'] === 1?true: false;
-        if ((isset($getData['favorite']) && (int)$getData['favorite'] === 1) && ! $accessTokenSet ) {
+        if ((isset($getData['favorite']) && (int)$getData['favorite'] === 1) && ! $accessTokenSet) {
             $this->response(
                 [
                 "code" => HTTP_UNAUTHORIZED,
                 "api_code_result" => "UNAUTHORIZED",
                 "msg" => $this->lang->line("invalid_access_token")
-                ], HTTP_UNAUTHORIZED
+                ],
+                HTTP_UNAUTHORIZED
             );
         }
-        if ($accessTokenSet ) {
+        if ($accessTokenSet) {
             $userData = $this->accessTokenCheck();
             $params['user_id'] = $userData['user_id'];
         }
@@ -85,7 +86,7 @@ class CompanyController extends BaseController
         $params["offset"] = $offset;
         $params["limit"] = RECORDS_PER_PAGE;
 
-        if (isset($getData['search']) ) {
+        if (isset($getData['search'])) {
             $params['search'] = $getData['search'];
         }
         
@@ -100,20 +101,19 @@ class CompanyController extends BaseController
             // }
             $result = $this->Favorite_model->getFavorites($params);
             $offset = $offset + RECORDS_PER_PAGE;
-            if ((int)$result['count'] <= $offset ) {
+            if ((int)$result['count'] <= $offset) {
                 $offset = -1;
             }
             $result = $result['result'];
-
         } else {
             $offsetFlag = true;
-            if (isset($getData['company_id']) && !empty((int)$getData['company_id']) ) {
+            if (isset($getData['company_id']) && !empty((int)$getData['company_id'])) {
                 $params['company_id'] = $getData['company_id'];
                 $params['offset'] = 0;
                 $params['limit'] = 0;
                 $offsetFlag = false;
             }
-            if (! $paginate ) {
+            if (! $paginate) {
                 $params['offset'] = 0;
                 $params['limit'] = 0;
             } else {
@@ -124,21 +124,21 @@ class CompanyController extends BaseController
             $result = $this->Company_model->getCompanyList($params);
             $lang = "company_records_found";
 
-            if ($offsetFlag ) {
+            if ($offsetFlag) {
                 $offset = $offset + RECORDS_PER_PAGE;
-                if ((int)$result['count'] <= $offset ) {
+                if ((int)$result['count'] <= $offset) {
                     $offset = -1;
                 }
             }
             $result = $result['result'];
         }
 
-        if (! $result ) {
+        if (! $result) {
             $this->response(
                 [
-                "code" => NO_DATA_FOUND,
-                "api_code_result" => "NO_DATA_FOUND",
-                "msg" => $this->lang->line("no_records_found")
+                    "code" => NO_DATA_FOUND,
+                    "api_code_result" => "NO_DATA_FOUND",
+                    "msg" => $this->lang->line("no_records_found")
                 ]
             );
         }
@@ -149,7 +149,7 @@ class CompanyController extends BaseController
            "data" => $result,
            "offset" => $offset
         ];
-        if (! isset($getData['favorite']) && (int)$getData['favorite'] !== 1 && ! $paginate ) {
+        if (! isset($getData['favorite']) && (int)$getData['favorite'] !== 1 && ! $paginate) {
             unset($response['offset']);
         }
         $this->response($response, HTTP_OK);

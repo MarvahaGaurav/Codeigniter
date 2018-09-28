@@ -5,59 +5,32 @@ requirejs.config({
     jquery: "jquery.min",
     bootstrap: "bootstrap.min",
     common: "web/common",
-    jqueryScrollbar: "plugin/jquery.scrollbar.min"
+    selectPicker: "bootstrap-select.min",
+    jqueryScrollbar: "plugin/jquery.scrollbar.min",
+    jqueryValidator: 'jquery.validate.min',
+    autocomplete: 'jquery.autocomplete.min',
+    location: 'lib/location',
+    helper: 'web/helpers/signup'
   },
   shim: {
     //dependencies
     bootstrap: ['jquery'],
+    selectPicker: ['bootstrap'],
     common: ['bootstrap'],
-    jqueryScrollbar: ['jquery']
+    jqueryScrollbar: ['jquery'],
+    jqueryValidator: ['jquery'],
+    helper: ['jqueryValidator'],
+    autocomplete: ['jquery'],
+    location: ['autocomplete']
   }
 });
 
 requirejs(
-  ["jquery", "bootstrap", "common", "jqueryScrollbar"],
+  ["jquery", "bootstrap", "common", "jqueryScrollbar", "jqueryValidator", "helper", "autocomplete", "location", "selectPicker"],
   function ($) {
-    // upload the image on click
-    $('#upload').change(function () {
-      var file = this.files[0];
-      var reader = new FileReader();
-      reader.onloadend = function () {
-        $('#image-view').css('background-image', 'url("' + reader.result + '")');
-      }
-      if (file) {
-        reader.readAsDataURL(file);
-      } else {
-        console.log('not done');
-      }
-    });
-
-    $(document).ready(function () {
-
-      //show pop up on from select options
-      $('select').change(function () {
-        if ($(this).val() == "business") {
-          $('.wholesaler-field').css('display', 'none');
-        }
-      });
-
-      //show pop up on from select options
-      $('select').change(function () {
-        if ($(this).val() == "wholesaler") {
-          $('.wholesaler-field').css('display', 'block');
-          $('.installer-field').css('display', 'none');
-        }
-      });
-
-      //show pop up on from select options
-      $('select').change(function () {
-        if ($(this).val() == "installer") {
-          $('.installer-field').css('display', 'block');
-          $('.wholesaler-field').css('display', 'none');
-        }
-      });
-
-    })
+    fetchLocation('/xhttp/cities');
+    
+    // $(".selectpicker").selectpicker();
   },
   function () {
 
