@@ -5,7 +5,7 @@
         "description": "Smart Guide APIs, valid lanuage code's\n *          en : English\n *          da : Danish\n *          nb : Norwegian\n *          sv : Swedish\n *          fi : Finnish\n *          fr : French\n *          nl : Dutch\n *          de : German",
         "version": "1"
     },
-    "host": "smartguide-dev.applaurels.com",
+    "host": "smartguide-staging.applaurels.com",
     "basePath": "/api/v1",
     "schemes": [
         "http"
@@ -1041,6 +1041,138 @@
                 }
             }
         },
+        "/products/mounting-types": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Product Mounting types",
+                "description": "Lists all the product mounting types",
+                "operationId": "mountingTypes_get",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Language-Code",
+                        "in": "header",
+                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/rooms/{room_id}/mounting-types/{mounting_type_id}/products": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Product Mounting types",
+                "description": "Lists all the product mounting types",
+                "operationId": "mountingTypes_get",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Language-Code",
+                        "in": "header",
+                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "room_id",
+                        "in": "path",
+                        "description": "room_id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "mounting_type",
+                        "in": "path",
+                        "description": "Mounting Type",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "other_products",
+                        "in": "query",
+                        "description": "Optional pass value 1 to retrieve other products",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "404": {
+                        "description": "No data found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/products/{product_id}": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Product Mounting types",
+                "description": "Lists all the product mounting types",
+                "operationId": "mountingTypes_get",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Language-Code",
+                        "in": "header",
+                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "product_id",
+                        "in": "path",
+                        "description": "product_id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "404": {
+                        "description": "No data found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
         "/applications/{application_id}/products": {
             "get": {
                 "tags": [
@@ -1070,62 +1202,6 @@
                         "name": "offset",
                         "in": "query",
                         "description": "offset paramters to paginate",
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "401": {
-                        "description": "Unauthorize"
-                    },
-                    "202": {
-                        "description": "No data found"
-                    }
-                }
-            }
-        },
-        "/products/{product_id}": {
-            "get": {
-                "tags": [
-                    "Products"
-                ],
-                "summary": "Application",
-                "description": "",
-                "operationId": "application_get",
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "X-Language-Code",
-                        "in": "header",
-                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
-                        "type": "string"
-                    },
-                    {
-                        "name": "product_id",
-                        "in": "query",
-                        "description": "Product id",
-                        "type": "string"
-                    },
-                    {
-                        "name": "offset",
-                        "in": "query",
-                        "description": "",
-                        "type": "string"
-                    },
-                    {
-                        "name": "search",
-                        "in": "query",
-                        "description": "Search key",
-                        "type": "string"
-                    },
-                    {
-                        "name": "type",
-                        "in": "query",
-                        "description": "1-Residential, 2-Professional",
                         "type": "string"
                     }
                 ],

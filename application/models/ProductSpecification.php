@@ -9,11 +9,19 @@ class ProductSpecification extends BaseModel
     public function __construct()
     {
         parent::__construct();
-        $this->tableName = "product_gallery";
+        $this->tableName = "product_specifications";
     }
 
-    public function get()
+    public function get($params)
     {
-        
+        $this->db->select('*')
+            ->from($this->tableName)
+            ->where('product_id', $params['product_id']);
+
+        $query = $this->db->get();
+
+        $data = $query->result_array();
+
+        return $data;
     }
 }

@@ -107,6 +107,7 @@ class ProductController extends BaseController
             $productUpdate = [];
             $productTechnicalData = [];
             $productArticles = [];
+            $relatedProductsData = [];
             foreach ($this->language_code as $language) {
                 $productByLanguage = array_filter($products, function ($data) use ($language) {
                     return $data['language_code'] === $language;
@@ -133,6 +134,15 @@ class ProductController extends BaseController
                         $output['updated_at'] = $this->datetime;
                         return $output;
                     }, $data['technicalData']);
+
+                    $productRelated = array_map(function ($data) use ($productId) {
+                        $output['product_id'] = $productId;
+                        $output['related_product_id'] = $data['id'];
+                        $output['created_at'] = $this->datetime;
+                        $output['updated_at'] = $this->datetime;
+                        return $output;
+                    }, $data['relatedProducts']);
+
                     $productSpecification = array_map(function ($data) use ($productId, $language) {
                         $output['product_id'] = $productId;
                         $output['language_code'] = $language;
@@ -146,11 +156,13 @@ class ProductController extends BaseController
                     $productUpdate = array_merge($productUpdate, [$product]);
                     $productTechnicalData = array_merge($productTechnicalData, $productTechnical);
                     $productArticles = array_merge($productArticles, $productSpecification);
+                    $relatedProductsData = array_merge($relatedProductsData, $productRelated);
                 }
             }
             $this->db->trans_begin();
             $this->UtilModel->updateBatch('products', $productUpdate, 'product_id');
             $this->UtilModel->insertBatch('product_technical_data', $productTechnicalData);
+            $this->UtilModel->insertBatch('products_related', $relatedProductsData);
             $this->UtilModel->insertBatch('product_specifications', $productArticles);
             $this->db->trans_commit();
             $this->response([

@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined("BASEPATH") or exit("No direct script access allowed");
 
 require_once 'BaseController.php';
@@ -15,7 +15,6 @@ class RoomController extends BaseController
     {
         parent::__construct();
         $this->load->model('Room');
-        
     }
 
     /**
@@ -39,96 +38,102 @@ class RoomController extends BaseController
      *     type="string"
      *   ),
      * @SWG\Response(response=202, description="No data found"),
-     * @SWG\Response(response=200, description="Room details fetched"),     
-     * @SWG\Response(response=500, description="Internal server error")   
+     * @SWG\Response(response=200, description="Room details fetched"),
+     * @SWG\Response(response=500, description="Internal server error")
      * )
      */
-    public function rooms_get() 
+    public function rooms_get()
     {
-        $language_code = $this->langcode_validate();
+        try {
+            $language_code = $this->langcode_validate();
 
-        $mandatoryFields = ["application_id"];  
+            $mandatoryFields = ["application_id"];
 
-        $request_data = $this->get();
-        $request_data = trim_input_parameters($request_data);
+            $request_data = $this->get();
+            $request_data = trim_input_parameters($request_data);
 
-        $check = check_empty_parameters($request_data, $mandatoryFields);
+            $check = check_empty_parameters($request_data, $mandatoryFields);
 
-        if ($check['error'] ) {
-            $this->response(
-                [
-                'code' => HTTP_UNPROCESSABLE_ENTITY,
-                'api_code_result' => 'UNPROCESSABLE_ENTITY',
-                'msg' => $this->lang->line('missing_parameter'),
-                'extra_info' => [
-                    "missing_parameter" => $check['parameter']
-                ]
-                ]
-            );
-        }
-
-        $is_single_row = false;
-        if (isset($request_data['room_id']) ) {
-            $is_single_row = true;
-        }
-
-        $offset = isset($request_data['offset'])?$request_data['offset']:0;
-
-        $options = [
-            'limit' => RECORDS_PER_PAGE,
-            'offset' => $offset,
-            'where' => [
-                "rooms.application_id" => $request_data['application_id']
-            ]
-        ];
-
-        if ($is_single_row ) {
-            $options['room_id'] = $request_data['room_id'];
-        }
-
-        $room_data = $this->Room->get($options);
-        $link = "";
-        $alt_link = "";
-
-        if ($is_single_row) {
-            $data = $room_data;
-        } else {
-            $data = $room_data['result'];
-            $offset = (int)$offset + RECORDS_PER_PAGE;
-            if ((int)$offset >= (int)$result['count'] ) {
-                $offset = -1;
-            } else {
-                $link = base_url("api/v1/applications/{$request_data['application_id']}/rooms?offset={$offset}");
+            if ($check['error']) {
+                $this->response(
+                    [
+                    'code' => HTTP_UNPROCESSABLE_ENTITY,
+                    'api_code_result' => 'UNPROCESSABLE_ENTITY',
+                    'msg' => $this->lang->line('missing_parameter'),
+                    'extra_info' => [
+                        "missing_parameter" => $check['parameter']
+                    ]
+                    ]
+                );
             }
-            $this->load->helper("url");
-           
-        }
 
-        if (empty($data) ) {
-            $this->response(
-                [
-                "code" => NO_DATA_FOUND,
-                "api_code_result" => "NO_DATA_FOUND",
-                "msg" => $this->lang->line("no_records_found")
+            $is_single_row = false;
+            if (isset($request_data['room_id'])) {
+                $is_single_row = true;
+            }
+
+            $offset = isset($request_data['offset'])?$request_data['offset']:0;
+
+            $options = [
+                'limit' => RECORDS_PER_PAGE,
+                'offset' => $offset,
+                'where' => [
+                    "rooms.application_id" => $request_data['application_id']
                 ]
-            );
-        }
-
-        $response = [
-            "code" => HTTP_OK,
-            "api_code_result" => "OK",
-            "msg" => $this->lang->line("room_fetched"),
-            "data" => $data
-        ];
-
-        if (! $is_single_row ) {
-            $response['offset'] = $offset;
-            $response['links'] = [
-                "url" => $link
             ];
-        } 
 
-        $this->response($response, HTTP_OK);
+            if ($is_single_row) {
+                $options['room_id'] = $request_data['room_id'];
+            }
+
+            $room_data = $this->Room->get($options);
+            $link = "";
+            $alt_link = "";
+
+            if ($is_single_row) {
+                $data = $room_data;
+            } else {
+                $data = $room_data['result'];
+                $offset = (int)$offset + RECORDS_PER_PAGE;
+                if ((int)$offset >= (int)$result['count']) {
+                    $offset = -1;
+                } else {
+                    $link = base_url("api/v1/applications/{$request_data['application_id']}/rooms?offset={$offset}");
+                }
+                $this->load->helper("url");
+            }
+
+            if (empty($data)) {
+                $this->response(
+                    [
+                    "code" => NO_DATA_FOUND,
+                    "api_code_result" => "NO_DATA_FOUND",
+                    "msg" => $this->lang->line("no_records_found")
+                    ]
+                );
+            }
+
+            $response = [
+                "code" => HTTP_OK,
+                "api_code_result" => "OK",
+                "msg" => $this->lang->line("room_fetched"),
+                "data" => $data
+            ];
+
+            if (! $is_single_row) {
+                $response['offset'] = $offset;
+                $response['links'] = [
+                    "url" => $link
+                ];
+            }
+
+            $this->response($response, HTTP_OK);
+        } catch (\Exception $error) {
+            $this->response([
+                'code' => HTTP_INTERNAL_SERVER_ERROR,
+                'api_code_result' => 'INTERNAL_SERVER_ERROR',
+                'msg' =>  $this->lang->line("internal_server_error")
+            ]);
+        }
     }
-
 }

@@ -16,7 +16,7 @@
  *      version = "1"       
  *   ),
  *   schemes={"http"},  
- *   host="smartguide-dev.applaurels.com",
+ *   host="smartguide-staging.applaurels.com",
  *   basePath = "/api/v1",
  *   
  * @SWG\SecurityScheme(

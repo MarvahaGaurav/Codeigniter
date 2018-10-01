@@ -100,4 +100,54 @@ class Product extends BaseModel
         
         return $data;
     }
+
+    /**
+     * Returns Product by mmounting type and room Id (if given)
+     *
+     * @param array $params
+     * @return array
+     */
+    public function productByMountingType($params = [])
+    {
+        $this->db->select('rp.product_id, room_id, products.title, type, type_string')
+        ->from('room_products as rp')
+        ->join('products', 'product_id')
+        ->group_by('product_id')
+        ->where('EXISTS(SELECT id FROM product_specifications WHERE product_id = rp.product_id AND CHAR_LENGTH(uld) > 0)', null);
+
+        if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
+            foreach ($params['where'] as $tableColumn => $searchValue) {
+                $this->db->where($tableColumn, $searchValue);
+            }
+        }
+
+        $this->load->model('ProductGallery');
+
+        
+        $query = $this->db->get();
+
+        $result['data'] = $query->result_array();
+
+        if (!empty($result['data'])) {
+            $images = $this->ProductGallery->get(array_column($result['data'], 'product_id'));
+            $this->load->helper(['db', 'debuging']);
+            $result['data'] = getDataWith($result['data'], $images, 'product_id', 'images', 'image');
+        }
+
+        return $result;
+    }
+
+    public function details($params)
+    {
+        $this->db->select('product_id, title, body, subtitle, how_to_specity')
+        ->from($this->tableName)
+        ->where('product_id', $params['product_id']);
+
+        $query = $this->db->get();
+
+        $data = $query->row_array();
+
+        return $data;
+    }
+
 }

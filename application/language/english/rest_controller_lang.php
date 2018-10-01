@@ -85,7 +85,7 @@ $lang['no_followers'] = 'No followers found';
 $lang['no_followings'] = 'No followings found';
 $lang['unfollow_success'] = 'Unfollow success';
 /*
- * Favorite-Unfavorite Langugage 
+ * Favorite-Unfavorite Langugage
  */
 $lang['favorite_success'] = 'Favorite success';
 $lang['unfavorite_success'] = 'Unfavorite success';
@@ -114,3 +114,10 @@ $lang['account_exist'] = 'This email is already exist';
 $lang['invalid_header'] = "The header you have provided is invalid";
 $lang['invalid_language_code'] = "Provided language code is invalid";
 $lang['invalid_currency_code'] = "Provided currency is invalid";
+$lang['internal_server_error'] = "Internal Server Error";
+$lang['something_went_wrong'] = 'Something went wrong please try again';
+
+
+//Products
+$lang['mounting_types'] = 'Mounting types has been fetched';
+$lang['product_fetched'] = 'Products fetched successfully';

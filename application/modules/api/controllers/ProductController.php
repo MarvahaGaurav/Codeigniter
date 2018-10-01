@@ -12,6 +12,266 @@ class ProductController extends BaseController
     }
 
     /**
+     * @SWG\Get(path="/products/mounting-types",
+     *   tags={"Products"},
+     *   summary="Product Mounting types",
+     *   description="Lists all the product mounting types",
+     *   operationId="mountingTypes_get",
+     *   produces={"application/json"},
+     * @SWG\Parameter(
+     *     name="X-Language-Code",
+     *     in="header",
+     *     description="en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+     *     type="string",
+     *     required=true
+     * ),
+     * @SWG\Response(response=200, description="OK"),
+     * @SWG\Response(response=401, description="Unauthorize"),
+     * @SWG\Response(response=500, description="Internal server error"),
+     * )
+     */
+    public function mountingTypes_get()
+    {
+        try {
+            $language_code = $this->langcode_validate();
+
+            $this->lang->load(['sg']);
+
+            $mountingTypes = [
+                MOUNTING_SUSPENDED => $this->lang->line('mounting_suspended'),
+                MOUNTING_RECESSED => $this->lang->line('mounting_recessed'),
+                MOUNTING_SURFACE => $this->lang->line('mounting_surface'),
+                MOUNTING_DOWNLIGHT => $this->lang->line('mounting_downlight'),
+                MOUNTING_DOWNLIGHT_ISOSAFE => $this->lang->line('mounting_downlight_isosafe'),
+                MOUNTING_PENDANT => $this->lang->line('mounting_pendant'),
+                MOUNTING_TRACKS => $this->lang->line('mounting_tracks'),
+            ];
+
+            $mountingTypesData = [];
+            foreach ($mountingTypes as $mountingTypeId => $mountingType) {
+                $mountingTypesData[] = [
+                    'id' => $mountingTypeId,
+                    'mounting_type' => $mountingType
+                ];
+            }
+
+            $this->response([
+                'code' => HTTP_OK,
+                'api_code_result' => 'OK',
+                'msg' => $this->lang->line('mounting_types'),
+                'data' => $mountingTypesData
+            ]);
+        } catch (\Exception $error) {
+            $this->response([
+                'code' => HTTP_INTERNAL_SERVER_ERROR,
+                'api_code_result' => 'INTERNAL_SERVER_ERROR',
+                'msg' =>  $this->lang->line("internal_server_error")
+            ]);
+        }
+    }
+
+    /**
+     * @SWG\Get(path="/rooms/{room_id}/mounting-types/{mounting_type_id}/products",
+     *   tags={"Products"},
+     *   summary="Product Mounting types",
+     *   description="Lists all the product mounting types",
+     *   operationId="mountingTypes_get",
+     *   produces={"application/json"},
+     * @SWG\Parameter(
+     *     name="X-Language-Code",
+     *     in="header",
+     *     description="en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+     *     type="string",
+     *     required=true
+     * ),
+     * @SWG\Parameter(
+     *     name="room_id",
+     *     in="path",
+     *     description="room_id",
+     *     type="string",
+     *     required = true
+     *   ),
+     * @SWG\Parameter(
+     *     name="mounting_type",
+     *     in="path",
+     *     description="Mounting Type",
+     *     type="string",
+     *     required = true
+     *   ),
+     * @SWG\Parameter(
+     *     name="other_products",
+     *     in="query",
+     *     description="Optional pass value 1 to retrieve other products",
+     *     type="string",
+     *   ),
+     * @SWG\Response(response=200, description="OK"),
+     * @SWG\Response(response=401, description="Unauthorize"),
+     * @SWG\Response(response=404, description="No data found"),
+     * @SWG\Response(response=500, description="Internal server error"),
+     * )
+     */
+    public function roomProducts_get()
+    {
+        try {
+            $language_code = $this->langcode_validate();
+
+            $get = $this->get();
+
+            $this->load->library(['form_validation']);
+
+            $this->form_validation->set_data($get);
+            $this->form_validation->set_rules([
+                [
+                    'label' =>  'room_id',
+                    'field' => 'room_id',
+                    'rules' => 'trim|required|is_natural_no_zero',
+                ],
+                [
+                    'label' =>  'mounting_type',
+                    'field' => 'mounting_type',
+                    'rules' => 'trim|required|is_natural_no_zero',
+                ]
+            ]);
+            
+            if (!(bool)$this->form_validation->run()) {
+                $this->response([
+                    'code' => HTTP_UNPROCESSABLE_ENTITY,
+                    'msg' => $this->lang->line('something_went_wrong'),
+                    'extra' => array_shift($this->form_validation->error_array()),
+                ]);
+            }
+
+            $this->load->model("Product");
+
+            $params['where'] = [
+                'rp.type' => $get['mounting_type']
+            ];
+
+            if ($this->get('other_products') == 1) {
+                $params['where'] = [
+                    'rp.type !=' => $get['mounting_type']
+                ];
+            }
+
+            $data = $this->Product->productByMountingType($params);
+
+            if (empty($data['data'])) {
+                $this->response([
+                    'code' => HTTP_NOT_FOUND,
+                    'api_code_result' => 'NOT_FOUND',
+                    'msg' => $this->lang->line('no_data_found')
+                ]);
+            }
+
+            $this->response([
+                'code' => HTTP_OK,
+                'api_code_result' => 'OK',
+                'msg' => $this->lang->line('product_fetched'),
+                'data' => $data['data']
+            ]);
+        } catch (\Exception $error) {
+            $this->response([
+                'code' => HTTP_INTERNAL_SERVER_ERROR,
+                'api_code_result' => 'INTERNAL_SERVER_ERROR',
+                'msg' =>  $this->lang->line("internal_server_error")
+            ]);
+        }
+    }
+
+    /**
+     * @SWG\Get(path="/products/{product_id}",
+     *   tags={"Products"},
+     *   summary="Product Mounting types",
+     *   description="Lists all the product mounting types",
+     *   operationId="mountingTypes_get",
+     *   produces={"application/json"},
+     * @SWG\Parameter(
+     *     name="X-Language-Code",
+     *     in="header",
+     *     description="en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+     *     type="string",
+     *     required=true
+     * ),
+     * @SWG\Parameter(
+     *     name="product_id",
+     *     in="path",
+     *     description="product_id",
+     *     type="string",
+     *     required = true
+     *   ),
+     * @SWG\Response(response=200, description="OK"),
+     * @SWG\Response(response=401, description="Unauthorize"),
+     * @SWG\Response(response=404, description="No data found"),
+     * @SWG\Response(response=500, description="Internal server error"),
+     * )
+     */
+    public function details_get()
+    {
+        error_reporting(-1);
+		ini_set('display_errors', 1);
+        try {
+            $language_code = $this->langcode_validate();
+
+            $get = $this->get();
+
+            $this->load->library(['form_validation']);
+
+            $this->form_validation->set_data($get);
+            $this->form_validation->set_rules([
+                [
+                    'label' =>  'product_id',
+                    'field' => 'product_id',
+                    'rules' => 'trim|required|is_natural_no_zero',
+                ],
+            ]);
+            
+            if (!(bool)$this->form_validation->run()) {
+                $this->response([
+                    'code' => HTTP_UNPROCESSABLE_ENTITY,
+                    'msg' => $this->lang->line('something_went_wrong'),
+                    'extra' => array_shift($this->form_validation->error_array()),
+                ]);
+            }
+            $params = [
+                'product_id' => $get['product_id']
+            ];
+            $this->load->model('Product');
+            $this->load->model('ProductTechnicalData');
+            $this->load->model('ProductSpecification');
+
+            $productData = $this->Product->details($params);
+            $productTechnicalData = $this->ProductTechnicalData->get($params);
+            $productSpecifications = $this->ProductSpecification->get($params);
+
+            if (empty($productData)) {
+                $this->response([
+                    'code' => HTTP_NOT_FOUND,
+                    'api_code_result' => 'NOT_FOUND',
+                    'msg' => $this->lang->line('no_data_found')
+                ]);
+            }
+
+            $data = $productData;
+            $data['technical_data'] = $productTechnicalData;
+            $data['specifications'] = $productSpecifications;
+
+            $this->response([
+                'code' => HTTP_OK,
+                'api_code_result' => 'OK',
+                'msg' => $this->lang->line('product_fetched'),
+                'data' => $data
+            ]);
+        } catch (\Exception $error) {
+            dd($error->getMessage());
+            $this->response([
+                'code' => HTTP_INTERNAL_SERVER_ERROR,
+                'api_code_result' => 'INTERNAL_SERVER_ERROR',
+                'msg' =>  $this->lang->line("internal_server_error")
+            ]);
+        }
+    }
+
+    /**
      * @SWG\Get(path="/applications/{application_id}/products",
      *   tags={"Products"},
      *   summary="Product Lists according to application",
