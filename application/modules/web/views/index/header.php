@@ -26,7 +26,9 @@
         <?php } ?>
 
         <!-- Js Plugins -->
-        <script src="public/js/jquery.min.js"></script>
-        <script src="public/js/bootstrap.min.js"></script>
+        <?php if (!isset($nonBundledJs)) {?>
+            <script src="public/js/jquery.min.js"></script>
+            <script src="public/js/bootstrap.min.js"></script>
+        <?php }?>
 
     </head>

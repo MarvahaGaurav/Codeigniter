@@ -2,18 +2,20 @@
     var $technicianDiv = $("#technician-div"),
         technicianTypes = ["2", "3", "4", "5"],
         $technicianFields = $(".technician-fields"),
-        $companyOwnerFields = $(".company-owner-fields"),
+        $companyOwnerField = $('.company-owner-field'),
+        $companyOwnerWrapper = $(".company-owner-wrapper"),
         $companyRegistrationNumber = $("#company-registration-number"),
         $companyName = $("#company-name"),
         $companyLogo = $("#company-logo"),
         $isCompanyOwner = $("input[name='is_company_owner']");
+        $companyNameWrapper = $("#company-name-wrapper");
 
     var normalizer = function (value) {
         return $.trim(value);
     };
 
     var validationRules = {
-        ignore: ":hidden:not(.selectpicker)",
+        // ignore: ":hidden:not(.selectpicker)",
         ignore: [],
         user_type: {
             required: true,
@@ -74,9 +76,9 @@
         },
     }
 
-    // $("#signup-form").validate({
-    //     rules: validationRules
-    // });
+    $("#signup-form").validate({
+        rules: validationRules
+    });
 
     $("#select-user-types").on('change', function () {
         var self = this,
@@ -85,28 +87,28 @@
 
         if (technicianTypes.indexOf(currentUserType) != -1) {
             $technicianDiv.show();
-            // $companyName.rules("add", {
-            //     required: true,
-            //     maxlength: 50,
-            //     normalizer: normalizer
-            // });
-            // $isCompanyOwner.rules("add", {
-            //     required: true,
-            // });
-            // $companyRegistrationNumber.rules("add", {
-            //     required: true,
-            //     number: true
-            // });
-            // $companyLogo.rules("add", {
-            //     required: true,
-            // });
+            $companyName.rules("add", {
+                required: true,
+                maxlength: 50,
+                normalizer: normalizer
+            });
+            $isCompanyOwner.rules("add", {
+                required: true,
+            });
+            $companyRegistrationNumber.rules("add", {
+                required: true,
+                number: true
+            });
+            $companyLogo.rules("add", {
+                required: true,
+            });
             $technicianFields.removeAttr("disabled");
         } else {
             $technicianDiv.hide();
-            // $companyRegistrationNumber.rules('remove');
-            // $companyLogo.rules('remove');
-            // $companyName.rules("remove");
-            // $isCompanyOwner.rules("remove");
+            $companyRegistrationNumber.rules('remove');
+            $companyLogo.rules('remove');
+            $companyName.rules("remove");
+            $isCompanyOwner.rules("remove");
             $technicianFields.attr("disabled", "disabled");
         }
     });
@@ -117,20 +119,55 @@
             currentValue = $self.val();
 
         if (currentValue == 1) {
-            // $isCompanyOwner.rules("add", {
-            //     required: true,
-            // });
-            // $companyRegistrationNumber.rules("add", {
-            //     required: true,
-            //     number: true
-            // });
-            $companyOwnerFields.show();
+            companyNameView('owner');
+            $isCompanyOwner.rules("add", {
+                required: true,
+            });
+            $companyRegistrationNumber.rules("add", {
+                required: true,
+                number: true
+            });
+            $companyOwnerField.removeAttr("disabled");
+            $companyOwnerWrapper.show();
         } else if (currentValue == 0) {
-            // $companyRegistrationNumber.rules('remove');
-            // $companyLogo.rules('remove');
-            $companyOwnerFields.hide();
+            $companyRegistrationNumber.rules('remove');
+            $companyLogo.rules('remove');
+            companyNameView('employee');
+            $companyOwnerField.attr("disabled", "disabled");
+            $companyOwnerWrapper.hide();
         } else {
 
         }
-    })
+    });
+
+    function companyNameView(type) {
+        if (type == 'owner') {
+            $(".company-name-select").selectpicker('destroy');
+            $companyNameWrapper.html('<input type="text" id="company-name" name="company_name" class="form-control technician-fields" placeholder="Company Name"/>');
+        } else if(type == 'employee') {
+            $.ajax({
+                url: 'xhttp/companies',
+                beforeSend: function () {
+
+                },
+                success: function (response) {
+                    var html = '<select name="company_name" class="company-name-select" data-style="btn-default custom-select-style">'
+                        + '<option value="">Select a company</option>';
+                    for(company in response.data) {
+                        var companyObject = response.data[company];
+                        html += '<option data-thumbnail="' +
+                                companyObject.company_image + '" value="' +
+                                companyObject.company_id + '">' +
+                                companyObject.company_name + '</option>';
+                    } 
+                    html += '</select>';
+                    $companyNameWrapper.html(html);
+                    $(".company-name-select").selectpicker({
+                        liveSearch: true
+                    });
+
+                }
+            });
+        }
+    }
 })($);

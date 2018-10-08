@@ -33,87 +33,98 @@
                         </div>
                     </div>
                     <!-- thumb upload -->
-
+    
                     <!-- Business User -->
                     <div class="business">
                         <div class="form-group-inline clearfix">
                             <div class="form-group">
-                                <select id="select-user-types" name="user_type">
-                                    <option value="<?php echo PRIVATE_USER ?>"><?php echo $this->lang->line('private_user') ?></option>
-                                    <option value="<?php echo BUSINESS_USER ?>"><?php echo $this->lang->line('business_user') ?></option>
-                                    <option value="<?php echo INSTALLER ?>"><?php echo $this->lang->line('installer') ?></option>
-                                    <option value="<?php echo ARCHITECT ?>"><?php echo $this->lang->line('architect') ?></option>
-                                    <option value="<?php echo ELECTRICAL_PLANNER ?>"><?php echo $this->lang->line('electrical_planner') ?></option>
-                                    <option value="<?php echo WHOLESALER ?>"><?php echo $this->lang->line('wholesaler') ?></option>
+                                <select id="select-user-types" name="user_type" class="select-user-types" data-style="btn-default custom-select-style">
+                                    <option value="<?php echo PRIVATE_USER ?>" <?php echo set_select('user_type', PRIVATE_USER, true) ?>><?php echo $this->lang->line('private_user') ?></option>
+                                    <option value="<?php echo BUSINESS_USER ?>" <?php echo set_select('user_type', BUSINESS_USER) ?>><?php echo $this->lang->line('business_user') ?></option>
+                                    <option value="<?php echo INSTALLER ?>" <?php echo set_select('user_type', INSTALLER) ?>><?php echo $this->lang->line('installer') ?></option>
+                                    <option value="<?php echo ARCHITECT ?>" <?php echo set_select('user_type', ARCHITECT) ?>><?php echo $this->lang->line('architect') ?></option>
+                                    <option value="<?php echo ELECTRICAL_PLANNER ?>" <?php echo set_select('user_type', ELECTRICAL_PLANNER) ?>><?php echo $this->lang->line('electrical_planner') ?></option>
+                                    <option value="<?php echo WHOLESALER ?>" <?php echo set_select('user_type', WHOLESALER) ?>><?php echo $this->lang->line('wholesaler') ?></option>
                                 </select>
-                                <span class="fs-caret"></span>
                             </div>
                         </div>
 
                         <div class="form-group-inline clearfix">
                             <div class="form-group">
-                                <input type="text" class="form-control" name="fullname" placeholder="Full Name" required="" autofocus="" />
+                                <input type="text" class="form-control" name="fullname" placeholder="Full Name" value="<?php echo set_value('fullname') ?>" autofocus="" />
                             </div>
                             <div class="form-group">
-                                <input type="email" class="form-control" name="email" placeholder="Email Address" required="" autofocus="" />
-                            </div>
-                        </div>
-
-                        <div class="form-group-inline clearfix">
-                            <div class="form-group">
-                                <input type="password" class="form-control" name="password" id="password" placeholder="Password" required=""/>
-                            </div>
-                            <div class="form-group">
-                                <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password" required=""/>
+                                <input type="email" class="form-control" name="email" placeholder="Email Address" autofocus="" value="<?php echo set_value("email") ?>"/>
                             </div>
                         </div>
 
                         <div class="form-group-inline clearfix">
                             <div class="form-group">
-                                <select name="contact_number_code" class="contact-number">
+                                <input type="password" class="form-control" name="password" id="password" placeholder="Password"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group-inline clearfix">
+                            <div class="form-group">
+                                <select name="contact_number_code" class="contact-number" data-style="btn-default custom-select-style">
                                 <?php foreach ($countries as $country) {  ?>
-                                    <option value="<?php echo $country['calling_code'] ?>"><?php echo "+{$country['calling_code']}" ?></option>
+                                    <option value="<?php echo $country['calling_code'] ?>" <?php echo set_select('contact_number_code', $country['calling_code']) ?>><?php echo "+{$country['calling_code']}" ?></option>
                                 <?php  } ?>
                                 </select>
-                                <input type="number" class="form-control contact-number" name="contact_number" placeholder="Contact Number" required="" autofocus="" />
+                                <input type="number" class="form-control contact-number-input" name="contact_number" value="<?php echo set_value('contact_number') ?>" placeholder="Contact Number" autofocus="" />
                             </div>
                             <div class="form-group">
-                                <select name="alternate_contact_number_code" class="contact-number">
+                                <select name="alternate_contact_number_code" class="contact-number" data-style="btn-default custom-select-style">
                                 <?php foreach ($countries as $country) {  ?>
-                                    <option value="<?php echo $country['calling_code'] ?>"><?php echo "+{$country['calling_code']}" ?></option>
+                                    <option value="<?php echo $country['calling_code'] ?>" <?php echo set_select('alternate_contact_number_code', $country['calling_code']) ?>><?php echo "+{$country['calling_code']}" ?></option>
                                 <?php  } ?>
                                 </select>
-                                <input type="number" class="form-control contact-number" name="alternate_contact_number" placeholder="Alternate Number" required=""/>
+                                <input type="number" class="form-control contact-number-input" name="alternate_contact_number" placeholder="Alternate Number" value="<?php echo set_value('alternate_contact_number') ?>"/>
                             </div>
                         </div>
-
+                        <?php $isCustomerUser = in_array(set_value('user_type'), [PRIVATE_USER, BUSINESS_USER])||empty(set_value('user_type')) ?>
+                        <?php $isCompanyOwner = (int)set_value('is_company_owner')===1||empty(set_value('user_type')) ?>
+                        <?php  ?>
                         <!-- wholesaler -->
-                        <div class="wholesaler-field" id="technician-div">
+                        <div class="<?php echo $isCustomerUser?"wholesaler-field":"" ?>" id="technician-div">
                             <div class="clearfix">
                                 <label>Are you the owner of this company?</label>
                                 <div class="clearfix"></div>
                                 <div class="custom-radio-wrapper">
                                     <label class="custom-radio">Yes
-                                        <input type="radio" value="1" class="technician-fields" checked="checked" name="is_company_owner" disabled="disabled">
+                                        <input type="radio" value="1" class="technician-fields" name="is_company_owner" <?php echo set_radio('is_company_owner', '1', true) ?> <?php echo $isCustomerUser?"disabled":'' ?>>
                                         <span class="checkmark"></span>
                                     </label>
                                     <label class="custom-radio">No
-                                        <input type="radio" value="0" class="technician-fields" name="is_company_owner" disabled="disabled">
+                                        <input type="radio" value="0" class="technician-fields" name="is_company_owner" <?php echo set_radio('is_company_owner', '0') ?> <?php echo $isCustomerUser?"disabled":'' ?>>
                                         <span class="checkmark"></span>
                                     </label>
                                 </div>  
                             </div>
                             <div class="form-group-inline clearfix">
-                                <div class="form-group company-owner-fields">
-                                    <input type="number" id="company-registration-number" name="company_registration_number" class="form-control technician-fields" placeholder="Company Registration Number"  disabled="disabled"/>
+                                <div class="form-group company-owner-wrapper <?php echo $isCompanyOwner ?"":"concealable" ?>">
+                                    <input type="number" value="<?php echo set_value('company_registration_number') ?>" id="company-registration-number" name="company_registration_number" class="form-control company-owner-field technician-fields" placeholder="Company Registration Number" <?php echo $isCustomerUser||!$isCompanyOwner?"disabled":'' ?>/>
                                 </div>
-                                <div class="form-group">
-                                    <input type="text" id="company-name" name="company_name" class="form-control technician-fields" placeholder="Company Name" disabled="disabled"/>
+                                <div class="form-group" id="company-name-wrapper">
+                                    <?php if ($isCompanyOwner) { ?>
+                                    <input type="text" value="<?php echo set_value('company_name') ?>" id="company-name" name="company_name" class="form-control technician-fields" placeholder="Company Name" <?php echo $isCustomerUser?"disabled":'' ?>/>
+                                    <?php } else if (is_numeric(set_value('is_company_owner')) && (int)set_value('is_company_owner') === 0) { ?>
+                                        <?php $companyData = fetch_company_data(); ?>
+                                        <select name="company_name" class="company-name-select" data-style="btn-default custom-select-style">
+                                            <option value="">Select a country</option>
+                                            <?php foreach ($companyData as $company) { ?>
+                                                <option data-thumbnail="<?php echo $company['company_image'] ?>" value="<?php echo $company['company_id'] ?>" <?php echo set_select('company_name', $company['company_id']) ?>><?php echo $company['company_name'] ?></option>
+                                            <?php }?>
+                                        </select>
+                                    <?php } ?>
                                 </div>
                             </div>
-                            <div class="form-group clearfix company-owner-fields">
+                            <div class="form-group clearfix company-owner-wrapper <?php echo $isCompanyOwner ?"":"concealable" ?>">
                                 <div class="chooseFile">
-                                    <input id="uploadfile" id="company-logo" name="company_logo" class="form-control technician-fields" placeholder="Choose File" disabled="display" disabled="disabled">
+                                    <input id="uploadfile" id="company-logo" name="company_logo" class="form-control company-owner-field technician-fields" placeholder="Choose File" <?php echo $isCustomerUser||!$isCompanyOwner?"disabled":'' ?>/>
                                     <div class="uploadfile-wrap">
                                         <input type="file" id="uploadbtn">
                                         <span>Browse</span>
@@ -133,26 +144,25 @@
 
                         <div class="form-group-inline clearfix">
                             <div class="form-group">
-                                <select class="country" name="country">
+                                <select class="country" name="country" data-style="btn-default custom-select-style">
                                     <option value=""><?php echo $this->lang->line('select_a_country') ?></option>
                                 <?php foreach ($countries as $country) {  ?>
-                                    <option value="<?php echo $country['country_code1'] ?>"><?php echo "{$country['name']}" ?></option>
+                                    <option value="<?php echo $country['country_code1'] ?>" <?php echo set_select('country', $country['country_code1']) ?>><?php echo "{$country['name']}" ?></option>
                                 <?php  } ?>
                                 </select>
-                                <span class="fs-caret"></span>
                             </div>
                             <div class="form-group">
                                 <div class="input-wrapper city-wrapper">
                                     <span class="fa fa-spin fa-circle-o-notch city-loader concealable"></span>
-                                    <input type="text" placeholder="Please start typing your city..." id="select-city" name="city_name" data-country="" value="">
+                                    <input type="text" placeholder="Please start typing your city..." id="select-city" name="city_name" data-country="<?php echo set_value('country') ?>" value="<?php echo set_value('city_name') ?>">
                                 </div>
-                                <input type="hidden" name="city" id="city-id" value="">
+                                <input type="hidden" name="city" id="city-id" value="<?php echo set_value('city') ?>">
                             </div>
                         </div>
 
                         <div class="form-group-inline clearfix">
                             <div class="form-group no-margin">
-                                <input type="number" class="form-control" name="zipcode" placeholder="Zipcode" required="" autofocus="" />
+                                <input type="number" class="form-control" name="zipcode" placeholder="Zipcode" autofocus="" value="<?php echo set_value('zipcode') ?>"/>
                             </div>
                         </div>
                     </div>

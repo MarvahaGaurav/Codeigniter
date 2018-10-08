@@ -31,7 +31,7 @@ requirejs(
           $('#filter-section').removeClass('filtersection-Open');
       });
 
-      $(".heart-position1, .heart-position2").on("click", function () {
+      $(".heart-position1").on("click", function () {
         var self = this,
             $self = $(self),
             $wrapper = $self.parent(),
@@ -47,15 +47,7 @@ requirejs(
           success: function (response) {
             $self.addClass('fa-heart').removeClass('fa-circle-o-notch fa-spin');
             if (response.success) {
-              favoriteData['is_favorite'] = response.status;
-              $self.attr('data-favorite', JSON.stringify(favoriteData));
-              if (response.status == 1) {
-                $self.removeClass('faa-dislike');
-                $self.addClass('faa-like');
-              } else {
-                $self.removeClass('faa-like');
-                $self.addClass('faa-dislike');
-              }
+              window.location.reload();
             }
           },
           error: function (response) {

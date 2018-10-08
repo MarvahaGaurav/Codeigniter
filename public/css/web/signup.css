@@ -1,10 +1,31 @@
-select.contact-number {
-    display: inline-block;
-    width: 22%;
+.contact-number {
+    display: inline-block !important;
+    width: 20% !important;
 }
 
-input.contact-number {
+.contact-number-input {
     display: inline-block;
-    width: 76%;
+    width: 78% !important;
     margin-left: 0.88%;
+}
+
+.country {
+    width: 100% !important;
+}
+
+.select-user-types {
+    width: 100% !important;
+}
+
+.custom-select-style {
+    height: 45px;
+    margin-bottom: 4px;
+}
+
+.company-name-select {
+    width: 100% !important;
+}
+
+.concealable{
+    display:none;
 }

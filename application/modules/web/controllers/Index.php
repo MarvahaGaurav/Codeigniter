@@ -190,12 +190,13 @@ class Index extends BaseController
     {
         try {
             $data = [];
-            $this->load->helper(['location', 'form']);
-            $this->lang->load(['sg', 'forms'], 'french');
+            $this->load->helper(['location', 'form', 'data']);
+            $this->lang->load(['sg', 'forms']);
             $this->load->config('css_config');
             $data['countries'] = fetch_countries();
             $data['css'] = $this->config->item('signup');
             $data['js'] = 'signup';
+            $data['nonBundledJs'] = true;
             if ($this->input->post()) {
                 $userType = $this->input->post('user_type');
                 $this->form_validation->set_rules($this->signupValidationRules());
@@ -206,8 +207,12 @@ class Index extends BaseController
                         $this->form_validation->set_rules($this->compannyOwnerRules());
                     }
                 }
-                $this->form_validation->run();
-                pd(validation_errors());
+                if ($this->form_validation->run()) {
+                    // pd($this->input->post());
+                } else {
+                    // pd($this->form_validation->error_array());
+
+                }
             }
             website_noauth_view('/index/signup', $data);
         } catch (Exception $e) {

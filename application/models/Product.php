@@ -109,7 +109,7 @@ class Product extends BaseModel
      */
     public function productByMountingType($params = [])
     {
-        $this->db->select('rp.product_id, room_id, products.title, type, type_string')
+        $this->db->select('rp.product_id, room_id, products.title, type, type_string, body')
         ->from('room_products as rp')
         ->join('products', 'product_id')
         ->group_by('product_id')
@@ -122,7 +122,6 @@ class Product extends BaseModel
         }
 
         $this->load->model('ProductGallery');
-
         
         $query = $this->db->get();
 
@@ -131,7 +130,7 @@ class Product extends BaseModel
         if (!empty($result['data'])) {
             $images = $this->ProductGallery->get(array_column($result['data'], 'product_id'));
             $this->load->helper(['db', 'debuging']);
-            $result['data'] = getDataWith($result['data'], $images, 'product_id', 'images', 'image');
+            $result['data'] = getDataWith($result['data'], $images, 'product_id', 'product_id', 'images', 'image');
         }
 
         return $result;
@@ -150,4 +149,22 @@ class Product extends BaseModel
         return $data;
     }
 
+    public function productsByInspiration($inspirationIds)
+    {
+        $this->db->select('title, ip.product_id, inspiration_id')
+            ->join('products', 'products.product_id=ip.product_id')
+            ->from('inspiration_products as ip');
+
+        if (is_array($inspirationIds)) {
+            $this->db->where_in('inspiration_id', $inspirationIds);
+        } elseif (is_numeric($inspirationIds)) {
+            $this->db->where('inspiration_id', $inspirationIds);
+        }
+
+        $query = $this->db->get();
+
+        $data = $query->result_array();
+
+        return $data;
+    }
 }

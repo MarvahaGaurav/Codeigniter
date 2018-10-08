@@ -109,7 +109,9 @@
                                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Companies</a>
                                     <ul class="dropdown-menu">
                                         <li><a href="#">All Companies</a></li>
-                                        <li><a href="#">Favourite Companies</a></li>
+                                        <?php if (isset($userInfo['user_id'])) { ?>
+                                        <li><a href="<?php echo base_url('home/companies/favorites') ?>">Favourite Companies</a></li>
+                                        <?php }?>
                                     </ul>
                                 </li>
                                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Quotes</a>

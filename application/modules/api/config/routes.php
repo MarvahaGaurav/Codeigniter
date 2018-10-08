@@ -32,3 +32,4 @@ $route['api/v1/products/mounting-types'] = 'ProductController/mountingTypes';
 $route['api/v1/rooms/(:any)/mounting-types/(:any)/products'] =
                                            'ProductController/roomProducts/room_id/$1/mounting_type/$2';
 $route['api/v1/products/(:any)'] = 'ProductController/details/product_id/$1';
+$route['api/v1/projects'] = 'ProjectController/index';

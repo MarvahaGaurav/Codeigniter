@@ -36,7 +36,7 @@ class UtilModel extends CI_Model
 
         $query = $this->db->get();
         if (! $query) {
-            throw new SelectException("fetch error");
+            throw new \Exception("fetch error");
         }
         $resultSet = [];
         
@@ -157,12 +157,12 @@ class UtilModel extends CI_Model
         if ($this->db->update($tableName)) {
                 //return true;
             if ($this->db->affected_rows() == 0) {
-                throw new UpdateException("zero rows affected", 101);
+                throw new \Exception("zero rows affected", 101);
             } else {
                 return true;
             }
         } else {
-            throw new UpdateException("update error", 100);
+            throw new \Exception("update error", 100);
         }
     }
 
@@ -187,11 +187,11 @@ class UtilModel extends CI_Model
                 }
             } else {
 //                echo $this->db->last_query();exit;
-                throw new InsertException("insert error");
+                throw new \Exception("insert error");
             }
         } else {
 //            echo $this->db->last_query();exit;
-            throw new InsertException("insert error");
+            throw new \Exception("insert error");
         }
     }
 
@@ -205,7 +205,7 @@ class UtilModel extends CI_Model
     {
         $status=$this->db->insert_batch($tableName, $data);
         if (!$status) {
-            throw new InsertException("insert error");
+            throw new \Exception("insert error");
         }
     }
 

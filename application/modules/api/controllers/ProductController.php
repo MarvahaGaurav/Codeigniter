@@ -163,6 +163,9 @@ class ProductController extends BaseController
                 ]);
             }
 
+            $this->load->helper('utility');
+            $data['data'] = array_strip_tags($data['data'], ['body']);
+
             $this->response([
                 'code' => HTTP_OK,
                 'api_code_result' => 'OK',
@@ -181,8 +184,8 @@ class ProductController extends BaseController
     /**
      * @SWG\Get(path="/products/{product_id}",
      *   tags={"Products"},
-     *   summary="Product Mounting types",
-     *   description="Lists all the product mounting types",
+     *   summary="",
+     *   description="",
      *   operationId="mountingTypes_get",
      *   produces={"application/json"},
      * @SWG\Parameter(
@@ -208,7 +211,7 @@ class ProductController extends BaseController
     public function details_get()
     {
         error_reporting(-1);
-		ini_set('display_errors', 1);
+        ini_set('display_errors', 1);
         try {
             $language_code = $this->langcode_validate();
 
@@ -238,10 +241,12 @@ class ProductController extends BaseController
             $this->load->model('Product');
             $this->load->model('ProductTechnicalData');
             $this->load->model('ProductSpecification');
+            $this->load->model('ProductRelated');
 
             $productData = $this->Product->details($params);
             $productTechnicalData = $this->ProductTechnicalData->get($params);
             $productSpecifications = $this->ProductSpecification->get($params);
+            $relatedProducts = $this->ProductRelated->get($params);
 
             if (empty($productData)) {
                 $this->response([
@@ -250,10 +255,16 @@ class ProductController extends BaseController
                     'msg' => $this->lang->line('no_data_found')
                 ]);
             }
+            $this->load->helper('utility');
+            $productSpecifications = array_strip_tags($productSpecifications, ['title']);
+            $productTechnicalData = array_strip_tags($productTechnicalData, ['title', 'info']);
+            $productData['body'] = trim(strip_tags($productData['body']));
+            $productData['how_to_specity'] = trim(strip_tags($productData['how_to_specity']));
 
             $data = $productData;
             $data['technical_data'] = $productTechnicalData;
             $data['specifications'] = $productSpecifications;
+            $data['related_products'] = $relatedProducts;
 
             $this->response([
                 'code' => HTTP_OK,

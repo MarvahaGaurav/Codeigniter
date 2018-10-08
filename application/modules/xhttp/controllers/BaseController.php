@@ -1,5 +1,6 @@
 <?php 
 defined("BASEPATH") or exit("No direct script access allowed");
+
 /**
  * @property array $data  array of values for view
  * @property array $userInfo session data
@@ -9,7 +10,7 @@ defined("BASEPATH") or exit("No direct script access allowed");
 class BaseController extends MY_Controller
 {
    
-    
+    protected $datetime;
     protected $data;
     protected $userInfo;
     private $user_query_fields;
@@ -18,13 +19,14 @@ class BaseController extends MY_Controller
     {
         parent::__construct();
         $this->load->helper(['url', 'input_data', 'common', 'json','debuging']);
-        $this->load->model('Common_model');
+        $this->load->model(['Common_model', 'UtilModel']);
         $this->load->library('session');
         $this->lang->load('common', "english");
         $this->lang->load('xhttp', "english");
         $this->userInfo = [];
         $this->user_query_fields = 'status,user_id,first_name,image,email';
         $this->session_data = $this->session->userdata('sg_userinfo');
+        $this->datetime = date("Y-m-d H:i:s");
         $is_ajax_request = $this->input->is_ajax_request();
         if (! $is_ajax_request ) {
             exit("Only XHTTP request allowed");

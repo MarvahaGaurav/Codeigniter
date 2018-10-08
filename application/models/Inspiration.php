@@ -95,5 +95,45 @@ class Inspiration extends BaseModel
         // pd($result);
         return $result;
     }
-    
+
+    public function inspirationByCompany($params, $companyId)
+    {
+        $this->db->reset_query();
+        $this->db->select('SQL_CALC_FOUND_ROWS id, user_id, company_id, title, description,
+            status, created_at, updated_at', false)
+            ->from($this->tableName)
+            ->where('company_id', $companyId)
+            ->order_by('id', 'DESC')
+            ->limit($params['limit']);
+
+        if (isset($params['offset']) && is_numeric($params['offset']) && (int)$params['offset'] > 0) {
+            $this->db->offset($params['offset']);
+        }
+
+        if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
+            foreach ($params['where'] as $tableColumn => $searchValue) {
+                $this->db->where($tableColumn, $searchValue);
+            }
+        }
+
+        $query = $this->db->get();
+
+        $result['data'] = $query->result_array();
+        $result['count'] = $this->db->query('SELECT FOUND_ROWS() as count')->row()->count;
+        
+        $this->load->helper(['db', 'debuging']);
+
+        //Return result with media and products
+        if (!empty($result['data'])) {
+            $this->load->model('InspirationMedia');
+            $inspirationIds = array_column($result['data'], 'id');
+            $images = $this->InspirationMedia->get($inspirationIds);
+            $result['data'] = getDataWith($result['data'], $images, 'id', 'inspiration_id', 'media');
+            $this->load->model('Product');
+            $products = $this->Product->productsByInspiration($inspirationIds);
+            $result['data'] = getDataWith($result['data'], $products, 'id', 'inspiration_id', 'products');
+        }
+        
+        return $result;
+    }
 }

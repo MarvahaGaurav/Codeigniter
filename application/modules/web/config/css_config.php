@@ -20,7 +20,18 @@ $config = [
         "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css",
         base_url("public/css/jquery.scrollbar.css"),
         base_url("public/css/web/common.css"),
+        "https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css",
         base_url("public/css/web/style.css"),
         base_url("public/css/web/sgmedia.css"),
-    ]
+    ],
+    'companies-profile' => [
+        "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css",
+        base_url("public/css/owl.carousel.min.css"),
+        base_url("public/css/jquery.scrollbar.css"),
+        base_url("public/css/web/common.css"),
+        "https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css",
+        base_url("public/css/web/style.css"),
+        base_url("public/css/web/sgmedia.css"),
+    ],
+    
 ];

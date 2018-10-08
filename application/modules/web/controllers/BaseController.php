@@ -61,8 +61,8 @@ class BaseController extends MY_Controller
     }
 
     /**
-     * Neutral session guard, where if a user is logged in relevant data is fetched
-     *
+     * Neutral session guard,
+     * If a user is logged in, session data is fetched
      * @return void
      */
     protected function neutralGuard()

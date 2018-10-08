@@ -4,8 +4,10 @@ requirejs.config({
   paths: {
     jquery: "jquery.min",
     bootstrap: "bootstrap.min",
+    // bootstrap: "https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min",
     common: "web/common",
     selectPicker: "bootstrap-select.min",
+    // selectPicker: "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min",
     jqueryScrollbar: "plugin/jquery.scrollbar.min",
     jqueryValidator: 'jquery.validate.min',
     autocomplete: 'jquery.autocomplete.min',
@@ -30,7 +32,9 @@ requirejs(
   function ($) {
     fetchLocation('/xhttp/cities');
     
-    // $(".selectpicker").selectpicker();
+    $("#select-user-types").selectpicker();
+    $(".contact-number").selectpicker();
+    $("select[name='country']").selectpicker();
   },
   function () {
 

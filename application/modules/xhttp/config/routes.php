@@ -7,3 +7,5 @@ $route['xhttp/employee/action'] = "EmployeeController/request_action";
 $route['xhttp/application'] = "ApplicationController/fetch";
 $route['xhttp/application/(:num)'] = "ApplicationController/fetch/$1";
 $route['xhttp/room/(:any)'] = "RoomController/fetch/$1";
+$route['xhttp/companies'] = 'CompanyController/companyList';
+$route['xhttp/companies/favorite'] = 'CompanyController/favoriteCompany';

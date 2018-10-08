@@ -13,7 +13,7 @@ class InspirationMedia extends BaseModel {
         $this->tableName = 'inspiration_media';
     }
 
-    public function get($inspiration_id, $options) 
+    public function get($inspiration_id) 
     {
         $this->db->select("*")
         ->from($this->tableName);

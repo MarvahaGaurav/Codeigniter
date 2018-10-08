@@ -78,7 +78,6 @@
                                 </div>
                                 
                                 <!-- td carousel end -->
-                                <span class="fa fa-heart faa-like heart-position1" aria-hidden="true"></span>
                             </div>
                         </td>
                         <td class="inspiration-description">

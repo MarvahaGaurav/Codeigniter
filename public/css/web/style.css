@@ -1880,3 +1880,16 @@ label.error {
 div.error {
     color: #e00016;
 }
+
+.image-blank {
+    background-color: #ffbdc5;
+}
+
+.favorite-loader {
+    z-index: 100;
+    position: absolute;
+}
+
+.favorite-wrapper {
+    /* position: relative; */
+}
