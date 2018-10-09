@@ -157,7 +157,8 @@ class UtilModel extends CI_Model
         if ($this->db->update($tableName)) {
                 //return true;
             if ($this->db->affected_rows() == 0) {
-                throw new \Exception("zero rows affected", 101);
+                return true;
+                // throw new \Exception("zero rows affected", 101);
             } else {
                 return true;
             }

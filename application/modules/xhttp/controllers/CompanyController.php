@@ -94,6 +94,8 @@ class CompanyController extends BaseController
                 ]
             );
         } catch (\Exception $error) {
+            print_r($error);
+            die;
             json_dump(
                 [
                     "success" => false,

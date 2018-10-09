@@ -41,6 +41,7 @@ requirejs(
           url: window.location.protocol + '//' + window.location.hostname + '/xhttp/companies/favorite',
           method: 'POST',
           data: favoriteData,
+          dataType: 'json',
           beforeSend: function () {
             $self.removeClass('fa-heart').addClass('fa-circle-o-notch fa-spin');
           },

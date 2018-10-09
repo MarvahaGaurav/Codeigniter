@@ -37,6 +37,7 @@ $lang['promo_code_applied'] = 'Promocode successfully applied';
 $lang["invalid_request"] = "Invalid request, Check your request";
 $lang["missing_parameter"] = "Parameter missing";
 $lang["missing_json_parameter"] = "JSON parameter missing";
+$lang['email_taken'] = 'Email has already been taken';
 /* HEADER MESSAGES */
 $lang["not_authenticated"] = "Not authenticated, permission denied";
 $lang["unauthorized_access"] = "Not authorized, permission denied";
@@ -45,6 +46,7 @@ $lang["access_token_not_set"] = "Access token not set, permission denied";
 $lang["old_password_mismatch"] = "Old password does not match";
 $lang["social_type_not_supported"] = "Social Network Not supported";
 /* ACTIONS */
+$lang['phone_should_be_unique'] = 'Phone number already taken';
 $lang["site_information_fetched"] = "Site Infomation successfully fetched";
 $lang["success_recommended_store_fetched"] = "Recommended Store fetched";
 $lang["mail_not_sent"] = "Mail alert not sent";

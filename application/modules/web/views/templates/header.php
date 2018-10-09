@@ -101,7 +101,7 @@
                                 </li>
                                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Quick Calculations</a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="#">Application</a></li>
+                                        <li><a href="<?php echo base_url('home/applications') ?>">Application</a></li>
                                         <li><a href="#">Lux Values</a></li>
                                         <li><a href="#">Number Luminaires</a></li>
                                     </ul>

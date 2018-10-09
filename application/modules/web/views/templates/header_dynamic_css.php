@@ -13,9 +13,9 @@
 <?php } else { ?>
 <link rel="stylesheet" href="<?php echo base_url("public/css/bootstrap.min.css")?>">
 <link rel="stylesheet" href="<?php echo base_url("public/css/jquery.scrollbar.css")?>">
-<link rel="stylesheet" href="<?php echo base_url("public/css/common.css")?>">
-<link rel="stylesheet" href="<?php echo base_url("public/css/style.css")?>">
-<link rel="stylesheet" href="<?php echo base_url("public/css/sgmedia.css")?>">
+<link rel="stylesheet" href="<?php echo base_url("public/css/web/common.css")?>">
+<link rel="stylesheet" href="<?php echo base_url("public/css/web/style.css")?>">
+<link rel="stylesheet" href="<?php echo base_url("public/css/web/sgmedia.css")?>">
 <?php } ?>
 
 <!-- Css Plugins -->
@@ -87,7 +87,7 @@
                                 </li>
                                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Quick Calculations</a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="#">Application</a></li>
+                                        <li><a href="<?php echo base_url('home/applications') ?>">Application</a></li>
                                         <li><a href="#">Lux Values</a></li>
                                         <li><a href="#">Number Luminaires</a></li>
                                     </ul>

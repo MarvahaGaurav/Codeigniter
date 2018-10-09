@@ -14,9 +14,14 @@ class ProductTechnicalData extends BaseModel
 
     public function get($params)
     {
-        $this->db->select('title, info')
-        ->from($this->tableName)
-        ->where('product_id', $params['product_id']);
+        $this->db->select('product_id, title, info')
+            ->from($this->tableName);
+
+        if (is_numeric($params['product_id'])) {
+            $this->db->where('product_id', $params['product_id']);
+        } elseif (is_array($params['product_id'])) {
+            $this->db->where_in('product_id', $params['product_id']);
+        }
 
         $query = $this->db->get();
 

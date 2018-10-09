@@ -150,6 +150,14 @@ $(document).ready(function () {
         });
     }
 
+    $(".redirectable").on("click", function () {
+        var self = this,
+            $self = $(self),
+            redirectTo = $self.attr("data-redirect-to");
+
+        window.location.href = redirectTo;
+    });
+
     $(".back-button").on("click", function(){
         var $self = $(this),
             redirectTo = $self.attr("data-redirect");

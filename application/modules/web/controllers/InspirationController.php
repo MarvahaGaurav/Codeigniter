@@ -9,6 +9,8 @@ class InspirationController extends BaseController
     private $userData;
     public function __construct()
     {
+        error_reporting(-1);
+		ini_set('display_errors', 1);
         parent::__construct();
         $this->activeSessionGuard();
         $this->load->model("Inspiration");

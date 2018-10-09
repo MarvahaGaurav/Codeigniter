@@ -147,6 +147,7 @@
         } else if(type == 'employee') {
             $.ajax({
                 url: 'xhttp/companies',
+                dataType: 'json',
                 beforeSend: function () {
 
                 },

@@ -121,16 +121,28 @@ class Product extends BaseModel
             }
         }
 
-        $this->load->model('ProductGallery');
+        $this->load->model(['ProductGallery', 'ProductTechnicalData']);
         
         $query = $this->db->get();
 
         $result['data'] = $query->result_array();
 
         if (!empty($result['data'])) {
-            $images = $this->ProductGallery->get(array_column($result['data'], 'product_id'));
-            $this->load->helper(['db', 'debuging']);
+            $productIds = array_column($result['data'], 'product_id');
+            $images = $this->ProductGallery->get($productIds);
+            $this->load->helper(['db', 'debuging', 'utility']);
             $result['data'] = getDataWith($result['data'], $images, 'product_id', 'product_id', 'images', 'image');
+            $technicalData = $this->ProductTechnicalData->get([
+                'product_id' => $productIds
+            ]);
+            $technicalData = array_strip_tags($technicalData, ['title', 'info']);
+            $result['data'] = getDataWith(
+                $result['data'],
+                $technicalData,
+                'product_id',
+                'product_id',
+                'technical_data'
+            );
         }
 
         return $result;

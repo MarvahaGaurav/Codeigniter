@@ -14,10 +14,20 @@ class Application extends BaseModel
         $this->tableName = 'applications';
     }
 
+    /**
+     * Get application listing
+     *
+     * @param array $params
+     * @return array
+     */
     public function get($params)
     {
-        $this->db->select("application_id, type, title, subtitle, image")
-        ->from("applications as app")
+        if (isset($params['all_data']) && (bool)$params['all_data']) {
+            $this->db->select("*");
+        } else {
+            $this->db->select("application_id, type, title, subtitle, image");
+        }
+        $this->db->from("applications as app")
         ->where("app.language_code", $params['language_code']);
         if (isset($params['type']) && !empty($params['type'])) {
             $this->db->where("app.type", $params["type"]);
@@ -28,5 +38,24 @@ class Application extends BaseModel
         $result = $query->result_array();
 
         return $result;
+    }
+
+    /**
+     * Application Details
+     *
+     * @param array $params
+     * @return array
+     */
+    public function details($params)
+    {
+        $this->db->select("*")
+            ->from($this->tableName)
+            ->where('application_id', $params['application_id']);
+        
+        $query = $this->db->get();
+
+        $data = $query->row_array();
+
+        return $data;
     }
 }

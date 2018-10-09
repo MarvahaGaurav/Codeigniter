@@ -112,6 +112,8 @@ class ProductController extends BaseController
      */
     public function roomProducts_get()
     {
+        error_reporting(-1);
+        ini_set('display_errors', 1);
         try {
             $language_code = $this->langcode_validate();
 
@@ -210,8 +212,6 @@ class ProductController extends BaseController
      */
     public function details_get()
     {
-        error_reporting(-1);
-        ini_set('display_errors', 1);
         try {
             $language_code = $this->langcode_validate();
 

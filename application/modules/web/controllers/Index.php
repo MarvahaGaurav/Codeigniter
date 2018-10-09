@@ -198,20 +198,83 @@ class Index extends BaseController
             $data['js'] = 'signup';
             $data['nonBundledJs'] = true;
             if ($this->input->post()) {
+                $this->form_validation->CI =& $this;
                 $userType = $this->input->post('user_type');
                 $this->form_validation->set_rules($this->signupValidationRules());
+
+                //If the user is of technician types add more relavent validation
                 if (in_array((int)$userType, [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER, WHOLESALER], true)) {
                     $this->form_validation->set_rules($this->technicianEmployeeRules());
                     $isCompanyOwner = $this->input->post('is_company_owner');
+
+                    //If the user is an owner add relavent validations
                     if (is_numeric($isCompanyOwner) && (int)$isCompanyOwner === 1) {
                         $this->form_validation->set_rules($this->compannyOwnerRules());
                     }
                 }
                 if ($this->form_validation->run()) {
+                    $this->load->helper('input_data');
+                    $postData = $this->input->post();
+                    $postData = trim_input_parameters($postData);
+                    $userData = [
+                        'user_type' => $postData['user_type'],
+                        'first_name' => $postData['fullname'],
+                        'email' => $postData['email'],
+                        'password' => encrypt($postData['password']),
+                        'prm_user_countrycode' => $postData['contact_number_code'],
+                        'phone' => $postData['contact_number'],
+                        'alt_user_countrycode' => $postData['alternate_contact_number_code'],
+                        'alt_userphone' => $postData['alternate_contact_number'],
+                        'country_id' => $postData['country'],
+                        'city_id' => $postData['city'],
+                        'zipcode' => $postData['zipcode'],
+                        'registered_date' => $this->datetime
+                    ];
+                    $companyInsert = false;
+                    $isEmployee = false;
+                    if (in_array((int)$userType, [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER, WHOLESALER], true)) {
+                        $userData['is_owner'] = (int)$postData['is_company_owner'] === 1 ? 2  : 1;
+                        if ((int)$postData['is_company_owner'] === 1) {
+                            $companyInsert = true;
+                            $companyData['company_name'] = $postData['company_name'];
+                            $companyData['company_reg_number'] = $postData['company_registration_number'];
+                            $companyData['insert_date'] = $this->datetime;
+                        } else {
+                            $isEmployee = true;
+                            $userData['company_id'] = $postData['company_name'];
+                        }
+                    }
+
+                    $userId = $this->Common_model->insert_single('ai_user', $userData);
+                    if ($companyInsert) {
+                        $companyId  = $this->Common_model->insert_single('company_master', $companyData);
+                        $this->Common_model->update_single('ai_user', [
+                            'company_id' => $companyId
+                        ], [
+                            'where' => [
+                                'user_id' => $userId
+                            ]
+                        ]);
+                    }
+
+                    if ($isEmployee) {
+                        $ownerData = $this->Common_model->fetch_data('ai_user', 'user_id', ['where' =>
+                         ['is_owner' => 2, 'company_id' => $postData['company_name']]], true);
+
+                        $this->Common_model->insert_single('employee_request_master', [
+                            'requested_to' => $ownerData['user_id'],
+                            'requested_by' => $userId,
+                            'request_time' => $this->datetime,
+                            'company_id' => $postData['company_name'],
+                        ]);
+                    }
+
+                    $this->session->set_flashdata("flash-message", 'You have registered successfully!, Please login to continue');
+                    $this->session->set_flashdata("flash-type", "success");
+                    redirect(base_url('login'));
                     // pd($this->input->post());
                 } else {
                     // pd($this->form_validation->error_array());
-
                 }
             }
             website_noauth_view('/index/signup', $data);
@@ -405,7 +468,10 @@ class Index extends BaseController
             [
                 'label' => $this->lang->line('user_type'),
                 'field' => 'user_type',
-                'rules' => 'trim|required|regex_match[/^(1|2|3|4|5|6)$/]'
+                'rules' => 'trim|required|regex_match[/^(1|2|3|4|5|6)$/]',
+                'errors' => [
+                    'regex_match' => $this->lang->line('something_went_wrong')
+                ]
             ],
             [
                 'label' => $this->lang->line('fullname'),
@@ -415,7 +481,10 @@ class Index extends BaseController
             [
                 'label' => $this->lang->line('email'),
                 'field' => 'email',
-                'rules' => 'trim|required|valid_email'
+                'rules' => 'trim|required|valid_email|callback_validate_unique_email',
+                'errors' => [
+                    'validate_unique_email' => $this->lang->line('email_taken')
+                ]
             ],
             [
                 'label' => $this->lang->line('password'),
@@ -435,7 +504,10 @@ class Index extends BaseController
             [
                 'label' => $this->lang->line('contact_number'),
                 'field' => 'contact_number',
-                'rules' => 'trim|required|numeric'
+                'rules' => 'trim|required|numeric|callback_validate_phone[' . $this->input->post('contact_number_code') . ']',
+                'errors' => [
+                    'validate_phone' => $this->lang->line('phone_should_be_unique')
+                ]
             ],
             [
                 'label' => $this->lang->line('alternate_contact_number_code'),
@@ -445,7 +517,10 @@ class Index extends BaseController
             [
                 'label' => $this->lang->line('alternate_contact_number'),
                 'field' => 'alternate_contact_number',
-                'rules' => 'trim|required|numeric'
+                'rules' => 'trim|required|numeric|callback_validate_alternate_phone[' . $this->input->post('alternate_contact_number_code') . ']',
+                'errors' => [
+                    'validate_alternate_phone' => $this->lang->line('phone_should_be_unique')
+                ]
             ],
             [
                 'label' => $this->lang->line('country'),
@@ -465,6 +540,11 @@ class Index extends BaseController
         ];
     }
 
+    /**
+     * Technician Rules
+     *
+     * @return void
+     */
     private function technicianEmployeeRules()
     {
         return [
@@ -481,6 +561,11 @@ class Index extends BaseController
         ];
     }
 
+    /**
+     * Technicain Company Owner rules
+     *
+     * @return void
+     */
     private function compannyOwnerRules()
     {
         return [
@@ -490,5 +575,68 @@ class Index extends BaseController
                 'rules' => 'trim|required'
             ]
         ];
+    }
+
+    /**
+     * Callback to validate unique phone number
+     *
+     * @param string $phone
+     * @param string $country_code
+     * @return boolean
+     */
+    public function validate_phone($phone, $country_code)
+    {
+        if (empty($country_code)) {
+            return false;
+        }
+
+        $data = $this->Common_model->fetch_data('ai_user', 'user_id', ['where' => [
+            'prm_user_countrycode' => $country_code,
+            'phone' => $phone
+        ]], true);
+
+        if (empty($data)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Callback to validate unique alternate number
+     *
+     * @param string $phone
+     * @param string $country_code
+     * @return boolean
+     */
+    public function validate_alternate_phone($phone, $country_code)
+    {
+        if (empty($country_code)) {
+            return false;
+        }
+
+        $data = $this->Common_model->fetch_data('ai_user', 'user_id', ['where' => [
+            'alt_user_countrycode' => $country_code,
+            'alt_userphone' => $phone
+        ]], true);
+
+        if (empty($data)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function validate_unique_email($email)
+    {
+        $data = $this->Common_model->fetch_data('ai_user', 'user_id', ['where' => [
+            'email' => $email,
+        ]], true);
+
+        if (empty($data)) {
+            return true;
+        }
+
+        return false;
     }
 }

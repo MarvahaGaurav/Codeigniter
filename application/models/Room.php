@@ -20,7 +20,7 @@ class Room extends BaseModel
         
         if (isset($options['room_id']) && !empty($options['room_id'])) {
             $query = "*";
-            $this->db->where("rooms.id", $options['room_id']);
+            $this->db->where("rooms.room_id", $options['room_id']);
             $singleRow = true;
         } else {
             $query = "SQL_CALC_FOUND_ROWS room_id, title, image, icon, ugr, uo, reflection_values_wall,
@@ -47,6 +47,7 @@ class Room extends BaseModel
 
         $data = [];
         $exec = $this->db->get();
+        
         if ($singleRow) {
             $data = $exec->row_array();
         } else {
