@@ -11,7 +11,7 @@
         <!-- //breadcrumb -->
 
         <div class="page-heading">
-            <h1 class="page-title">Bathroom : Room Dimensions</h1>
+            <h1 class="page-title"><?php echo ucfirst($room['title']) ?> : Room Dimensions</h1>
             <p class="prj-description">We are continously designing, prototyping and testing new products to enable us to deliver products that are energy efficient and environmental friendly, in combination
                 with a creation of the ambiance that you need, always keeping in mind that luminaires have a great impact on the environment, appearance and impression of the overall
                 surroundings.</p>

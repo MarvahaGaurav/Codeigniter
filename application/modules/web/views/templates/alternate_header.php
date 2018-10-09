@@ -11,7 +11,8 @@
         <link href="public/images/favicon.png" type="image/png" rel="icon">
 
         <!-- Css Plugins -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+        <link rel="stylesheet" href="<?php echo base_url('public/css/bootstrap.min.css') ?>">
         <link rel="stylesheet" href="public/css/easy-autocomplete.min.css">
         <link rel="stylesheet" href="public/css/plugin/font-awesome.min.css">
         <?php if (isset($owl)) { ?>

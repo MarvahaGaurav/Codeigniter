@@ -29,7 +29,7 @@ class InspirationController extends BaseController
         $limit = 5;
         $get = $this->input->get();
         $get = trim_input_parameters($get);
-        $page = isset($get['page'])&!empty((int)$get['page'])?(int)$get['page']:1;
+        $page = isset($get['page'])&&!empty((int)$get['page'])?(int)$get['page']:1;
         $search = isset($get['search'])?$get['search']:"";
 
         $options['offset'] = ($page - 1) * $limit;
