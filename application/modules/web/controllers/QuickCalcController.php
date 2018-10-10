@@ -30,6 +30,7 @@ class QuickCalcController extends BaseController
             $params['language_code'] = 'en';
             $params['type'] = APPLICATION_RESIDENTIAL;
             $params['all_data'] = true;
+            $params['where']['(EXISTS(SELECT id FROM rooms WHERE application_id=app.application_id))'] = null;
 
             if (is_numeric($applicationType) &&
                 in_array((int)$applicationType, [APPLICATION_PROFESSIONAL, APPLICATION_RESIDENTIAL], true)

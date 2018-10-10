@@ -134,6 +134,16 @@ class ProjectController extends BaseController
         }
     }
 
+    
+    public function projectRooms_post()
+    {
+        try {
+
+        } catch (\Exception $error) {
+
+        }
+    }
+
     /**
      * Validate project
      *
