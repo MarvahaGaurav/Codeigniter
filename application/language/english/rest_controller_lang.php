@@ -18,6 +18,7 @@ $lang['text_rest_unsupported'] = 'Unsupported protocol';
 /*
  * Custom Messages
  */
+$lang['bad_request'] = 'There was some error with the reqeust';
 $lang['registration_success'] = 'You have successfully registered';
 $lang['header_missing'] = 'Header is missing';
 $lang['login_successful'] = 'You have successfully logged In';
@@ -122,3 +123,8 @@ $lang['something_went_wrong'] = 'Something went wrong please try again';
 $lang['mounting_types'] = 'Mounting types has been fetched';
 $lang['product_fetched'] = 'Products fetched successfully';
 $lang['project_added'] = 'Your project has been added';
+$lang['room_added'] = 'Your room has been added';
+$lang['quotation_sent'] = 'Your quotation has been sent';
+$lang['project_listed'] = 'Project lists retrieved';
+$lang['product_details_fetched'] = 'Project details retrieved';
+$lang['location_updated'] = 'Your Location has been updated';

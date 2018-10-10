@@ -46,8 +46,8 @@ class UserController extends BaseController
      *     type="string"
      *   ),
      * @SWG\Response(response=422, description="Missing parameters/Nothing to update/invalid parameters"),
-     * @SWG\Response(response=200, description="Settings update"),     
-     * @SWG\Response(response=500, description="Internal server error")   
+     * @SWG\Response(response=200, description="Settings update"),
+     * @SWG\Response(response=500, description="Internal server error")
      * )
      */
     public function edit_put()
@@ -95,8 +95,8 @@ class UserController extends BaseController
 
             $this->load->model("User");
             foreach ($request_data as $key => $value) {
-                if (isset($conditional_maps[$key]) 
-                    && !empty($conditional_maps[$key]) 
+                if (isset($conditional_maps[$key])
+                    && !empty($conditional_maps[$key])
                     && !preg_match($conditional_maps[$key]["pattern"], $value)
                 ) {
                     $this->response(
@@ -116,7 +116,7 @@ class UserController extends BaseController
 
             $message = "";
             foreach ($updateMap as $key => $value) {
-                if (isset($request_data[$key]) ) {
+                if (isset($request_data[$key])) {
                     $message = "_{$key}";
                 }
             }
@@ -129,17 +129,118 @@ class UserController extends BaseController
                 'msg' => $this->lang->line("settings_updated" . $message)
                 ]
             );
-        } catch (DatabaseExceptions\UpdateException $error) {
+        } catch (\Exception $error) {
             $this->response(
                 [
                 'code' => HTTP_INTERNAL_SERVER_ERROR,
                 'api_code_result' => 'INTERNAL_SERVER_ERROR',
                 'msg' => $this->lang->line('internal_server_error')
-                ], HTTP_INTERNAL_SERVER_ERROR
+                ]
             );
         }
-
     }
 
+    /**
+     * @SWG\Put(path="/user/location",
+     *   tags={"User"},
+     *   summary="Edit Location",
+     *   description="Edit Location",
+     *   operationId="edit_location_put",
+     *   consumes ={"multipart/form-data"},
+     *   produces={"application/json"},
+     * @SWG\Parameter(
+     *     name="accesstoken",
+     *     in="header",
+     *     description="Access token received during signup or login",
+     *     required=true,
+     *     type="string"
+     *   ),
+     * @SWG\Parameter(
+     *     name="X-Language-Code",
+     *     in="header",
+     *     description="Language code",
+     *     required=true,
+     *     type="string"
+     *   ),
+     * @SWG\Parameter(
+     *     name="lat",
+     *     in="formData",
+     *     description="",
+     *     type="string"
+     *   ),
+     * @SWG\Parameter(
+     *     name="lng",
+     *     in="formData",
+     *     description="",
+     *     type="string"
+     *   ),
+     * @SWG\Response(response=422, description="Validation Error"),
+     * @SWG\Response(response=200, description="Location updated"),
+     * @SWG\Response(response=500, description="Internal server error")
+     * )
+     */
+    public function location_put()
+    {
+        try {
+            $user_data = $this->accessTokenCheck();
+            $language_code = $this->langcode_validate();
 
+            $this->requestData = $this->put();
+
+            $this->validateLocation();
+
+            if (! (bool) $this->form_validation->run()) {
+                $this->response([
+                    'code' => HTTP_UNPROCESSABLE_ENTITY,
+                    'msg' => array_shift($this->form_validation->error_array()),
+                ]);
+            }
+
+            $this->UtilModel->updateTableData([
+                'user_lat' => $this->requestData['lat'],
+                'user_long' => $this->requestData['lng']
+            ], 'ai_user', [
+                'user_id' => $user_data['user_id']
+            ]);
+
+            $this->response([
+                'code' => HTTP_OK,
+                'msg' => $this->lang->line('location_updated'),
+            ]);
+        } catch (\Exception $error) {
+            $this->response(
+                [
+                'code' => HTTP_INTERNAL_SERVER_ERROR,
+                'api_code_result' => 'INTERNAL_SERVER_ERROR',
+                'msg' => $this->lang->line('internal_server_error')
+                ]
+            );
+        }
+    }
+
+    /**
+     * Validates Location data
+     *
+     * @return void
+     */
+    private function validateLocation()
+    {
+        $this->load->library('form_validation');
+        
+        $this->form_validation->set_data($this->requestData);
+
+        $this->form_validation->set_rules([
+            [
+                'field' => 'lat',
+                'label' => 'Location',
+                'rules' => 'trim|required|numeric'
+            ],
+            [
+                'field' => 'lng',
+                'label' => 'Location',
+                'rules' => 'trim|required|numeric'
+            ],
+
+        ]);
+    }
 }

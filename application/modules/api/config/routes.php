@@ -10,6 +10,7 @@ $route['api/v1/user/login'] = 'Login';
 $route['api/v1/user/signup'] = 'Signup';
 $route['api/v1/user/logout'] = 'Logout';
 $route['api/v1/user/settings'] = 'UserController/edit';
+$route['api/v1/user/location'] = 'UserController/location';
 
 $route['api/v1/employee'] = 'EmployeeController/employee';
 
@@ -33,3 +34,6 @@ $route['api/v1/rooms/(:any)/mounting-types/(:any)/products'] =
                                            'ProductController/roomProducts/room_id/$1/mounting_type/$2';
 $route['api/v1/products/(:any)'] = 'ProductController/details/product_id/$1';
 $route['api/v1/projects'] = 'ProjectController/index';
+$route['api/v1/projects/rooms'] = 'ProjectController/projectRooms';
+$route['api/v1/projects/quotation-request'] = 'ProjectController/sendQuotationRequest';
+$route['api/v1/projects/(:num)'] = 'ProjectController/details/project_id/$1';

@@ -269,6 +269,7 @@ defined("EMPLOYEE_REQUEST_ACCEPTED") or define("EMPLOYEE_REQUEST_ACCEPTED", 1);
 defined("EMPLOYEE_REQUEST_REJECTED") or define("EMPLOYEE_REQUEST_REJECTED", 3);
 defined("EMPLOYEE_REQUEST_CANCELLED") or define("EMPLOYEE_REQUEST_CANCELLED", 4);
 defined("RECORDS_PER_PAGE") or define("RECORDS_PER_PAGE", 10);
+defined("API_RECORDS_PER_PAGE") or define("API_RECORDS_PER_PAGE", 10);
 
 /*
 | Mounting Type constants
@@ -284,3 +285,5 @@ defined("MOUNTING_TRACKS") or define("MOUNTING_TRACKS", 7);
 
 defined("NO") or define("NO", 0);
 defined("YES") or define("YES", 1);
+defined("ROOM_MAIN_PRODUCT") or define("ROOM_MAIN_PRODUCT", 1);
+defined("ROOM_ACCESSORY") or define("ROOM_ACCESSORY", 2);
