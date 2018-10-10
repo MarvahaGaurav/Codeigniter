@@ -33,6 +33,12 @@ class Application extends BaseModel
             $this->db->where("app.type", $params["type"]);
         }
 
+        if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
+            foreach ($params['where'] as $tableColumn => $searchValue) {
+                $this->db->where($tableColumn, $searchValue);
+            }
+        }
+
         $query = $this->db->get();
 
         $result = $query->result_array();

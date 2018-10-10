@@ -111,9 +111,8 @@ class Product extends BaseModel
     {
         $this->db->select('rp.product_id, room_id, products.title, type, type_string, body')
         ->from('room_products as rp')
-        ->join('products', 'product_id')
-        ->group_by('product_id')
-        ->where('EXISTS(SELECT id FROM product_specifications WHERE product_id = rp.product_id AND CHAR_LENGTH(uld) > 0)', null);
+        ->join('products', 'products.product_id=rp.product_id')
+        ->group_by('product_id');
 
         if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
             foreach ($params['where'] as $tableColumn => $searchValue) {
@@ -124,13 +123,13 @@ class Product extends BaseModel
         $this->load->model(['ProductGallery', 'ProductTechnicalData']);
         
         $query = $this->db->get();
-
+        
         $result['data'] = $query->result_array();
+        $this->load->helper(['db', 'debuging', 'utility']);
 
         if (!empty($result['data'])) {
             $productIds = array_column($result['data'], 'product_id');
             $images = $this->ProductGallery->get($productIds);
-            $this->load->helper(['db', 'debuging', 'utility']);
             $result['data'] = getDataWith($result['data'], $images, 'product_id', 'product_id', 'images', 'image');
             $technicalData = $this->ProductTechnicalData->get([
                 'product_id' => $productIds

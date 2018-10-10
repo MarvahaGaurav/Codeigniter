@@ -44,8 +44,8 @@ class ApplicationController extends BaseController
 
         $params['type'] = isset($request_data['type'])&&!empty($request_data['type'])?$request_data['type']:0;
         $params['language_code'] = $language_code;
-        $this->response(
-
+        $params['where']['(EXISTS(SELECT id FROM rooms WHERE application_id=app.application_id))'] = null;
+        
         $data = $this->Application->get($params);
 
         if (empty($data)) {

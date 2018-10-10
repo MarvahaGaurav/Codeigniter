@@ -121,3 +121,4 @@ $lang['something_went_wrong'] = 'Something went wrong please try again';
 //Products
 $lang['mounting_types'] = 'Mounting types has been fetched';
 $lang['product_fetched'] = 'Products fetched successfully';
+$lang['project_added'] = 'Your project has been added';

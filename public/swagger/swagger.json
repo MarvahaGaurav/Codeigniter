@@ -1135,8 +1135,8 @@
                 "tags": [
                     "Products"
                 ],
-                "summary": "Product Mounting types",
-                "description": "Lists all the product mounting types",
+                "summary": "",
+                "description": "",
                 "operationId": "mountingTypes_get",
                 "produces": [
                     "application/json"
@@ -1416,6 +1416,90 @@
                     },
                     "501": {
                         "description": "Please try again"
+                    }
+                }
+            }
+        },
+        "/projects": {
+            "post": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Add project",
+                "description": "Add projects",
+                "operationId": "projects_post",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Language-Code",
+                        "in": "header",
+                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "number",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "levels",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "address",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "lat",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "lng",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "422": {
+                        "description": "Validation Errors"
+                    },
+                    "404": {
+                        "description": "No data found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
                     }
                 }
             }

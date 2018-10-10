@@ -146,12 +146,16 @@ class ProductController extends BaseController
             $this->load->model("Product");
 
             $params['where'] = [
-                'rp.type' => $get['mounting_type']
+                'rp.type' => $get['mounting_type'],
+                'room_id' => $get['room_id'],
+                'EXISTS(SELECT id FROM product_specifications WHERE product_id = rp.product_id AND CHAR_LENGTH(uld) > 0)' => null
             ];
 
             if ($this->get('other_products') == 1) {
                 $params['where'] = [
-                    'rp.type !=' => $get['mounting_type']
+                    'rp.type !=' => $get['mounting_type'],
+                    'room_id' => $get['room_id'],
+                    'EXISTS(SELECT id FROM product_specifications WHERE product_id = rp.product_id AND CHAR_LENGTH(uld) > 0)' => null
                 ];
             }
 
@@ -381,7 +385,7 @@ class ProductController extends BaseController
         $this->response($response);
     }
 
-    /**
+    /*
      * @SWG\Get(path="/products/{product_id}",
      *   tags={"Products"},
      *   summary="Application",
@@ -494,5 +498,19 @@ class ProductController extends BaseController
         }
 
         $this->response($response);
+    }
+
+    /**
+     * Rooms related products
+     *
+     * @return void
+     */
+    public function roomRelatedProducts()
+    {
+        try {
+
+        } catch (\Exception $error) {
+
+        }
     }
 }
