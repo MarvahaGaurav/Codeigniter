@@ -265,6 +265,11 @@ class ProductController extends BaseController
             $productData['body'] = trim(strip_tags($productData['body']));
             $productData['how_to_specity'] = trim(strip_tags($productData['how_to_specity']));
 
+            $productSpecifications = array_map(function ($specification) {
+                $specification['image'] = preg_replace("/^\/home\/forge\//", "https://", $specification['image']);
+                return $specification;
+            }, $productSpecifications);
+
             $data = $productData;
             $data['technical_data'] = $productTechnicalData;
             $data['specifications'] = $productSpecifications;
@@ -277,13 +282,90 @@ class ProductController extends BaseController
                 'data' => $data
             ]);
         } catch (\Exception $error) {
-            dd($error->getMessage());
             $this->response([
                 'code' => HTTP_INTERNAL_SERVER_ERROR,
                 'api_code_result' => 'INTERNAL_SERVER_ERROR',
                 'msg' =>  $this->lang->line("internal_server_error")
             ]);
         }
+    }
+
+    /**
+     * @SWG\Get(path="/rooms/{room_id}/products",
+     *   tags={"Products"},
+     *   summary="",
+     *   description="",
+     *   operationId="mountingTypes_get",
+     *   produces={"application/json"},
+     * @SWG\Parameter(
+     *     name="X-Language-Code",
+     *     in="header",
+     *     description="en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+     *     type="string",
+     *     required=true
+     * ),
+     * @SWG\Parameter(
+     *     name="room_id",
+     *     in="path",
+     *     description="room_id",
+     *     type="string",
+     *     required = true
+     *   ),
+     * @SWG\Response(response=200, description="OK"),
+     * @SWG\Response(response=401, description="Unauthorize"),
+     * @SWG\Response(response=404, description="No data found"),
+     * @SWG\Response(response=500, description="Internal server error"),
+     * )
+     */
+    public function accessoryProducts_get()
+    {
+        try {
+            $language_code = $this->langcode_validate();
+
+            $this->requestData = $this->get();
+            $this->load->library('form_validation');
+
+            $this->validateAccessoryProduct();
+
+            if (!(bool)$this->form_validation->run()) {
+                $this->response([
+                    'code' => HTTP_UNPROCESSABLE_ENTITY,
+                    'msg' => array_shift($this->form_validation->error_array()),
+                ]);
+            }
+
+            $params['room_id'] = $this->requestData['room_id'];
+            
+            $data = $this->Product->roomProducts($params);
+
+            $this->load->helper('utility');
+            $data = array_strip_tags($data, ['body']);
+
+            $this->response([
+                'code' => HTTP_OK,
+                'msg' => $this->lang->line('related_products_fetched'),
+                'data' => $data
+            ]);
+        } catch (\Exception $error) {
+            $this->response([
+                'code' => HTTP_INTERNAL_SERVER_ERROR,
+                'api_code_result' => 'INTERNAL_SERVER_ERROR',
+                'msg' =>  $this->lang->line("internal_server_error")
+            ]);
+        }
+    }
+
+    private function validateAccessoryProduct()
+    {
+        $this->form_validation->set_data($this->requestData);
+
+        $this->form_validation->set_rules([
+            [
+                'field' => 'room_id',
+                'label' => 'Room',
+                'rules' => 'trim|required|is_natural_no_zero'
+            ]
+        ]);
     }
 
     /**

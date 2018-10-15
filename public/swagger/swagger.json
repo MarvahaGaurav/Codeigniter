@@ -1173,6 +1173,49 @@
                 }
             }
         },
+        "/rooms/{room_id}/products": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "",
+                "description": "",
+                "operationId": "mountingTypes_get",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Language-Code",
+                        "in": "header",
+                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "room_id",
+                        "in": "path",
+                        "description": "room_id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "404": {
+                        "description": "No data found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
         "/applications/{application_id}/products": {
             "get": {
                 "tags": [
@@ -1469,6 +1512,99 @@
                     }
                 }
             },
+            "put": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Edit project",
+                "description": "Edit projects",
+                "operationId": "projects_put",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Language-Code",
+                        "in": "header",
+                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "accesstoken",
+                        "in": "header",
+                        "description": "Access token received during signup or login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "project_id",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "number",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "levels",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "address",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "lat",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "lng",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "422": {
+                        "description": "Validation Errors"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "Projects"
@@ -1640,6 +1776,397 @@
                         "in": "path",
                         "description": "",
                         "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "404": {
+                        "description": "Data not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/projects/{project_id}/rooms": {
+            "get": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "List project rooms",
+                "description": "List rooms for a given project",
+                "operationId": "projectsRooms_get",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Language-Code",
+                        "in": "header",
+                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "accesstoken",
+                        "in": "header",
+                        "description": "Access token received during signup or login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "404": {
+                        "description": "Data not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/projects/rooms": {
+            "delete": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Delete Project Rooms",
+                "description": "Delete project room for a current user",
+                "operationId": "projects_rooms_delete",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Language-Code",
+                        "in": "header",
+                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "accesstoken",
+                        "in": "header",
+                        "description": "Access token received during signup or login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "project_room_id",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "422": {
+                        "description": "Validation Errors"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/quotations": {
+            "get": {
+                "tags": [
+                    "Requests & Quotations"
+                ],
+                "summary": "Quotaion Listing",
+                "description": "List Quotation posted by user which are quoted",
+                "operationId": "projectQuoted_get",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Language-Code",
+                        "in": "header",
+                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "accesstoken",
+                        "in": "header",
+                        "description": "Access token received during signup or login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "request_id",
+                        "in": "query",
+                        "description": "Request Id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "404": {
+                        "description": "Data not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Requests & Quotations"
+                ],
+                "summary": "Quotation Approve",
+                "description": "Approve quotation",
+                "operationId": "quotations_put",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Language-Code",
+                        "in": "header",
+                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "accesstoken",
+                        "in": "header",
+                        "description": "Access token received during signup or login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "quotation_id",
+                        "in": "query",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "request_id",
+                        "in": "query",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Requests & Quotations"
+                ],
+                "summary": "Add Quotation",
+                "description": "Add quotation",
+                "operationId": "quotaitions_post",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Language-Code",
+                        "in": "header",
+                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "accesstoken",
+                        "in": "header",
+                        "description": "Access token received during signup or login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "request_id",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "price",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "422": {
+                        "description": "Validation Errors"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/quoted-requests": {
+            "get": {
+                "tags": [
+                    "Requests & Quotations"
+                ],
+                "summary": "Quoteed Request Listing",
+                "description": "List projects posted by user which are quoted",
+                "operationId": "projectQuoted_get",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Language-Code",
+                        "in": "header",
+                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "accesstoken",
+                        "in": "header",
+                        "description": "Access token received during signup or login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "1 - Customer Quotation Listing, 2 - Technician Quotation Listing",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "404": {
+                        "description": "Data not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/requests": {
+            "get": {
+                "tags": [
+                    "Requests & Quotations"
+                ],
+                "summary": "Request Listing",
+                "description": "List projects posted by current user",
+                "operationId": "projects_get",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Language-Code",
+                        "in": "header",
+                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "accesstoken",
+                        "in": "header",
+                        "description": "Access token received during signup or login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "1 - Customer Quotation Listing, 2 - Technician Quotation Listing",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "",
                         "type": "string"
                     }
                 ],

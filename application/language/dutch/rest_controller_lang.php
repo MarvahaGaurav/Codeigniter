@@ -41,6 +41,7 @@ $lang['process_failuare'] = 'Process failed';
 $lang['no_data_found'] = 'No Record Found';
 $lang['invalid_request_id'] = 'Invalid request id to proceed';
 $lang['profile_update_success'] = 'Profile Updated Successfully!';
+$lang['invalid_request'] = 'Something went wrong with your request';
 /*
  * Friend Section language
  */

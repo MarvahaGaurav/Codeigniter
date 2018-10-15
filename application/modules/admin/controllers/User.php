@@ -1,12 +1,12 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 class User extends MY_Controller
 {
 
     private $validUserTypes;
     private $userTypes;
-    function __construct() 
+    function __construct()
     {
         parent::__construct();
         $this->load->helper(['url', 'custom_cookie', 'form', 'encrypt_openssl']);
@@ -27,7 +27,7 @@ class User extends MY_Controller
         $this->data = [];
         $this->validUserTypes = [PRIVATE_USER, BUSINESS_USER];
         $this->data['admininfo'] = $this->admininfo;
-        if($this->admininfo['role_id'] == 2) {
+        if ($this->admininfo['role_id'] == 2) {
             $whereArr = ['where'=>['admin_id'=>$this->admininfo['admin_id']]];
             $access_detail = $this->Common_model->fetch_data('sub_admin', ['viewp', 'addp', 'editp', 'blockp', 'deletep', 'access_permission', 'admin_id', 'id'], $whereArr, false);
             $this->data['admin_access_detail'] = $access_detail;
@@ -43,7 +43,7 @@ class User extends MY_Controller
      * @name index
      * @description This method is used to list all the customers.
      */
-    public function index() 
+    public function index()
     {
         $role_id = $this->admininfo['role_id'];
         /*
@@ -104,7 +104,7 @@ class User extends MY_Controller
             $params['offset'] = $offset;
         }
            $params['user_type'] = '1,6';
-        if (! empty($user_type) ) {
+        if (! empty($user_type)) {
              $params['user_type'] = $user_type;
              $user_type = $get['user_type'];
         }
@@ -131,7 +131,7 @@ class User extends MY_Controller
         if (!empty($params['sortby'])) {
             $this->data["order_by"] = $params["sortby"] == "desc" ? "asc" : "desc";
         }
-        //unset sortfields 
+        //unset sortfields
         unset($params["sortby"]);
         unset($params["sortby"]);
 
@@ -155,13 +155,14 @@ class User extends MY_Controller
         
         $this->data['userlist'] = array_map(
             function ($data) {
-                if (in_array((int)$data['user_type'], $this->validUserTypes) ) {
+                if (in_array((int)$data['user_type'], $this->validUserTypes)) {
                     $data['user_type'] = $this->userTypes[(int)$data['user_type']];
                 } else {
                     $data['user_type'] = "Invalid user";
                 }
                 return $data;
-            }, $this->data['userlist']
+            },
+            $this->data['userlist']
         );
         // pr($this->data['userlist']);die;
 
@@ -169,13 +170,13 @@ class User extends MY_Controller
         load_views("users/index", $this->data);
     }
 
-    public function detail() 
+    public function detail()
     {
 
         $get = $this->input->get();
         $userId = (isset($get['id']) && !empty($get['id'])) ? encryptDecrypt($get['id'], 'decrypt') : show_404();
         $this->data['user_id'] = $userId;
-        //$this->data['profile'] = $profile = $this->Common_model->fetch_data('ai_user', array(), ['where' => ['user_id' => $userId]], true);        
+        //$this->data['profile'] = $profile = $this->Common_model->fetch_data('ai_user', array(), ['where' => ['user_id' => $userId]], true);
         $profile = $this->User_Model->userdetail(['user_id' => $userId]);
         $this->data['profile'] =  $profile[0];
         //pr($profile['result'][0]);
@@ -184,7 +185,7 @@ class User extends MY_Controller
         }
         
         $this->data['profile']['user_type_numeric'] = $this->data['profile']['user_type'];
-        if (in_array((int)$this->data['profile']['user_type'], $this->validUserTypes) ) {
+        if (in_array((int)$this->data['profile']['user_type'], $this->validUserTypes)) {
             $this->data['profile']['user_type'] = $this->userTypes[(int)$this->data['profile']['user_type']];
         } else {
             $this->data['profile']['user_type'] = 'Invalid user';
@@ -196,7 +197,7 @@ class User extends MY_Controller
         load_views("users/user-detail", $this->data);
     }
 
-    public function exportUser($userData) 
+    public function exportUser($userData)
     {
 
         $fileName = 'userlist' . date('d-m-Y-g-i-h') . '.xls';
@@ -213,8 +214,7 @@ class User extends MY_Controller
                 . '</tr>';
 
         $coun = 1;
-        foreach ($userData AS $res) {
-
+        foreach ($userData as $res) {
             $date = date_create($res['registered_date']);
             $Date = date_format($date, 'd/m/Y');
             $Time = date_format($date, 'g:i A');
@@ -236,5 +236,4 @@ class User extends MY_Controller
         echo $format;
         die;
     }
-
 }

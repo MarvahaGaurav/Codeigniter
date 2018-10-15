@@ -16,7 +16,9 @@ class ProductSpecification extends BaseModel
     {
         $this->db->select('*')
             ->from($this->tableName)
-            ->where('product_id', $params['product_id']);
+            ->where('product_id', $params['product_id'])
+            ->where('CHAR_LENGTH(uld) >', 0)
+            ->group_by('articlecode');
 
         $query = $this->db->get();
 

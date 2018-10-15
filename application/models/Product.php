@@ -22,7 +22,7 @@ class Product extends BaseModel
         ) {
             $this->db->from("products");
             if (isset($params['product_listing']) && !empty($params['product_listing'])) {
-                $query = "SQL_CALC_FOUND_ROWS products.id as product_id, products.title as product_title, products.image";
+                $query = "SQL_CALC_FOUND_ROWS product_id, products.title as product_title, products.image";
                 $this->db->where("products.language_code", $params['language_code']);
                 $search = true;
                 if (! isset($params['search']) || empty($params['search'])) {
@@ -35,7 +35,7 @@ class Product extends BaseModel
                     $this->db->offset((int)$params['offset']);
                 }
             } else {
-                $query = "products.id as product_id, products.title as product_title, how_to_specity as description, products.image, productTechnicalData(products.id) as technical_data," .
+                $query = "product_id, products.title as product_title, how_to_specity as description, products.image, productTechnicalData(products.id) as technical_data," .
                 "IFNULL(GROUP_CONCAT(gallery.image), '') as images";
                 $single_row = true;
                 
@@ -45,7 +45,7 @@ class Product extends BaseModel
                 ->limit(1);
             }
         } else {
-            $query = "SQL_CALC_FOUND_ROWS products.id as product_id, products.title as product_title, products.image";
+            $query = "SQL_CALC_FOUND_ROWS product_id, products.title as product_title, products.image";
             $this->db->limit(RECORDS_PER_PAGE)
                 ->from("product_applications as pa")
                 ->join("products", "products.id=pa.product_id")
@@ -143,6 +143,33 @@ class Product extends BaseModel
                 'technical_data'
             );
         }
+        
+        return $result;
+    }
+
+    /**
+     * Room Products
+     *
+     * @return void
+     */
+    public function roomProducts($params)
+    {
+        $this->db->select('title, products.product_id, body')
+            ->from('related_products_room')
+            ->join('products', 'products.product_id=related_products_room.product_id')
+            ->where('room_id', $params['room_id']);
+        
+        $query = $this->db->get();
+
+        $result = $query->result_array();
+
+        if (!empty($result)) {
+            $this->load->model("ProductGallery");
+            $this->load->helper(['db']);
+            $productIds = array_column($result, 'product_id');
+            $images = $this->ProductGallery->get($productIds);
+            $result = getDataWith($result, $images, 'product_id', 'product_id', 'images', 'image');
+        }
 
         return $result;
     }
@@ -160,6 +187,12 @@ class Product extends BaseModel
         return $data;
     }
 
+    /**
+     * Products By inserpotation
+     *
+     * @param interger|array $inspirationIds
+     * @return void
+     */
     public function productsByInspiration($inspirationIds)
     {
         $this->db->select('title, ip.product_id, inspiration_id')

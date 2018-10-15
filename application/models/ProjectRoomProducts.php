@@ -11,7 +11,7 @@ class ProjectRoomProducts extends BaseModel {
     public function __construct()
     {
         $this->load->database();
-        $this->tableName = "project_room_products";
+        $this->tableName = "project_room_products as prs";
     }
 
 
@@ -30,9 +30,13 @@ class ProjectRoomProducts extends BaseModel {
      */
     public function get($params)
     {
-        $this->db->select("project_room_id, article_code, products.product_id, type, title", false)
-            ->join('products' , 'products.product_id=' . $this->tableName . '.product_id')
-            ->from($this->tableName);
+        $this->db->select("project_room_id, prs.product_id, prs.type, products.title,
+        IFNULL(articlecode, '') as articlecode, IFNULL(ps.image, '') as article_image,
+         IFNULL(price, 0.00) as  price, IFNULL(currency, 0.00) as  currency, IFNULL(uld, '') as  uld,", false)
+            ->join('products' , 'products.product_id=prs.product_id')
+            ->join('product_specifications as ps', 'ps.product_id=products.product_id AND prs.article_code=ps.articlecode', 'left')
+            ->from($this->tableName)
+            ->group_by('product_id, project_room_id');
         
         if (isset($params['limit']) && is_numeric($params['limit']) && (int)$params['limit'] > 0) {
             $this->db->limit((int)$params['limit']);
@@ -43,6 +47,7 @@ class ProjectRoomProducts extends BaseModel {
         }
 
         if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
+
             foreach ($params['where'] as $tableColumn => $searchValue) {
                 if (is_array($searchValue)) {
                     $this->db->where_in($tableColumn, $searchValue);
@@ -53,7 +58,7 @@ class ProjectRoomProducts extends BaseModel {
         }
 
         $query = $this->db->get();
-        
+
         $result['data'] = $query->result_array();
 
         if (!empty($result['data'])) {

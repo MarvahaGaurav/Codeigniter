@@ -1,12 +1,12 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 class Technician extends MY_Controller
 {
 
     private $validUserTypes;
     private $userTypes;
-    function __construct() 
+    function __construct()
     {
         parent::__construct();
         $this->load->helper(['url', 'custom_cookie', 'form', 'encrypt_openssl']);
@@ -25,7 +25,7 @@ class Technician extends MY_Controller
         $this->data = [];
         $this->data['admininfo'] = $this->admininfo;
         
-        if($this->admininfo['role_id'] == 2) {
+        if ($this->admininfo['role_id'] == 2) {
             $whereArr = ['where'=>['admin_id'=>$this->admininfo['admin_id']]];
             $access_detail = $this->Common_model->fetch_data('sub_admin', ['viewp', 'addp', 'editp', 'blockp', 'deletep', 'access_permission', 'admin_id', 'id'], $whereArr, false);
             $this->data['admin_access_detail'] = $access_detail;
@@ -33,7 +33,7 @@ class Technician extends MY_Controller
         
         $this->validUserTypes = [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER, WHOLESALER];
         $this->userTypes = [
-            INSTALLER => "Technician", 
+            INSTALLER => "Technician",
             ARCHITECT => "Architect",
             ELECTRICAL_PLANNER => "Electrical Planner",
             WHOLESALER => "Wholesaler"
@@ -44,7 +44,7 @@ class Technician extends MY_Controller
      * @name index
      * @description This method is used to list all the customers.
      */
-    public function index() 
+    public function index()
     {
         $role_id = $this->admininfo['role_id'];
         /*
@@ -108,8 +108,8 @@ class Technician extends MY_Controller
             $params['limit'] = $limit;
             $params['offset'] = $offset;
         }
-        $params['user_type'] = '2,3,4,5';   
-        if (! empty($user_type) ) {
+        $params['user_type'] = '2,3,4,5';
+        if (! empty($user_type)) {
             $params['user_type'] = $user_type;
             $user_type = $get['user_type'];
         }
@@ -127,13 +127,14 @@ class Technician extends MY_Controller
         $this->data['userlist'] = array_map(
             function ($data) {
                 $data['user_type_num'] = $data['user_type'];
-                if (in_array((int)$data['user_type'], $this->validUserTypes) ) {
+                if (in_array((int)$data['user_type'], $this->validUserTypes)) {
                     $data['user_type'] = $this->userTypes[(int)$data['user_type']];
                 } else {
                     $data['user_type'] = "Invalid user";
                 }
                 return $data;
-            }, $this->data['userlist']
+            },
+            $this->data['userlist']
         );
 
         /*
@@ -147,7 +148,7 @@ class Technician extends MY_Controller
         if (!empty($params['sortby'])) {
             $this->data["order_by"] = $params["sortby"] == "desc" ? "asc" : "desc";
         }
-        //unset sortfields 
+        //unset sortfields
         unset($params["sortby"]);
         unset($params["sortby"]);
 
@@ -159,20 +160,21 @@ class Technician extends MY_Controller
         /* CSRF token */
         $this->data["csrfName"] = $this->security->get_csrf_token_name();
         $this->data["csrfToken"] = $this->security->get_csrf_hash();
-        $this->data['searchlike'] = $searchlike;
+        $this->data['searchlike'] = html_escape($searchlike);
         $this->data['page'] = $page;
-        $this->data['startDate'] = $startDate;
-        $this->data['endDate'] = $endDate;
-        $this->data['status'] = $status;
+        $this->data['startDate'] = html_escape($startDate);
+        $this->data['endDate'] = html_escape($endDate);
+        $this->data['status'] = html_escape($status);
         $this->data['limit'] = $limit;
+        $this->data['country'] = html_escape($country);
         $this->data['totalrows'] = $totalrows;
         $this->data['user_type'] = $user_type;
-        // pr($this->data['user_type']);
+
         $this->session->set_flashdata('message', $this->lang->line('success_prefix') . $this->lang->line('login_success') . $this->lang->line('success_suffix'));
         load_views("technician/index", $this->data);
     }
 
-    public function detail() 
+    public function detail()
     {
 
         $get = $this->input->get();
@@ -190,10 +192,10 @@ class Technician extends MY_Controller
             show_404();
         }
         $this->data['valid_inspiration_creators'] = [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER];
-        if (in_array((int)$this->data['profile']['user_type'], $this->data['valid_inspiration_creators']) ) {
+        if (in_array((int)$this->data['profile']['user_type'], $this->data['valid_inspiration_creators'])) {
             $this->load->model("Inspiration");
             $params['user_id'] = $this->data['user_id'];
-            $page = isset($get['page']) && !empty((int)$get['page'])? (int)$get['page'] : 1; 
+            $page = isset($get['page']) && !empty((int)$get['page'])? (int)$get['page'] : 1;
             $limit = isset($get['limit']) ? $get['limit'] : RECORDS_PER_PAGE;
 
             $params['offset'] = ($page - 1) * $limit;
@@ -209,19 +211,19 @@ class Technician extends MY_Controller
                     $result['created_at'] = convert_date_time_format("Y-m-d H:i:s", $result['created_at'], "d/m/Y g:i A");
                     $result['updated_at'] = convert_date_time_format("Y-m-d H:i:s", $result['updated_at'], "d/m/Y g:i A");
                     return $result;
-                }, $data['result']
-            ); 
+                },
+                $data['result']
+            );
             //pr($data['result']);
             $this->data['total_inspirations'] = (int)$data['count'];
             $pageurl = "/admin/technician/detail?id=" . $get['id'];
             $this->data["link"] = $this->commonfn->pagination($pageurl, $data['count'], $limit);
             $this->data['inspiration_list'] = $data['result'];
             // pr($this->data['inspiration_list']);
-            
         }
 
         $this->data['profile']['user_type_num'] = $this->data['profile']['user_type'];
-        if (in_array((int)$this->data['profile']['user_type'], $this->validUserTypes) ) {
+        if (in_array((int)$this->data['profile']['user_type'], $this->validUserTypes)) {
             $this->data['profile']['user_type'] = $this->userTypes[(int)$this->data['profile']['user_type']];
         } else {
             $this->data['profile']['user_type'] = 'Invalid user';
@@ -233,7 +235,7 @@ class Technician extends MY_Controller
         load_views("technician/user-detail", $this->data);
     }
 
-    public function exportUser($userData) 
+    public function exportUser($userData)
     {
 
         $fileName = 'userlist' . date('d-m-Y-g-i-h') . '.xls';
@@ -250,8 +252,7 @@ class Technician extends MY_Controller
                 . '</tr>';
 
         $coun = 1;
-        foreach ($userData AS $res) {
-
+        foreach ($userData as $res) {
             $date = date_create($res['registered_date']);
             $Date = date_format($date, 'd/m/Y');
             $Time = date_format($date, 'g:i A');
@@ -273,5 +274,4 @@ class Technician extends MY_Controller
         echo $format;
         die;
     }
-
 }

@@ -150,7 +150,7 @@ $(document).ready(function () {
         });
     }
 
-    $(".redirectable").on("click", function () {
+    $("document").on("click", '.redirectable', function () {
         var self = this,
             $self = $(self),
             redirectTo = $self.attr("data-redirect-to");

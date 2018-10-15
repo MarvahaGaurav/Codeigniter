@@ -125,14 +125,6 @@
                                     <label class="nav-txt">Dashboard</label>
                                 </a>
                             </li>
-                            <?php if ($admininfo['role_id'] == 1) { ?>
-                                <li>
-                                    <a href="admin/subadmin" class="<?php echo ($controller == 'subadmin') ? 'active' : ''; ?>">
-                                        <img src="public/images/svg/sub-users.svg" alt="Subadmin">
-                                        <label class="nav-txt">Subadmin</label>
-                                    </a>
-                                </li>
-                            <?php } ?>
                             <?php if(in_array('1', $assignedmodules) || $admininfo['role_id'] == 1) { ?>
                             <li>
                                 <a href="admin/users" class="<?php echo ($controller == 'user') ? 'active' : ''; ?>">
@@ -150,12 +142,12 @@
                             </li>
                             <?php } ?>
                             <?php if(in_array('3', $assignedmodules) || $admininfo['role_id'] == 1) { ?>
-                            <li>
+                            <!-- <li>
                                 <a href="javascript:void(0)" <?php echo ($controller == "products") ? "class='active'" : "" ?> >
                                     <img src="public/images/svg/cms.svg" alt="Template Management">
                                     <label class="nav-txt">Product Management</label>
                                 </a>
-                            </li>
+                            </li> -->
                             <?php } ?>
                             <?php if(in_array('4', $assignedmodules) || $admininfo['role_id'] == 1) { ?>
                             <li>
@@ -189,13 +181,21 @@
                                 </a>
                             </li>
                             <?php } ?>
+                            <?php if ($admininfo['role_id'] == 1) { ?>
+                                <li>
+                                    <a href="admin/subadmin" class="<?php echo ($controller == 'subadmin') ? 'active' : ''; ?>">
+                                        <img src="public/images/svg/sub-users.svg" alt="Subadmin">
+                                        <label class="nav-txt">Subadmin</label>
+                                    </a>
+                                </li>
+                            <?php } ?>
                             <?php if(in_array('8', $assignedmodules) || $admininfo['role_id'] == 1) { ?>
-                            <li>
+                            <!-- <li>
                                 <a href="javascript:void(0)" <?php echo ($controller == "message") ? "class='active'" : "" ?> >
                                     <img src="public/images/svg/message.svg" alt="Message">
                                     <label class="nav-txt">Messages</label>
                                 </a>
-                            </li>
+                            </li> -->
                             <?php } ?>
                         </ul>
                     </div>
