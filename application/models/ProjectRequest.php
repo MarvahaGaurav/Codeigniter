@@ -59,11 +59,12 @@ class ProjectRequest extends BaseModel {
      */
     public function awaitingRequest($params)
     {
-        $query = "SQL_CALC_FOUND_ROWS pr.id as request_id, project_id, name, number, levels, address, lat, lng";
+        $query = "SQL_CALC_FOUND_ROWS pr.id as request_id, project_id, name, number, levels, address, lat, lng,
+        pr.created_at, UNIX_TIMESTAMP(pr.created_at) as created_at_timestamp";
 
         if (isset($params['type']) && (int)$params['type'] === AWAITING_REQUEST_TECHNICIAN) {
             $query .= ", GeoDistDiff('km', lat, lng, {$params['lat']}, {$params['lng']}) as distance";
-            $this->db->having('distance <=', REQUEST_SEARCH_RADIUS);
+            // $this->db->having('distance <=', REQUEST_SEARCH_RADIUS);
             $this->db->where("NOT EXISTS(SELECT pq.id FROM project_quotations as pq WHERE pq.request_id=pr.id AND pq.company_id={$params['company_id']} LIMIT 1)", null, false);
         } else {
             $this->db->where("NOT EXISTS(SELECT pq.id FROM project_quotations as pq WHERE request_id=pr.id LIMIT 1)", null, false);

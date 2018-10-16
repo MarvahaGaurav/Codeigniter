@@ -1,4 +1,5 @@
 <?php
+defined("BASEPATH") or exit("No direct script access allowed");
 
 /**
  * Flatten a multi-dimensional array into a one dimensional array.

@@ -26,7 +26,7 @@
                     <i class="fa fa-times"></i>
                 </span>
                 <form id="search-form" method="GET" action="">
-                    <input type="text" name="search" class="search-box" value="<?php echo $search ?>" data-redirect="<?php echo base_url("home/inspirations") ?>" id="search-box" placeholder="Search Project">
+                    <input type="text" name="search" class="search-box" value="<?php echo $search ?>" data-redirect="<?php echo base_url("home/inspirations") ?>" id="search-box" placeholder="Search Inspirations">
                     <input type="submit" value="Search" class="search-btn" />
                 </form>
             </div>
@@ -57,13 +57,13 @@
                                     <?php if (CONTENT_TYPE_IMAGE === (int)$media['media_type'] ) {?>
                                     <div class="item">
                                         <div class="thumb-view-wrapper thumb-view-fullp img-viewbdr-radius4">
-                                            <div class="thumb-view thumb-viewfullheight-1" style="background:url('<?php echo $media['media']  ?>')"></div>
+                                            <div class="thumb-view thumb-viewfullheight-1" style="background:url('<?php echo !empty($media['media'])?$media['media']:base_url('public/images/logo.png')  ?>')"></div>
                                         </div>
                                     </div>
                                     <?php } else {?>
                                     <div class="item">
                                         <div class="thumb-view-wrapper thumb-view-fullp img-viewbdr-radius4">
-                                            <div class="thumb-view thumb-viewfullheight-1" style="background:url('<?php echo $media['video_thumbnail']  ?>')"></div>
+                                            <div class="thumb-view thumb-viewfullheight-1" style="background:url('<?php echo !empty($media['video_thumbnail'])?$media['video_thumbnail']:base_url('public/images/logo.png')  ?>')"></div>
                                         </div>
                                     </div>
                                     <?php }?>
@@ -90,10 +90,11 @@
                         <td>
                             <ul class="inspiration-product">
                                 <?php foreach($inspiration['products'] as $key => $product) : ?>
+                                <?php if ((int)$key >= 2) { ?>
+                                <span>And more...</span>
+                                <?php break ?>
+                                <?php } ?>
                                 <li><?php echo $product['product_title'] ?></li>
-                                <?php if ((int)$key > 3 ) {
-                                    break;
-}?>
                                 <?php endforeach ?>
                             </ul>
                         </td>

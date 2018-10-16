@@ -112,8 +112,6 @@ class ProductController extends BaseController
      */
     public function roomProducts_get()
     {
-        error_reporting(-1);
-        ini_set('display_errors', 1);
         try {
             $language_code = $this->langcode_validate();
 
@@ -136,10 +134,11 @@ class ProductController extends BaseController
             ]);
             
             if (!(bool)$this->form_validation->run()) {
+                $errorMessage = $this->form_validation->error_array();
                 $this->response([
                     'code' => HTTP_UNPROCESSABLE_ENTITY,
                     'msg' => $this->lang->line('something_went_wrong'),
-                    'extra' => array_shift($this->form_validation->error_array()),
+                    'extra' => array_shift($errorMessage),
                 ]);
             }
 
@@ -233,10 +232,11 @@ class ProductController extends BaseController
             ]);
             
             if (!(bool)$this->form_validation->run()) {
+                $errorMessage = $this->form_validation->error_array();
                 $this->response([
                     'code' => HTTP_UNPROCESSABLE_ENTITY,
                     'msg' => $this->lang->line('something_went_wrong'),
-                    'extra' => array_shift($this->form_validation->error_array()),
+                    'extra' => array_shift($errorMessage),
                 ]);
             }
             $params = [
@@ -328,9 +328,10 @@ class ProductController extends BaseController
             $this->validateAccessoryProduct();
 
             if (!(bool)$this->form_validation->run()) {
+                $errorMessage = $this->form_validation->error_array();
                 $this->response([
                     'code' => HTTP_UNPROCESSABLE_ENTITY,
-                    'msg' => array_shift($this->form_validation->error_array()),
+                    'msg' => array_shift($errorMessage),
                 ]);
             }
 

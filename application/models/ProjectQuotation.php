@@ -16,7 +16,6 @@ class ProjectQuotation extends BaseModel
     }
 
 
-
     /**
      * get project listing
      *
@@ -59,7 +58,7 @@ class ProjectQuotation extends BaseModel
     public function quotedRequestList($params)
     {
         $fields = 'SQL_CALC_FOUND_ROWS pr.id as request_id, projects.name as project_name, projects.address as project_address,
-        projects.lat as project_lat, projects.lng as project_lng';
+        projects.lat as project_lat, projects.lng as project_lng, pr.created_at, UNIX_TIMESTAMP(pr.created_at) as created_at_timestamp';
         if ((int)$params['type'] === QUOTED_REQUEST_CUSTOMER) {
             $this->db->where('EXISTS(SELECT pq.id FROM project_quotations as pq WHERE request_id=pr.id AND pq.status=1 LIMIT 1)');
         } elseif ((int)$params['type'] === QUOTED_REQUEST_TECHNICIAN) {
@@ -103,7 +102,8 @@ class ProjectQuotation extends BaseModel
     public function quotations($params)
     {
         $this->db->select("SQL_CALC_FOUND_ROWS pq.id as quotation_id, request_id, c.company_id,
-            company_name, u.first_name as user_name, pq.price", false)
+            company_name, u.first_name as user_name, pq.price,
+            pq.created_at, UNIX_TIMESTAMP(pq.created_at) as created_at_timestamp", false)
             ->from("project_quotations as pq")
             ->join('project_requests as pr', 'pr.id=pq.request_id')
             ->join("ai_user as u", "u.user_id=pq.user_id")

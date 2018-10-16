@@ -93,7 +93,7 @@
                     <i class="fa fa-times"></i>
                 </span>
                 <form id="search-form" method="GET" action="">
-                    <input type="text" name="search" class="search-box" value="<?php echo html_escape($search) ?>" id="search-box" placeholder="Search Project" data-redirect="<?php echo base_url(uri_string()) ?>">
+                    <input type="text" name="search" class="search-box" value="<?php echo html_escape($search) ?>" id="search-box" placeholder="Search Inspirations" data-redirect="<?php echo base_url(uri_string()) ?>">
                     <input type="submit" value="Search" class="search-btn" />
                 </form>
             </div>
@@ -122,14 +122,21 @@
                                     <?php foreach ($inspiration['media'] as $media) { ?>
                                     <div class="item">
                                         <div class="thumb-view-wrapper thumb-view-fullp img-viewbdr-radius4">
-                                            <div class="thumb-view thumb-viewfullheight-1" style="background:url('<?php echo $media['media'] ?>')"></div>
+                                            <!-- <div class="thumb-view thumb-viewfullheight-1" style="background:url('<?php echo $media['media'] ?>')"></div> -->
+                                            <?php if ((int)$media['media_type'] === CONTENT_TYPE_IMAGE) { ?>
+                                            <div class="thumb-view thumb-viewfullheight-1" style="background:url('<?php echo !empty($media['media'])?$media['media']:base_url('public/images/logo.png') ?>')"></div>
+                                            <?php } elseif ((int)$media['media_type'] === CONTENT_TYPE_VIDEO) { ?>
+                                            <div class="thumb-view thumb-viewfullheight-1" style="background:url('<?php echo !empty($media['video_thumbnail'])?$media['video_thumbnail']:base_url('public/images/logo.png') ?>')"></div>
+                                            <?php } ?>
                                         </div>
                                     </div>
                                     <?php } ?>
                                     <?php if (empty($media)) { ?>
-                                    <object type="image/svg+xml" data="<?php echo base_url('public/images/placeholder/no-found-ico-2.svg') ?>" class='inspiration-list-placeholder'>
-                                        Your browser does not support SVG
-                                    </object>
+                                    <div class="item">
+                                        <div class="thumb-view-wrapper thumb-view-fullp img-viewbdr-radius4">
+                                            <div class="thumb-view thumb-viewfullheight-1" style="background:url('<?php echo base_url('public/images/logo.png') ?>')"></div>
+                                        </div>
+                                    </div>
                                     <?php } ?>
                                 </div>
                                 <!-- td carousel end -->
@@ -139,10 +146,14 @@
                             <h3 class="op-semibold"><?php echo $inspiration['title'] ?></h3>
                             <p><?php echo $inspiration['description'] ?></p>
                         </td>
-                        <td></td>
+                        <td><?php echo $inspiration['city_name'] ?>, <?php echo $inspiration['country_name'] ?></td>
                         <td>
                             <ul class="inspiration-product">
-                                <?php foreach ($inspiration['products'] as $product) {?>
+                                <?php foreach ($inspiration['products'] as $key => $product) {?>
+                                <?php if ((int)$key >= 2) { ?>
+                                <span>And more...</span>
+                                <?php break ?>
+                                <?php } ?>
                                 <li><?php echo $product['title'] ?></li>
                                 <?php }?>
                             </ul>

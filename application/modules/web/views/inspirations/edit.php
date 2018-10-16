@@ -6,6 +6,9 @@
             <li>
                 <a href="javascript:void(0)">Home</a>
             </li>
+            <li>
+                <a href="<?php echo base_url("home/inspirations") ?>">Inspirations</a>
+            </li>
             <li class="active">Edit Inspiration</li>
         </ul>
         <!-- //breadcrumb -->
@@ -56,19 +59,10 @@
                             <div class="form-group">
                                 <label class="p-label">Used Products</label>
                                 <div class="form-group-field">
-                                    <select id="multiple-checked" class="multiple-checked" name="states[]" multiple="multiple">
-                                        <option value="AL">Alabama</option>
-                                        <option value="WY">Wyoming</option>
-                                        <option value="WY">Wyoming</option>
-                                        <option value="WY">Wyoming</option>
-                                        <option value="WY">Wyoming</option>
-                                        <option value="WY">Wyoming</option>
-                                        <option value="AL">Alabama</option>
-                                        <option value="WY">Wyoming</option>
-                                        <option value="WY">Wyoming</option>
-                                        <option value="WY">Wyoming</option>
-                                        <option value="WY">Wyoming</option>
-                                        <option value="WY">Wyoming</option>
+                                    <select id="multiple-checked" class="multiple-checked" name="products[]" multiple="multiple">
+                                        <?php foreach ($products as $product) : ?>
+                                        <option value="<?php echo $product['product_id'] ?>" <?php echo in_array($product['product_id'], $selectedProducts)?'selected':'' ?>><?php echo $product['title'] ?></option>
+                                        <?php endforeach?>
                                     </select>
                                 </div>
                             </div>

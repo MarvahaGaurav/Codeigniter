@@ -1910,7 +1910,7 @@
                 "tags": [
                     "Requests & Quotations"
                 ],
-                "summary": "Quotaion Listing",
+                "summary": "Quotation Listing - Quotation for a given Request or Project",
                 "description": "List Quotation posted by user which are quoted",
                 "operationId": "projectQuoted_get",
                 "produces": [
@@ -1933,9 +1933,14 @@
                     },
                     {
                         "name": "request_id",
-                        "in": "query",
-                        "description": "Request Id",
-                        "required": true,
+                        "in": "formData",
+                        "description": "either request_id or project_id is required",
+                        "type": "string"
+                    },
+                    {
+                        "name": "project_id",
+                        "in": "formData",
+                        "description": "either request_id or project_id is required",
                         "type": "string"
                     },
                     {
@@ -2056,6 +2061,12 @@
                         "description": "",
                         "required": true,
                         "type": "string"
+                    },
+                    {
+                        "name": "installation_price",
+                        "in": "formData",
+                        "description": "",
+                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -2079,7 +2090,7 @@
                 "tags": [
                     "Requests & Quotations"
                 ],
-                "summary": "Quoteed Request Listing",
+                "summary": "Quoted Request Listing (Requests which are quoted - submitted)",
                 "description": "List projects posted by user which are quoted",
                 "operationId": "projectQuoted_get",
                 "produces": [
@@ -2135,7 +2146,7 @@
                 "tags": [
                     "Requests & Quotations"
                 ],
-                "summary": "Request Listing",
+                "summary": "Request Listing (Awaiting Requests)",
                 "description": "List projects posted by current user",
                 "operationId": "projects_get",
                 "produces": [

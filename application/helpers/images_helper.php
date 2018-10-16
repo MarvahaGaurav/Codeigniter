@@ -3,17 +3,19 @@ defined("BASEPATH") or exit("No direct script access allowed");
 require APPPATH.'composer/vendor/autoload.php';
 use Aws\S3\S3Client;
 
-function s3_get_client()
-{
-    $s3 = S3Client::factory([
-        "credentials" => [
-            "key" => AWS_ACCESSKEY,
-            "secret" => AWS_SECRET_KEY,
-        ],
-        "region" => "us-east-1",
-        "version" => "2006-03-01"
-    ]);
-    return $s3;
+if (!function_exists('s3_get_client')) {
+    function s3_get_client()
+    {
+        $s3 = S3Client::factory([
+            "credentials" => [
+                "key" => AWS_ACCESSKEY,
+                "secret" => AWS_SECRET_KEY,
+            ],
+            "region" => "us-east-1",
+            "version" => "2006-03-01"
+        ]);
+        return $s3;
+    }
 }
 
 if (! function_exists("s3_image_uploader")) {
@@ -48,7 +50,7 @@ if (! function_exists("generate_video_thumbnail")) {
         } else {
             $uploadedVideoName = $video;
         }
-        $cmd = "ffmpeg -i $uploadedVideoName -deinterlace -an -ss 2 -t 00:00:01 -r 1 -y -vcodec mjpeg -f mjpeg $thumb_path 2>&1";
+        $cmd = "ffmpeg -i $uploadedVideoName -deinterlace -an -ss 1 -t 00:00:01 -r 1 -y -vcodec mjpeg -f mjpeg $thumb_path 2>&1";
         
         shell_exec($cmd);
 
@@ -59,3 +61,4 @@ if (! function_exists("generate_video_thumbnail")) {
         return $image;
     }
 }
+

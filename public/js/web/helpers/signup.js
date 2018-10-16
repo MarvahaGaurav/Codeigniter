@@ -16,7 +16,6 @@
 
     var validationRules = {
         // ignore: ":hidden:not(.selectpicker)",
-        ignore: [],
         user_type: {
             required: true,
             normalizer: normalizer
@@ -77,6 +76,7 @@
     }
 
     $("#signup-form").validate({
+        ignore: [],
         rules: validationRules
     });
 

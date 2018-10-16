@@ -62,6 +62,12 @@ class QuotationController extends BaseController
      *     type="string",
      *     required = true
      *   ),
+     * @SWG\Parameter(
+     *     name="installation_price",
+     *     in="formData",
+     *     description="",
+     *     type="string",
+     *   ),
      * @SWG\Response(response=200, description="OK"),
      * @SWG\Response(response=401, description="Unauthorize"),
      * @SWG\Response(response=422, description="Validation Errors"),
@@ -96,6 +102,8 @@ class QuotationController extends BaseController
                 'company_id' => $user_data['company_id'],
                 'user_id' => $user_data['user_id'],
                 'price' => $this->requestData['price'],
+                'installation_price' => 
+                    isset($this->requestData['installation_price'])?$this->requestData['installation_price']:0.00,
                 'created_at' => $this->datetime
             ], 'project_quotations', true);
 
@@ -118,7 +126,7 @@ class QuotationController extends BaseController
     /**
      * @SWG\Get(path="/quotations",
      *   tags={"Requests & Quotations"},
-     *   summary="Quotation Listing",
+     *   summary="Quotation Listing - Quotation for a given Request or Project",
      *   description="List Quotation posted by user which are quoted",
      *   operationId="projectQuoted_get",
      *   produces={"application/json"},
@@ -136,12 +144,17 @@ class QuotationController extends BaseController
      *     required=true,
      *     type="string"
      *   ),
-     *  @SWG\Parameter(
+     *   @SWG\Parameter(
      *     name="request_id",
-     *     in="query",
-     *     description="Request Id",
+     *     in="formData",
+     *     description="either request_id or project_id is required",
      *     type="string",
-     *     required = true
+     *   ),
+     *  @SWG\Parameter(
+     *     name="project_id",
+     *     in="formData",
+     *     description="either request_id or project_id is required",
+     *     type="string",
      *   ),
      *  @SWG\Parameter(
      *     name="offset",
@@ -232,7 +245,7 @@ class QuotationController extends BaseController
     /**
      * @SWG\Get(path="/quoted-requests",
      *   tags={"Requests & Quotations"},
-     *   summary="Quoteed Request Listing",
+     *   summary="Quoted Request Listing (Requests which are quoted - submitted)",
      *   description="List projects posted by user which are quoted",
      *   operationId="projectQuoted_get",
      *   produces={"application/json"},
@@ -335,7 +348,7 @@ class QuotationController extends BaseController
     /**
      * @SWG\Get(path="/requests",
      *   tags={"Requests & Quotations"},
-     *   summary="Request Listing",
+     *   summary="Request Listing (Awaiting Requests)",
      *   description="List projects posted by current user",
      *   operationId="projects_get",
      *   produces={"application/json"},
@@ -541,6 +554,11 @@ class QuotationController extends BaseController
                 'field' => 'price',
                 'label' => 'Price',
                 'rules' => 'trim|required|decimal'
+            ],
+            [
+                'field' => 'installation_price',
+                'label' => 'Installation Price',
+                'rules' => 'trim|decimal'
             ],
         ]);
     }

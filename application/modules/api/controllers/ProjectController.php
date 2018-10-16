@@ -127,9 +127,10 @@ class ProjectController extends BaseController
             $this->validateProject();
 
             if (! (bool) $this->form_validation->run()) {
+                $errorMessage = $this->form_validation->error_array();
                 $this->response([
                     'code' => HTTP_UNPROCESSABLE_ENTITY,
-                    'msg' => array_shift($this->form_validation->error_array()),
+                    'msg' => array_shift($errorMessage),
                 ]);
             }
 
@@ -259,9 +260,10 @@ class ProjectController extends BaseController
             $this->validateProject(true);
 
             if (! (bool) $this->form_validation->run()) {
+                $errorMessage = $this->form_validation->error_array();
                 $this->response([
                     'code' => HTTP_UNPROCESSABLE_ENTITY,
-                    'msg' => array_shift($this->form_validation->error_array()),
+                    'msg' => array_shift($errorMessage),
                 ]);
             }
 
@@ -322,9 +324,10 @@ class ProjectController extends BaseController
             $this->validateRooms();
 
             if (! (bool) $this->form_validation->run()) {
+                $errorMessage = $this->form_validation->error_array();
                 $this->response([
                     'code' => HTTP_UNPROCESSABLE_ENTITY,
-                    'msg' => array_shift($this->form_validation->error_array()),
+                    'msg' => array_shift($errorMessage),
                 ]);
             }
             
@@ -333,9 +336,10 @@ class ProjectController extends BaseController
             $this->validateRoomProducts();
 
             if (! (bool) $this->form_validation->run()) {
+                $errorMessage = $this->form_validation->error_array();
                 $this->response([
                     'code' => HTTP_UNPROCESSABLE_ENTITY,
-                    'msg' => array_shift($this->form_validation->error_array()),
+                    'msg' => array_shift($errorMessage),
                 ]);
             }
 
@@ -457,9 +461,10 @@ class ProjectController extends BaseController
             $this->validateSendQuotation();
 
             if (! (bool) $this->form_validation->run()) {
+                $errorMessage = $this->form_validation->error_array();
                 $this->response([
                     'code' => HTTP_UNPROCESSABLE_ENTITY,
-                    'msg' => array_shift($this->form_validation->error_array()),
+                    'msg' => array_shift($errorMessage),
                 ]);
             }
 
@@ -615,9 +620,10 @@ class ProjectController extends BaseController
             $this->validateProductDetails();
 
             if (! (bool) $this->form_validation->run()) {
+                $errorMessage = $this->form_validation->error_array();
                 $this->response([
                     'code' => HTTP_UNPROCESSABLE_ENTITY,
-                    'msg' => array_shift($this->form_validation->error_array()),
+                    'msg' => array_shift($errorMessage),
                 ]);
             }
             
@@ -727,9 +733,10 @@ class ProjectController extends BaseController
             $this->validateProductDetails();
 
             if (! (bool) $this->form_validation->run()) {
+                $errorMessage = $this->form_validation->error_array();
                 $this->response([
                     'code' => HTTP_UNPROCESSABLE_ENTITY,
-                    'msg' => array_shift($this->form_validation->error_array()),
+                    'msg' => array_shift($errorMessage),
                 ]);
             }
             $params['offset'] =
@@ -839,9 +846,10 @@ class ProjectController extends BaseController
             $this->validateRoomDelete();
 
             if (! (bool) $this->form_validation->run()) {
+                $errorMessage = $this->form_validation->error_array();
                 $this->response([
                     'code' => HTTP_UNPROCESSABLE_ENTITY,
-                    'msg' => array_shift($this->form_validation->error_array()),
+                    'msg' => array_shift($errorMessage),
                 ]);
             }
 
@@ -903,9 +911,10 @@ class ProjectController extends BaseController
             $this->validateRoomEdit();
 
             if (! (bool) $this->form_validation->run()) {
+                $errorMessage = $this->form_validation->error_array();
                 $this->response([
                     'code' => HTTP_UNPROCESSABLE_ENTITY,
-                    'msg' => array_shift($this->form_validation->error_array()),
+                    'msg' => array_shift($errorMessage),
                 ]);
             }
 
@@ -924,9 +933,10 @@ class ProjectController extends BaseController
                 $this->validateRoomProducts();
 
                 if (! (bool) $this->form_validation->run()) {
+                    $errorMessage = $this->form_validation->error_array();
                     $this->response([
                         'code' => HTTP_UNPROCESSABLE_ENTITY,
-                        'msg' => array_shift($this->form_validation->error_array()),
+                        'msg' => array_shift($errorMessage),
                     ]);
                 }
             }

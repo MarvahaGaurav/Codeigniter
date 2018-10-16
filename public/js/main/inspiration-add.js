@@ -28,12 +28,16 @@ requirejs(
     'common',
     'jqueryValidator',
     'jqueryScrollbar',
+    'imageVideoUploader',
     'select2'
   ],
-  function($) {
+  function ($) {
     $('#multiple-checked').select2();
-
+    $(document).ready(function () {
+      $('#multiple-checked').select2();
+    });
     $('form#add-inspiration').validate({
+      ignore: [],
       rules: {
         title: {
           required: true,
@@ -42,9 +46,23 @@ requirejs(
         description: {
           required: true,
           maxlength: 255
+        },
+        'products[]': {
+          required: true
         }
+      },
+      errorPlacement: function (error, $element) {
+        if ($element.attr('name') == 'products[]') {
+          $("#multicheck-products").after(error);
+        } else {
+          $element.after(error);
+        }
+      },
+      submitHandler: function (form) {
+        $("#inspiration-add-submit").attr("disabled", "disabled").prepend("<i class='fa fa-circle-o-notch fa-spin'></i>")
+        form.submit();
       }
     });
   },
-  function() {}
+  function () { }
 );

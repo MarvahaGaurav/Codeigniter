@@ -195,9 +195,10 @@ class BaseController extends REST_Controller
     protected function validationRun()
     {
         if (! (bool) $this->form_validation->run()) {
+            $errorMessage = $this->form_validation->error_array();
             $this->response([
                 'code' => HTTP_UNPROCESSABLE_ENTITY,
-                'msg' => array_shift($this->form_validation->error_array()),
+                'msg' => array_shift($errorMessage),
             ]);
         }
     }
