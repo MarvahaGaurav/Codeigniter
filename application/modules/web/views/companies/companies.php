@@ -51,13 +51,13 @@
                                             <div class="thumb-absolute image-blank"></div>
                                             <?php } ?>
                                         </div>
-                                        <?php if (isset($userInfo, $userInfo['user_id'])) { ?>
+                                        <?php if (isset($userInfo, $userInfo['user_id']) && (int)$userInfo['company_id'] !== (int)$company->company_id) { ?>
                                         <div class="favorite-wrapper">
                                             <span data-favorite='<?php echo $company->favorite_data ?>' class="fa fa-heart clickable <?php echo (int)$company->is_favorite === 1?"faa-like":"faa-dislike" ?> heart-position1" aria-hidden="true"></span>
                                         </div>
                                         <?php } ?>
                                     </div>
-                                    <span class="td-technician op-semibold"><?php echo $company->company_name ?></span>
+                                    <a href="<?php echo base_url('home/companies/' . encryptDecrypt($company->company_id)) ?>"><span class="td-technician op-semibold"><?php echo $company->company_name ?></span></a>
                                 </td>
                                 <td class="text-center text-nowrap"><?php echo $company->city ?></td>
                                 <td class="text-center"><?php echo $company->country ?></td>

@@ -76,7 +76,7 @@ $query_builder = true;
 
 $db['default'] = array(
     'dsn'   => '',
-    'hostname' => 'localhost',
+    'hostname' => 'localhost:3306/applau8_smartguide_staging_db?serverTimezone=UTC',
     'username' => 'root',
     'password' => "root",
     'database' => 'smart_guide',

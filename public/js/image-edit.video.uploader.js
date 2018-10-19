@@ -22,7 +22,7 @@ var count = 0;
                         var picFile = event.target;
                         $(ele).after('<div class="albub-item"><img src="'+picFile.result+'"></div><span class="remove-item"><i class="fa fa-times"></i></span>');
                         $('#album').append(uploader);
-                        if ($(".visible-wrapper").length > 4) {
+                        if (($(".visible-wrapper").length + $(".visible-wrapper-original").length) > 4) {
                             $(".visible-wrapper").last().find('input').attr('name', '');
                             $(".visible-wrapper").last().hide();
                         }
@@ -43,7 +43,7 @@ var count = 0;
                     var picFile = event.target;
                     $(ele).after('<div class="albub-item"><video src="'+picFile.result+'"></video></div><span class="remove-item"><i class="fa fa-times"></i></span><span class="player"><i class="fa fa-play-circle"></i></span>');
                     $('#album').append(uploader);
-                    if ($(".visible-wrapper").length > 4) {
+                    if (($(".visible-wrapper").length + $(".visible-wrapper-original").length) > 4) {
                         $(".visible-wrapper").last().find('input').attr('name', '');
                         $(".visible-wrapper").last().hide();
                     }
@@ -55,14 +55,20 @@ var count = 0;
                     $("#media-error-label").fadeOut(400);
                 }, 5000);
             }
+            
+            
         }
         
     });
 
     $('body').on('click','.remove-item',function(){
-        if ($(".visible-wrapper").length > 4) {
+        if (($(".visible-wrapper").length + $(".visible-wrapper-original").length) > 4) {
             $(".visible-wrapper").last().find('input').attr('name', 'inspiration_image[]');
             $(".visible-wrapper").last().show();
         }
+        var self = this,
+            $self = $(this),
+            contentId = $self.attr('data-content-id');
+        $("#image-to-delete-wrapper").append("<input type='hidden' name='old_images[]' value='" + contentId + "'/>");
         $(this).parents('li').remove();
     });

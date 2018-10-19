@@ -49,3 +49,25 @@ if (! function_exists('array_strip_tags')) {
         return $array;
     }
 }
+
+if (! function_exists('get_percentage')) {
+    /**
+     * Get percentage amount
+     *
+     * @param double $amount
+     * @param double $percentage
+     * @param string $operator
+     * @return double
+     */
+    function get_percentage($amount, $percentage, $operator="minus") 
+    {
+        $percentageAmount = $amount * ($percentage / 100);
+
+        if ($operator === "minus") {
+            return $amount - $percentageAmount;
+        } else {
+            return $amount + $percentageAmount;
+        }
+
+    }
+}

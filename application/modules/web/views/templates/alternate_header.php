@@ -19,7 +19,7 @@
             <link rel="stylesheet" href="public/css/jquery.scrollbar.css">
             <link rel="stylesheet" href="public/css/owl.carousel.min.css" >
         <?php } ?>
-        
+
         <?php if (isset($selectpicker)) { ?>
             <link rel="stylesheet" href="public/css/bootstrap-select.min.css" >
         <?php } ?>
@@ -27,7 +27,7 @@
         <?php if (isset($custom_select)) { ?>
             <link rel="stylesheet" href="public/css/select2.min.css">
         <?php } ?>
-            
+
         <?php if (isset($image_video_uploader)) { ?>
             <link rel="stylesheet" href="public/css/image.video.uploader.css">
         <?php } ?>
@@ -38,10 +38,10 @@
         <link rel="stylesheet" href="public/css/web/sgmedia.css">
         <script src="public/js/jquery.min.js"></script>
         <script>
-            
-            var smartguide = {};
+
+            var smartguide = { };
             smartguide.baseUrl = "<?php echo base_url() ?>";
-            if (location.hostname == "localhost")
+            if ( location.hostname == "localhost" )
                 var domain = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + '/';
             else
                 var domain = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + '/';
@@ -72,32 +72,34 @@
                         <!-- Collect the nav links, forms, and other content for toggling -->
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <div class="navbar-topheader-menu clearfix">
+                            <!--                                
                                 <ul class="nav navbar-nav">
                                     <li><a href="javascript:void(0)">PROFESSIONAL LIGHTING</a></li>
                                     <li><a href="javascript:void(0)">RESIDENTIAL LIGHTING</a></li>
                                 </ul>
+                            -->
                                 <ul class="nav navbar-nav navbar-right">
-                                    
-                                    <?php if(!empty($userInfo['user_id'])){ ?>
-                                    <li class="dropdown dropdown-toggle">
-                                        <a href="javascript:void(0)" class="guest"><cite>Hi!</cite> &nbsp;
-                                            <span class="user-name"><?php echo ucfirst($userInfo['first_name']); ?></span> 
-                                            <span class="fa fa-caret-down"></span>
-                                        </a>
-                                        <ul class="dropdown-menu dropdown-profile">
-                                            <li><a href="<?php echo base_url("home/profile/" . encryptDecrypt($userInfo['user_id'])) ?>">My Profile</a></li>
-                                            <li><a href="<?php echo base_url("home/settings/" . encryptDecrypt($userInfo['user_id'])) ?>">Settings</a></li>
-                                            <li><a href="javascript:void(0)" id="user-logout">Logout</a></li>
-                                        </ul>
-                                    </li>
-                                    <?php }else{ ?>
-                                    <li>
-                                        <a href="javascript:void(0)" class="guest"><cite>Hi!</cite> &nbsp;
-                                            <span class="user-name">Guest</span> 
-                                        </a>
-                                    </li>
-                                    <li><a href="<?php echo base_url(); ?>login">Login</a></li>
-                                    <li><a href="<?php echo base_url(); ?>register">Signup</a></li>
+
+                                    <?php if ( ! empty($userInfo['user_id'])) { ?>
+                                        <li class="dropdown dropdown-toggle">
+                                            <a href="javascript:void(0)" class="guest"><cite>Hi!</cite> &nbsp;
+                                                <span class="user-name"><?php echo ucfirst($userInfo['first_name']); ?></span>
+                                                <span class="fa fa-caret-down"></span>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-profile">
+                                                <li><a href="<?php echo base_url("home/profile/" . encryptDecrypt($userInfo['user_id'])) ?>">My Profile</a></li>
+                                                <li><a href="<?php echo base_url("home/settings/" . encryptDecrypt($userInfo['user_id'])) ?>">Settings</a></li>
+                                                <li><a href="javascript:void(0)" id="user-logout">Logout</a></li>
+                                            </ul>
+                                        </li>
+                                        <?php } else { ?>
+                                        <li>
+                                            <a href="javascript:void(0)" class="guest"><cite>Hi!</cite> &nbsp;
+                                                <span class="user-name">Guest</span>
+                                            </a>
+                                        </li>
+                                        <li><a href="<?php echo base_url(); ?>login">Login</a></li>
+                                        <li><a href="<?php echo base_url(); ?>register">Signup</a></li>
                                     <?php } ?>
                                 </ul>
                             </div>
@@ -106,7 +108,9 @@
                                 <li class="dropdown"><a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">Project</a>
                                     <ul class="dropdown-menu">
                                         <li class="active"><a href="<?php echo base_url("home/projects") ?>">Project list</a></li>
-                                        <li><a href="javascript:void(0)">Create New Project</a></li>
+                                        <?php if (isset($userInfo, $userInfo['user_id'])) {?>
+                                        <li><a href="<?php echo site_url('home/projects/create'); ?>">Create New Project</a></li>
+                                        <?php } ?>
                                     </ul>
                                 </li>
                                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Quick Calculations</a>
@@ -120,48 +124,49 @@
                                     <ul class="dropdown-menu">
                                         <li><a href="<?php echo base_url('home/companies') ?>">All Companies</a></li>
                                         <?php if (isset($userInfo['user_id'])) { ?>
-                                        <li><a href="<?php echo base_url('home/companies/favorites') ?>">Favourite Companies</a></li>
-                                        <?php }?>
+                                            <li><a href="<?php echo base_url('home/companies/favorites') ?>">Favourite Companies</a></li>
+                                        <?php } ?>
                                     </ul>
                                 </li>
+                                <?php if (isset($userInfo, $userInfo['user_id'])) {?>
                                 <li class="dropdown"><a href="" class="dropdown-toggle" data-toggle="dropdown">Quotes</a>
                                     <ul class="dropdown-menu">
                                         <li><a href="<?php echo base_url("home/quotes") ?>">Quotes List</a></li>
-                                        <li><a href="#">Awiating</a></li>
+                                        <li><a href="#">Awaiting</a></li>
                                         <li><a href="#">Submitted</a></li>
                                         <li><a href="#">Approved</a></li>
                                     </ul>
                                 </li>
+                                <?php } ?>
+                                <?php if (isset($userInfo['user_id'])) { ?>
                                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Inspirations</a>
                                     <ul class="dropdown-menu">
                                         <li><a href="<?php echo base_url("home/inspirations") ?>">Inspiration List</a></li>
-                                        <?php if (isset($userInfo['user_type']) &&
-                                        in_array($userInfo['user_type'], [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER]) &&
-                                        (ROLE_OWNER === (int)$userInfo['is_owner'] || (isset($employee_permission['insp_add']) && (int)$employee_permission['insp_add'] == 1))) {
-                                          ?>
                                         <li><a href="<?php echo base_url("home/inspirations/add") ?>">Add Inspiration</a></li>
-                                        <?php } ?>
                                     </ul>
                                 </li>
-                                <?php if ( isset($userInfo['user_type']) && in_array($userInfo['user_type'], [INSTALLER, WHOLESALER, ARCHITECT, ELECTRICAL_PLANNER]) && ROLE_OWNER === (int)$userInfo['is_owner'] ) { ?>
-                                <li class="dropdown"><a href="" class="dropdown-toggle" data-toggle="dropdown">Manage Technician</a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="<?php echo base_url("home/technicians") ?>">Technician List</a></li>
-                                        <li><a href="<?php echo base_url("home/technicians/requests") ?>">Request List</a></li>
-                                    </ul>
-                                </li>
-                                <?php }?>
+                                <?php } ?>
+                                <?php
+                                if (isset($userInfo['user_type']) && in_array($userInfo['user_type'], [INSTALLER, WHOLESALER, ARCHITECT, ELECTRICAL_PLANNER]) && ROLE_OWNER === (int) $userInfo['is_owner']) {
+                                    ?>
+                                    <li class="dropdown"><a href="" class="dropdown-toggle" data-toggle="dropdown">Manage Technician</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="<?php echo base_url("home/technicians") ?>">Technician List</a></li>
+                                            <li><a href="<?php echo base_url("home/technicians/requests") ?>">Request List</a></li>
+                                        </ul>
+                                    </li>
+                                <?php } ?>
                             </ul>
                         </div>
 
                         <ul class="nav navbar-nav navbar-right navbar-search-link">
                             <li>
                                 <span id="searchico-for-mob"><i class="fa fa-search"></i></span>
-                                <form role="search" class="app-search">
-                                    <input type="text" placeholder="Search..." class="form-control" id="search-input-field"> 
-                                    <span class="fa fa-search search-ico-default" id="search-default"></span>
-                                    <span class="fa fa-times" id="search-ico-close"></span>
-                                </form>
+                                <!--                                <form role="search" class="app-search">
+                                                                    <input type="text" placeholder="Search..." class="form-control" id="search-input-field">
+                                                                    <span class="fa fa-search search-ico-default" id="search-default"></span>
+                                                                    <span class="fa fa-times" id="search-ico-close"></span>
+                                                                </form>-->
                             </li>
                             <li>
                                 <button data-toggle="modal" data-target="#basketModal" class="btn-basket basket">
@@ -177,4 +182,4 @@
             </nav>
         </header>
         <!-- //header -->
-    <div class="main-container">
+        <div class="main-container">

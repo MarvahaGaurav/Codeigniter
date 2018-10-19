@@ -56,4 +56,25 @@ class ProjectRooms extends BaseModel {
 
         return $result;
     }
+
+    /**
+     * Return Array of rooms for a request Id, along with quoted room
+     *
+     * @param array $params
+     * @return array
+     */
+    public function getQuotedRooms($params)
+    {
+        $this->db->select('project_room_id, IFNULL(prq.id, "empty") as empty_room_quotations')
+            ->from($this->tableName . ' as pr')
+            ->join('project_requests as preq', 'preq.project_id=pr.project_id')
+            ->join('project_room_quotations as prq', 'prq.project_room_id=pr.id AND prq.company_id=' . $params['company_id'], 'left')
+            ->where('preq.id', $params['request_id']);
+
+        $query = $this->db->get();
+        
+        $data = $query->result_array();
+
+        return $data;
+    }
 }

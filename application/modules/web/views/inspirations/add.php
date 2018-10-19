@@ -58,7 +58,7 @@
                                 <div class="form-group-field" id="multicheck-products">
                                     <select id="multiple-checked" class="multiple-checked" name="products[]" multiple="multiple">
                                         <?php foreach ($products as $product) : ?>
-                                        <option value="<?php echo $product['product_id'] ?>"><?php echo $product['title'] ?></option>
+                                        <option value="<?php echo $product['product_id'] ?>" <?php ?>><?php echo $product['title'] ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>

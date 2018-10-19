@@ -1198,6 +1198,12 @@
                         "description": "room_id",
                         "required": true,
                         "type": "string"
+                    },
+                    {
+                        "name": "project_room_id",
+                        "in": "query",
+                        "description": "Project Room Id",
+                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -1257,6 +1263,60 @@
                     },
                     "202": {
                         "description": "No data found"
+                    }
+                }
+            }
+        },
+        "/products": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Products List",
+                "description": "Fetch proudcts API",
+                "operationId": "productFetch_get",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Language-Code",
+                        "in": "header",
+                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "uld",
+                        "in": "query",
+                        "description": "1 - to fetch only products with uld, ignore this key to fetch all products",
+                        "type": "string"
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Project Room Id",
+                        "type": "string"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "404": {
+                        "description": "No data found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
                     }
                 }
             }
@@ -1933,13 +1993,13 @@
                     },
                     {
                         "name": "request_id",
-                        "in": "formData",
+                        "in": "query",
                         "description": "either request_id or project_id is required",
                         "type": "string"
                     },
                     {
                         "name": "project_id",
-                        "in": "formData",
+                        "in": "query",
                         "description": "either request_id or project_id is required",
                         "type": "string"
                     },
@@ -1969,8 +2029,8 @@
                 "tags": [
                     "Requests & Quotations"
                 ],
-                "summary": "Quotation Approve",
-                "description": "Approve quotation",
+                "summary": "Quotation Approve & Reject",
+                "description": "Approve or Reject a quotation",
                 "operationId": "quotations_put",
                 "consumes": [
                     "multipart/form-data"
@@ -2006,6 +2066,13 @@
                         "description": "",
                         "required": true,
                         "type": "string"
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "1-Approved, 2-Rejected",
+                        "required": true,
+                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -2024,8 +2091,8 @@
                 "tags": [
                     "Requests & Quotations"
                 ],
-                "summary": "Add Quotation",
-                "description": "Add quotation",
+                "summary": "Send Quotation",
+                "description": "Send quotation to a request by Customer",
                 "operationId": "quotaitions_post",
                 "consumes": [
                     "multipart/form-data"
@@ -2056,14 +2123,13 @@
                         "type": "string"
                     },
                     {
-                        "name": "price",
+                        "name": "additional_product_charges",
                         "in": "formData",
                         "description": "",
-                        "required": true,
                         "type": "string"
                     },
                     {
-                        "name": "installation_price",
+                        "name": "discount",
                         "in": "formData",
                         "description": "",
                         "type": "string"
@@ -2085,14 +2151,17 @@
                 }
             }
         },
-        "/quoted-requests": {
-            "get": {
+        "/projects/rooms/quotations": {
+            "put": {
                 "tags": [
                     "Requests & Quotations"
                 ],
-                "summary": "Quoted Request Listing (Requests which are quoted - submitted)",
-                "description": "List projects posted by user which are quoted",
-                "operationId": "projectQuoted_get",
+                "summary": "Edit Room Quotation",
+                "description": "Edit room quotation",
+                "operationId": "roomsQuotation_put",
+                "consumes": [
+                    "multipart/form-data"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -2112,15 +2181,27 @@
                         "type": "string"
                     },
                     {
-                        "name": "type",
-                        "in": "query",
-                        "description": "1 - Customer Quotation Listing, 2 - Technician Quotation Listing",
+                        "name": "room_quotation_id",
+                        "in": "formData",
+                        "description": "",
                         "required": true,
                         "type": "string"
                     },
                     {
-                        "name": "offset",
-                        "in": "query",
+                        "name": "price_per_luminaries",
+                        "in": "formData",
+                        "description": "",
+                        "type": "string"
+                    },
+                    {
+                        "name": "installation_charges",
+                        "in": "formData",
+                        "description": "",
+                        "type": "string"
+                    },
+                    {
+                        "name": "discount_price",
+                        "in": "formData",
                         "description": "",
                         "type": "string"
                     }
@@ -2132,8 +2213,80 @@
                     "401": {
                         "description": "Unauthorize"
                     },
-                    "404": {
-                        "description": "Data not found"
+                    "422": {
+                        "description": "Validation Errors"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Requests & Quotations"
+                ],
+                "summary": "Add Room Quotation",
+                "description": "Add room quotation",
+                "operationId": "roomsQuotation_post",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Language-Code",
+                        "in": "header",
+                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "accesstoken",
+                        "in": "header",
+                        "description": "Access token received during signup or login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "project_room_id",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "price_per_luminaries",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "installation_charges",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "discount_price",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "422": {
+                        "description": "Validation Errors"
                     },
                     "500": {
                         "description": "Internal server error"
@@ -2148,7 +2301,7 @@
                 ],
                 "summary": "Request Listing (Awaiting Requests)",
                 "description": "List projects posted by current user",
-                "operationId": "projects_get",
+                "operationId": "requests_get",
                 "produces": [
                     "application/json"
                 ],
@@ -2170,8 +2323,7 @@
                     {
                         "name": "type",
                         "in": "query",
-                        "description": "1 - Customer Quotation Listing, 2 - Technician Quotation Listing",
-                        "required": true,
+                        "description": "1 - Awaiting, 2-Submitted, 3-Approved Required only for technician types",
                         "type": "string"
                     },
                     {

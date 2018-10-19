@@ -311,6 +311,12 @@ class ProductController extends BaseController
      *     type="string",
      *     required = true
      *   ),
+     * @SWG\Parameter(
+     *     name="project_room_id",
+     *     in="query",
+     *     description="Project Room Id",
+     *     type="string",
+     *   ),
      * @SWG\Response(response=200, description="OK"),
      * @SWG\Response(response=401, description="Unauthorize"),
      * @SWG\Response(response=404, description="No data found"),
@@ -335,9 +341,25 @@ class ProductController extends BaseController
                 ]);
             }
 
+            $this->requestData = trim_input_parameters($this->requestData);
+
             $params['room_id'] = $this->requestData['room_id'];
             
             $data = $this->Product->roomProducts($params);
+
+            if (isset($this->requestData['project_room_id']) && !empty($this->requestData['project_room_id'])) {
+                $projectRoomProductData = $this->UtilModel->selectQuery('product_id', 'project_room_products', [
+                    'where' => ['project_room_id' => $this->requestData['project_room_id']]
+                ]);
+
+                $projectRoomProductIds = array_unique(array_column($projectRoomProductData, 'product_id'));
+
+                $data = array_map(function ($product) use ($projectRoomProductIds) {
+                    $product['is_selected'] = (bool)in_array($product['product_id'], $projectRoomProductIds);
+                    return $product;
+                }, $data);
+
+            }
 
             $this->load->helper('utility');
             $data = array_strip_tags($data, ['body']);
@@ -365,6 +387,11 @@ class ProductController extends BaseController
                 'field' => 'room_id',
                 'label' => 'Room',
                 'rules' => 'trim|required|is_natural_no_zero'
+            ],
+            [
+                'field' => 'project_room_id',
+                'label' => 'Project Room',
+                'rules' => 'trim|is_natural_no_zero'
             ]
         ]);
     }
@@ -468,119 +495,97 @@ class ProductController extends BaseController
         $this->response($response);
     }
 
-    /*
-     * @SWG\Get(path="/products/{product_id}",
+    /**
+     * @SWG\Get(path="/products",
      *   tags={"Products"},
-     *   summary="Application",
-     *   description="",
-     *   operationId="application_get",
+     *   summary="Products List",
+     *   description="Fetch proudcts API",
+     *   operationId="productFetch_get",
      *   produces={"application/json"},
      * @SWG\Parameter(
      *     name="X-Language-Code",
      *     in="header",
      *     description="en ,da ,nb ,sv ,fi ,fr ,nl ,de",
-     *     type="string"
+     *     type="string",
+     *     required=true
+     * ),
+     * @SWG\Parameter(
+     *     name="uld",
+     *     in="query",
+     *     description="1 - to fetch only products with uld, ignore this key to fetch all products",
+     *     type="string",
      *   ),
      * @SWG\Parameter(
-     *     name="product_id",
+     *     name="search",
      *     in="query",
-     *     description="Product id",
-     *     type="string"
+     *     description="Project Room Id",
+     *     type="string",
      *   ),
      * @SWG\Parameter(
      *     name="offset",
      *     in="query",
      *     description="",
-     *     type="string"
-     *   ),
-     * @SWG\Parameter(
-     *     name="search",
-     *     in="query",
-     *     description="Search key",
-     *     type="string"
-     *   ),
-     * @SWG\Parameter(
-     *     name="type",
-     *     in="query",
-     *     description="1-Residential, 2-Professional",
-     *     type="string"
+     *     type="string",
      *   ),
      * @SWG\Response(response=200, description="OK"),
      * @SWG\Response(response=401, description="Unauthorize"),
-     * @SWG\Response(response=202, description="No data found"),
+     * @SWG\Response(response=404, description="No data found"),
+     * @SWG\Response(response=500, description="Internal server error"),
      * )
      */
     public function products_get()
     {
         $language_code = $this->langcode_validate();
+
+        $this->requestData = $this->get();
+
+        $this->requestData = trim_input_parameters($this->requestData, false);
+
+        $params['offset'] =
+                isset($this->requestData['offset'])&&is_numeric($this->requestData['offset'])&&(int)$this->requestData['offset'] > 0 ? (int)$this->requestData['offset']: 0;
+        $params['limit'] = API_RECORDS_PER_PAGE;
+
+        if (isset($this->requestData['uld']) && (int)$this->requestData['uld'] === 1) {
+            $params['where']['(EXISTS(SELECT id FROM product_specifications WHERE product_id=products.product_id AND CHAR_LENGTH(uld) > 0))'] = null;
+        }
+
+        if (isset($this->requestData['search']) && strlen($this->requestData['search']) > 0) {
+            $params['where']['title LIKE'] = "{$this->requestData['search']}%";
+        } 
+
+        $params['where']['language_code'] = $language_code;
         
-        $request_data = $this->get();
-        $request_data = trim_input_parameters($request_data);
-        // $mandatory_fields = ['product_id'];
+        $data = $this->Product->products($params);
+        $count = $data['count'];
+
+        $hasMorePages = false;
+        $nextCount = -1;
+
+        if ((int)$count > ($params['offset'] + $params['limit'])) {
+            $hasMorePages = true;
+            $nextCount = $params['offset'] + $params['limit'];
+        }
+
+        if (empty($data['data'])) {
+            $this->response([
+                'code' => HTTP_NOT_FOUND,
+                'msg' => $this->lang->line('no_data_found')
+            ]);
+        }
         
-        // $check = check_empty_parameters($request_data, $mandatory_fields);
+        $this->load->helper('utility');
 
-        // if ( $check['error'] ) {
-        //     $this->response([
-        //         'code' => HTTP_UNPROCESSABLE_ENTITY,
-        //         'api_code_result' => 'UNPROCESSABLE_ENTITY',
-        //         'msg' => $this->lang->line('missing_parameter'),
-        //         'extra_info' => [
-        //             "missing_parameter" => $check['parameter']
-        //         ]
-        //     ]);
-        // }
+        $data['data'] = array_strip_tags($data['data'], ['body']);
 
-        $product_listing = false;
-        if (isset($request_data['product_id'])) {
-            $params['product_id'] = $request_data['product_id'];
-        } else {
-            $product_listing = true;
-            $params['product_listing'] = $product_listing;
-            $offset = isset($request_data['offset'])&&!empty((int)$request_data['offset'])?(int)$request_data['offset']:0;
-            $params['offset'] = $offset;
-            $params['search'] = isset($request_data['search'])&&!empty($request_data['search'])?$request_data['search']:"";
-            $params['language_code'] = $language_code;
-        }
-
-        if (isset($request_data['type'])) {
-            $validTypes = [APPLICATION_RESIDENTIAL,APPLICATION_PROFESSIONAL];
-            $params['type'] = in_array((int)$request_data['type'], $validTypes)?(int)$request_data['type']:APPLICATION_RESIDENTIAL;
-            $products = $this->Product->productByType($params);
-        } else {
-            $products = $this->Product->get($params);
-        }
-        $response = [
-            "code" => HTTP_OK,
-            "api_code_result" => "OK",
-            "msg" => $this->lang->line("products_found")
-        ];
-
-        if ($product_listing) {
-            $count = (int)$products['count'];
-            $next_count = $offset + RECORDS_PER_PAGE;
-           
-            if ($next_count < $count) {
-                $offset = $next_count;
-                $type = isset($request_data['type'])&&in_array((int)$type, $validTypes)?"&type={$request_data['type']}":'';
-                $link = "/api/v1/products?offset={$next_count}" . $type;
-                $alt_link = "/products?offset={$next_count}" . $type;
-            } else {
-                $offset = -1;
-                $link = "";
-                $alt_link = "";
-            }
-            $response['offset'] = $offset;
-            $response["data"] = $products['result'];
-            $response['links'] = [
-                "url" => $link,
-                "alternate_link" => $alt_link
-            ];
-        } else {
-            $response["data"] = $products;
-        }
-
-        $this->response($response);
+        $this->response([
+            'code' => HTTP_OK,
+            'msg' => $this->lang->line('success'),
+            'data' => $data['data'],
+            'next_count' => $nextCount,
+            'has_more_pages' => $hasMorePages,
+            'per_page_count' => $params['limit'],
+            'total' => $data['count']
+        ]);
     }
 
     /**

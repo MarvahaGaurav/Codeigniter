@@ -37,6 +37,7 @@ class InspirationController extends BaseController
         $options['search'] = $search;
         $options['media'] = true;
         $options['products'] = true;
+        $options['user_id'] = $this->userInfo['user_id'];
 
         $data = $this->Inspiration->get($options);
         
@@ -104,13 +105,13 @@ class InspirationController extends BaseController
     public function add()
     {
         try {
-            if (!isset($this->userInfo['user_type'])
-                || !in_array($this->userInfo['user_type'], [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER])
-                || (ROLE_OWNER !== (int)$this->userInfo['is_owner'] && (!isset($this->employeePermission['insp_add']) || (int)$this->employeePermission['insp_add'] == 0))
-            ) {
-                error404("", base_url());
-                exit;
-            }
+            // if (!isset($this->userInfo['user_type'])
+            //     || !in_array($this->userInfo['user_type'], [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER])
+            //     || (ROLE_OWNER !== (int)$this->userInfo['is_owner'] && (!isset($this->employeePermission['insp_add']) || (int)$this->employeePermission['insp_add'] == 0))
+            // ) {
+            //     error404("", base_url());
+            //     exit;
+            // }
             
             $this->load->helper(['products']);
             $products = products('en');
@@ -131,7 +132,6 @@ class InspirationController extends BaseController
                 $validImage = false;
                 if (isset($_FILES['inspiration_image']) && is_array($_FILES['inspiration_image'])) {
                     $this->load->helper('image_validation');
-                    $validateImage = true;
                     $files = reArrayFiles($_FILES['inspiration_image']);
                     $files = array_filter($files, function ($data) {
                         if (
@@ -147,6 +147,7 @@ class InspirationController extends BaseController
                         }
                     });
                     if (!empty($files)) {
+                        $validateImage = true;
                         $validImage = true;
                     }
                 }
@@ -167,7 +168,7 @@ class InspirationController extends BaseController
                         return $data;
                     }, $inspirationProducts);
 
-                    if (!($validateImage xor $validImage)) {
+                    if (!empty($files)) {
                         $this->load->helper(['mime', 'images']);
                         $mediaData = array_map(function ($file) use ($inspirationId) {
                             $data['inspiration_id'] = $inspirationId;
@@ -208,13 +209,13 @@ class InspirationController extends BaseController
     
     public function edit($inspiration_id = '')
     {
-        if (!isset($this->userInfo['user_type'])
-            || !in_array($this->userInfo['user_type'], [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER])
-            || (ROLE_OWNER !== (int)$this->userInfo['is_owner'] && (!isset($this->employeePermission['insp_edit']) || (int)$this->employeePermission['insp_edit'] == 0))
-        ) {
-            error404("", base_url());
-            exit;
-        }
+        // if (!isset($this->userInfo['user_type'])
+        //     || !in_array($this->userInfo['user_type'], [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER])
+        //     || (ROLE_OWNER !== (int)$this->userInfo['is_owner'] && (!isset($this->employeePermission['insp_edit']) || (int)$this->employeePermission['insp_edit'] == 0))
+        // ) {
+        //     error404("", base_url());
+        //     exit;
+        // }
 
         $inspiration_id = encryptDecrypt($inspiration_id, 'decrypt');
 
@@ -244,41 +245,113 @@ class InspirationController extends BaseController
         }
         $this->data['inspiration'] = $data;
         $this->data['inspiration_id'] =  encryptDecrypt($data['inspiration_id']);
-        $this->load->library("form_validation");
-        $this->form_validation->CI =& $this;
-        $rules = $this->addInspirationValidation();
-        $this->form_validation->set_rules($rules);
-
+        $post = $this->input->post();
         $this->load->helper(['products']);
         $products = products('en');
         $this->data['products'] = $products;
 
-        $selectedProducts = $this->UtilModel->selectQuery('product_id', 'inspiration_products', [
-            'where' => ['inspiration_id' => $inspiration_id]
-        ]);
+        $inspirationParams['where']['inspiration_id'] = $inspiration_id;
 
+        $selectedProducts = $this->UtilModel->selectQuery('product_id', 'inspiration_products', $inspirationParams);
+
+        $inspirationMedia = $this->UtilModel->selectQuery('*', 'inspiration_media', $inspirationParams);
+
+        $this->data['inspirationMedia'] = $inspirationMedia;
         $this->data['selectedProducts'] = array_column($selectedProducts, 'product_id');
+        if (!empty($post)) {
+            $this->load->library("form_validation");
+            $this->form_validation->CI =& $this;
+            $rules = $this->addInspirationValidation();
+            $this->form_validation->set_rules($rules);
 
-        if ($this->form_validation->run()) {
-            $this->load->helper("input_data");
-            $post = $this->input->post();
-            $post = trim_input_parameters($post);
-            $this->Inspiration->title = $post['title'];
-            $this->Inspiration->description = $post['description'];
-            $this->Inspiration->updated_at = $this->datetime;
+            $validateImage = false;
+            $validImage = false;
+            if (isset($_FILES['inspiration_image']) && is_array($_FILES['inspiration_image'])) {
+                $this->load->helper('image_validation');
+                
+                $files = reArrayFiles($_FILES['inspiration_image']);
+                $files = array_filter($files, function ($data) {
+                    if (
+                        isset($data['tmp_name']) &&
+                        strlen($data['tmp_name']) > 0 &&
+                        $data['size'] > 0 &&
+                        (int)$data['error'] === 0 &&
+                        (bool) preg_match("/^(image|video)\/.+$/", mime_content_type($data['tmp_name']))
+                    ) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+                if (!empty($files)) {
+                    $validateImage = true;
+                    $validImage = true;
+                }
+            }
 
-            try {
-                $this->Inspiration->update(['id' => $inspiration_id]);
-                $this->session->set_flashdata("flash-message", $this->lang->line("inspiration_updated"));
-                $this->session->set_flashdata("flash-type", "success");
-                redirect(base_url("home/inspirations"));
-            } catch (\Exception $error) {
-                // $this->session->set_flashdata("flash-message", $this->lang->line("something_went_Worng"));
-                // $this->session->set_flashdata("flash-type", "danger");
+            if ($this->form_validation->run()) {
+                $this->load->helper("input_data");
+                $post = $this->input->post();
+                $post = trim_input_parameters($post);
+                $this->Inspiration->title = $post['title'];
+                $this->Inspiration->description = $post['description'];
+                $this->Inspiration->updated_at = $this->datetime;
+                $inspirationProducts = $this->input->post('products');
+                if (!is_null($inspirationProducts) && is_array($inspirationProducts)) {
+                    foreach ($inspirationProducts as $key => $product) {
+                        $this->form_validation->set_rules('products[' . $key . ']', 'Products', 'trim|required|is_natural_no_zero');
+                    }
+                }
+
+                try {
+                    if (isset($post['old_images']) && is_array($post['old_images']) && !empty($post['old_images'])) {
+                        $this->UtilModel->deleteData('inspiration_media', [
+                            'where_in' => ['id' => $post['old_images']]
+                        ]);
+                    }
+
+                    $this->Inspiration->update(['id' => $inspiration_id]);
+                    $this->UtilModel->deleteData('inspiration_products', [
+                        'where' => ['inspiration_id' => $inspiration_id]
+                    ]);
+                    $inspirationProductData = array_map(function ($productId) use ($inspiration_id){
+                        $data['inspiration_id'] = $inspiration_id;
+                        $data['product_id'] = $productId;
+                        return $data;
+                    }, $inspirationProducts);
+
+                    $this->UtilModel->insertBatch('inspiration_products', $inspirationProductData);
+
+                    if (!empty($files)) {
+                        $this->load->helper(['mime', 'images']);
+                        $mediaData = array_map(function ($file) use ($inspiration_id) {
+                            $data['inspiration_id'] = $inspiration_id;
+                            $mime = mime_content_type($file['tmp_name']);
+                            if (preg_match("/^(image)\/.+$/", $mime)) {
+                                $data['media_type'] = 1;
+                                $data['media'] = 
+                                    s3_image_uploader($file['tmp_name'], 'sg/inspirations/' . encryptDecrypt($inspiration_id) . '/' . time() . '.' . mime2ext($mime), $mime);
+                            } elseif (preg_match("/^(video)\/.+$/", $mime)) {
+                                $data['media_type'] = 2;
+                                $data['media'] = 
+                                    s3_image_uploader($file['tmp_name'], 'sg/inspirations/' . encryptDecrypt($inspiration_id) . '/' . time() . '.' . mime2ext($mime), $mime);
+                                // $data['video_thumbnail'] = generate_video_thumbnail($data['media']);
+                            }
+                            return $data;
+                        }, $files);
+                        $this->UtilModel->insertBatch('inspiration_media', $mediaData);
+                    }
+                    $this->session->set_flashdata("flash-message", $this->lang->line("inspiration_updated"));
+                    $this->session->set_flashdata("flash-type", "success");
+                    redirect(base_url("home/inspirations"));
+                } catch (\Exception $error) {
+                    // $this->session->set_flashdata("flash-message", $this->lang->line("something_went_Worng"));
+                    // $this->session->set_flashdata("flash-type", "danger");
+                }
             }
         }
 
-        $this->data['js'] = 'inspiration-add';
+        $this->data['js'] = 'inspiration-edit';
         $this->data['custom_select'] = true;
         $this->data['image_video_uploader'] = true;
 

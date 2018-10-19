@@ -33,13 +33,14 @@ $route['api/v1/rooms/(:num)/products'] = 'ProductController/accessoryProducts/ro
 $route['api/v1/products/mounting-types'] = 'ProductController/mountingTypes';
 $route['api/v1/rooms/(:any)/mounting-types/(:any)/products'] =
                                            'ProductController/roomProducts/room_id/$1/mounting_type/$2';
+
 $route['api/v1/products/(:any)'] = 'ProductController/details/product_id/$1';
 $route['api/v1/projects'] = 'ProjectController/index';
 $route['api/v1/projects/rooms'] = 'ProjectController/projectRooms';
 $route['api/v1/projects/quotation-request'] = 'ProjectController/sendQuotationRequest';
+$route['api/v1/projects/rooms/quotations'] = 'QuotationController/roomsQuotation';
 $route['api/v1/projects/(:any)/rooms'] = 'ProjectController/projectRoomsFetch/project_id/$1';
 $route['api/v1/projects/(:any)'] = 'ProjectController/details/project_id/$1';
 $route['api/v1/project-rooms/products'] = 'ProjectController/projectRoomProducts';
 $route['api/v1/quotations'] = 'QuotationController';
-$route['api/v1/requests'] = 'QuotationController/requests';
-$route['api/v1/quoted-requests'] = 'QuotationController/quotedRequests';
+$route['api/v1/requests'] = 'RequestController';

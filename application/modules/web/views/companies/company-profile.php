@@ -28,7 +28,7 @@
                                 <?php } ?>
                             </div>
                             <!-- //Thumb Wrapper -->
-                            <?php if (isset($userInfo)) { ?>
+                            <?php if (isset($userInfo, $userInfo['user_id']) && (int)$userInfo['company_id'] !== (int)$company->company_id) { ?>
                                 <div class="favorite-wrapper">
                                     <span data-favorite='<?php echo $company->favorite_data ?>' class="fa fa-heart faa-like clickable heart-position2 <?php echo (int)$company->is_favorite === 1?"faa-like":"faa-dislike" ?>" aria-hidden="true"></span>
                                 </div>
@@ -131,7 +131,7 @@
                                         </div>
                                     </div>
                                     <?php } ?>
-                                    <?php if (empty($media)) { ?>
+                                    <?php if (empty($inspiration['media'])) { ?>
                                     <div class="item">
                                         <div class="thumb-view-wrapper thumb-view-fullp img-viewbdr-radius4">
                                             <div class="thumb-view thumb-viewfullheight-1" style="background:url('<?php echo base_url('public/images/logo.png') ?>')"></div>

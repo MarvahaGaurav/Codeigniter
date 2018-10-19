@@ -78,6 +78,12 @@ class Product extends BaseModel
         return $result;
     }
 
+    /**
+     * Fetch product by Application Type
+     *
+     * @param array $options
+     * @return array
+     */
     public function productByType($options)
     {
         $this->db->select("SQL_CALC_FOUND_ROWS products.id as product_id, products.title as product_title, products.image", false)
@@ -208,6 +214,48 @@ class Product extends BaseModel
         $query = $this->db->get();
 
         $data = $query->result_array();
+
+        return $data;
+    }
+
+
+    /**
+     * Return products list
+     *
+     * @param array $params
+     * @return array
+     */
+    public function products($params)
+    {
+        $this->db->select('SQL_CALC_FOUND_ROWS product_id, title, body', false)
+            ->from('products');
+
+        if (isset($params['limit']) && is_numeric($params['limit']) && (int)$params['limit'] > 0) {
+            $this->db->limit((int)$params['limit']);
+        }
+
+        if (isset($params['offset']) && is_numeric($params['offset']) && (int)$params['offset'] > 0) {
+            $this->db->offset((int)$params['offset']);
+        }
+
+        if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
+            foreach ($params['where'] as $tableColumn => $searchValue) {
+                $this->db->where($tableColumn, $searchValue);
+            }
+        }
+
+        $query = $this->db->get();
+
+        $data['data'] = $query->result_array();
+        $data['count'] = $this->db->query('SELECT FOUND_ROWS() as count')->row()->count;
+
+        if (!empty($data['data'])) {
+            $this->load->helper('db');
+            $this->load->model('ProductGallery');
+            $productIds = array_column($data['data'], 'product_id');
+            $images = $this->ProductGallery->get($productIds);
+            $data['data'] = getDataWith($data['data'], $images, 'product_id', 'product_id', 'images', 'image');
+        }
 
         return $data;
     }

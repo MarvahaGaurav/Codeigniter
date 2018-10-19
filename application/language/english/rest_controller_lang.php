@@ -18,6 +18,7 @@ $lang['text_rest_unsupported'] = 'Unsupported protocol';
 /*
  * Custom Messages
  */
+$lang['success'] = 'Success';
 $lang['forbidden_action'] = 'This action is not allowed';
 $lang['bad_request'] = 'There was some error with the reqeust';
 $lang['registration_success'] = 'You have successfully registered';
@@ -60,6 +61,7 @@ $lang['no_request_found'] = 'No requests found';
 $lang['no_friends_found'] = 'No friends found';
 $lang['no_users_found'] = 'No users found';
 $lang['no_favorite_found'] = 'No Favorite Company found';
+$lang['invalid_request_list_type'] = 'Invalid type provided';
 /*
  * Review Language
  */
@@ -143,3 +145,10 @@ $lang['accessory_product_added'] = 'Product added';
 $lang['quoted_request_fetched'] = 'Your requests have been fetched';
 $lang['quotation_fetched'] = 'Your quotatatons have been fetched';
 $lang['quotation_accpeted'] = 'You have approved a quotation';
+$lang['quotation_rejected'] = 'Your have rejected a quotation';
+$lang['room_quotation_added'] = 'Your quotation has been saved';
+$lang['quotation_already_added'] = 'Your company has already provided a quotation';
+$lang['room_not_found'] = "Room not found";
+$lang['quotation_already_provided'] = 'You have already provided a quotation for this request';
+$lang['provide_quotations_for_all_rooms'] = 'Please provide quotation for all rooms';
+$lang['cannot_delete_requested_projects'] = 'Cannot delete rooms for a requested project';
