@@ -127,13 +127,14 @@ class QuotationController extends BaseController
             }
             
             $quotationId = $this->UtilModel->insertTableData([
+                'language_code' => $language_code,
                 'request_id' => $this->requestData['request_id'],
                 'company_id' => $user_data['company_id'],
                 'user_id' => $user_data['user_id'],
                 'additional_product_charges' =>
-                     isset($this->requestData['additional_product_charges'])?$this->requestData['additional_product_charges']:0.00,
+                     isset($this->requestData['additional_product_charges'])?(double)$this->requestData['additional_product_charges']:0.00,
                 'discount' =>
-                     isset($this->requestData['discount'])?$this->requestData['discount']:0.00,
+                     isset($this->requestData['discount'])?(double)$this->requestData['discount']:0.00,
                 'created_at' => $this->datetime,
                 'created_at_timestamp' => time(),
                 'updated_at' => $this->datetime,

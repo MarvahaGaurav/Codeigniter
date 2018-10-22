@@ -96,15 +96,94 @@ class ProjectQuotation extends BaseModel
      */
     public function getProjectQuotationPriceByInstaller($params)
     {
-        $this->db->select('totalQuotationChargesPerRoom(pr.project_id, prq.company_id) as price,
-            IFNULL(discount, 0.00) as discount, IFNULL(additional_product_charges, 0.00) as additional_product_charges')
+        // $this->db->select('totalQuotationChargesPerRoom(pr.project_id, prq.company_id) as price,
+        //     IFNULL(discount, 0.00) as discount, IFNULL(additional_product_charges, 0.00) as additional_product_charges')
+        //     ->from('project_room_quotations as prq')
+        //     ->join('project_quotations as pq', 'pq.company_id=prq.company_id', 'left')
+        //     ->join('project_requests as prr', 'prr.id=pq.request_id', 'left')
+        //     ->join('project_rooms as pr', 'pr.id=prq.project_room_id')
+        //     ->where('pr.project_id', $params['project_id'])
+        //     ->where('prq.company_id', $params['company_id']);
+
+        // $query = $this->db->get();
+
+        // $data = $query->row_array();
+
+        // return $data;
+        $this->db->select('sum(price_per_luminaries) as price_per_luminaries, 
+            sum(installation_charges) as installation_charges, 
+            avg(discount_price) as discount_price')
             ->from('project_room_quotations as prq')
-            ->join('project_quotations as pq', 'pq.company_id=prq.company_id', 'left')
-            ->join('project_requests as prr', 'prr.id=pq.request_id', 'left')
             ->join('project_rooms as pr', 'pr.id=prq.project_room_id')
             ->where('pr.project_id', $params['project_id'])
             ->where('prq.company_id', $params['company_id']);
+        
+        $query = $this->db->get();
 
+        $data = $query->row_array();
+
+        return $data;
+    }
+
+    /**
+     * Get prices by quotation
+     *
+     * @param array $params
+     * @return array
+     */
+    public function quotationChargesByInstaller($params)
+    {
+        $this->db->select('additional_product_charges, discount')
+            ->from('project_quotations as pq')
+            ->join('project_requests as preq', 'preq.id=pq.request_id')
+            ->where('pq.company_id', $params['company_id'])
+            ->where('preq.project_id', $params['project_id']);
+
+        $query = $this->db->get();
+
+        $data = $query->row_array();
+
+        return $data;
+    }
+
+    /**
+     * Approved project quotation price
+     *
+     * @param array $params
+     * @return array
+     */
+    public function approvedProjectQuotationPrice($params)
+    {
+        $this->db->select('sum(price_per_luminaries) as price_per_luminaries,
+            sum(installation_charges) as installation_charges,
+            avg(discount_price) as discount_price, additional_product_charges, discount')
+            ->from('project_quotations as pq')
+            ->join('project_room_quotations as prq', 'prq.user_id=pq.user_id AND prq.company_id=pq.company_id')
+            ->join('project_requests as preq', 'preq.id=pq.request_id')
+            ->where('preq.project_id', $params['project_id'])
+            ->where('pq.status', QUOTATION_STATUS_APPROVED)
+            ->group_by('preq.project_id');
+
+        $query = $this->db->get();
+
+        $data = $query->row_array();
+
+        return $data;
+    }
+
+    /**
+     * Approved quotation price
+     *
+     * @param array $params
+     * @return array
+     */
+    public function approvedQuotationPrice($params)
+    {
+        $this->db->select('additional_product_charges, discount')
+            ->from('project_quotations as pq')
+            ->join('project_requests as preq', 'preq.id')
+            ->where();
+        
         $query = $this->db->get();
 
         $data = $query->row_array();

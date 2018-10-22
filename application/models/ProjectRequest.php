@@ -69,6 +69,7 @@ class ProjectRequest extends BaseModel {
             // ->join('project_quotations as pq', 'pr.id=pq.request_id AND pq.status=' . QUOTATION_STATUS_APPROVED)
             // ->join('company_master as company', 'company.company_id=pq.company_id')
             ->where("EXISTS (SELECT id FROM project_quotations WHERE request_id=pr.id AND project_quotations.status=". QUOTATION_STATUS_QUOTED ." LIMIT 1)", null, false)
+            ->where('projects.language_code', $params['language_code'])
             ->order_by('pr.id', 'DESC');
 
 
@@ -123,6 +124,7 @@ class ProjectRequest extends BaseModel {
                 ->join("projects", "pr.project_id=projects.id")
                 ->join("ai_user as customer", "customer.user_id=projects.user_id")
                 ->where('is_active', 1)
+                ->where('pr.language_code', $params['language_code'])
                 ->order_by('pr.id', 'DESC');
         
         if (isset($params['user_id']) && is_numeric($params['user_id'])) {
@@ -176,6 +178,7 @@ class ProjectRequest extends BaseModel {
             ->from('project_requests as pr')
             ->join('projects', 'projects.id=pr.project_id')
             ->join('ai_user as user', 'user.user_id=projects.user_id')
+            ->where('pr.language_code', $params['language_code'])
             ->order_by("pr.id", "DESC");
         
         if (isset($params['user_id']) && is_numeric($params['user_id'])) {
@@ -229,6 +232,7 @@ class ProjectRequest extends BaseModel {
         ->join('ai_user as user', 'user.user_id=projects.user_id')
         ->where('pq.status',  QUOTATION_STATUS_APPROVED)
         ->where('pq.company_id', $params['company_id'])
+        ->where('pq.language_code', $params['language_code'])
         ->order_by("pr.id", "DESC");
         
         if (isset($params['user_id']) && is_numeric($params['user_id'])) {

@@ -30,7 +30,7 @@ class ProjectRooms extends BaseModel {
      */
     public function get($params)
     {
-        $this->db->select("id as project_room_id, room_id, count, project_id, name, length, width, height,
+        $this->db->select("id as project_room_id, room_id, project_levels, project_id, name, length, width, height,
             maintainance_factor, shape, working_plane_height, rho_wall, rho_ceiling, rho_floor,
             lux_value, luminaries_count_x, luminaries_count_y, fast_calc_response, created_at", false)
             ->from($this->tableName);

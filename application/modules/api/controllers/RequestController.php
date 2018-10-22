@@ -85,6 +85,7 @@ class RequestController extends BaseController
 
             $this->user = $user_data;
             $this->params['limit'] = API_RECORDS_PER_PAGE;
+            $this->params['language_code'] = $language_code;
 
             if (in_array((int)$user_data['user_type'], [PRIVATE_USER, BUSINESS_USER], true)) {
                 $this->params['user_id'] = $this->user['user_id'];

@@ -23,7 +23,7 @@ class ProjectController extends BaseController
     public function __construct()
     {
         error_reporting(-1);
-		ini_set('display_errors', 1);
+        ini_set('display_errors', 1);
         parent::__construct();
         $this->load->library('form_validation');
     }
@@ -355,7 +355,7 @@ class ProjectController extends BaseController
             $this->requestData = trim_input_parameters($this->requestData, false);
             $this->products = trim_input_parameters($this->products, false);
 
-            $roomsData = array_map(function ($room) use($language_code) {
+            $roomsData = array_map(function ($room) use ($language_code) {
                 $data['language_code'] = $language_code;
                 $data['project_id'] = $room['projectId'];
                 $data['room_id'] = $room['roomId'];
@@ -800,45 +800,31 @@ class ProjectController extends BaseController
                     $priceData = $this->UtilModel->selectQuery(
                         'id as room_quotation_id, project_room_id, user_id, company_id,price_per_luminaries,
                         installation_charges,discount_price,created_at, created_at_timestamp',
-                        'project_room_quotations', [
+                        'project_room_quotations',
+                        [
                         'where' => [
-                            'company_id' => $user_data['company_id']                        
+                            'company_id' => $user_data['company_id']
                         ],
                         'where_in' => [
                             'project_room_id' => $roomIds
                         ]
-                    ]);
+                        ]
+                    );
 
                     $rooms = getDataWith($rooms, $priceData, 'project_room_id', 'project_room_id', 'price');
 
                     $rooms = array_map(function ($room) {
+                        $room['has_price'] = (bool)((is_array($room['price'])&&count($room['price']) > 0));
                         $room['price'] = is_array($room['price'])&&count($room['price']) > 0 ? array_pop($room['price']) : (object)[];
                         return $room;
                     }, $rooms);
 
-                    $this->load->model("ProjectQuotation");
-                    $totalPriceData =  $this->ProjectQuotation->getProjectQuotationPriceByInstaller([
-                        'project_id' => $this->requestData['project_id'],
-                        'company_id' => $user_data['company_id']
-                    ]);
-
-                    $totalPrice = json_decode($totalPriceData['price'], true);
-
-                    if (empty($totalPrice)) {
-                        $totalPrice['price_per_luminaries'] = 0.00;
-                        $totalPrice['installation_charges'] = 0.00;
-                        $totalPrice['discount_price'] = 0.00;
-                    }
-                    $totalPrice['additional_product_charges'] = (double)$totalPriceData['additional_product_charges'];
-                    $totalPrice['discount'] = (double)$totalPriceData['discount'];
-                    $totalPrice['main_product_charge'] = 0.00;
-                    $totalPrice['accessory_product_charge'] = 0.00;
-                    $this->load->helper('utility');
-                    $totalPrice['total'] = get_percentage(($totalPrice['price_per_luminaries']
-                                                + $totalPrice['installation_charges']
-                                                + $totalPrice['additional_product_charges']), $totalPrice['discount_price']);
-                    $totalPrice['total'] = round($totalPrice['total'], 2);
+                   
+                    $projectParams['company_id'] = $user_data['company_id'];
                 }
+                $projectParams['project_id'] = $this->requestData['project_id'];
+                
+                $totalPrice = $this->handleTotalPrice($user_data['user_type'], $projectParams);
             } else {
                 $this->response([
                     'code' => HTTP_NOT_FOUND,
@@ -853,7 +839,7 @@ class ProjectController extends BaseController
                 $hasMorePages = true;
                 $nextCount = $params['offset'] + API_RECORDS_PER_PAGE;
             }
-            
+
             $this->response([
                 'code' => HTTP_OK,
                 'msg' => $this->lang->line('project_rooms_fetched_successfully'),
@@ -1378,5 +1364,58 @@ class ProjectController extends BaseController
                 'rules' => 'trim|required|is_natural_no_zero'
             ]
         ]);
+    }
+
+    /**
+     * Handle total price data
+     *
+     * @param string $userData
+     * @param array $projectParams
+     * @return Object
+     */
+    private function handleTotalPrice($userType, $projectParams)
+    {
+        $this->load->model("ProjectQuotation");
+        $totalPrice = (object)[];
+
+        if ((int)$userType === INSTALLER) {
+            $totalPrice->main_product_charge = 0.00;
+            $totalPrice->accessory_product_charge = 0.00;
+            $totalPriceData =  $this->ProjectQuotation->getProjectQuotationPriceByInstaller($projectParams);
+            $quotationPrice = $this->ProjectQuotation->quotationChargesByInstaller($projectParams);
+
+            $totalPrice->price_per_luminaries = isset($totalPriceData['price_per_luminaries'])?(double)$totalPriceData['price_per_luminaries']:0.00;
+            $totalPrice->installation_charges = isset($totalPriceData['installation_charges'])?(double)$totalPriceData['installation_charges']:0.00;
+            $totalPrice->discount_price = isset($totalPriceData['discount_price'])?(double)$totalPriceData['discount_price']:0.00;
+            $totalPrice->additional_product_charges = isset($quotationPrice['additional_product_charges'])?(double)$quotationPrice['additional_product_charges']:0.00;
+            $totalPrice->discount = isset($quotationPrice['discount'])?(double)$quotationPrice['discount']:0.00;
+            
+            $this->load->helper('utility');
+            $totalPrice->total = get_percentage(($totalPrice->main_product_charge
+                                        + $totalPrice->accessory_product_charge
+                                        + $totalPrice->price_per_luminaries
+                                        + $totalPrice->installation_charges
+                                        + $totalPrice->additional_product_charges), $totalPrice->discount_price);
+            $totalPrice->total = round($totalPrice->total, 2);
+        } elseif (in_array((int)$userType, [BUSINESS_USER, PRIVATE_USER], true)) {
+            $totalPrice->main_product_charge = 0.00;
+            $totalPrice->accessory_product_charge = 0.00;
+            $totalPriceData = $this->ProjectQuotation->approvedProjectQuotationPrice($projectParams);
+            $totalPrice->price_per_luminaries = isset($totalPriceData['price_per_luminaries'])?(double)$totalPriceData['price_per_luminaries']:0.00;
+            $totalPrice->installation_charges = isset($totalPriceData['installation_charges'])?(double)$totalPriceData['installation_charges']:0.00;
+            $totalPrice->discount_price = isset($totalPriceData['discount_price'])?(double)$totalPriceData['discount_price']:0.00;
+            $totalPrice->additional_product_charges = isset($totalPriceData['additional_product_charges'])?(double)$totalPriceData['additional_product_charges']:0.00;
+            $totalPrice->discount = isset($totalPriceData['discount'])?(double)$totalPriceData['discount']:0.00;
+
+            $this->load->helper('utility');
+            $totalPrice->total = get_percentage(($totalPrice->main_product_charge
+                                        + $totalPrice->accessory_product_charge
+                                        + $totalPrice->price_per_luminaries
+                                        + $totalPrice->installation_charges
+                                        + $totalPrice->additional_product_charges), $totalPrice->discount_price);
+            $totalPrice->total = round($totalPrice->total, 2);
+        }
+
+        return $totalPrice;
     }
 }

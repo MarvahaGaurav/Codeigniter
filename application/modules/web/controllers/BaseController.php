@@ -16,6 +16,8 @@ class BaseController extends MY_Controller
     protected $datetime;
     public function __construct()
     {
+        error_reporting(-1);
+		ini_set('display_errors', 1);
         parent::__construct();
         $this->load->helper(['url', 'form', 'custom_cookie', 'common', 'debuging']);
         $this->load->model('Common_model');
