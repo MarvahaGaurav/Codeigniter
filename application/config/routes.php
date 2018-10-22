@@ -74,25 +74,47 @@ $route['home/inspirations/(.+)']      = 'web/InspirationController/details/$1';
 /**
  * Projects
  */
-$route['home/projects']             = 'web/ProjectController';
-$route['home/projects/create']      = 'web/ProjectController/create';
-$route['home/projects/application'] = 'web/ProjectController/applications';
+$route['home/projects']                                                = 'web/ProjectController';
+$route['home/projects/create']                                         = 'web/ProjectController/create';
+$route['home/projects/(:any)/details']                                 = 'web/ProjectController/project_details/$1';
+$route['home/projects/create_room']                                    = 'web/ProjectController/create_room';
+$route['home/projects/update_room']                                    = 'web/ProjectController/update_room';
+$route['home/projects/(:any)/room-edit/(:any)']                        = 'web/ProjectController/edit_room/$1/$2';
+$route['home/projects/(:any)/rooms/(:any)/articles/(:any)']            = 'web/ProjectController/articles/$1/$2/$3';
+$route['home/projects/(:any)/room-edit/(:any)/articles/(:any)']        = 'web/ProjectController/articles/$1/$2/$3';
+$route['home/projects/(:any)/room-edit/(:any)/articles/(:any)/(:any)'] = 'web/ProjectController/articles/$1/$2/$3/$4';
+$route['home/projects/application']                                    = 'web/ProjectController/applications';
+$route['home/projects/(:any)/rooms']                                   = 'web/ProjectController/rooms/$1';
+$route['home/projects/(:any)/rooms/(:any)/add-room']                   = 'web/ProjectController/add_rooms/$1/$2';
+$route['home/projects/(:any)/rooms/(:any)/select-porduct']             = 'web/ProjectController/select_product/$1/$2';
+$route['home/projects/(:any)/room-edit/(:any)/select-porduct/(:any)']  = 'web/ProjectController/select_product/$1/$2/$3';
+$route['home/projects/(:any)/select-room-type']                        = 'web/ProjectController/room_type/$1';
+$route['home/projects/get-porduct']                                    = 'web/ProjectController/get_product/$1';
+$route['home/projects/view-result/(:any)']                             = 'web/ProjectController/view_result/$1';
 
 
 
-$route['home/quotes']                    = 'web/QuotesController';
-$route['home/technicians']               = 'web/TechnicianController';
-$route['home/technicians/requests']      = 'web/TechnicianController/request_list';
-$route['home/technicians/(.+)']          = 'web/TechnicianController/details/$1';
-$route['home/companies']                 = 'web/CompaniesController/companies';
-$route['home/companies/favorites']       = 'web/CompaniesController/favoriteCompanies';
-$route['home/companies/(:any)']          = 'web/CompaniesController/companyDetails/$1';
-$route['home/fast-calc']                 = 'web/QuickCalcController/quickcalc';
-$route['home/applications']              = 'web/QuickCalcController/applications';
-$route['home/applications/(:any)/rooms'] = 'web/QuickCalcController/rooms/$1';
-$route['logout']                         = 'web/Logout';
-$route['login']                          = 'web/index/index';
-$route['register']                       = 'web/index/signup';
+$route['home/quotes']               = 'web/QuotesController';
+$route['home/technicians']          = 'web/TechnicianController';
+$route['home/technicians/requests'] = 'web/TechnicianController/request_list';
+$route['home/technicians/(.+)']     = 'web/TechnicianController/details/$1';
+$route['home/companies']            = 'web/CompaniesController/companies';
+$route['home/companies/favorites']  = 'web/CompaniesController/favoriteCompanies';
+$route['home/companies/(:any)']     = 'web/CompaniesController/companyDetails/$1';
+
+$route['home/fast-calc']                                        = 'web/QuickCalcController/quickcalc';
+$route['home/applications']                                     = 'web/QuickCalcController/applications';
+$route['home/applications/(:any)/rooms']                        = 'web/QuickCalcController/rooms/$1';
+$route['home/applications/(:any)/rooms/(:any)/fast-calc']       = 'web/QuickCalcController/quickcalc/$1/$2';
+$route['home/applications/(:any)/rooms/(:any)/select-porduct']  = 'web/QuickCalcController/select_product/$1/$2';
+$route['home/applications/(:any)/rooms/(:any)/articles/(:any)'] = 'web/QuickCalcController/articles/$1/$2/$3';
+$route['home/applications/quick_cal']                           = "web/QuickCalcController/quick_cal";
+$route['home/applications/view-result/(:any)']                  = "web/QuickCalcController/view_result/$1";
+
+
+$route['logout']   = 'web/Logout';
+$route['login']    = 'web/index/index';
+$route['register'] = 'web/index/signup';
 
 /* Route for Admin */
 $route["admin"]                 = 'admin/Admin';
@@ -129,4 +151,5 @@ $route['api/v1/employee/request']["POST"]    = 'api/Employee/actiononemployee'; 
 $route['api/v1/employee/permission']["POST"] = 'api/Employee/setpermissopnforemp';
 $route['api/v1/employee/permission']["GET"]  = 'api/EmployeeController/employeePermissions';
 
-$route['warranty'] = 'website/warranty';
+$route['warranty']       = 'website/warranty';
+$route['transfer-image'] = 'xhttp/ImageController';

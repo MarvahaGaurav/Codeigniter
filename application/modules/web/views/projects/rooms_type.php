@@ -26,7 +26,7 @@
             <?php foreach ($roomChunks as $rooms) { ?>
                 <div class="row">
                     <?php foreach ($rooms as $room) { ?>
-                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 col-for-thumb redirectable" data-redirect-to="<?php echo base_url("home/applications/{$encrypted_application_id}/rooms/{$room['encrypted_room_id']}/fast-calc") ?>">
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 col-for-thumb redirectable" data-redirect-to="<?php echo base_url("home/projects/{$encrypted_application_id}/rooms/{$room['encrypted_room_id']}/add-room") ?>">
                             <div class="thumb-box">
                                 <div class="thumb-view-wrapper thumb-view-fullp img-viewbdr-radius4">
                                     <div class="thumb-view thumb-viewfullheight-1" style="background:url('<?php echo ! empty($room['image']) ? $room['image'] : base_url('public/images/placeholder/no-found-ico-2.svg') ?>')"></div>
@@ -42,6 +42,7 @@
             <?php } ?>
         </div>
         <!-- thumb wrapper section end -->
+
         <?php
         if ( ! count($roomChunks)) {
             ?>
@@ -55,7 +56,7 @@
             <?php
         }
         ?>
-
+        <!-- no record found end -->
 
     </div>
 </div>

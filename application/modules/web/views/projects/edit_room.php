@@ -4,14 +4,17 @@
         <!-- breadcrumb -->
         <ul class="breadcrumb">
             <li><a href="javascript:void(0)">Home</a></li>
-            <li><a href="<?php echo base_url('home/applications/' . $applicationId) ?>">Applications</a></li>
-            <li><a href="<?php echo base_url('home/applications/' . $applicationId . '/rooms') ?>">Rooms</a></li>
-            <li class="active">Fast Calc</li>
+            <li><a href="javascript:void(0)">Project</a></li>
+            <li><a href="javascript:void(0)">Create New Project</a></li>
+            <li><a href="javascript:void(0)">Select Application</a></li>
+            <li><a href="javascript:void(0)">Rooms</a></li>
+            <li><a href="javascript:void(0)">Room Type</a></li>
+            <li class="active">Room Dimensions</li>
         </ul>
         <!-- //breadcrumb -->
 
         <div class="page-heading">
-            <h1 class="page-title"><?php echo ucfirst($room['title']) ?> : Room Dimensions</h1>
+            <h1 class="page-title"><?php echo $room['title']; ?> : Room Dimensions</h1>
             <p class="prj-description">We are continously designing, prototyping and testing new products to enable us to deliver products that are energy efficient and environmental friendly, in combination
                 with a creation of the ambiance that you need, always keeping in mind that luminaires have a great impact on the environment, appearance and impression of the overall
                 surroundings.</p>
@@ -21,9 +24,9 @@
         <div class="section-title clearfix">
             <h3>Room Dimensions</h3>
         </div>
-        <!-- Caption before section -->
-        <?php echo form_open_multipart(base_url("home/applications/quick_cal"), array ('id' => 'quick_cal_form', 'name' => "quick_cal_form")) ?>
 
+        <!-- Caption before section -->
+        <?php echo form_open_multipart(base_url("home/projects/update_room"), array ('id' => 'add_room_form', 'name' => "add_room_form")) ?>
         <!-- form wrapper -->
         <div class="form-wrapper">
             <div class="row form-inline-wrapper">
@@ -274,25 +277,28 @@
                 </div>
             <?php } ?>
         </div>
-        <!-- //form wrapper -->
 
+        <!-- //form wrapper -->
+        <?php $disabled = (isset($selectd_room['product_name']) and '' != $selectd_room['product_name']) ? " " : " disabled "; ?>
         <!-- button wrapper section -->
         <div class="section-title clearfix">
             <div class="button-wrapper">
-                <input name="evaluate_btn" id="evaluate_btn" type="submit" value="Evaluate" class="custom-btn btn-margin btn-width save">
+                <input <?php echo $disabled; ?> type="submit" value="Done" class="custom-btn btn-margin btn-width save">
                 <button type="button" class="custom-btn btn-margin btn-width cancel">Cancel</button>
             </div>
         </div>
+
         <!-- button wrapper section -->
         <input type="hidden" name="room_id" id="room_id" value="<?php echo $room_id; ?>">
         <input type="hidden" name="application_id" id="application_id" value="<?php echo $application_id; ?>">
-        <input type="hidden" name="article_code" id="room_id" value="<?php echo $selectd_room['articel_id']; ?>">
-        <input type="hidden" name="type" id="room_id" value="<?php echo $selectd_room['type']; ?>">
-        <input type="hidden" name="product_id" id="application_id" value="<?php echo $selectd_room['product_id']; ?>">
+        <input type="hidden" name="article_code" id="article_code" value="<?php echo $selectd_room['articel_id']; ?>">
+        <input type="hidden" name="type" id="type" value="<?php echo $selectd_room['type']; ?>">
+        <input type="hidden" name="product_id" id="product_id" value="<?php echo $selectd_room['product_id']; ?>">
+        <input type="hidden" name="project_room_id" id="project_room_id" value="<?php echo $project_room_id; ?>" >
         <?php echo form_close(); ?>
         <!-- no record found -->
         <!-- <div class="no-record text-center">
-            <img src="../images/no-found-note.png" alt="Note Paper">
+            <img src="../../images/no-found-note.png" alt="Note Paper">
             <p>You have no project.</p>
             <p>You have to <a href="login.html" class="login">Login</a> first to add a project!</p>
         </div> -->

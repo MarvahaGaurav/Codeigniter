@@ -22,7 +22,7 @@
         </div>
 
         <!-- thumb view -->
-        <?php if (!empty($inspiration['media'])) { ?>
+        <?php if ( ! empty($inspiration['media']) ) { ?>
         <div class="thumbview-table">
             <div class="thumbview-tablecell thumbview-tablecell-one">
                 <div class="thumb-view-evenly">

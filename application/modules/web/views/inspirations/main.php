@@ -66,15 +66,9 @@
                                             <div class="thumb-view thumb-viewfullheight-1" style="background:url('<?php echo !empty($media['video_thumbnail'])?$media['video_thumbnail']:base_url('public/images/logo.png')  ?>')"></div>
                                         </div>
                                     </div>
-                                    <?php }?>
-                                    <?php endforeach ?>
-                                <?php } else {?>
-                                        <div class="item">
-                                        <div class="thumb-view-wrapper thumb-view-fullp img-viewbdr-radius4">
-                                            <div class="thumb-view thumb-viewfullheight-1" style="background:url('<?php echo $inspiration['media']  ?>')"></div>
-                                        </div>
-                                        </div>
-                                <?php }?>
+
+                                    <!-- td carousel end -->
+                                    <!--<span class="fa fa-heart faa-like heart-position1" aria-hidden="true"></span>-->
                                 </div>
                                 
                                 <!-- td carousel end -->
@@ -114,7 +108,7 @@
                         <tr>
                             <td colspan="5">No result found</td>
                         </tr>
-                    <?php }?>
+                    <?php } ?>
                 </tbody>
             </table>
         </div>

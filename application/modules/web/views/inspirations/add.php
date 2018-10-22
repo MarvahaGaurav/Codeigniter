@@ -34,6 +34,7 @@
                                     <label class="error"><?php echo form_error("title") ?></label>
                                 </div>
                             </div>
+                            <div class="error"><?php echo form_error("title") ?></div>
                         </div>
                     </div>
                 </div>
@@ -47,6 +48,7 @@
                                     <label class="error"><?php echo form_error("description") ?></label>
                                 </div>
                             </div>
+                            <div class="error"><?php echo form_error("description") ?></div>
                         </div>
                     </div>
                 </div>
@@ -90,6 +92,7 @@
                     </div>
                 </div>
             </div>
+        </div>
 
             <!-- Button wrapper section -->
             <div class="section-title clearfix">
@@ -97,6 +100,7 @@
                     <button type="submit" id="inspiration-add-submit" class="custom-btn btn-width save">Submit</button>
                 </div>
             </div>
+        </div>
         </form>
         <!-- Button wrapper section -->
 

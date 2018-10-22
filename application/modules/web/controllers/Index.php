@@ -171,7 +171,8 @@ class Index extends BaseController {
                             //$data['success'] = $this->lang->line('success_prefix') . $this->lang->line('reset_email') . $this->lang->line('success_suffix');
                             //redirect(base_url() . 'web/index/forgot');
                             redirect('/web/index/forgotsuccess');
-                        } else {
+                        }
+                        else {
                             load_outerweb_views('/index/forgotpassword', $data);
                         }
                     }
