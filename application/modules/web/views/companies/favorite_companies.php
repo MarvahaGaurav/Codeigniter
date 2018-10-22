@@ -58,7 +58,7 @@
                                 </div>
                                 <?php } ?>
                             </div>
-                            <span class="td-technician op-semibold"><?php echo $company->company_name ?></span>
+                            <a href="<?php echo base_url('home/companies/' . encryptDecrypt($company->company_id)) ?>"><span class="td-technician op-semibold"><?php echo $company->company_name ?></span></a>
                         </td>
                         <td class="text-center text-nowrap"><?php echo $company->city ?></td>
                         <td class="text-center"><?php echo $company->country ?></td>

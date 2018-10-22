@@ -16,7 +16,6 @@
 
     var validationRules = {
         // ignore: ":hidden:not(.selectpicker)",
-        ignore: [],
         user_type: {
             required: true,
             normalizer: normalizer
@@ -77,6 +76,7 @@
     }
 
     $("#signup-form").validate({
+        ignore: [],
         rules: validationRules
     });
 
@@ -139,6 +139,12 @@
 
         }
     });
+
+    $("input[name='company_logo']").on('change', function (event) {
+        var files = event.target.files;
+
+        $("#uploadfile").val(files[0].name);
+    })
 
     function companyNameView(type) {
         if (type == 'owner') {

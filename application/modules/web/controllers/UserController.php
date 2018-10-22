@@ -155,7 +155,9 @@ class UserController extends BaseController
                 $this->session->set_flashdata("flash-type", "danger");
                 load_alternatecropper_views("users/edit_profile", $this->data);
             }
+        } else {
         }
+        
         load_alternatecropper_views("users/edit_profile", $this->data);
     }
 

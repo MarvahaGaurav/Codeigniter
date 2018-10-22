@@ -68,7 +68,7 @@
                     <div class="ts-wrapper bgcolor1 clearfix">
                         <div class="ts-content">
                             <div class="ts-numbers"><?php echo $userCount ?>
-                                <span class="ts-userstxt">Users</span>
+                                <span class="ts-userstxt">Customer</span>
                                 <!-- <span class="total-userstxt"><?php //echo $userCount ?></span> -->
                             </div>
                             <!--<p class="ts-description">
@@ -87,7 +87,7 @@
                     <div class="ts-wrapper bgcolor2 clearfix">
                         <div class="ts-content">
                             <div class="ts-numbers"><?php echo $technicianCount ?>
-                                <span class="ts-userstxt">Technician</span>
+                                <span class="ts-userstxt">Installer</span>
                             </div>
                             <!--<p class="ts-description">
                                 Lorem Ipsum is simply dummy text of the printing and typesetting industry.
@@ -158,7 +158,7 @@
                 <div class="ts-wrapper bgcolor6 clearfix">
                     <div class="ts-content">
                         <div class="ts-numbers"><?php echo $projectCount ?>
-                            <span class="ts-userstxt">Projects</span>
+                            <span class="ts-userstxt">Project</span>
                         </div>
                         <!--<p class="ts-description">
                             Lorem Ipsum is simply dummy text of the printing and typesetting industry.

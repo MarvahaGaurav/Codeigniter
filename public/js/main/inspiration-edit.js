@@ -7,7 +7,7 @@ requirejs.config({
     common: 'web/common',
     jqueryValidator: 'jquery.validate.min',
     jqueryScrollbar: 'plugin/jquery.scrollbar.min',
-    imageVideoUploader: 'image.video.uploader',
+    imageVideoUploader: 'image-edit.video.uploader',
     select2: 'select2.min'
   },
   shim: {

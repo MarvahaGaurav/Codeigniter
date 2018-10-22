@@ -46,81 +46,65 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php
-                    foreach ($inspirations as $key => $inspiration) :
-                        ?>
-                        <tr>
-                            <td class="td-thumb-carousel text-nowrap">
-                                <div class="thumb-carousel">
-                                    <!-- td carousel -->
-                                    <div class="owl-carousel inspiration_carousel">
-                                        <?php if (is_array($inspiration['media'])) { ?>
-                                            <?php foreach ($inspiration['media'] as $media) : ?>
-                                                <?php if (CONTENT_TYPE_IMAGE === (int) $media['media_type']) { ?>
-                                                    <div class="item">
-                                                        <div class="thumb-view-wrapper thumb-view-fullp img-viewbdr-radius4">
-                                                            <div class="thumb-view thumb-viewfullheight-1" style="background:url('<?php echo $media['media'] ?>')"></div>
-                                                        </div>
-                                                    </div>
-                                                    <?php
-                                                }
-                                                else {
-                                                    ?>
-                                                    <div class="item">
-                                                        <div class="thumb-view-wrapper thumb-view-fullp img-viewbdr-radius4">
-                                                            <div class="thumb-view thumb-viewfullheight-1" style="background:url('<?php echo $media['video_thumbnail'] ?>')"></div>
-                                                        </div>
-                                                    </div>
-                                                <?php } ?>
-                                            <?php endforeach ?>
-                                            <?php
-                                        }
-                                        else {
-                                            ?>
-                                            <div class="item">
-                                                <div class="thumb-view-wrapper thumb-view-fullp img-viewbdr-radius4">
-                                                    <div class="thumb-view thumb-viewfullheight-1" style="background:url('<?php echo $inspiration['media'] ?>')"></div>
-                                                </div>
-                                            </div>
-                                        <?php } ?>
+                    <?php foreach($inspirations as $key => $inspiration) : ?>
+                    <tr>
+                        <td class="td-thumb-carousel text-nowrap">
+                            <div class="thumb-carousel">
+                                <!-- td carousel -->
+                                <div class="owl-carousel inspiration_carousel">
+                                <?php if (is_array($inspiration['media'])) {?>
+                                    <?php foreach($inspiration['media'] as $media) :?>
+                                    <?php if (CONTENT_TYPE_IMAGE === (int)$media['media_type'] ) {?>
+                                    <div class="item">
+                                        <div class="thumb-view-wrapper thumb-view-fullp img-viewbdr-radius4">
+                                            <div class="thumb-view thumb-viewfullheight-1" style="background:url('<?php echo !empty($media['media'])?$media['media']:base_url('public/images/logo.png')  ?>')"></div>
+                                        </div>
+                                    </div>
+                                    <?php } else {?>
+                                    <div class="item">
+                                        <div class="thumb-view-wrapper thumb-view-fullp img-viewbdr-radius4">
+                                            <div class="thumb-view thumb-viewfullheight-1" style="background:url('<?php echo !empty($media['video_thumbnail'])?$media['video_thumbnail']:base_url('public/images/logo.png')  ?>')"></div>
+                                        </div>
                                     </div>
 
                                     <!-- td carousel end -->
                                     <!--<span class="fa fa-heart faa-like heart-position1" aria-hidden="true"></span>-->
                                 </div>
-                            </td>
-                            <td class="inspiration-description">
-                                <h3 class="op-semibold"><?php echo ucwords($inspiration['title']) ?></h3>
-                                <h5><?php echo $inspiration['company_name'] ?></h5>
-                                <p><?php echo $inspiration['description'] ?>
-                                </p>
-                            </td>
-                            <td><?php echo $inspiration['city_name'] ?>, <?php echo $inspiration['country_name'] ?></td>
-                            <td>
-                                <ul class="inspiration-product">
-                                    <?php foreach ($inspiration['products'] as $key => $product) : ?>
-                                        <li><?php echo $product['product_title'] ?></li>
-                                        <?php
-                                        if ((int) $key > 3) {
-                                            break;
-                                        }
-                                        ?>
-                                    <?php endforeach ?>
-                                </ul>
-                            </td>
-                            <td class="text-nowrap action-user">
-                                <a href="<?php echo base_url("home/inspirations/" . $inspiration['inspiration_id']) ?>" class="tb-view-list" title="View">
-                                    <i class="fa fa-eye" aria-hidden="true"></i>
-                                </a>
-                                <?php if ($inspiration['edit_inspiration']) { ?>
-                                    <a href="<?php echo base_url("home/inspirations/{$inspiration['inspiration_id']}/edit") ?>" class="tb-view-list" title="Edit">
-                                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                                    </a>
+                                
+                                <!-- td carousel end -->
+                            </div>
+                        </td>
+                        <td class="inspiration-description">
+                            <h3 class="op-semibold"><?php echo ucwords($inspiration['title']) ?></h3>
+                            <h5><?php echo $inspiration['company_name'] ?></h5>
+                            <p><?php echo $inspiration['description'] ?>
+                            </p>
+                        </td>
+                        <td><?php echo $inspiration['city_name'] ?>, <?php echo $inspiration['country_name'] ?></td>
+                        <td>
+                            <ul class="inspiration-product">
+                                <?php foreach($inspiration['products'] as $key => $product) : ?>
+                                <?php if ((int)$key >= 2) { ?>
+                                <span>And more...</span>
+                                <?php break ?>
                                 <?php } ?>
-                            </td>
-                        </tr>
-                    <?php endforeach ?>
-                    <?php if (empty($inspirations)) { ?>
+                                <li><?php echo $product['product_title'] ?></li>
+                                <?php endforeach ?>
+                            </ul>
+                        </td>
+                        <td class="text-nowrap action-user">
+                            <a href="<?php echo base_url("home/inspirations/" . $inspiration['inspiration_id']) ?>" class="tb-view-list" title="View">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
+                            <?php if ($inspiration['edit_inspiration'] ) { ?>
+                            <a href="<?php echo base_url("home/inspirations/{$inspiration['inspiration_id']}/edit") ?>" class="tb-view-list" title="Edit">
+                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                            </a>
+                            <?php } ?>
+                        </td>
+                    </tr>
+                    <?php endforeach?>
+                    <?php if (empty($inspirations) ) { ?>
                         <tr>
                             <td colspan="5">No result found</td>
                         </tr>

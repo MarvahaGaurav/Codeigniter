@@ -1616,8 +1616,8 @@ h2 { font-size: 14px; }
 }
 .thumb-view-listing-wrapper ul li.active,
 .thumb-view-listing-wrapper ul li:hover {
-    background: #2f2f2f;
-    border: 1px solid #e00016;
+    background: #5e5656;
+    border: 2px solid #f08c8d;
 }
 .thumb-view-listing-wrapper ul li:hover a {
     color:#fff;

@@ -114,7 +114,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($technicians as $technician) : ?>
+                        <?php foreach ($technicians as $key => $technician) : ?>
                         <tr id="technician-<?php echo $key ?>">
                             <td class="td-thumb-round text-nowrap">
                                 <div class="thumb-view-wrapper thumb-view-p4 img-viewbdr-radius">

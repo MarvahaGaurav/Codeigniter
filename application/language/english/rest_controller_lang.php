@@ -18,6 +18,9 @@ $lang['text_rest_unsupported'] = 'Unsupported protocol';
 /*
  * Custom Messages
  */
+$lang['success'] = 'Success';
+$lang['forbidden_action'] = 'This action is not allowed';
+$lang['bad_request'] = 'There was some error with the reqeust';
 $lang['registration_success'] = 'You have successfully registered';
 $lang['header_missing'] = 'Header is missing';
 $lang['login_successful'] = 'You have successfully logged In';
@@ -41,6 +44,7 @@ $lang['process_failuare'] = 'Process failed';
 $lang['no_data_found'] = 'No Record Found';
 $lang['invalid_request_id'] = 'Invalid request id to proceed';
 $lang['profile_update_success'] = 'Profile Updated Successfully!';
+$lang['invalid_request'] = 'Something went wrong with your request';
 /*
  * Friend Section language
  */
@@ -57,6 +61,7 @@ $lang['no_request_found'] = 'No requests found';
 $lang['no_friends_found'] = 'No friends found';
 $lang['no_users_found'] = 'No users found';
 $lang['no_favorite_found'] = 'No Favorite Company found';
+$lang['invalid_request_list_type'] = 'Invalid type provided';
 /*
  * Review Language
  */
@@ -117,8 +122,33 @@ $lang['invalid_currency_code'] = "Provided currency is invalid";
 $lang['internal_server_error'] = "Internal Server Error";
 $lang['something_went_wrong'] = 'Something went wrong please try again';
 
-
 //Products
 $lang['mounting_types'] = 'Mounting types has been fetched';
 $lang['product_fetched'] = 'Products fetched successfully';
 $lang['project_added'] = 'Your project has been added';
+$lang['room_added'] = 'Your room has been added';
+$lang['quotation_sent'] = 'Your quotation has been sent';
+$lang['project_listed'] = 'Project lists retrieved';
+$lang['product_details_fetched'] = 'Project details retrieved';
+$lang['location_updated'] = 'Your Location has been updated';
+$lang['quotation_added'] = 'Your Quotation has been added successfully';
+$lang['quoted_by_company'] = 'This request has already been quoted by your company';
+$lang['room_deleted'] = 'Your room has been deleted';
+$lang['room_updated'] = 'Your room has been updated';
+$lang['invalid_product_data'] = 'Unable to process product information';
+$lang['calc_product_required'] = 'Calculation Product is required';
+$lang['project_updated'] = 'Your Project has been updated';
+$lang['project_rooms_fetched_successfully'] = 'Project Rooms have been fetched';
+$lang['nothing_to_update'] = 'Nothing to update';
+$lang['related_products_fetched'] = 'Accessories fetched';
+$lang['accessory_product_added'] = 'Product added';
+$lang['quoted_request_fetched'] = 'Your requests have been fetched';
+$lang['quotation_fetched'] = 'Your quotatatons have been fetched';
+$lang['quotation_accpeted'] = 'You have approved a quotation';
+$lang['quotation_rejected'] = 'Your have rejected a quotation';
+$lang['room_quotation_added'] = 'Your quotation has been saved';
+$lang['quotation_already_added'] = 'Your company has already provided a quotation';
+$lang['room_not_found'] = "Room not found";
+$lang['quotation_already_provided'] = 'You have already provided a quotation for this request';
+$lang['provide_quotations_for_all_rooms'] = 'Please provide quotation for all rooms';
+$lang['cannot_delete_requested_projects'] = 'Cannot delete rooms for a requested project';

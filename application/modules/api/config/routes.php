@@ -10,6 +10,7 @@ $route['api/v1/user/login'] = 'Login';
 $route['api/v1/user/signup'] = 'Signup';
 $route['api/v1/user/logout'] = 'Logout';
 $route['api/v1/user/settings'] = 'UserController/edit';
+$route['api/v1/user/location'] = 'UserController/location';
 
 $route['api/v1/employee'] = 'EmployeeController/employee';
 
@@ -27,9 +28,19 @@ $route['api/v1/applications/(:num)/products'] = 'ProductController/application_p
 $route['api/v1/products'] = 'ProductController/products';
 // $route['api/v1/products/(:num)'] = 'ProductController/products/product_id/$1';
 $route['api/v1/applications/(:num)/rooms'] = 'RoomController/rooms/application_id/$1';
+$route['api/v1/rooms/(:num)/products'] = 'ProductController/accessoryProducts/room_id/$1';
 
 $route['api/v1/products/mounting-types'] = 'ProductController/mountingTypes';
 $route['api/v1/rooms/(:any)/mounting-types/(:any)/products'] =
                                            'ProductController/roomProducts/room_id/$1/mounting_type/$2';
+
 $route['api/v1/products/(:any)'] = 'ProductController/details/product_id/$1';
 $route['api/v1/projects'] = 'ProjectController/index';
+$route['api/v1/projects/rooms'] = 'ProjectController/projectRooms';
+$route['api/v1/projects/quotation-request'] = 'ProjectController/sendQuotationRequest';
+$route['api/v1/projects/rooms/quotations'] = 'QuotationController/roomsQuotation';
+$route['api/v1/projects/(:any)/rooms'] = 'ProjectController/projectRoomsFetch/project_id/$1';
+$route['api/v1/projects/(:any)'] = 'ProjectController/details/project_id/$1';
+$route['api/v1/project-rooms/products'] = 'ProjectController/projectRoomProducts';
+$route['api/v1/quotations'] = 'QuotationController';
+$route['api/v1/requests'] = 'RequestController';

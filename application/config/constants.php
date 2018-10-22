@@ -269,6 +269,7 @@ defined("EMPLOYEE_REQUEST_ACCEPTED") or define("EMPLOYEE_REQUEST_ACCEPTED", 1);
 defined("EMPLOYEE_REQUEST_REJECTED") or define("EMPLOYEE_REQUEST_REJECTED", 3);
 defined("EMPLOYEE_REQUEST_CANCELLED") or define("EMPLOYEE_REQUEST_CANCELLED", 4);
 defined("RECORDS_PER_PAGE") or define("RECORDS_PER_PAGE", 10);
+defined("API_RECORDS_PER_PAGE") or define("API_RECORDS_PER_PAGE", 10);
 
 /*
 | Mounting Type constants
@@ -284,3 +285,17 @@ defined("MOUNTING_TRACKS") or define("MOUNTING_TRACKS", 7);
 
 defined("NO") or define("NO", 0);
 defined("YES") or define("YES", 1);
+defined("ROOM_MAIN_PRODUCT") or define("ROOM_MAIN_PRODUCT", 1);
+defined("ROOM_ACCESSORY") or define("ROOM_ACCESSORY", 2);
+defined("REQUEST_SEARCH_RADIUS") or define("REQUEST_SEARCH_RADIUS", 20);
+defined("AWAITING_REQUEST") or define("AWAITING_REQUEST", 1);
+defined("QUOTED_REQUEST") or define("QUOTED_REQUEST", 2);
+defined("APPROVED_REQUEST") or define("APPROVED_REQUEST", 3);
+
+defined("QUOTATION_STATUS_QUOTED") or define("QUOTATION_STATUS_QUOTED", 1);
+defined("QUOTATION_STATUS_APPROVED") or define("QUOTATION_STATUS_APPROVED", 2);
+defined("QUOTATION_STATUS_REJECTED") or define("QUOTATION_STATUS_REJECTED", 3);
+
+defined("CUSTOMER_QUOTATION_APPROVE") or define('CUSTOMER_QUOTATION_APPROVE', 1);
+defined("CUSTOMER_QUOTATION_REJECT") or define('CUSTOMER_QUOTATION_REJECT', 2);
+

@@ -9,6 +9,8 @@ class TechnicianController extends BaseController
     private $userData;
     public function __construct()
     {
+        error_reporting(-1);
+		ini_set('display_errors', 1);
         parent::__construct();
         $this->activeSessionGuard();
         $this->load->model("Employee");
@@ -28,7 +30,7 @@ class TechnicianController extends BaseController
         $limit = 5;
         $get = $this->input->get();
         $get = trim_input_parameters($get);
-        $page = isset($get['page'])&!empty((int)$get['page'])?(int)$get['page']:1;
+        $page = isset($get['page'])&&!empty((int)$get['page'])?(int)$get['page']:1;
         $search = isset($get['search'])?$get['search']:"";
 
         $options['offset'] = ($page - 1) * $limit;
@@ -126,7 +128,7 @@ class TechnicianController extends BaseController
         $limit = 5;
         $get = $this->input->get();
         $get = trim_input_parameters($get);
-        $page = isset($get['page'])&!empty((int)$get['page'])?(int)$get['page']:1;
+        $page = isset($get['page'])&&!empty((int)$get['page'])?(int)$get['page']:1;
         $search = isset($get['search'])?$get['search']:"";
 
         $options['offset'] = ($page - 1) * $limit;

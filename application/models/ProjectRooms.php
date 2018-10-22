@@ -12,7 +12,6 @@ class ProjectRooms extends BaseModel {
     {
         $this->load->database();
         $this->tableName = "project_rooms";
-
     }
 
 
@@ -21,10 +20,7 @@ class ProjectRooms extends BaseModel {
     {
         $this->db->insert($this->tableName, $data);
         return $this->db->insert_id();
-
     }
-
-
 
     /**
      * get project listing
@@ -38,76 +34,47 @@ class ProjectRooms extends BaseModel {
             maintainance_factor, shape, working_plane_height, rho_wall, rho_ceiling, rho_floor,
             lux_value, luminaries_count_x, luminaries_count_y, fast_calc_response, created_at", false)
             ->from($this->tableName);
-
-        if (isset($params['limit']) && is_numeric($params['limit']) && (int) $params['limit'] > 0) {
-            $this->db->limit((int) $params['limit']);
+        
+        if (isset($params['limit']) && is_numeric($params['limit']) && (int)$params['limit'] > 0) {
+            $this->db->limit((int)$params['limit']);
         }
 
-        if (isset($params['offset']) && is_numeric($params['offset']) && (int) $params['offset'] > 0) {
-            $this->db->offset((int) $params['offset']);
+        if (isset($params['offset']) && is_numeric($params['offset']) && (int)$params['offset'] > 0) {
+            $this->db->offset((int)$params['offset']);
         }
 
-        if (isset($params['where']) && is_array($params['where']) && ! empty($params['where'])) {
+        if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
             foreach ($params['where'] as $tableColumn => $searchValue) {
                 $this->db->where($tableColumn, $searchValue);
             }
         }
 
         $query = $this->db->get();
-
-        $result['data']  = $query->result_array();
+        
+        $result['data'] = $query->result_array();
         $result['count'] = $this->db->query('SELECT FOUND_ROWS() as count')->row()->count;
 
         return $result;
-
     }
-
-
 
     /**
+     * Return Array of rooms for a request Id, along with quoted room
      *
+     * @param array $params
+     * @return array
      */
-    function getRoomsDataProduct($projectId)
+    public function getQuotedRooms($params)
     {
-        try {
-            return $this->db->select("pr.*, ps.uld")
-                    ->from("projects")
-                    ->join("project_rooms pr", "pr.project_id = projects.id", "left")
-                    ->join("project_room_products prp", "prp on pr.id = prp.project_room_id", "left")
-                    ->join("product_specifications ps", "(prp.article_code = ps.articlecode and prp.product_id = ps.product_id)", "left", false)
-                    ->where("projects.id", $projectId)->get()->result_array();
-//            echo $this->db->last_query();
-        }
-        catch (Exception $ex) {
+        $this->db->select('project_room_id, IFNULL(prq.id, "empty") as empty_room_quotations')
+            ->from($this->tableName . ' as pr')
+            ->join('project_requests as preq', 'preq.project_id=pr.project_id')
+            ->join('project_room_quotations as prq', 'prq.project_room_id=pr.id AND prq.company_id=' . $params['company_id'], 'left')
+            ->where('preq.id', $params['request_id']);
 
-        }
+        $query = $this->db->get();
+        
+        $data = $query->result_array();
 
+        return $data;
     }
-
-
-
-    /**
-     *
-     */
-    function updateQuickCalData($data)
-    {
-        $temp = json_decode($data['fast_calc_response'], true);
-
-        $update                       = [
-            "side_view"  => $temp['projectionSide'],
-            "top_view"   => $temp['projectionTop'],
-            "front_view" => $temp['projectionFront'],
-        ];
-        unset($temp['projectionSide']);
-        unset($temp['projectionTop']);
-        unset($temp['projectionFront']);
-        $update['fast_calc_response'] = json_encode($temp);
-
-        $this->db->where("id", $data['id'])->update($this->tableName, $update);
-        return $this->db->last_query();
-
-    }
-
-
-
 }

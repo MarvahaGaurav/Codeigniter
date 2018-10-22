@@ -156,6 +156,10 @@ $( document ).ready( function () {
         } );
     }
 
+    $("document").on("click", '.redirectable', function () {
+        var self = this,
+            $self = $(self),
+            redirectTo = $self.attr("data-redirect-to");
 
     $( document ).on( "click", ".redirectable", function () {
         let redirectTo = $( this ).attr( "data-redirect-to" );

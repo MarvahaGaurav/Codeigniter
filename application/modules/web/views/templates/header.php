@@ -62,10 +62,12 @@
                         <!-- Collect the nav links, forms, and other content for toggling -->
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <div class="navbar-topheader-menu clearfix">
-                                <!--                                <ul class="nav navbar-nav">
-                                                                    <li><a href="javascript:void(0)">PROFESSIONAL LIGHTING</a></li>
-                                                                    <li><a href="javascript:void(0)">RESIDENTIAL LIGHTING</a></li>
-                                                                </ul>-->
+                            <!--                                
+                                <ul class="nav navbar-nav">
+                                    <li><a href="javascript:void(0)">PROFESSIONAL LIGHTING</a></li>
+                                    <li><a href="javascript:void(0)">RESIDENTIAL LIGHTING</a></li>
+                                </ul>
+                            -->
                                 <ul class="nav navbar-nav navbar-right">
 
                                     <?php if ( ! empty($userInfo['user_id'])) { ?>
@@ -98,8 +100,10 @@
                             <ul class="nav navbar-nav">
                                 <li class="dropdown"><a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">Project</a>
                                     <ul class="dropdown-menu">
-                                        <li class="active"><a href="javascript:void(0)">Project list</a></li>
+                                        <li class="active"><a href="<?php echo base_url("home/projects") ?>">Project list</a></li>
+                                        <?php if (isset($userInfo, $userInfo['user_id'])) {?>
                                         <li><a href="<?php echo site_url('home/projects/create'); ?>">Create New Project</a></li>
+                                        <?php } ?>
                                     </ul>
                                 </li>
                                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Quick Calculations</a>
@@ -111,25 +115,40 @@
                                 </li>
                                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Companies</a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="#">All Companies</a></li>
+                                        <li><a href="<?php echo base_url('home/companies') ?>">All Companies</a></li>
                                         <?php if (isset($userInfo['user_id'])) { ?>
                                             <li><a href="<?php echo base_url('home/companies/favorites') ?>">Favourite Companies</a></li>
                                         <?php } ?>
                                     </ul>
                                 </li>
-                                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Quotes</a>
+                                <?php if (isset($userInfo, $userInfo['user_id'])) {?>
+                                <li class="dropdown"><a href="" class="dropdown-toggle" data-toggle="dropdown">Quotes</a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="#">Awiating</a></li>
+                                        <li><a href="<?php echo base_url("home/quotes") ?>">Quotes List</a></li>
+                                        <li><a href="#">Awaiting</a></li>
                                         <li><a href="#">Submitted</a></li>
                                         <li><a href="#">Approved</a></li>
                                     </ul>
                                 </li>
+                                <?php } ?>
+                                <?php if (isset($userInfo['user_id'])) { ?>
                                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Inspirations</a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="#">Inspiration List</a></li>
-                                        <li><a href="#">Add Inspiration</a></li>
+                                        <li><a href="<?php echo base_url("home/inspirations") ?>">Inspiration List</a></li>
+                                        <li><a href="<?php echo base_url("home/inspirations/add") ?>">Add Inspiration</a></li>
                                     </ul>
                                 </li>
+                                <?php } ?>
+                                <?php
+                                if (isset($userInfo['user_type']) && in_array($userInfo['user_type'], [INSTALLER, WHOLESALER, ARCHITECT, ELECTRICAL_PLANNER]) && ROLE_OWNER === (int) $userInfo['is_owner']) {
+                                    ?>
+                                    <li class="dropdown"><a href="" class="dropdown-toggle" data-toggle="dropdown">Manage Technician</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="<?php echo base_url("home/technicians") ?>">Technician List</a></li>
+                                            <li><a href="<?php echo base_url("home/technicians/requests") ?>">Request List</a></li>
+                                        </ul>
+                                    </li>
+                                <?php } ?>
                             </ul>
                         </div>
 

@@ -24,8 +24,8 @@ class Product extends BaseModel {
             ( ! isset($params['application_id']) && empty($params['application_id']))
         ) {
             $this->db->from("products");
-            if (isset($params['product_listing']) && ! empty($params['product_listing'])) {
-                $query  = "SQL_CALC_FOUND_ROWS products.id as product_id, products.title as product_title, products.image";
+            if (isset($params['product_listing']) && !empty($params['product_listing'])) {
+                $query = "SQL_CALC_FOUND_ROWS product_id, products.title as product_title, products.image";
                 $this->db->where("products.language_code", $params['language_code']);
                 $search = true;
                 if ( ! isset($params['search']) || empty($params['search'])) {
@@ -38,10 +38,9 @@ class Product extends BaseModel {
                 if (isset($params['offset']) && ! empty((int) $params['offset']) && ! $search) {
                     $this->db->offset((int) $params['offset']);
                 }
-            }
-            else {
-                $query      = "products.id as product_id, products.title as product_title, how_to_specity as description, products.image, productTechnicalData(products.id) as technical_data," .
-                    "IFNULL(GROUP_CONCAT(gallery.image), '') as images";
+            } else {
+                $query = "product_id, products.title as product_title, how_to_specity as description, products.image, productTechnicalData(products.id) as technical_data," .
+                "IFNULL(GROUP_CONCAT(gallery.image), '') as images";
                 $single_row = true;
 
                 $this->db->where("products.id", $params['product_id'])
@@ -49,9 +48,8 @@ class Product extends BaseModel {
                     ->group_by("products.id")
                     ->limit(1);
             }
-        }
-        else {
-            $query = "SQL_CALC_FOUND_ROWS products.id as product_id, products.title as product_title, products.image";
+        } else {
+            $query = "SQL_CALC_FOUND_ROWS product_id, products.title as product_title, products.image";
             $this->db->limit(RECORDS_PER_PAGE)
                 ->from("product_applications as pa")
                 ->join("products", "products.id=pa.product_id")
@@ -87,8 +85,12 @@ class Product extends BaseModel {
 
     }
 
-
-
+    /**
+     * Fetch product by Application Type
+     *
+     * @param array $options
+     * @return array
+     */
     public function productByType($options)
     {
         $this->db->select("SQL_CALC_FOUND_ROWS products.id as product_id, products.title as product_title, products.image", false)
@@ -153,6 +155,33 @@ class Product extends BaseModel {
                 $result['data'], $technicalData, 'product_id', 'product_id', 'technical_data'
             );
         }
+        
+        return $result;
+    }
+
+    /**
+     * Room Products
+     *
+     * @return void
+     */
+    public function roomProducts($params)
+    {
+        $this->db->select('title, products.product_id, body')
+            ->from('related_products_room')
+            ->join('products', 'products.product_id=related_products_room.product_id')
+            ->where('room_id', $params['room_id']);
+        
+        $query = $this->db->get();
+
+        $result = $query->result_array();
+
+        if (!empty($result)) {
+            $this->load->model("ProductGallery");
+            $this->load->helper(['db']);
+            $productIds = array_column($result, 'product_id');
+            $images = $this->ProductGallery->get($productIds);
+            $result = getDataWith($result, $images, 'product_id', 'product_id', 'images', 'image');
+        }
 
         return $result;
 
@@ -174,8 +203,12 @@ class Product extends BaseModel {
 
     }
 
-
-
+    /**
+     * Products By inserpotation
+     *
+     * @param interger|array $inspirationIds
+     * @return void
+     */
     public function productsByInspiration($inspirationIds)
     {
         $this->db->select('title, ip.product_id, inspiration_id')
@@ -198,5 +231,44 @@ class Product extends BaseModel {
     }
 
 
+    /**
+     * Return products list
+     *
+     * @param array $params
+     * @return array
+     */
+    public function products($params)
+    {
+        $this->db->select('SQL_CALC_FOUND_ROWS product_id, title, body', false)
+            ->from('products');
 
+        if (isset($params['limit']) && is_numeric($params['limit']) && (int)$params['limit'] > 0) {
+            $this->db->limit((int)$params['limit']);
+        }
+
+        if (isset($params['offset']) && is_numeric($params['offset']) && (int)$params['offset'] > 0) {
+            $this->db->offset((int)$params['offset']);
+        }
+
+        if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
+            foreach ($params['where'] as $tableColumn => $searchValue) {
+                $this->db->where($tableColumn, $searchValue);
+            }
+        }
+
+        $query = $this->db->get();
+
+        $data['data'] = $query->result_array();
+        $data['count'] = $this->db->query('SELECT FOUND_ROWS() as count')->row()->count;
+
+        if (!empty($data['data'])) {
+            $this->load->helper('db');
+            $this->load->model('ProductGallery');
+            $productIds = array_column($data['data'], 'product_id');
+            $images = $this->ProductGallery->get($productIds);
+            $data['data'] = getDataWith($data['data'], $images, 'product_id', 'product_id', 'images', 'image');
+        }
+
+        return $data;
+    }
 }

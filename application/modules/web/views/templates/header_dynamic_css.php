@@ -51,10 +51,12 @@
                         <!-- Collect the nav links, forms, and other content for toggling -->
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <div class="navbar-topheader-menu clearfix">
-                                <!--                                <ul class="nav navbar-nav">
-                                                                    <li><a href="javascript:void(0)">PROFESSIONAL LIGHTING</a></li>
-                                                                    <li><a href="javascript:void(0)">RESIDENTIAL LIGHTING</a></li>
-                                                                </ul>-->
+                            <!--                                
+                                <ul class="nav navbar-nav">
+                                    <li><a href="javascript:void(0)">PROFESSIONAL LIGHTING</a></li>
+                                    <li><a href="javascript:void(0)">RESIDENTIAL LIGHTING</a></li>
+                                </ul>
+                            -->
                                 <ul class="nav navbar-nav navbar-right">
 
                                     <?php if ( ! empty($userInfo['user_id'])) { ?>
@@ -88,7 +90,9 @@
                                 <li class="dropdown"><a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">Project</a>
                                     <ul class="dropdown-menu">
                                         <li class="active"><a href="<?php echo base_url("home/projects") ?>">Project list</a></li>
+                                        <?php if (isset($userInfo, $userInfo['user_id'])) {?>
                                         <li><a href="<?php echo site_url('home/projects/create'); ?>">Create New Project</a></li>
+                                        <?php } ?>
                                     </ul>
                                 </li>
                                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Quick Calculations</a>
@@ -106,26 +110,24 @@
                                         <?php } ?>
                                     </ul>
                                 </li>
+                                <?php if (isset($userInfo, $userInfo['user_id'])) {?>
                                 <li class="dropdown"><a href="" class="dropdown-toggle" data-toggle="dropdown">Quotes</a>
                                     <ul class="dropdown-menu">
                                         <li><a href="<?php echo base_url("home/quotes") ?>">Quotes List</a></li>
-                                        <li><a href="#">Awiating</a></li>
+                                        <li><a href="#">Awaiting</a></li>
                                         <li><a href="#">Submitted</a></li>
                                         <li><a href="#">Approved</a></li>
                                     </ul>
                                 </li>
+                                <?php } ?>
+                                <?php if (isset($userInfo['user_id'])) { ?>
                                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Inspirations</a>
                                     <ul class="dropdown-menu">
                                         <li><a href="<?php echo base_url("home/inspirations") ?>">Inspiration List</a></li>
-                                        <?php
-                                        if (isset($userInfo['user_type']) &&
-                                            in_array($userInfo['user_type'], [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER]) &&
-                                            (ROLE_OWNER === (int) $userInfo['is_owner'] || (isset($employee_permission['insp_add']) && (int) $employee_permission['insp_add'] == 1))) {
-                                            ?>
-                                            <li><a href="<?php echo base_url("home/inspirations/add") ?>">Add Inspiration</a></li>
-                                        <?php } ?>
+                                        <li><a href="<?php echo base_url("home/inspirations/add") ?>">Add Inspiration</a></li>
                                     </ul>
                                 </li>
+                                <?php } ?>
                                 <?php
                                 if (isset($userInfo['user_type']) && in_array($userInfo['user_type'], [INSTALLER, WHOLESALER, ARCHITECT, ELECTRICAL_PLANNER]) && ROLE_OWNER === (int) $userInfo['is_owner']) {
                                     ?>

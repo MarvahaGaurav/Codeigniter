@@ -22,6 +22,8 @@ class ProjectController extends BaseController
 
     public function __construct()
     {
+        error_reporting(-1);
+		ini_set('display_errors', 1);
         parent::__construct();
         $this->load->library('form_validation');
     }
@@ -104,17 +106,33 @@ class ProjectController extends BaseController
     public function index_post()
     {
         try {
-            $user_data = $this->accessTokenCheck();
+            $user_data = $this->accessTokenCheck('u.user_type, is_owner, u.company_id');
             $language_code = $this->langcode_validate();
+
+            // if (!in_array((int)$user_data['user_type'], [INSTALLER, PRIVATE_USER, BUSSINESS_USER], true)) {
+            //     $this->response([
+            //         'code' => HTTP_FORBIDDEN,
+            //         'msg' => $this->lang->line('forbidden_action')
+            //     ]);
+            // }
+
+            // if (
+            //     in_array((int)$user_data['user_type'], [INSTALLER], true) &&
+            //     (int)$user_data['is_owner'] === ROLE_EMPLOYEE
+            // ) {
+            //     $this->load->helper('common');
+            //     retrieveEmployeePermission($userId);
+            // }
 
             $this->requestData = $this->post();
 
             $this->validateProject();
 
             if (! (bool) $this->form_validation->run()) {
+                $errorMessage = $this->form_validation->error_array();
                 $this->response([
                     'code' => HTTP_UNPROCESSABLE_ENTITY,
-                    'msg' => array_shift($this->form_validation->error_array()),
+                    'msg' => array_shift($errorMessage),
                 ]);
             }
 
@@ -129,8 +147,15 @@ class ProjectController extends BaseController
                 'address' => $this->requestData['address'],
                 'lat' => $this->requestData['lat'],
                 'lng' => $this->requestData['lng'],
-                'created_at' => $this->datetime
+                'created_at' => $this->datetime,
+                'created_at_timestamp' => time(),
+                'updated_at' => $this->datetime,
+                'updated_at_timestamp' => time()
             ];
+
+            if (in_array((int)$user_data['user_type'], [INSTALLER], true)) {
+                $project['company_id'] = $user_data['company_id'];
+            }
 
             $projectId = $this->UtilModel->insertTableData($project, 'projects', true);
 
@@ -244,16 +269,16 @@ class ProjectController extends BaseController
             $this->validateProject(true);
 
             if (! (bool) $this->form_validation->run()) {
+                $errorMessage = $this->form_validation->error_array();
                 $this->response([
                     'code' => HTTP_UNPROCESSABLE_ENTITY,
-                    'msg' => array_shift($this->form_validation->error_array()),
+                    'msg' => array_shift($errorMessage),
                 ]);
             }
 
             $this->requestData = trim_input_parameters($this->requestData, false);
 
             $project = [
-                'language_code' => $language_code,
                 'user_id' => $user_data['user_id'],
                 'number' => $this->requestData['number'],
                 'name' => $this->requestData['name'],
@@ -261,7 +286,8 @@ class ProjectController extends BaseController
                 'address' => $this->requestData['address'],
                 'lat' => $this->requestData['lat'],
                 'lng' => $this->requestData['lng'],
-                'created_at' => $this->datetime
+                'updated_at' => $this->datetime,
+                'updated_at_timestamp' => time()
             ];
 
             $projectId = $this->UtilModel->updateTableData($project, 'projects', [
@@ -307,9 +333,10 @@ class ProjectController extends BaseController
             $this->validateRooms();
 
             if (! (bool) $this->form_validation->run()) {
+                $errorMessage = $this->form_validation->error_array();
                 $this->response([
                     'code' => HTTP_UNPROCESSABLE_ENTITY,
-                    'msg' => array_shift($this->form_validation->error_array()),
+                    'msg' => array_shift($errorMessage),
                 ]);
             }
             
@@ -318,16 +345,18 @@ class ProjectController extends BaseController
             $this->validateRoomProducts();
 
             if (! (bool) $this->form_validation->run()) {
+                $errorMessage = $this->form_validation->error_array();
                 $this->response([
                     'code' => HTTP_UNPROCESSABLE_ENTITY,
-                    'msg' => array_shift($this->form_validation->error_array()),
+                    'msg' => array_shift($errorMessage),
                 ]);
             }
 
             $this->requestData = trim_input_parameters($this->requestData, false);
             $this->products = trim_input_parameters($this->products, false);
 
-            $roomsData = array_map(function ($room) {
+            $roomsData = array_map(function ($room) use($language_code) {
+                $data['language_code'] = $language_code;
                 $data['project_id'] = $room['projectId'];
                 $data['room_id'] = $room['roomId'];
                 $data['name'] = $room['name'];
@@ -344,7 +373,16 @@ class ProjectController extends BaseController
                 $data['luminaries_count_x'] = $room['luminariesCountX'];
                 $data['luminaries_count_y'] = $room['luminariesCountY'];
                 $data['fast_calc_response'] = isset($room['fastCalcResponse'])?$room['fastCalcResponse']:'';
+                $fastCalcResponse = json_decode($data['fast_calc_response'], true);
+                if (json_last_error() == JSON_ERROR_NONE || is_array($fastCalcResponse)) {
+                    $data['side_view'] = $fastCalcResponse['projectionSide'];
+                    $data['top_view'] = $fastCalcResponse['projectionTop'];
+                    $data['front_view'] = $fastCalcResponse['projectionFront'];
+                }
                 $data['created_at'] = $this->datetime;
+                $data['created_at_timestamp'] = time();
+                $data['updated_at'] = $this->datetime;
+                $data['updated_at_timestamp'] = time();
                 return $data;
             }, $this->requestData);
 
@@ -421,8 +459,15 @@ class ProjectController extends BaseController
     public function sendQuotationRequest_post()
     {
         try {
-            $user_data = $this->accessTokenCheck();
+            $user_data = $this->accessTokenCheck('u.user_type');
             $language_code = $this->langcode_validate();
+
+            if (!in_array((int)$user_data['user_type'], [PRIVATE_USER, BUSINESS_USER], true)) {
+                $this->response([
+                    'code' => HTTP_FORBIDDEN,
+                    'msg' => $this->lang->line('forbidden_action')
+                ]);
+            }
 
             $this->requestData = $this->post();
 
@@ -436,15 +481,20 @@ class ProjectController extends BaseController
             $this->validateSendQuotation();
 
             if (! (bool) $this->form_validation->run()) {
+                $errorMessage = $this->form_validation->error_array();
                 $this->response([
                     'code' => HTTP_UNPROCESSABLE_ENTITY,
-                    'msg' => array_shift($this->form_validation->error_array()),
+                    'msg' => array_shift($errorMessage),
                 ]);
             }
 
             $this->UtilModel->insertTableData([
+                'language_code' => $language_code,
                 'project_id' => $this->requestData['project_id'],
-                'created_at' => $this->datetime
+                'created_at' => $this->datetime,
+                'created_at_timestamp' => time(),
+                'updated_at' => $this->datetime,
+                'updated_at_timestamp' => time()
             ], 'project_requests');
             
             $this->response([
@@ -502,7 +552,7 @@ class ProjectController extends BaseController
     public function index_get()
     {
         try {
-            $user_data = $this->accessTokenCheck();
+            $user_data = $this->accessTokenCheck('u.user_type, is_owner, u.company_id');
             $language_code = $this->langcode_validate();
 
             $this->load->model("Project");
@@ -510,8 +560,13 @@ class ProjectController extends BaseController
             $params['offset'] =
                 isset($get['offset'])&&is_numeric($get['offset'])&&(int)$get['offset'] > 0 ? (int)$get['offset']: 0;
             $params['limit'] = API_RECORDS_PER_PAGE;
-            $params['where']['user_id'] = $user_data['user_id'];
-
+            
+            if (in_array((int)$user_data['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], true)) {
+                $params['where']['company_id'] = $user_data['company_id'];
+            } else {
+                $params['where']['user_id'] = $user_data['user_id'];
+            }
+            $params['where']['language_code'] = $language_code;
             $projects = $this->Project->get($params);
 
             $hasMorePages = false;
@@ -594,9 +649,10 @@ class ProjectController extends BaseController
             $this->validateProductDetails();
 
             if (! (bool) $this->form_validation->run()) {
+                $errorMessage = $this->form_validation->error_array();
                 $this->response([
                     'code' => HTTP_UNPROCESSABLE_ENTITY,
-                    'msg' => array_shift($this->form_validation->error_array()),
+                    'msg' => array_shift($errorMessage),
                 ]);
             }
             
@@ -627,7 +683,7 @@ class ProjectController extends BaseController
                 $roomProducts = $this->ProjectRoomProducts->get($roomProductParams);
                 $roomProducts = $roomProducts['data'];
                 $roomProducts = array_map(function ($product) {
-                    $product['article_image'] = 
+                    $product['article_image'] =
                         preg_replace("/^\/home\/forge\//", "https://", $product['article_image']);
                     return $product;
                 }, $roomProducts);
@@ -698,7 +754,7 @@ class ProjectController extends BaseController
     public function projectRoomsFetch_get()
     {
         try {
-            $user_data = $this->accessTokenCheck();
+            $user_data = $this->accessTokenCheck('u.company_id, u.user_type');
             $language_code = $this->langcode_validate();
 
             $this->requestData = $this->get();
@@ -706,9 +762,10 @@ class ProjectController extends BaseController
             $this->validateProductDetails();
 
             if (! (bool) $this->form_validation->run()) {
+                $errorMessage = $this->form_validation->error_array();
                 $this->response([
                     'code' => HTTP_UNPROCESSABLE_ENTITY,
-                    'msg' => array_shift($this->form_validation->error_array()),
+                    'msg' => array_shift($errorMessage),
                 ]);
             }
             $params['offset'] =
@@ -716,11 +773,13 @@ class ProjectController extends BaseController
 
             $this->load->model("ProjectRooms");
             $params['where']['project_id'] = $this->requestData['project_id'];
+            $params['where']['language_code'] = $language_code;
             $params['limit'] = API_RECORDS_PER_PAGE;
             $roomData = $this->ProjectRooms->get($params);
             
             $rooms = $roomData['data'];
             $roomCount = (int)$roomData['count'];
+            $totalPrice = (object)[];
             if (!empty($rooms)) {
                 $roomIds = array_column($rooms, 'project_room_id');
                 $this->load->model('ProjectRoomProducts');
@@ -728,12 +787,58 @@ class ProjectController extends BaseController
                 $roomProducts = $this->ProjectRoomProducts->get($roomProductParams);
                 $roomProducts = $roomProducts['data'];
                 $roomProducts = array_map(function ($product) {
-                    $product['article_image'] = 
+                    $product['article_image'] =
                         preg_replace("/^\/home\/forge\//", "https://", $product['article_image']);
                     return $product;
                 }, $roomProducts);
                 $this->load->helper('db');
                 $rooms = getDataWith($rooms, $roomProducts, 'project_room_id', 'project_room_id', 'products');
+
+                if ((int)$user_data['user_type'] === INSTALLER) {
+                    $roomIds = array_column($rooms, 'project_room_id');
+
+                    $priceData = $this->UtilModel->selectQuery(
+                        'id as room_quotation_id, project_room_id, user_id, company_id,price_per_luminaries,
+                        installation_charges,discount_price,created_at, created_at_timestamp',
+                        'project_room_quotations', [
+                        'where' => [
+                            'company_id' => $user_data['company_id']                        
+                        ],
+                        'where_in' => [
+                            'project_room_id' => $roomIds
+                        ]
+                    ]);
+
+                    $rooms = getDataWith($rooms, $priceData, 'project_room_id', 'project_room_id', 'price');
+
+                    $rooms = array_map(function ($room) {
+                        $room['price'] = is_array($room['price'])&&count($room['price']) > 0 ? array_pop($room['price']) : (object)[];
+                        return $room;
+                    }, $rooms);
+
+                    $this->load->model("ProjectQuotation");
+                    $totalPriceData =  $this->ProjectQuotation->getProjectQuotationPriceByInstaller([
+                        'project_id' => $this->requestData['project_id'],
+                        'company_id' => $user_data['company_id']
+                    ]);
+
+                    $totalPrice = json_decode($totalPriceData['price'], true);
+
+                    if (empty($totalPrice)) {
+                        $totalPrice['price_per_luminaries'] = 0.00;
+                        $totalPrice['installation_charges'] = 0.00;
+                        $totalPrice['discount_price'] = 0.00;
+                    }
+                    $totalPrice['additional_product_charges'] = (double)$totalPriceData['additional_product_charges'];
+                    $totalPrice['discount'] = (double)$totalPriceData['discount'];
+                    $totalPrice['main_product_charge'] = 0.00;
+                    $totalPrice['accessory_product_charge'] = 0.00;
+                    $this->load->helper('utility');
+                    $totalPrice['total'] = get_percentage(($totalPrice['price_per_luminaries']
+                                                + $totalPrice['installation_charges']
+                                                + $totalPrice['additional_product_charges']), $totalPrice['discount_price']);
+                    $totalPrice['total'] = round($totalPrice['total'], 2);
+                }
             } else {
                 $this->response([
                     'code' => HTTP_NOT_FOUND,
@@ -752,6 +857,7 @@ class ProjectController extends BaseController
             $this->response([
                 'code' => HTTP_OK,
                 'msg' => $this->lang->line('project_rooms_fetched_successfully'),
+                'price' => $totalPrice,
                 'data' => $rooms,
                 'total' => $roomCount,
                 'next_count' => $nextCount,
@@ -818,13 +924,14 @@ class ProjectController extends BaseController
             $this->validateRoomDelete();
 
             if (! (bool) $this->form_validation->run()) {
+                $errorMessage = $this->form_validation->error_array();
                 $this->response([
                     'code' => HTTP_UNPROCESSABLE_ENTITY,
-                    'msg' => array_shift($this->form_validation->error_array()),
+                    'msg' => array_shift($errorMessage),
                 ]);
             }
 
-            $projectRoomData = $this->UtilModel->selectQuery('user_id, company_id', 'project_rooms', [
+            $projectRoomData = $this->UtilModel->selectQuery('user_id, company_id, project_id', 'project_rooms', [
                 'where' => ['project_rooms.id' => $this->requestData['project_room_id']],
                 'join' => [
                     'projects' => 'projects.id=project_rooms.project_id'
@@ -882,9 +989,10 @@ class ProjectController extends BaseController
             $this->validateRoomEdit();
 
             if (! (bool) $this->form_validation->run()) {
+                $errorMessage = $this->form_validation->error_array();
                 $this->response([
                     'code' => HTTP_UNPROCESSABLE_ENTITY,
-                    'msg' => array_shift($this->form_validation->error_array()),
+                    'msg' => array_shift($errorMessage),
                 ]);
             }
 
@@ -903,14 +1011,15 @@ class ProjectController extends BaseController
                 $this->validateRoomProducts();
 
                 if (! (bool) $this->form_validation->run()) {
+                    $errorMessage = $this->form_validation->error_array();
                     $this->response([
                         'code' => HTTP_UNPROCESSABLE_ENTITY,
-                        'msg' => array_shift($this->form_validation->error_array()),
+                        'msg' => array_shift($errorMessage),
                     ]);
                 }
             }
 
-            $roomData = $this->UtilModel->selectQuery('id', 'project_rooms', [
+            $roomData = $this->UtilModel->selectQuery('id, project_id, room_id', 'project_rooms', [
                 'where' => [
                     'id' => $this->requestData['projectRoomId']
                 ],
@@ -973,6 +1082,12 @@ class ProjectController extends BaseController
             }
             if (isset($this->requestData["fastCalcResponse"])) {
                 $updateData["fast_calc_response"] =  $this->requestData['fastCalcResponse'];
+                $fastCalcResponse = json_decode($updateData['fast_calc_response'], true);
+                if (json_last_error() == JSON_ERROR_NONE || is_array($fastCalcResponse)) {
+                    $data['side_view'] = $fastCalcResponse['projectionSide'];
+                    $data['top_view'] = $fastCalcResponse['projectionTop'];
+                    $data['front_view'] = $fastCalcResponse['projectionFront'];
+                }
             }
                 
             if (empty($updateData) && empty($this->products)) {
@@ -981,6 +1096,9 @@ class ProjectController extends BaseController
                     'msg' => $this->lang->line('nothing_to_update')
                 ]);
             }
+            
+            $updateData['updated_at'] = $this->datetime;
+            $updateData['updated_at_timestamp'] = time();
 
             $this->db->trans_begin();
             if (!empty($updateData)) {
@@ -1005,7 +1123,8 @@ class ProjectController extends BaseController
             }
 
             $updateData['project_room_id'] = $this->requestData['projectRoomId'];
-            $updateData['room_id'] = $this->requestData['roomId'];
+            $updateData['room_id'] = $roomData['room_id'];
+            $updateData['project_id'] = $roomData['project_id'];
             
             $this->db->trans_commit();
 
@@ -1015,7 +1134,6 @@ class ProjectController extends BaseController
                 'data' => $updateData
             ]);
         } catch (\Exception $error) {
-
             $this->db->trans_rollback();
             $this->response([
                 'code' => HTTP_INTERNAL_SERVER_ERROR,

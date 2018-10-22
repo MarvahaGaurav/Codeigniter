@@ -210,6 +210,17 @@ class UtilModel extends CI_Model
         }
     }
 
+    public function deleteData($tableName, $optionsArray)
+    {
+        $this->optionHandler($optionsArray);
+
+        $status = $this->db->delete($tableName);
+
+        if (! $status) {
+            throw new \Exception("delete error");
+        }
+    }
+
     public function updateBatch($tableName, $data, $where)
     {
         $this->db->update_batch($tableName, $data, $where);

@@ -44,14 +44,6 @@
                         <div class="clearfix"></div>
                         <div class="col-lg-6 col-sm-6 col-xs-12">
                             <div class="form-group">
-                                <label class="admin-label">Gender</label>
-                                <div class="input-holder">
-                                    <span class="text-detail"><?php echo ($profile['gender'] == 1) ? 'Male' : ($profile['gender'] == 2) ? 'Female' : 'Other'; ?></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-sm-6 col-xs-12">
-                            <div class="form-group">
                                 <label class="admin-label">Country</label>
                                 <div class="input-holder">
                                     <span class="text-detail"><?php echo !empty($profile['name'])?$profile['name']:"Not Available"; ?></span>

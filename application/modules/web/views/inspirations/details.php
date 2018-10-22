@@ -28,19 +28,19 @@
                 <div class="thumb-view-evenly">
                     <!-- thumbnail -->
                     <?php foreach ($inspiration['media'] as $key => $media) :?>
-                    <?php if ( CONTENT_TYPE_IMAGE === (int)$media['media_type']) { ?>
-                    <div id="thumb-tab<?php echo $key ?>" class="thumb-view-wrapper thumb-view-fullp active">
-                        <div class="thumb-view thumb-viewfullheight-2" style="background-image:url('<?php echo $media['media'] ?>')"></div>
-                    </div>
-                    <?php } else if ( CONTENT_TYPE_VIDEO === (int)$media['media_type']){ ?>
-                    <div id="thumb-tab<?php echo $key ?>" class="thumb-view-wrapper thumb-view-fullp">
-                        <div class="thumb-view thumb-viewfullheight-2">
-                            <video poster="<?php echo $media['video_thumbnail'] ?>" autoplay loop>
-                                <source src="<?php echo $media['media'] ?>" type="video/mp4"></source>
-                            </video>
+                        <?php if (CONTENT_TYPE_IMAGE === (int)$media['media_type']) { ?>
+                        <div id="thumb-tab<?php echo $key + 1 ?>" class="thumb-view-wrapper thumb-view-fullp <?php echo (int)$key === 0 ? 'active':'' ?>">
+                            <div class="thumb-view thumb-viewfullheight-2" style="background-image:url('<?php echo $media['media'] ?>')"></div>
                         </div>
-                    </div>
-                    <?php }?>
+                        <?php } else if (CONTENT_TYPE_VIDEO === (int)$media['media_type']) { ?>
+                            <div id="thumb-tab<?php echo $key + 1 ?>" class="thumb-view-wrapper thumb-view-fullp <?php echo (int)$key === 0 ? 'active' : '' ?>">
+                                <div class="thumb-view thumb-viewfullheight-2">
+                                    <video autoplay loop>
+                                        <source src="<?php echo $media['media'] ?>" poster="<?php echo $media['video_thumbnail'] ?>" type="video/mp4"></source>
+                                    </video>
+                                </div>
+                            </div>
+                        <?php } ?>
                     <?php endforeach ?>
                     <!-- //thumbnail -->
                 </div>
@@ -50,25 +50,31 @@
                 <div class="thumb-view-listing-wrapper thumb-tower-listing thumb-tab">
                     <ul>
                         <?php foreach ($inspiration['media'] as $key => $media) :?>
-                        <li class="active">
-                            <a href="#thumb-tab<?php echo $key ?>" data-toggle="tab">
-                                <div class="thumb-view-wrapper thumb-view-fullp">
-                                <?php if ( CONTENT_TYPE_IMAGE === (int)$media['media_type']) { ?>
-                                    <div class="thumb-view thumb-viewfullheight-1" style="background-image:url('<?php echo $media['media'] ?>')"></div>
-                                    <?php } else if ( CONTENT_TYPE_VIDEO === (int)$media['media_type']){ ?>
-                                    <div class="thumb-view thumb-viewfullheight-1" style="background-image:url('<?php echo $media['video_thumbnail'] ?>')"></div>
-                                    <?php }?>
-                                </div>
-                            </a>
-                        </li>
-                        <?php endforeach?>
+                            <?php if (CONTENT_TYPE_IMAGE === (int)$media['media_type']) { ?>
+                                <li class="<?php echo (int)$key === 0 ? 'active' : '' ?>">
+                                    <a href="#thumb-tab<?php echo $key + 1 ?>" data-toggle="tab">
+                                        <div class="thumb-view-wrapper thumb-view-fullp">
+                                            <div class="thumb-view thumb-viewfullheight-1" style="background-image:url('<?php echo $media['media'] ?>')"></div>
+                                        </div>
+                                    </a>
+                                </li>
+                            <?php } else if (CONTENT_TYPE_VIDEO === (int)$media['media_type']) { ?>
+                                <li class="<?php echo (int)$key === 0 ? 'active' : '' ?>">
+                                    <a href="#thumb-tab<?php echo $key + 1 ?>" data-toggle="tab">
+                                        <div class="thumb-view-wrapper thumb-view-fullp">
+                                            <div class="thumb-view thumb-viewfullheight-1" style="background-image:url('<?php echo $media['video_thumbnail'] ?>')"></div>
+                                            <img src="<?php echo base_url("public/images/play.svg") ?>" alt="play" class="player-icon">
+                                        </div>
+                                    </a>
+                                </li>
+                            <?php } ?>
+                        <?php endforeach ?>
                     </ul>
                 </div>
                 <!-- //thumbnail list -->
             </div>
         </div>
-        <?php }?>
-
+        <?php } ?>
         <div class="section-title section-subtitute clearfix">
             <h3>Details</h3>
         </div>
@@ -92,9 +98,8 @@
                             <p class="rd-property">Products:</p>
                             <p class="rd-value">
                                 <?php foreach($inspiration['products'] as $product) :?>
-                                <span class="bullet-list"><?php echo $product['product_title'] ?></span>
-                                <br>
-                                <?php endforeach?>
+                                <span class="bullet-list"><?php echo $product['product_title'] ?></span><br>
+                                <?php endforeach ?>
                             </p>
                         </div>
                     </div>
@@ -115,13 +120,6 @@
         <!-- thumb view end -->
 
         <!-- Caption before section -->
-        <div class="section-title clearfix">
-            <div class="button-wrapper">
-                <a href="javascript:void(0)" class="custom-btn btn-width save" data-toggle="modal" data-target="#editPrice">
-                    Add Price
-                </a>
-            </div>
-        </div>
         <!-- Caption before section -->
 
     </div>
