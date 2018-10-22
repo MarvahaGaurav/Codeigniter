@@ -25,7 +25,7 @@ $('.search786').click(function(e){
     $('.search-wrapper').addClass('show');
     e.stopPropagation();
 })
-$(document).on("click", function(e) {  
+$(document).on("click", function(e) {
     if (!($(e.target).is(".search-wrapper") === false)) {
         $(".search-wrapper").addClass('show');
     }
@@ -49,7 +49,8 @@ $('.drp').on('click', function(e){
         $(this).find('.fncy-drp').addClass('fncy-drp-opened');
     }
 })
-$(document).on("click", function(e) {  
+
+$(document).on("click", function(e) {
     if (!($(e.target).is(".fncy-drp") === true)) {
         $(".fncy-drp").removeClass('fncy-drp-opened');
         $('.drp').removeClass('active');
@@ -67,7 +68,7 @@ $("body").click(function () {
     $(".user-call-wrap").hide();
 });
 
-//Action Tool tip js Close  
+//Action Tool tip js Close
 
 
 //Filter Show or hide JS
@@ -86,10 +87,12 @@ $(".flt_cl").click(function (e) {
 });
 //Filter Show or hide JS Close
 
+
 //Select Picker Js Start
 $('.selectpicker').selectpicker();
 
 //Select Picker Js Close
+
 
 $(".search-box").keyup(function () {
     var char_length = $(this).val().length;
@@ -104,60 +107,4 @@ $(".close-ico").click(function () {
     $(".close-ico").removeClass("show-close-ico");
     $(".search-box").val('');
 
-});
-
-$(".selectpicker").selectpicker({});
-
-$("form#create-room-template").validate({
-    rules : {
-        lighting: {
-            required: true,
-        },
-        category: {
-            required: true,
-        },
-        room_type: {
-            required: true,
-        },
-        room_length: {
-            required: true,
-            number: true,
-            maxlength: 10
-        },
-        room_length_unit: {
-            required: true,
-        },
-        room_breath: {
-            required: true,
-            number: true,
-            maxlength: 10
-        },
-        room_breath_unit: {
-            required: true,
-        },
-        room_height: {
-            required: true,
-            number: true,
-            maxlength: 10
-        },
-        room_height_unit: {
-            required: true,
-        },
-        workplane_height: {
-            required: true,
-            number: true,
-            maxlength: 10
-        },
-        workplane_height_unit: {
-            required: true
-        },
-        room_shape: {
-            required: true,
-        },
-        lux_value: {
-            required: true,
-            number: true,
-            maxlength: 10
-        }
-    }
-});
+})

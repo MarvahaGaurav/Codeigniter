@@ -1,7 +1,7 @@
 <?php
 
 $config = [
-    'signup' => [
+    'signup'            => [
         // "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css",
         // "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css",
         base_url("public/css/bootstrap.min.css"),
@@ -12,9 +12,9 @@ $config = [
         base_url("public/css/web/form.css"),
         base_url("public/css/web/signup.css"),
         base_url("public/css/autocomplete.css"),
+        base_url("public/js/cropperAssets/cropper.min.css"),
     ],
-    'standard' => [
-
+    'standard'          => [
     ],
     'companies-listing' => [
         "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css",
@@ -33,5 +33,4 @@ $config = [
         base_url("public/css/web/style.css"),
         base_url("public/css/web/sgmedia.css"),
     ],
-    
 ];

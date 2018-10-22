@@ -21,16 +21,21 @@
                         <div class="thumb-like-dislike">
                             <!-- Thumb Wrapper -->
                             <div class="thumb-view-wrapper thumb-view-contain thumb-view-p5 img-viewbdr-radius">
-                                <?php if (!empty($company->company_image)) {?>
-                                <img class="thumb-absolute" src="<?php echo $company->company_image ?>" alt="Company Logo" />
-                                <?php } else { ?>
-                                <div class="thumb-absolute image-blank"></div>
+                                <?php if ( ! empty($company->company_image)) { ?>
+                                    <img class="thumb-absolute" src="<?php echo $company->company_image ?>" alt="Company Logo" />
+                                    <?php
+                                }
+                                else {
+                                    ?>
+                                    <div class="thumb-absolute image-blank"></div>
                                 <?php } ?>
                             </div>
                             <!-- //Thumb Wrapper -->
                             <?php if (isset($userInfo)) { ?>
                                 <div class="favorite-wrapper">
-                                    <span data-favorite='<?php echo $company->favorite_data ?>' class="fa fa-heart faa-like clickable heart-position2 <?php echo (int)$company->is_favorite === 1?"faa-like":"faa-dislike" ?>" aria-hidden="true"></span>
+                                    <span data-favorite='<?php echo $company->favorite_data ?>' class="fa fa-heart faa-like clickable heart-position2 <?php
+                                    echo (int) $company->is_favorite === 1 ? "faa-like" : "faa-dislike"
+                                    ?>" aria-hidden="true"></span>
                                 </div>
                             <?php } ?>
                         </div>
@@ -63,7 +68,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-4 col-sm-4 col-xs-12">
-                                <div class="form-group">    
+                                <div class="form-group">
                                     <label class="p-label">Alternate Number</label>
                                     <div class="input-holder">
                                         <span class="p-label-value">+<?php echo $company->alt_user_countrycode ?><?php echo $company->alt_userphone ?></span>
@@ -93,7 +98,7 @@
                     <i class="fa fa-times"></i>
                 </span>
                 <form id="search-form" method="GET" action="">
-                    <input type="text" name="search" class="search-box" value="<?php echo html_escape($search) ?>" id="search-box" placeholder="Search Project" data-redirect="<?php echo base_url(uri_string()) ?>">
+                    <input type="text" name="search" class="search-box" value="<?php echo html_escape($search) ?>" id="search-box" placeholder="Search Inspiration" data-redirect="<?php echo base_url(uri_string()) ?>">
                     <input type="submit" value="Search" class="search-btn" />
                 </form>
             </div>
@@ -113,44 +118,48 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($inspirations as $inspiration) { ?>
-                    <tr>
-                        <td class="td-thumb-carousel text-nowrap">
-                            <div class="thumb-carousel">
-                                <!-- td carousel -->
-                                <div class="owl-carousel inspiration_carousel">
-                                    <?php foreach ($inspiration['media'] as $media) { ?>
-                                    <div class="item">
-                                        <div class="thumb-view-wrapper thumb-view-fullp img-viewbdr-radius4">
-                                            <div class="thumb-view thumb-viewfullheight-1" style="background:url('<?php echo $media['media'] ?>')"></div>
-                                        </div>
+                    <?php
+                    foreach ($inspirations as $inspiration) {
+                        ?>
+                        <tr>
+                            <td class="td-thumb-carousel text-nowrap">
+                                <div class="thumb-carousel">
+                                    <!-- td carousel -->
+                                    <div class="owl-carousel inspiration_carousel">
+                                        <?php foreach ($inspiration['media'] as $media) { ?>
+                                            <div class="item">
+                                                <div class="thumb-view-wrapper thumb-view-fullp img-viewbdr-radius4">
+                                                    <div class="thumb-view thumb-viewfullheight-1" style="background:url('<?php echo $media['media'] ?>')"></div>
+                                                </div>
+                                            </div>
+                                        <?php }
+                                        ?>
+                                        <?php if (empty($media)) { ?>
+                                            <object type="image/svg+xml" data="<?php echo base_url('public/images/placeholder/no-found-ico-2.svg') ?>" class='inspiration-list-placeholder'>
+                                                Your browser does not support SVG
+                                            </object>
+                                        <?php }
+                                        ?>
                                     </div>
-                                    <?php } ?>
-                                    <?php if (empty($media)) { ?>
-                                    <object type="image/svg+xml" data="<?php echo base_url('public/images/placeholder/no-found-ico-2.svg') ?>" class='inspiration-list-placeholder'>
-                                        Your browser does not support SVG
-                                    </object>
-                                    <?php } ?>
+                                    <!-- td carousel end -->
                                 </div>
-                                <!-- td carousel end -->
-                            </div>
-                        </td>
-                        <td class="inspiration-description">
-                            <h3 class="op-semibold"><?php echo $inspiration['title'] ?></h3>
-                            <p><?php echo $inspiration['description'] ?></p>
-                        </td>
-                        <td></td>
-                        <td>
-                            <ul class="inspiration-product">
-                                <?php foreach ($inspiration['products'] as $product) {?>
-                                <li><?php echo $product['title'] ?></li>
-                                <?php }?>
-                            </ul>
-                        </td>
-                        <td  class="text-nowrap action-user">
-                            <a href="<?php echo base_url('home/inspirations/' . encryptDecrypt($inspiration['id'])) ?>" class="tb-view-list" title="View">View</a>
-                        </td>
-                    </tr>
+                            </td>
+                            <td class="inspiration-description">
+                                <h3 class="op-semibold"><?php echo $inspiration['title'] ?></h3>
+                                <p><?php echo $inspiration['description'] ?></p>
+                            </td>
+                            <td><?php echo $inspiration['city_name'] ?>, <?php echo $inspiration['country_name'] ?></td>
+                            <td>
+                                <ul class="inspiration-product">
+                                    <?php foreach ($inspiration['products'] as $product) { ?>
+                                        <li><?php echo $product['title'] ?></li>
+                                    <?php } ?>
+                                </ul>
+                            </td>
+                            <td  class="text-nowrap action-user">
+                                <a href="<?php echo base_url('home/inspirations/' . encryptDecrypt($inspiration['id'])) ?>" class="tb-view-list" title="View">View</a>
+                            </td>
+                        </tr>
                     <?php } ?>
                     <?php if (empty($inspirations)) { ?>
                         <tr>
@@ -159,7 +168,7 @@
                     <?php } ?>
                 </tbody>
             </table>
-        </div>   	
+        </div>
         <div class="pagination-wrap">
             <?php echo $links ?>
         </div>
