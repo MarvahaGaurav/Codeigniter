@@ -106,6 +106,21 @@ function website_view($view, $data = [])
     $CI->load->view($view, $data);
     $CI->load->view('templates/alternate_footer', $data);
 }
+/**
+ * Load website views
+ *
+ * @param String $view
+ * @param array $data
+ * @return void
+ */
+function website_map_modal_view($view, $data = [])
+{
+    $CI = &get_instance();
+    $CI->load->view('templates/header_dynamic_css', $data);
+    $CI->load->view($view, $data);
+    $CI->load->view('templates/alternate_footer', $data);
+    $CI->load->view('modals/maps', $data);
+}
 
 /**
  * Loads alternate views which depends on the require js modules with cropper

@@ -1,12 +1,13 @@
 <?php
 
-defined("BASEPATH") OR exit("No direct script access allowed");
+defined("BASEPATH") or exit("No direct script access allowed");
 
 require_once 'BaseModel.php';
 
 use DatabaseExceptions\SelectException;
 
-class ProjectRequest extends BaseModel {
+class ProjectRequest extends BaseModel
+{
 
     public function __construct()
     {
@@ -52,18 +53,20 @@ class ProjectRequest extends BaseModel {
     }
 
     /**
-     * Customer Request 
+     * Customer Request
      *
      * @param array $params
      * @return void
      */
     public function customerRequests($params)
     {
-        $this->db->select('SQL_CALC_FOUND_ROWS pr.id as request_id, projects.name as project_name,
+        $this->db->select(
+            'SQL_CALC_FOUND_ROWS pr.id as request_id, projects.name as project_name,
                 projects.address as project_address, projects.id as project_id, projects.lat as project_lat,
                 projects.lng as project_lng, pr.created_at as request_created_at, projects.number as project_number,
                 pr.created_at_timestamp as request_created_at_timestamp',
-            false)
+            false
+        )
             ->from('projects')
             ->join('project_requests as pr', 'pr.project_id=projects.id')
             // ->join('project_quotations as pq', 'pr.id=pq.request_id AND pq.status=' . QUOTATION_STATUS_APPROVED)
@@ -121,6 +124,10 @@ class ProjectRequest extends BaseModel {
 
         $this->db->select($query, false)
                 ->from($this->tableName)
+                ->join(
+                    'project_request_installers as pri',
+                    'pri.request_id=pr.id AND pri.company_id=' . $params['company_id']
+                )
                 ->join("projects", "pr.project_id=projects.id")
                 ->join("ai_user as customer", "customer.user_id=projects.user_id")
                 ->where('is_active', 1)
@@ -230,7 +237,7 @@ class ProjectRequest extends BaseModel {
         ->join('project_requests as pr', 'pr.id=pq.request_id')
         ->join('projects', 'projects.id=pr.project_id')
         ->join('ai_user as user', 'user.user_id=projects.user_id')
-        ->where('pq.status',  QUOTATION_STATUS_APPROVED)
+        ->where('pq.status', QUOTATION_STATUS_APPROVED)
         ->where('pq.company_id', $params['company_id'])
         ->where('pq.language_code', $params['language_code'])
         ->order_by("pr.id", "DESC");

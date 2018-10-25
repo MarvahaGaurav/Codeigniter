@@ -92,8 +92,6 @@ $route['home/projects/(:any)/select-room-type']                        = 'web/Pr
 $route['home/projects/get-porduct']                                    = 'web/ProjectController/get_product/$1';
 $route['home/projects/view-result/(:any)']                             = 'web/ProjectController/view_result/$1';
 
-
-
 $route['home/quotes']               = 'web/QuotesController';
 $route['home/technicians']          = 'web/TechnicianController';
 $route['home/technicians/requests'] = 'web/TechnicianController/request_list';
@@ -110,7 +108,6 @@ $route['home/applications/(:any)/rooms/(:any)/select-porduct']  = 'web/QuickCalc
 $route['home/applications/(:any)/rooms/(:any)/articles/(:any)'] = 'web/QuickCalcController/articles/$1/$2/$3';
 $route['home/applications/quick_cal']                           = "web/QuickCalcController/quick_cal";
 $route['home/applications/view-result/(:any)']                  = "web/QuickCalcController/view_result/$1";
-
 
 $route['logout']   = 'web/Logout';
 $route['login']    = 'web/index/index';

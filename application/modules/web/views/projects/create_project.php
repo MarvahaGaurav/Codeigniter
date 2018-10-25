@@ -3,8 +3,8 @@
 
         <!-- breadcrumb -->
         <ul class="breadcrumb">
-            <li><a href="<?php echo base_url("home"); ?>">Home</a></li>
-            <li><a href="<?php echo base_url("home/projects"); ?>">Projects</a></li>
+            <li><a href="javascript:void(0)">Home</a></li>
+            <li><a href="javascript:void(0)">Projects</a></li>
             <li class="active">Create New Project</li>
         </ul>
         <!-- //breadcrumb -->
@@ -44,18 +44,28 @@
                     </div>
                 </div>
 
-                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 block-div">
                     <div class="form-group">
                         <label class="labelTxt">Project Levels</label>
                         <div class="form-group-field">
                             <select name="levels" id="levels">
-                                <?php
-                                for ($i = 1; $i <= 10; $i ++) {
-                                    echo '<option value="' . $i . '">' . $i . '</option>';
-                                }
-                                ?>
+                                <?php foreach (range(1, 10) as $num) : ?>
+                                <option value="<?php echo $num ?>"><?php echo $num ?></option>
+                                <?php endforeach ?>
+                                <option value="others">Other</option>
                             </select>
                             <span class="customArrow"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-6 block-div concealable" id="other-level-count-div">
+                    <div class="form-group">
+                        <label class="labelTxt" for="">Other Level Count</label>
+                        <div class="form-group-field input-group">
+                            <span class="input-group-addon clickable" id="decrement-others"><i class="fa fa-minus"></i></span>
+                            <input type="text" name="other_project_count" id="other-project-count" value="11" class="number-only-field">
+                            <span class="input-group-addon clickable" id="increment-others"><i class="fa fa-plus"></i></span>
                         </div>
                     </div>
                 </div>
@@ -64,7 +74,7 @@
                     <div class="form-group">
                         <label class="labelTxt">Address</label>
                         <div class="form-group-field">
-                            <textarea name="address" id="address" placeholder="B-25, Sector 58, Noida, UP-201301"></textarea>
+                            <textarea name="address" id="address" placeholder="B-25, Sector 58, Noida, UP-201301" data-toggle="modal" data-target="#maps-modal"></textarea>
                         </div>
                     </div>
                 </div>

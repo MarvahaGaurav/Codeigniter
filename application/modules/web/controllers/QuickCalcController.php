@@ -5,7 +5,8 @@ require_once 'BaseController.php';
 /**
  * Comapany Controller
  */
-class QuickCalcController extends BaseController {
+class QuickCalcController extends BaseController
+{
 
     public function __construct()
     {
@@ -14,7 +15,6 @@ class QuickCalcController extends BaseController {
         if (isset($this->userInfo, $this->userInfo['user_id']) && ! empty($this->userInfo['user_id'])) {
             $this->data['userInfo'] = $this->userInfo;
         }
-
     }
 
 
@@ -47,11 +47,8 @@ class QuickCalcController extends BaseController {
             $this->data['type']              = $params['type'];
 
             website_view('quickcalc/application', $this->data);
+        } catch (\Exception $error) {
         }
-        catch (\Exception $error) {
-
-        }
-
     }
 
 
@@ -91,11 +88,8 @@ class QuickCalcController extends BaseController {
             $this->data['roomChunks']  = $rooms['result'];
 
             website_view('quickcalc/rooms', $this->data);
+        } catch (\Exception $error) {
         }
-        catch (\Exception $error) {
-
-        }
-
     }
 
 
@@ -140,7 +134,7 @@ class QuickCalcController extends BaseController {
             $this->load->helper('cookie');
             $cookie_data         = get_cookie("quick_cal_form_data");
             parse_str($cookie_data, $get_array);
-            if ( ! count($get_array)) {
+            if (! count($get_array)) {
                 $get_array = $this->setBlankArray();
             }
             $this->data['mounting_type'] = $this->mountingType();
@@ -149,11 +143,8 @@ class QuickCalcController extends BaseController {
 
 
             website_view('quickcalc/quickcalc', $this->data);
+        } catch (\Exception $error) {
         }
-        catch (\Exception $error) {
-
-        }
-
     }
 
 
@@ -180,7 +171,6 @@ class QuickCalcController extends BaseController {
             "room_pendant_length"      => "",
             "room_pendant_length_unit" => ""
         ];
-
     }
 
 
@@ -196,11 +186,8 @@ class QuickCalcController extends BaseController {
                 return json_decode($selectd_room, true);
             }
             return ["articel_id" => "", "product_id" => "", "type" => "", "product_name" => ""];
+        } catch (Exception $ex) {
         }
-        catch (Exception $ex) {
-
-        }
-
     }
 
 
@@ -211,7 +198,6 @@ class QuickCalcController extends BaseController {
     private function mountingType()
     {
         return get_cookie("quick_mounting");
-
     }
 
 
@@ -237,11 +223,8 @@ class QuickCalcController extends BaseController {
             $this->data["csrfName"]       = $this->security->get_csrf_token_name();
             $this->data["csrfToken"]      = $this->security->get_csrf_hash();
             website_view('projects/select_product', $this->data);
+        } catch (Exception $ex) {
         }
-        catch (Exception $ex) {
-
-        }
-
     }
 
 
@@ -286,11 +269,9 @@ class QuickCalcController extends BaseController {
             $this->data['related_products'] = $relatedProducts;
 
             website_view('projects/select_article', $this->data);
-        }
-        catch (Exception $ex) {
+        } catch (Exception $ex) {
             show404("ERROR");
         }
-
     }
 
 
@@ -339,11 +320,9 @@ class QuickCalcController extends BaseController {
             $this->db->trans_commit();
             $this->evaluate($insert, $room_id);
             redirect(base_url("home/applications/view-result/" . encryptDecrypt($room_id)));
-        }
-        catch (Exception $ex) {
+        } catch (Exception $ex) {
             show404("Something Went Worng!! Please Try After Some Time");
         }
-
     }
 
 
@@ -385,11 +364,8 @@ class QuickCalcController extends BaseController {
             $options['fast_calc_response'] = $res;
             $options['id']                 = $temp['id'];
             return $this->updateQuickCalData($options, $room_id);
+        } catch (Exception $ex) {
         }
-        catch (Exception $ex) {
-
-        }
-
     }
 
 
@@ -415,7 +391,6 @@ class QuickCalcController extends BaseController {
         $this->load->model("UtilModel");
         $this->UtilModel->updateTableData($update, "quick_rooms", ["id" => $room_id]);
         return $this->db->last_query();
-
     }
 
 
@@ -424,8 +399,9 @@ class QuickCalcController extends BaseController {
     {
         $request_data = json_encode($data);
         $curl         = curl_init();
-        curl_setopt_array($curl,
-                          [
+        curl_setopt_array(
+            $curl,
+            [
             CURLOPT_URL            => "https://www.dialux-plugins.com/FastCalc/api/arrangement",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING       => "",
@@ -435,7 +411,7 @@ class QuickCalcController extends BaseController {
             CURLOPT_CUSTOMREQUEST  => "POST",
             CURLOPT_POSTFIELDS     => "$request_data",
             CURLOPT_HTTPHEADER     => ["Content-Type: application/json", "cache-control: no-cache"],
-            ]
+                          ]
         );
         $response     = curl_exec($curl);
         $err          = curl_error($curl);
@@ -444,11 +420,9 @@ class QuickCalcController extends BaseController {
 
         if ($err) {
             echo "cURL Error #:" . $err;
-        }
-        else {
+        } else {
             return $response;
         }
-
     }
 
 
@@ -472,7 +446,6 @@ class QuickCalcController extends BaseController {
         $this->load->helper("utility_helper");
 
         return convert_units($length, $specification_string);
-
     }
 
 
@@ -484,23 +457,20 @@ class QuickCalcController extends BaseController {
     public function view_result($project_room_id)
     {
         try {
-            $id                           = encryptDecrypt($project_room_id, "decrypt");
+            $id = encryptDecrypt($project_room_id, "decrypt");
             $this->load->model("UtilModel");
-            $room_data                    = $this->UtilModel->selectQuery("*", "quick_rooms", ["single_row" => true, "where" => ["id" => $id]]);
-            $this->data['specifications'] = $this->UtilModel->selectQuery("*", "product_specifications",
-                                                                          ["single_row" => true, "where" => ["articlecode" => $room_data['article_code'], "product_id" => $room_data['product_id']]]);
+            $room_data = $this->UtilModel->selectQuery("*", "quick_rooms", ["single_row" => true, "where" => ["id" => $id]]);
+            $this->data['specifications'] = $this->UtilModel->selectQuery(
+                "*",
+                "product_specifications",
+                ["single_row" => true, "where" => ["articlecode" => $room_data['article_code'], "product_id" => $room_data['product_id']]]
+            );
 //            echo $this->db->last_query();
             $this->data['room_data']      = $room_data;
             $this->data["csrfName"]       = $this->security->get_csrf_token_name();
             $this->data["csrfToken"]      = $this->security->get_csrf_hash();
             website_view('quickcalc/evaluation_result', $this->data);
+        } catch (Exception $ex) {
         }
-        catch (Exception $ex) {
-
-        }
-
     }
-
-
-
 }

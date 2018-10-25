@@ -109,20 +109,11 @@ class ProjectController extends BaseController
             $user_data = $this->accessTokenCheck('u.user_type, is_owner, u.company_id');
             $language_code = $this->langcode_validate();
 
-            // if (!in_array((int)$user_data['user_type'], [INSTALLER, PRIVATE_USER, BUSSINESS_USER], true)) {
-            //     $this->response([
-            //         'code' => HTTP_FORBIDDEN,
-            //         'msg' => $this->lang->line('forbidden_action')
-            //     ]);
-            // }
+            $this->user = $user_data;
 
-            // if (
-            //     in_array((int)$user_data['user_type'], [INSTALLER], true) &&
-            //     (int)$user_data['is_owner'] === ROLE_EMPLOYEE
-            // ) {
-            //     $this->load->helper('common');
-            //     retrieveEmployeePermission($userId);
-            // }
+            $this->userTypeHandling([INSTALLER, PRIVATE_USER, BUSINESS_USER, WHOLESALER, ELECTRICAL_PLANNER]);
+
+            $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['project_add']);
 
             $this->requestData = $this->post();
 
@@ -153,7 +144,7 @@ class ProjectController extends BaseController
                 'updated_at_timestamp' => time()
             ];
 
-            if (in_array((int)$user_data['user_type'], [INSTALLER], true)) {
+            if (in_array((int)$user_data['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], true)) {
                 $project['company_id'] = $user_data['company_id'];
             }
 
@@ -261,8 +252,14 @@ class ProjectController extends BaseController
     public function index_put()
     {
         try {
-            $user_data = $this->accessTokenCheck();
+            $user_data = $this->accessTokenCheck('u.user_type, is_owner, u.company_id');
             $language_code = $this->langcode_validate();
+
+            $this->user = $user_data;
+
+            $this->userTypeHandling([INSTALLER, PRIVATE_USER, BUSINESS_USER, WHOLESALER, ELECTRICAL_PLANNER]);
+            
+            $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['project_edit']);
 
             $this->requestData = $this->put();
 
@@ -318,8 +315,14 @@ class ProjectController extends BaseController
     public function projectRooms_post()
     {
         try {
-            $user_data = $this->accessTokenCheck();
+            $user_data = $this->accessTokenCheck('u.user_type, is_owner, u.company_id');
             $language_code = $this->langcode_validate();
+
+            $this->user = $user_data;
+
+            $this->userTypeHandling([INSTALLER, PRIVATE_USER, BUSINESS_USER, WHOLESALER, ELECTRICAL_PLANNER]);
+            
+            $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['project_add']);
 
             $this->requestData = $this->post();
 
@@ -450,6 +453,13 @@ class ProjectController extends BaseController
      *     type="string",
      *     required = true
      *   ),
+     * @SWG\Parameter(
+     *     name="company_id[]",
+     *     in="formData",
+     *     description="Company Ids",
+     *     type="string",
+     *     required = true
+     *   ),
      * @SWG\Response(response=200, description="OK"),
      * @SWG\Response(response=401, description="Unauthorize"),
      * @SWG\Response(response=422, description="Validation Errors"),
@@ -462,50 +472,57 @@ class ProjectController extends BaseController
             $user_data = $this->accessTokenCheck('u.user_type');
             $language_code = $this->langcode_validate();
 
-            if (!in_array((int)$user_data['user_type'], [PRIVATE_USER, BUSINESS_USER], true)) {
-                $this->response([
-                    'code' => HTTP_FORBIDDEN,
-                    'msg' => $this->lang->line('forbidden_action')
-                ]);
-            }
+            $this->user = $user_data;
 
+            $this->userTypeHandling([PRIVATE_USER, BUSINESS_USER]);
+            
             $this->requestData = $this->post();
-
-            if (empty($this->requestData)) {
-                $this->response([
-                    'code' => HTTP_BAD_REQUEST,
-                    'msg' => $this->lang->line('bad_request'),
-                ]);
-            }
-
+            
             $this->validateSendQuotation();
 
-            if (! (bool) $this->form_validation->run()) {
-                $errorMessage = $this->form_validation->error_array();
+            $this->validationRun();
+
+            if (!is_array($this->requestData['company_id']) ||
+                empty($this->requestData['company_id']) ||
+                count($this->requestData['company_id']) > MAXIMUM_REQUEST_COUNTS_PER_PROJECT
+            ) {
                 $this->response([
-                    'code' => HTTP_UNPROCESSABLE_ENTITY,
-                    'msg' => array_shift($errorMessage),
+                    'code' => HTTP_BAD_REQUEST,
+                    'msg' => $this->lang->line('invalid_request')
                 ]);
             }
 
-            $this->UtilModel->insertTableData([
+            $this->db->trans_begin();
+            $requestId = $this->UtilModel->insertTableData([
                 'language_code' => $language_code,
                 'project_id' => $this->requestData['project_id'],
                 'created_at' => $this->datetime,
                 'created_at_timestamp' => time(),
                 'updated_at' => $this->datetime,
                 'updated_at_timestamp' => time()
-            ], 'project_requests');
-            
+            ], 'project_requests', true);
+
+            $requestData = array_map(function ($companyId) use ($requestId) {
+                $data['request_id'] = $requestId;
+                $data['company_id'] = $companyId;
+                $data['created_at'] = $this->datetime;
+                $data['created_at_timestamp'] = time();
+                return $data;
+            }, $this->requestData['company_id']);
+
+            $this->UtilModel->insertBatch('project_request_installers', $requestData);
+
+            $this->db->trans_commit();
             $this->response([
                 'code' => HTTP_OK,
                 'msg' => $this->lang->line('quotation_sent')
             ]);
         } catch (\Exception $error) {
+            $this->db->trans_rollback();
             $this->response([
-                'code' => HTTP_INTERNAL_SERVER_ERROR,
-                'api_code_result' => 'INTERNAL_SERVER_ERROR',
-                'msg' => $this->lang->line("internal_server_error")
+            'code' => HTTP_INTERNAL_SERVER_ERROR,
+            'api_code_result' => 'INTERNAL_SERVER_ERROR',
+            'msg' => $this->lang->line("internal_server_error")
             ]);
         }
     }
@@ -554,6 +571,12 @@ class ProjectController extends BaseController
         try {
             $user_data = $this->accessTokenCheck('u.user_type, is_owner, u.company_id');
             $language_code = $this->langcode_validate();
+
+            $this->user = $user_data;
+
+            $this->userTypeHandling([INSTALLER, PRIVATE_USER, BUSINESS_USER, WHOLESALER, ELECTRICAL_PLANNER]);
+
+            $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['project_view']);
 
             $this->load->model("Project");
             $get = $this->get();
@@ -641,8 +664,14 @@ class ProjectController extends BaseController
     public function details_get()
     {
         try {
-            $user_data = $this->accessTokenCheck();
+            $user_data = $this->accessTokenCheck('u.user_type, is_owner, u.company_id');
             $language_code = $this->langcode_validate();
+
+            $this->user = $user_data;
+
+            $this->userTypeHandling([INSTALLER, PRIVATE_USER, BUSINESS_USER, WHOLESALER, ELECTRICAL_PLANNER]);
+
+            $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['project_view']);
 
             $this->requestData = $this->get();
             
@@ -754,8 +783,14 @@ class ProjectController extends BaseController
     public function projectRoomsFetch_get()
     {
         try {
-            $user_data = $this->accessTokenCheck('u.company_id, u.user_type');
+            $user_data = $this->accessTokenCheck('u.user_type, is_owner, u.company_id');
             $language_code = $this->langcode_validate();
+
+            $this->user = $user_data;
+
+            $this->userTypeHandling([INSTALLER, PRIVATE_USER, BUSINESS_USER, WHOLESALER, ELECTRICAL_PLANNER]);
+
+            $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['project_view']);
 
             $this->requestData = $this->get();
 
@@ -780,6 +815,7 @@ class ProjectController extends BaseController
             $rooms = $roomData['data'];
             $roomCount = (int)$roomData['count'];
             $totalPrice = (object)[];
+            $this->load->helper('utility');
             if (!empty($rooms)) {
                 $roomIds = array_column($rooms, 'project_room_id');
                 $this->load->model('ProjectRoomProducts');
@@ -813,9 +849,19 @@ class ProjectController extends BaseController
 
                     $rooms = getDataWith($rooms, $priceData, 'project_room_id', 'project_room_id', 'price');
 
+                   
                     $rooms = array_map(function ($room) {
                         $room['has_price'] = (bool)((is_array($room['price'])&&count($room['price']) > 0));
                         $room['price'] = is_array($room['price'])&&count($room['price']) > 0 ? array_pop($room['price']) : (object)[];
+                        if ($room['has_price']) {
+                            // $room['price']['total'] = array_reduce($room['products'], function ($carry, $item) {
+                            //     $carry += $item['price'];
+                            // }, 0.00);
+                            $room['price']['total'] += get_percentage(
+                                $room['price']['price_per_luminaries'] + $room['price']['installation_charges'],
+                                $room['price']['discount_price']
+                            );
+                        }
                         return $room;
                     }, $rooms);
 
@@ -902,8 +948,14 @@ class ProjectController extends BaseController
     public function projectRooms_delete()
     {
         try {
-            $user_data = $this->accessTokenCheck('u.company_id');
+            $user_data = $this->accessTokenCheck('u.user_type, is_owner, u.company_id');
             $language_code = $this->langcode_validate();
+
+            $this->user = $user_data;
+
+            $this->userTypeHandling([INSTALLER, PRIVATE_USER, BUSINESS_USER, WHOLESALER, ELECTRICAL_PLANNER]);
+
+            $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['project_delete']);
 
             $this->requestData = $this->delete();
 
@@ -967,8 +1019,14 @@ class ProjectController extends BaseController
     public function projectRooms_put()
     {
         try {
-            $user_data = $this->accessTokenCheck('u.company_id');
+            $user_data = $this->accessTokenCheck('u.user_type, is_owner, u.company_id');
             $language_code = $this->langcode_validate();
+
+            $this->user = $user_data;
+
+            $this->userTypeHandling([INSTALLER, PRIVATE_USER, BUSINESS_USER, WHOLESALER, ELECTRICAL_PLANNER]);
+
+            $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['project_edit']);
 
             $this->requestData = $this->put();
 
@@ -1137,8 +1195,14 @@ class ProjectController extends BaseController
     public function projectRoomProducts_post()
     {
         try {
-            $user_data = $this->accessTokenCheck('u.company_id');
+            $user_data = $this->accessTokenCheck('u.user_type, is_owner, u.company_id');
             $language_code = $this->langcode_validate();
+
+            $this->user = $user_data;
+
+            $this->userTypeHandling([INSTALLER, PRIVATE_USER, BUSINESS_USER, WHOLESALER, ELECTRICAL_PLANNER]);
+
+            $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['project_add']);
 
             $this->requestData = $this->post();
 
@@ -1149,7 +1213,7 @@ class ProjectController extends BaseController
             $productData = array_map(function ($product) {
                 $data['project_room_id'] = $product['projectRoomId'];
                 $data['product_id'] = $product['productId'];
-                $data['article_code'] = '';
+                $data['article_code'] = isset($product['article_code'])?$product['article_code']:'';
                 $data['type'] = 2;
                 return $data;
             }, $this->requestData);
@@ -1326,6 +1390,11 @@ class ProjectController extends BaseController
                 'label' => 'Project',
                 'field' => 'project_id',
                 'rules' => 'trim|required|is_natural_no_zero'
+            ],
+            [
+                'label' => 'Company',
+                'field' => 'company_id[]',
+                'rules' => 'required'
             ]
         ]);
     }
@@ -1389,8 +1458,8 @@ class ProjectController extends BaseController
             $totalPrice->discount_price = isset($totalPriceData['discount_price'])?(double)$totalPriceData['discount_price']:0.00;
             $totalPrice->additional_product_charges = isset($quotationPrice['additional_product_charges'])?(double)$quotationPrice['additional_product_charges']:0.00;
             $totalPrice->discount = isset($quotationPrice['discount'])?(double)$quotationPrice['discount']:0.00;
+           
             
-            $this->load->helper('utility');
             $totalPrice->total = get_percentage(($totalPrice->main_product_charge
                                         + $totalPrice->accessory_product_charge
                                         + $totalPrice->price_per_luminaries
@@ -1407,10 +1476,7 @@ class ProjectController extends BaseController
             $totalPrice->additional_product_charges = isset($totalPriceData['additional_product_charges'])?(double)$totalPriceData['additional_product_charges']:0.00;
             $totalPrice->discount = isset($totalPriceData['discount'])?(double)$totalPriceData['discount']:0.00;
 
-            $this->load->helper('utility');
-            $totalPrice->total = get_percentage(($totalPrice->main_product_charge
-                                        + $totalPrice->accessory_product_charge
-                                        + $totalPrice->price_per_luminaries
+            $totalPrice->total = get_percentage(($totalPrice->price_per_luminaries
                                         + $totalPrice->installation_charges
                                         + $totalPrice->additional_product_charges), $totalPrice->discount_price);
             $totalPrice->total = round($totalPrice->total, 2);

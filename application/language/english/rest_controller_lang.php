@@ -152,3 +152,4 @@ $lang['room_not_found'] = "Room not found";
 $lang['quotation_already_provided'] = 'You have already provided a quotation for this request';
 $lang['provide_quotations_for_all_rooms'] = 'Please provide quotation for all rooms';
 $lang['cannot_delete_requested_projects'] = 'Cannot delete rooms for a requested project';
+$lang['installers_found'] = "We've found installers near you";

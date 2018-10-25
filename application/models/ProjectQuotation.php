@@ -58,7 +58,8 @@ class ProjectQuotation extends BaseModel
     public function quotations($params)
     {
         $this->db->select("SQL_CALC_FOUND_ROWS pq.id as quotation_id, request_id, c.company_id,
-            company_name, u.first_name as user_name,
+            company_name, u.first_name as user_name, additional_product_charges, discount,
+            totalQuotationChargesPerRoom(pr.project_id, c.company_id) as quotation_price,
             pq.created_at, pq.created_at_timestamp", false)
             ->from("project_quotations as pq")
             ->join('project_requests as pr', 'pr.id=pq.request_id')

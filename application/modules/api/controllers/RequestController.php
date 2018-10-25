@@ -21,13 +21,6 @@ class RequestController extends BaseController
     private $products;
 
     /**
-     * Current user
-     *
-     * @var array
-     */
-    private $user;
-
-    /**
      * DB params
      */
     private $params;
@@ -84,13 +77,18 @@ class RequestController extends BaseController
             $language_code = $this->langcode_validate();
 
             $this->user = $user_data;
+
+            $this->userTypeHandling([INSTALLER, PRIVATE_USER, BUSINESS_USER]);
+
+            $this->handleEmployeePermission([INSTALLER], ['quote_view']);
+
             $this->params['limit'] = API_RECORDS_PER_PAGE;
             $this->params['language_code'] = $language_code;
 
             if (in_array((int)$user_data['user_type'], [PRIVATE_USER, BUSINESS_USER], true)) {
                 $this->params['user_id'] = $this->user['user_id'];
                 $data = $this->customerRequestData();
-            } else if ((int)$user_data['user_type'] === INSTALLER) {
+            } elseif ((int)$user_data['user_type'] === INSTALLER) {
                 $this->requestData = $this->get();
                 
                 $this->validateRequestList();
@@ -128,6 +126,103 @@ class RequestController extends BaseController
                 'has_more_pages' => $hasMorePages,
                 'per_page_count' => $this->params['limit'],
                 'total' => $data['count']
+            ]);
+        } catch (\Exception $error) {
+            $this->response([
+                'code' => HTTP_INTERNAL_SERVER_ERROR,
+                'api_code_result' => 'INTERNAL_SERVER_ERROR',
+                'msg' => $this->lang->line("internal_server_error")
+            ]);
+        }
+    }
+
+    /**
+     * @SWG\Get(path="/installers/companies",
+     *   tags={"User"},
+     *   summary="Fetch installers companies",
+     *   description="Fetches list of installers companies based on users current location",
+     *   operationId="installers_get",
+     *   produces={"application/json"},
+     * @SWG\Parameter(
+     *     name="X-Language-Code",
+     *     in="header",
+     *     description="en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+     *     type="string",
+     *     required=true
+     * ),
+     * @SWG\Parameter(
+     *     name="accesstoken",
+     *     in="header",
+     *     description="Access token received during signup or login",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *  @SWG\Parameter(
+     *     name="search_radius",
+     *     in="query",
+     *     description="Maxiumum Search Radius for which the installers will be fetched",
+     *     type="string",
+     *   ),
+     *  @SWG\Parameter(
+     *     name="search",
+     *     in="query",
+     *     description="search key",
+     *     type="string",
+     *   ),
+     *  @SWG\Parameter(
+     *     name="company_id",
+     *     in="query",
+     *     description="search key",
+     *     type="string",
+     *   ),
+     * @SWG\Response(response=200, description="OK"),
+     * @SWG\Response(response=401, description="Unauthorize"),
+     * @SWG\Response(response=404, description="Data not found"),
+     * @SWG\Response(response=500, description="Internal server error"),
+     * )
+     */
+    public function installerCompanies_get()
+    {
+        try {
+            $user_data = $this->accessTokenCheck('u.company_id, u.user_lat, u.user_long, u.user_type, u.is_owner');
+            $language_code = $this->langcode_validate();
+
+            $this->requestData = $this->get();
+
+            $searchRadius =
+                isset($this->requestData['search_radius'])&&(double)$this->requestData['search_radius'] > 0 ?
+                (double)$this->requestData['search_radius']:REQUEST_SEARCH_RADIUS;
+            
+            $search = isset($this->requestData['search'])&&strlen(trim($this->requestData['search'])) > 0?
+                trim($this->requestData['search']):'';
+
+            $this->load->model('User');
+
+            $params['lat'] = $user_data['user_lat'];
+            $params['lng'] = $user_data['user_long'];
+            $params['search_radius'] = $searchRadius;
+
+            if (!empty($search)) {
+                $params['where']['company_name LIKE'] = '%' . $search .'%';
+            }
+
+            if (isset($this->requestData['company_id']) && is_numeric($this->requestData['company_id'])) {
+                $params['where']['company.company_id'] = (int)$this->requestData['company_id'];
+            }
+
+            $data = $this->User->installers($params);
+
+            if (empty($data)) {
+                $this->response([
+                    'code' => HTTP_NOT_FOUND,
+                    'msg' => $this->lang->line('no_data_found')
+                ]);
+            }
+
+            $this->response([
+                'code' => HTTP_OK,
+                'msg' => $this->lang->line('installers_found'),
+                'data' => $data
             ]);
         } catch (\Exception $error) {
             $this->response([
@@ -177,11 +272,12 @@ class RequestController extends BaseController
      */
     private function parseRequestPriceData($data)
     {
+        $this->load->helper('utility');
         $data = array_map(function ($request) {
             if (empty($request['price'])) {
                 $request['price'] = [];
-                $request['price']['price_per_luminaries'] = 0.00;     
-                $request['price']['installation_charges'] = 0.00;     
+                $request['price']['price_per_luminaries'] = 0.00;
+                $request['price']['installation_charges'] = 0.00;
                 $request['price']['discount_price'] = 0.00;
             } else {
                 $request['price'] = json_decode($request['price'], true);
@@ -190,7 +286,15 @@ class RequestController extends BaseController
             $request['price']['discount'] = (double)$request['discount'];
             $request['price']['accessory_product_charge'] = 0.00;
             $request['price']['main_product_charge'] = 0.00;
-            unset( $request['additional_product_charges'], $request['discount']);
+            $request['price']['total'] = get_percentage(
+                ($request['price']['main_product_charge']
+                + $request['price']['accessory_product_charge']
+                + $request['price']['price_per_luminaries']
+                + $request['price']['installation_charges']
+                + $request['price']['additional_product_charges']),
+                $request['price']['discount_price']
+            );
+            unset($request['additional_product_charges'], $request['discount']);
             return $request;
         }, $data);
 

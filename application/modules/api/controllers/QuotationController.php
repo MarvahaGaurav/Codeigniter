@@ -5,7 +5,6 @@ require 'BaseController.php';
 
 class QuotationController extends BaseController
 {
-
     /**
      * Request Data
      *
@@ -76,8 +75,14 @@ class QuotationController extends BaseController
     public function index_post()
     {
         try {
-            $user_data = $this->accessTokenCheck('u.company_id');
+            $user_data = $this->accessTokenCheck('u.user_type, is_owner, u.company_id');
             $language_code = $this->langcode_validate();
+
+            $this->user = $user_data;
+
+            $this->userTypeHandling([INSTALLER]);
+
+            $this->handleEmployeePermission([INSTALLER], ['quote_add']);
 
             $this->requestData = $this->post();
 
@@ -240,6 +245,26 @@ class QuotationController extends BaseController
                     'msg' => $this->lang->line('no_data_found')
                 ]);
             }
+
+            $this->load->model('utility');
+            $quotations = array_map(function ($quotation) {
+                $quotation['quotation_price'] = json_decode($quotation['quotation_price'], true);
+                $quotation['quotation_price']['additional_product_charges'] = (double)$quotation['additional_product_charges'];
+                $quotation['quotation_price']['discount'] = (double)$quotation['discount'];
+                $quotation['quotation_price']['main_product_charge'] = 0.00;
+                $quotation['quotation_price']['accessory_product_charge'] = 0.00;
+                $quotation['quotation_price']['total'] = $quotation['quotation_price']['main_product_charge'] +
+                                                    $quotation['quotation_price']['accessory_product_charge'] +
+                                                    get_percentage(
+                                                        $quotation['price']['price_per_luminaries'] +
+                                                        $quotation['price']['installation_charges'] +
+                                                        $quotation['price']['additional_product_charges'],
+                                                        $quotation['price']['discount']
+                                                    );
+
+                unset($quotation['discount'], $quotation['additional_product_charges']);
+                return $quotation;
+            }, $quotations);
 
             $hasMorePages = false;
             $nextCount = -1;
@@ -433,8 +458,14 @@ class QuotationController extends BaseController
     public function roomsQuotation_post()
     {
         try {
-            $user_data = $this->accessTokenCheck('u.company_id, u.user_type');
+            $user_data = $this->accessTokenCheck('u.user_type, is_owner, u.company_id');
             $language_code = $this->langcode_validate();
+
+            $this->user = $user_data;
+
+            $this->userTypeHandling([INSTALLER]);
+
+            $this->handleEmployeePermission([INSTALLER], ['quote_add']);
 
             if ((int)$user_data['user_type'] !== INSTALLER) {
                 $this->response([
@@ -449,14 +480,17 @@ class QuotationController extends BaseController
 
             $this->validationRun();
 
-            $check = $this->UtilModel->selectQuery('id',
-             'project_room_quotations', [
+            $check = $this->UtilModel->selectQuery(
+                'id',
+                'project_room_quotations',
+                [
                 'where' => [
                     'company_id' => $user_data['company_id'],
                     'project_room_id' => $this->requestData['project_room_id']
                 ],
                 'single_row' => true
-            ]);
+                ]
+            );
 
             if (!empty($check)) {
                 $this->response([
@@ -549,8 +583,15 @@ class QuotationController extends BaseController
     public function roomsQuotation_put()
     {
         try {
-            $user_data = $this->accessTokenCheck('u.company_id, u.user_type');
+            $user_data = $this->accessTokenCheck('u.user_type, is_owner, u.company_id');
             $language_code = $this->langcode_validate();
+
+
+            $this->user = $user_data;
+
+            $this->userTypeHandling([INSTALLER]);
+
+            $this->handleEmployeePermission([INSTALLER], ['quote_edit']);
 
             $this->requestData = $this->put();
 
@@ -602,12 +643,14 @@ class QuotationController extends BaseController
             $priceData = $this->UtilModel->selectQuery(
                 'id as room_quotation_id, project_room_id, user_id, company_id,price_per_luminaries,
                 installation_charges,discount_price,created_at, created_at_timestamp',
-                'project_room_quotations', [
+                'project_room_quotations',
+                [
                 'where' => [
-                    'id' => $this->requestData['room_quotation_id']                      
+                    'id' => $this->requestData['room_quotation_id']
                 ],
                 'single_row' => true
-            ]);
+                ]
+            );
 
             $this->response([
                 'code' => HTTP_OK,

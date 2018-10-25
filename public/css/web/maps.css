@@ -1,0 +1,14 @@
+#maps-places {
+    width: 100%;
+    margin: 0 auto;
+}
+
+#maps-box {
+    width: inherit;
+    height: 400px;
+    margin: 27px auto;
+}
+
+.pac-container{
+    z-index: 9999;
+}

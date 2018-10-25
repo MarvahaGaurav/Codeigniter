@@ -1116,3 +1116,5 @@ function CheckforNum(e) {
         e.preventDefault();
     }
 }
+
+$(".number-only-field").on("keypress", CheckforNum);

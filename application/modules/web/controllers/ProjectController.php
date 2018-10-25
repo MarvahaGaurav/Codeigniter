@@ -40,19 +40,18 @@ class ProjectController extends BaseController {
             $this->load->library('Commonfn');
             $this->data['links']    = $this->commonfn->pagination(uri_string(), $temp['count'], $params['limit']);
             load_website_views("projects/main", $this->data);
-        }
-        else {
+        } else {
             load_website_views("projects/main_inactive_session", $this->data);
         }
-
     }
-
-
 
     public function create()
     {
         $this->activeSessionGuard();
         $this->data['userInfo'] = $this->userInfo;
+        $this->load->config('css_config');
+        $this->data['css'] = $this->config->item('create-project');
+
         try {
             $post = $this->input->post();
             if (isset($post) and ! empty($post)) {
@@ -82,16 +81,14 @@ class ProjectController extends BaseController {
                         $this->session->set_flashdata("flash-message", 'Project Created Successfully');
                         $this->session->set_flashdata("flash-type", "success");
                         redirect(base_url("home/projects/application"));
-                    }
-                    else {
+                    } else {
                         throw new Exception("Something Went Wrong", 500);
                     }
                 }
             }
             $this->data['js'] = 'project';
-            load_website_views("projects/create_project", $this->data);
-        }
-        catch (Exception $ex) {
+            website_map_modal_view("projects/create_project", $this->data);
+        } catch (Exception $ex) {
             $this->db->trans_rollback();
         }
 

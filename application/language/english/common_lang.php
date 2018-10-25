@@ -71,9 +71,9 @@ $lang["email_does_not_exist"] = "Email does not exist";
 $lang["mobile_does_not_exist"] = "Mobile Number does not exist";
 $lang["social_id_does_not_exist"] = "Social Id does not exist";
 $lang["user_does_not_exists"] = "User does not exist";
-$lang['settings_updated'] = "Your settings have been updated";
-$lang['settings_updated_language'] = "Your Langugage have been updated";
-$lang['settings_updated_currency'] = "Your Currency have been updated";
+$lang['settings_updated'] = "Your settings has been updated";
+$lang['settings_updated_language'] = "Your Langugage has been updated";
+$lang['settings_updated_currency'] = "Your Currency has been updated";
 /* INVALID PARAMS */
 $lang["invalid_email_format"] = "Invalid email format";
 $lang["invalid_parameter"] = "Entered parameter is invalid";
@@ -161,7 +161,7 @@ $lang['permission_denied'] = 'Permission Denied';
  */
 $lang['link_expired'] = 'This link is expired';
 $lang['invalid_token'] = 'Token is not valid';
-$lang['invalid_request'] = 'Token is missing';
+// $lang['invalid_request'] = 'Token is missing';
 $lang['account_blocked'] = 'Your account has been blocked';
 $lang['reset_success'] = 'Password successfully reseted';
 $lang['password_already_reset'] = 'You have already reset your password';

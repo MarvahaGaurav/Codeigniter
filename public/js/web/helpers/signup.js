@@ -151,9 +151,14 @@
             $(".company-name-select").selectpicker('destroy');
             $companyNameWrapper.html('<input type="text" id="company-name" name="company_name" class="form-control technician-fields" placeholder="Company Name"/>');
         } else if(type == 'employee') {
+            var userType = $("#select-user-types").val(),
+                queryData = {
+                    user_type: userType
+                };
             $.ajax({
                 url: 'xhttp/companies',
                 dataType: 'json',
+                data: queryData,
                 beforeSend: function () {
 
                 },

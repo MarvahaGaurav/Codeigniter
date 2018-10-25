@@ -293,8 +293,8 @@ class ProductController extends BaseController
     /**
      * @SWG\Get(path="/rooms/{room_id}/products",
      *   tags={"Products"},
-     *   summary="",
-     *   description="",
+     *   summary="Accessory Products",
+     *   description="Fetch accessory products",
      *   operationId="mountingTypes_get",
      *   produces={"application/json"},
      * @SWG\Parameter(
@@ -518,7 +518,7 @@ class ProductController extends BaseController
      * @SWG\Parameter(
      *     name="search",
      *     in="query",
-     *     description="Project Room Id",
+     *     description="Search text",
      *     type="string",
      *   ),
      * @SWG\Parameter(
@@ -541,30 +541,44 @@ class ProductController extends BaseController
 
         $this->requestData = trim_input_parameters($this->requestData, false);
 
+        $params['language_code'] = $language_code;
         $params['offset'] =
                 isset($this->requestData['offset'])&&is_numeric($this->requestData['offset'])&&(int)$this->requestData['offset'] > 0 ? (int)$this->requestData['offset']: 0;
         $params['limit'] = API_RECORDS_PER_PAGE;
 
         if (isset($this->requestData['uld']) && (int)$this->requestData['uld'] === 1) {
-            $params['where']['(EXISTS(SELECT id FROM product_specifications WHERE product_id=products.product_id AND CHAR_LENGTH(uld) > 0))'] = null;
+            // $params['where']['(EXISTS(SELECT id FROM product_specifications WHERE product_id=products.product_id AND CHAR_LENGTH(uld) > 0))'] = null;
+            $params['uld'] = true;
         }
 
         if (isset($this->requestData['search']) && strlen($this->requestData['search']) > 0) {
             $params['where']['title LIKE'] = "{$this->requestData['search']}%";
-        } 
+        }
 
         $params['where']['language_code'] = $language_code;
-        
+        $this->benchmark->mark('start');
         $data = $this->Product->products($params);
-        $count = $data['count'];
-
-        $hasMorePages = false;
-        $nextCount = -1;
-
-        if ((int)$count > ($params['offset'] + $params['limit'])) {
-            $hasMorePages = true;
-            $nextCount = $params['offset'] + $params['limit'];
+        $this->benchmark->mark('stop');
+        
+        if (isset($this->requestData['uld']) && (int)$this->requestData['uld'] === 1) {
+            $hasMorePages = false;
+            $nextCount = -1;
+            if (count($data['data']) > $params['limit']) {
+                $hasMorePages = true;
+                array_pop($data['data']);
+                $nextCount = $params['offset'] + $params['limit'];
+            }
+        } else {
+            $count = $data['count'];
+            $hasMorePages = false;
+            $nextCount = -1;
+    
+            if ((int)$count > ($params['offset'] + $params['limit'])) {
+                $hasMorePages = true;
+                $nextCount = $params['offset'] + $params['limit'];
+            }
         }
+       
 
         if (empty($data['data'])) {
             $this->response([
@@ -581,10 +595,11 @@ class ProductController extends BaseController
             'code' => HTTP_OK,
             'msg' => $this->lang->line('success'),
             'data' => $data['data'],
-            'next_count' => $nextCount,
+            'next_count' => isset($nextCount)?$nextCount:-1,
             'has_more_pages' => $hasMorePages,
             'per_page_count' => $params['limit'],
-            'total' => $data['count']
+            'total' => isset($data['count'])?$data['count']:0,
+            'elapsed_time' => $this->benchmark->elapsed_time('start', 'stop')
         ]);
     }
 

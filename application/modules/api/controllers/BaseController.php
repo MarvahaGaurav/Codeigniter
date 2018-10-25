@@ -7,8 +7,19 @@ use DatabaseExceptions\SelectException;
 
 class BaseController extends REST_Controller
 {
+    /**
+     * Date time string
+     *
+     * @var string
+     */
     protected $datetime;
     protected $header;
+    /**
+     * User data
+     *
+     * @var array
+     */
+    protected $user;
     
     public function __construct()
     {
@@ -199,6 +210,81 @@ class BaseController extends REST_Controller
             $this->response([
                 'code' => HTTP_UNPROCESSABLE_ENTITY,
                 'msg' => array_shift($errorMessage),
+            ]);
+        }
+    }
+
+    /**
+     * Handles employee permissions, this logic is abstracted and can be replaced
+     * with anyother abstaction which basically needs to exit the program
+     * and provide a relevant message in a valid JSON String format
+     * should the given employee not have adequate permissions
+     *
+     * @param array $userTypesToCheck
+     * @param array $permissionsToCheck
+     * @return void
+     */
+    protected function handleEmployeePermission($userTypesToCheck, $permissionsToCheck)
+    {
+        if (!is_array($userTypesToCheck) || !is_array($permissionsToCheck)) {
+            $this->response([
+                'code' => HTTP_INTERNAL_SERVER_ERROR,
+                'msg' => $this->lang->line("internal_server_error")
+            ]);
+        }
+        if (in_array((int)$this->user['user_type'], $userTypesToCheck, true) &&
+        (int)$this->user['is_owner'] === ROLE_EMPLOYEE
+        ) {
+            $this->load->helper('common');
+            $permissions = retrieveEmployeePermission($this->user['user_id']);
+
+            if (empty($permissions)) {
+                $this->response([
+                    'code' => HTTP_FORBIDDEN,
+                    'msg' => $this->lang->line('forbidden_action')
+                ]);
+            }
+
+            $permissionKeys = array_keys($permissions);
+            foreach ($permissionsToCheck as $permissionToCheck) {
+                if (!in_array($permissionToCheck, $permissionKeys)) {
+                    $this->response([
+                        'code' => HTTP_INTERNAL_SERVER_ERROR,
+                        'msg' => $this->lang->line("internal_server_error")
+                    ]);
+                }
+               
+                if (!(bool)$permissions[$permissionToCheck]) {
+                    $this->response([
+                        'code' => HTTP_FORBIDDEN,
+                        'msg' => $this->lang->line('forbidden_action')
+                    ]);
+                }
+            }
+        }
+    }
+
+    /**
+     * Permission checks on User Types
+     *
+     * @param array $userData
+     * @param array $validUserTypes
+     * @param string $message
+     * @return void
+     */
+    protected function userTypeHandling(
+        $validUserTypes = [],
+        $message = ''
+    ) {
+        if (!in_array(
+            (int)$this->user['user_type'],
+            $validUserTypes,
+            true
+        )) {
+            $message = strlen(trim($message)) > 0 ? $message : $this->lang->line('forbidden_action');
+            $this->response([
+                'code' => HTTP_FORBIDDEN,
+                'msg' => $message
             ]);
         }
     }

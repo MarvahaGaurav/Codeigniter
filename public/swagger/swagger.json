@@ -1178,8 +1178,8 @@
                 "tags": [
                     "Products"
                 ],
-                "summary": "",
-                "description": "",
+                "summary": "Accessory Products",
+                "description": "Fetch accessory products",
                 "operationId": "mountingTypes_get",
                 "produces": [
                     "application/json"
@@ -1295,7 +1295,7 @@
                     {
                         "name": "search",
                         "in": "query",
-                        "description": "Project Room Id",
+                        "description": "Search text",
                         "type": "string"
                     },
                     {
@@ -1785,6 +1785,13 @@
                         "name": "project_id",
                         "in": "formData",
                         "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "company_id[]",
+                        "in": "formData",
+                        "description": "Company Ids",
                         "required": true,
                         "type": "string"
                     }
@@ -2330,6 +2337,67 @@
                         "name": "offset",
                         "in": "query",
                         "description": "",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "404": {
+                        "description": "Data not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/installers/companies": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Fetch installers companies",
+                "description": "Fetches list of installers companies based on users current location",
+                "operationId": "installers_get",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Language-Code",
+                        "in": "header",
+                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "accesstoken",
+                        "in": "header",
+                        "description": "Access token received during signup or login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "search_radius",
+                        "in": "query",
+                        "description": "Maxiumum Search Radius for which the installers will be fetched",
+                        "type": "string"
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "search key",
+                        "type": "string"
+                    },
+                    {
+                        "name": "company_id",
+                        "in": "query",
+                        "description": "search key",
                         "type": "string"
                     }
                 ],

@@ -30,7 +30,29 @@ class CompanyController extends BaseController
     public function companyList()
     {
         try {
-            $data = $this->UtilModel->selectQuery(['company_id', 'company_name', 'company_image'], 'company_master');
+            $userType = $this->input->get('user_type');
+
+            if (empty($userType) ||
+                !in_array(
+                    (int)$userType,
+                    [PRIVATE_USER, BUSINESS_USER, INSTALLER, WHOLESALER, ELECTRICAL_PLANNER, ARCHITECT],
+                    true
+                )
+             ) {
+                json_dump([
+                    "success" => false,
+                    "message" => 'Internal server error'
+                ]);
+            }
+            $data = $this->UtilModel->selectQuery(
+                ['company_master.company_id', 'company_name', 'company_image', 'users.country_id'],
+                'company_master',
+                [
+                    'where' => ['user_type' => (int)$userType],
+                    'join' =>
+                        ['ai_user as users' => 'users.company_id=company_master.company_id AND is_owner='.ROLE_OWNER]
+                ]
+            );
 
             json_dump([
                 "success" => true,

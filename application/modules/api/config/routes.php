@@ -44,3 +44,4 @@ $route['api/v1/projects/(:any)'] = 'ProjectController/details/project_id/$1';
 $route['api/v1/project-rooms/products'] = 'ProjectController/projectRoomProducts';
 $route['api/v1/quotations'] = 'QuotationController';
 $route['api/v1/requests'] = 'RequestController';
+$route['api/v1/installers/companies'] = 'RequestController/installerCompanies';
