@@ -110,6 +110,8 @@
                     <option value="<?php echo MOUNTING_TRACKS ?>">TRACKS</option>
                 </select>
                 <input type="hidden" name="room_id" id="room_id" value="<?php echo $room_id; ?>">
+                <input type="hidden" name="level" id="level" value="<?php echo $level; ?>">
+                <input type="hidden" name="project_id" id="project_id" value="<?php echo $project_id; ?>">
                 <input type="hidden" name="token" id ="token" value="<?php echo $csrfToken; ?>">
                 <input type="hidden" name="token_nme" id ="token_nme" value="<?php echo $csrfName; ?>">
                 <input type="hidden" name="project_room_id" id ="project_room_id" value="<?php echo isset($project_room_id)?$project_room_id:''; ?>">

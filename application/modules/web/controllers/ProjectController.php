@@ -498,6 +498,12 @@ class ProjectController extends BaseController
                 ]
             ];
             $array  = $this->Product->productByMountingType($option);
+
+            $array['data'] = array_map(function ($data) {
+                $data['product_id'] = encryptDecrypt($data['product_id']);
+                return $data;
+            }, $array['data']);
+
             if (count($array['data'])) {
                 $res = [
                     "code" => 200,

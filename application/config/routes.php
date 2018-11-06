@@ -72,6 +72,8 @@ $route['home/inspirations/(.+)']      = 'web/InspirationController/details/$1';
 /**
  * Projects
  */
+$route['home/projects']                                                = 'web/ProjectController';
+$route['home/projects/create']                                         = 'web/ProjectController/create';
 $route['home/create-projects/levels']                                  = 'web/ProjectLevelsController/levelsListing';
 $route['home/projects/(:any)/details']                                 = 'web/ProjectController/project_details/$1';
 $route['home/projects/(:any)/levels/(:num)/rooms']                     = 'web/ProjectRoomsController/projectCreateRoomListing/$1/$2';
@@ -79,9 +81,7 @@ $route['home/projects/(:any)/levels/(:num)/rooms/applications']        = 'web/Pr
 $route['home/projects/(:any)/levels/(:num)/rooms/applications/(:any)/rooms'] = 'web/ProjectRoomsController/roomType/$1/$2/$3';
 $route['home/projects/(:any)/levels/(:num)/rooms/applications/(:any)/rooms/(:any)/dimensions'] = 'web/ProjectRoomsController/dimensions/$1/$2/$3/$4';
 $route['home/projects/(:any)/levels/(:num)/rooms/applications/(:any)/rooms/(:any)/dimensions/products'] = 'web/ProjectProductController/selectProduct/$1/$2/$3/$4';
-$route['home/projects/(:any)/levels/(:num)/rooms/applications/(:any)/rooms/(:any)/dimensions/products/(:any)'] = 'web/ProjectProductController/selectProduct/$1/$2/$3/$4/$5';
-$route['home/projects']                                                = 'web/ProjectController';
-$route['home/projects/create']                                         = 'web/ProjectController/create';
+$route['home/projects/(:any)/levels/(:num)/rooms/applications/(:any)/rooms/(:any)/dimensions/products/(:any)'] = 'web/ProjectProductController/productDetails/$1/$2/$3/$4/$5';
 // $route['home/projects/create_room']                                    = 'web/ProjectController/create_room';
 // $route['home/projects/update_room']                                    = 'web/ProjectController/update_room';
 // $route['home/projects/(:any)/room-edit/(:any)']                        = 'web/ProjectController/edit_room/$1/$2';
