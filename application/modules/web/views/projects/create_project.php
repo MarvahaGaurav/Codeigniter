@@ -62,22 +62,43 @@
                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-6 block-div concealable" id="other-level-count-div">
                     <div class="form-group">
                         <label class="labelTxt" for="">Other Level Count</label>
-                        <div class="form-group-field input-group">
+                        <div class="form-group-field input-group" id="other-levels-wrapper">
                             <span class="input-group-addon clickable" id="decrement-others"><i class="fa fa-minus"></i></span>
-                            <input type="text" name="other_project_count" id="other-project-count" value="11" class="number-only-field">
+                            <input type="text" name="" id="other-project-count" value="11" class="number-only-field text-center">
                             <span class="input-group-addon clickable" id="increment-others"><i class="fa fa-plus"></i></span>
                         </div>
                     </div>
                 </div>
                 <div class="clearfix"></div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="form-group">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group" id="address-box-wrapper">
                         <label class="labelTxt">Address</label>
                         <div class="form-group-field">
-                            <textarea name="address" id="address" placeholder="B-25, Sector 58, Noida, UP-201301" data-toggle="modal" data-target="#maps-modal"></textarea>
+                            <textarea name="address" id="address" placeholder="Click map marker icon to pick location"></textarea>
+                            <span data-toggle="modal" data-target="#maps-modal" title="Pick Location from Map" id="address-map-icon" class="clickable"><i class="fa fa-map-marker"></i></span>
+                        </div>
+                        <div id="address-map-error"></div>
+                        <input type="hidden" name="address_lat" id="address-lat">
+                        <input type="hidden" name="address_lng" id="address-lng">
+                    </div>
+                </div>
+                <span id="is-installer-owner" data-status="<?php echo (int)$userInfo['user_type'] === INSTALLER && (int)$userInfo['is_owner'] === ROLE_OWNER?"true":"false" ?>"></span>
+                <?php if ((int)$userInfo['user_type'] === INSTALLER && (int)$userInfo['is_owner'] === ROLE_OWNER) { ?>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="labelTxt">Installers</label>
+                        <div class="form-group-field">
+                            <select name="installers" id="isntallers">
+                                <option value="others">Select</option>
+                                <?php foreach ($employees as $employee) : ?>
+                                <option value="<?php echo encryptDecrypt($employee['user_id']) ?>"><?php echo $employee['first_name'] ?></option>
+                                <?php endforeach ?>
+                            </select>
+                            <span class="customArrow"></span>
                         </div>
                     </div>
                 </div>
+                <?php }?>
             </div>
         </div>
         <!-- button-wrapper section -->

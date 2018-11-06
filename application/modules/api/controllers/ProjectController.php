@@ -70,6 +70,12 @@ class ProjectController extends BaseController
      *     required = true
      *   ),
      * @SWG\Parameter(
+     *     name="installer_id",
+     *     in="formData",
+     *     description="Required for Installer Owner type",
+     *     type="string",
+     *   ),
+     * @SWG\Parameter(
      *     name="levels",
      *     in="formData",
      *     description="",
@@ -119,13 +125,7 @@ class ProjectController extends BaseController
 
             $this->validateProject();
 
-            if (! (bool) $this->form_validation->run()) {
-                $errorMessage = $this->form_validation->error_array();
-                $this->response([
-                    'code' => HTTP_UNPROCESSABLE_ENTITY,
-                    'msg' => array_shift($errorMessage),
-                ]);
-            }
+            $this->validationRun();
 
             $this->requestData = trim_input_parameters($this->requestData, false);
 
@@ -147,9 +147,26 @@ class ProjectController extends BaseController
             if (in_array((int)$user_data['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], true)) {
                 $project['company_id'] = $user_data['company_id'];
             }
+            
+            if ((int)$user_data['user_type'] === INSTALLER && (int)$user_data['is_owner'] === ROLE_OWNER) {
+                $project['installer_id'] = $this->requestData['installer_id'];
+            }
 
+            $this->db->trans_begin();
             $projectId = $this->UtilModel->insertTableData($project, 'projects', true);
-
+            
+            $levelsCount = (int)$this->requestData['levels'];
+            $levelsData = [];
+            foreach (range(1, $levelsCount) as $key => $level) {
+                $levelsData[$key] = [
+                    'project_id' => $projectId,
+                    'level' => $level
+                ];
+            }
+            
+            $this->UtilModel->insertBatch('project_levels', $levelsData);
+            
+            $this->db->trans_commit();
             $this->response([
                 'code' => HTTP_OK,
                 'msg' => $this->lang->line('project_added'),
@@ -158,6 +175,7 @@ class ProjectController extends BaseController
                 ]
             ]);
         } catch (\Exception $error) {
+            $this->db->trans_rollback();
             $this->response([
                 'code' => HTTP_INTERNAL_SERVER_ERROR,
                 'api_code_result' => 'INTERNAL_SERVER_ERROR',
@@ -275,6 +293,32 @@ class ProjectController extends BaseController
 
             $this->requestData = trim_input_parameters($this->requestData, false);
 
+            $projectData = $this->UtilModel->selectQuery('user_id, company_id', 'projects', [
+                'where' => ['id' => $this->requestData['project_id']],
+                'single_row' => true
+            ]);
+
+            if (empty($projectData)) {
+                $this->response([
+                    'code' => HTTP_NOT_FOUND,
+                    'msg' => $this->lang->line('no_data_found')
+                ]);
+            }
+            
+            $isOwnProject = false;
+            if (in_array((int)$user_data['user_type'], [PRIVATE_USER, BUSINESS_USER], true)) {
+                $isOwnProject = (int)$user_data['user_id'] === (int)$projectData['user_id'];
+            } else {
+                $isOwnProject = (int)$user_data['company_id'] === (int)$projectData['company_id'];
+            }
+
+            if (!$isOwnProject) {
+                $this->response([
+                    'code' => HTTP_FORBIDDEN,
+                    'msg' => $this->lang->line('forbidden_action')
+                ]);
+            }
+
             $project = [
                 'user_id' => $user_data['user_id'],
                 'number' => $this->requestData['number'],
@@ -355,12 +399,27 @@ class ProjectController extends BaseController
                 ]);
             }
 
+            $projectIds = array_column($this->requestData, 'projectId');
+
+            $check = $this->UtilModel->selectQuery('id', 'projects', [
+                'where_in' => ['id' => $projectIds],
+                'single_row' => true
+            ]);
+
+            if (empty($check)) {
+                $this->response([
+                    'code' => HTTP_NOT_FOUND,
+                    'msg' => $this->lang->line('project_not_found')
+                ]);
+            }
+
             $this->requestData = trim_input_parameters($this->requestData, false);
             $this->products = trim_input_parameters($this->products, false);
 
             $roomsData = array_map(function ($room) use ($language_code) {
                 $data['language_code'] = $language_code;
                 $data['project_id'] = $room['projectId'];
+                $data['level'] = $room['level'];
                 $data['room_id'] = $room['roomId'];
                 $data['name'] = $room['name'];
                 $data['length'] = $room['length'];
@@ -492,6 +551,28 @@ class ProjectController extends BaseController
                 ]);
             }
 
+            $this->load->model(['ProjectLevel', 'ProjectRooms']);
+
+            $projectLevel = $this->ProjectLevel->projectLevelData([
+                'where' => ['project_id' => $this->requestData['project_id']]
+            ], 'level');
+            $projectRooms = $this->ProjectRooms->roomsData([
+                'where' => ['project_id' => $this->requestData['project_id']],
+                'group_by' => ['level']
+            ], 'level');
+
+            $projectLevel = array_column($projectLevel, 'level');
+            $projectRooms = array_column($projectRooms, 'level');
+
+            $pendingLevels = array_diff($projectLevel, $projectRooms);
+
+            if (!empty($pendingLevels)) {
+                $this->response([
+                    'code' => HTTP_FORBIDDEN,
+                    'msg' => $this->lang->line('add_rooms_to_all_levels')
+                ]);
+            }
+
             $this->db->trans_begin();
             $requestId = $this->UtilModel->insertTableData([
                 'language_code' => $language_code,
@@ -576,19 +657,39 @@ class ProjectController extends BaseController
 
             $this->userTypeHandling([INSTALLER, PRIVATE_USER, BUSINESS_USER, WHOLESALER, ELECTRICAL_PLANNER]);
 
-            $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['project_view']);
+            $permissions = $this->handleEmployeePermission([WHOLESALER, ELECTRICAL_PLANNER], ['project_view']);
 
             $this->load->model("Project");
             $get = $this->get();
             $params['offset'] =
                 isset($get['offset'])&&is_numeric($get['offset'])&&(int)$get['offset'] > 0 ? (int)$get['offset']: 0;
             $params['limit'] = API_RECORDS_PER_PAGE;
+
+            if ((int)$user_data['user_type'] === INSTALLER && (int)$user_data['is_owner'] === ROLE_EMPLOYEE) {
+                $this->load->helper('common');
+                $permissions = retrieveEmployeePermission($this->user['user_id']);
+            }
             
             if (in_array((int)$user_data['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], true)) {
-                $params['where']['company_id'] = $user_data['company_id'];
+                if ((int)$user_data['user_type'] === INSTALLER &&
+                 (int)$user_data['is_owner'] === ROLE_EMPLOYEE &&
+                 isset($permissions['project_view']) &&
+                 (int)$permissions['project_view'] === 1
+                ) {
+                    $params['where']['company_id'] = $user_data['company_id'];
+                } if ((int)$user_data['user_type'] === INSTALLER &&
+                (int)$user_data['is_owner'] === ROLE_EMPLOYEE &&
+                isset($permissions['project_view']) &&
+                (int)$permissions['project_view'] === 0
+                ) {
+                    $params['where']['installer_id'] = $user_data['user_id'];
+                } else {
+                    $params['where']['company_id'] = $user_data['company_id'];
+                }
             } else {
                 $params['where']['user_id'] = $user_data['user_id'];
             }
+
             $params['where']['language_code'] = $language_code;
             $projects = $this->Project->get($params);
 
@@ -780,6 +881,53 @@ class ProjectController extends BaseController
      * @SWG\Response(response=500, description="Internal server error"),
      * )
      */
+    /**
+     * @SWG\Get(path="/projects/{project_id}/levels/{level}/rooms",
+     *   tags={"Projects"},
+     *   summary="List project rooms by project level",
+     *   description="List rooms for a given project",
+     *   operationId="projectsRooms_get",
+     *   produces={"application/json"},
+     * @SWG\Parameter(
+     *     name="X-Language-Code",
+     *     in="header",
+     *     description="en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+     *     type="string",
+     *     required=true
+     * ),
+     * @SWG\Parameter(
+     *     name="accesstoken",
+     *     in="header",
+     *     description="Access token received during signup or login",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *  @SWG\Parameter(
+     *     name="project_id",
+     *     in="path",
+     *     description="",
+     *     type="string",
+     *     required = true
+     *   ),
+     *  @SWG\Parameter(
+     *     name="levels",
+     *     in="path",
+     *     description="",
+     *     type="string",
+     *   ),
+     *  @SWG\Parameter(
+     *     name="offset",
+     *     in="query",
+     *     description="",
+     *     type="string",
+     *     required = true
+     *   ),
+     * @SWG\Response(response=200, description="OK"),
+     * @SWG\Response(response=401, description="Unauthorize"),
+     * @SWG\Response(response=404, description="Data not found"),
+     * @SWG\Response(response=500, description="Internal server error"),
+     * )
+     */
     public function projectRoomsFetch_get()
     {
         try {
@@ -794,6 +942,8 @@ class ProjectController extends BaseController
 
             $this->requestData = $this->get();
 
+            $this->requestData = trim_input_parameters($this->requestData, false);
+
             $this->validateProductDetails();
 
             if (! (bool) $this->form_validation->run()) {
@@ -807,6 +957,17 @@ class ProjectController extends BaseController
                 isset($this->requestData['offset'])&&is_numeric($this->requestData['offset'])&&(int)$this->requestData['offset'] > 0 ? (int)$this->requestData['offset']: 0;
 
             $this->load->model("ProjectRooms");
+            $levelsSet = false;
+            if (isset($this->requestData['levels'])) {
+                if (strlen($this->requestData['levels']) < 1) {
+                    $this->response([
+                        'code' => HTTP_UNPROCESSABLE_ENTITY,
+                        'msg' => $this->lang->line('levels_required')
+                    ]);
+                }
+                $levelsSet = true;
+                $params['where']['level'] = $this->requestData['levels'];
+            }
             $params['where']['project_id'] = $this->requestData['project_id'];
             $params['where']['language_code'] = $language_code;
             $params['limit'] = API_RECORDS_PER_PAGE;
@@ -831,33 +992,25 @@ class ProjectController extends BaseController
                 $rooms = getDataWith($rooms, $roomProducts, 'project_room_id', 'project_room_id', 'products');
 
                 if ((int)$user_data['user_type'] === INSTALLER) {
+                    $this->load->model('ProjectRoomQuotation');
                     $roomIds = array_column($rooms, 'project_room_id');
 
-                    $priceData = $this->UtilModel->selectQuery(
-                        'id as room_quotation_id, project_room_id, user_id, company_id,price_per_luminaries,
-                        installation_charges,discount_price,created_at, created_at_timestamp',
-                        'project_room_quotations',
-                        [
-                        'where' => [
-                            'company_id' => $user_data['company_id']
-                        ],
-                        'where_in' => [
-                            'project_room_id' => $roomIds
-                        ]
-                        ]
-                    );
+                    $conditions = [
+                        'where' => ['company_id' => $user_data['company_id']],
+                        'where_in' => ['project_room_id' => $roomIds]
+                    ];
+
+                    $priceData = $this->ProjectRoomQuotation->quotationInfo($conditions);
+                    
 
                     $rooms = getDataWith($rooms, $priceData, 'project_room_id', 'project_room_id', 'price');
 
-                   
                     $rooms = array_map(function ($room) {
-                        $room['has_price'] = (bool)((is_array($room['price'])&&count($room['price']) > 0));
+                        $room['has_price'] =
+                            (bool)((isset($room['price']) && is_array($room['price'])&&count($room['price']) > 0));
                         $room['price'] = is_array($room['price'])&&count($room['price']) > 0 ? array_pop($room['price']) : (object)[];
                         if ($room['has_price']) {
-                            // $room['price']['total'] = array_reduce($room['products'], function ($carry, $item) {
-                            //     $carry += $item['price'];
-                            // }, 0.00);
-                            $room['price']['total'] += get_percentage(
+                            $room['price']['total'] = get_percentage(
                                 $room['price']['price_per_luminaries'] + $room['price']['installation_charges'],
                                 $room['price']['discount_price']
                             );
@@ -865,12 +1018,49 @@ class ProjectController extends BaseController
                         return $room;
                     }, $rooms);
 
-                   
                     $projectParams['company_id'] = $user_data['company_id'];
+                    $projectParams['project_id'] = $this->requestData['project_id'];
+
+                    if ($levelsSet) {
+                        $projectParams['where']['level'] = $this->requestData['levels'];
+                    }
+
+                    $this->load->model(['ProjectQuotation', 'ProjectRoomProducts']);
+                    
+                    $totalRoomQuotationPrice =
+                        $this->ProjectQuotation->getProjectQuotationPriceByInstaller($projectParams);
+                    $totalProductCharges = $this->ProjectRoomProducts->totalProductCharges(
+                        ['project_id' => $this->requestData['project_id']]
+                    );
+
+                    // if (!empty($totalProductCharges)) {
+                        $totalPrice->main_product_charge = 0.00;
+                        $totalPrice->accessory_product_charge = 0.00;
+                    // }
+                    
+                    $totalPrice->price_per_luminaries =
+                            !empty($totalRoomQuotationPrice)&&
+                            isset($totalRoomQuotationPrice['price_per_luminaries'])&&
+                            !empty($totalRoomQuotationPrice['price_per_luminaries'])?
+                            $totalRoomQuotationPrice['price_per_luminaries']:0.00;
+                    $totalPrice->installation_charges =
+                            !empty($totalRoomQuotationPrice)&&
+                            isset($totalRoomQuotationPrice['installation_charges'])&&
+                            !empty($totalRoomQuotationPrice['installation_charges'])?
+                            $totalRoomQuotationPrice['installation_charges']:0.00;
+                    $totalPrice->discount_price =
+                            !empty($totalRoomQuotationPrice)&&
+                            isset($totalRoomQuotationPrice['discount_price'])&&
+                            !empty($totalRoomQuotationPrice['discount_price'])?
+                            $totalRoomQuotationPrice['discount_price']:0.00;
+                    $totalPrice->total = $totalPrice->main_product_charge +
+                    $totalPrice->accessory_product_charge + get_percentage(
+                        $totalPrice->price_per_luminaries +
+                        $totalPrice->installation_charges,
+                        $totalPrice->discount_price
+                    );
                 }
-                $projectParams['project_id'] = $this->requestData['project_id'];
-                
-                $totalPrice = $this->handleTotalPrice($user_data['user_type'], $projectParams);
+                // $totalPrice = $this->handleTotalPrice($user_data['user_type'], $projectParams);
             } else {
                 $this->response([
                     'code' => HTTP_NOT_FOUND,
@@ -1214,7 +1404,7 @@ class ProjectController extends BaseController
                 $data['project_room_id'] = $product['projectRoomId'];
                 $data['product_id'] = $product['productId'];
                 $data['article_code'] = isset($product['article_code'])?$product['article_code']:'';
-                $data['type'] = 2;
+                $data['type'] = PROJECT_ROOM_ACCESSORY_PRODUCT;
                 return $data;
             }, $this->requestData);
 
@@ -1296,8 +1486,12 @@ class ProjectController extends BaseController
                 'rules' => 'trim|required|is_natural_no_zero'
             ]);
         }
-        
+
         $this->form_validation->set_rules($validationRules);
+
+        if ((int)$this->user['user_type'] === INSTALLER && (int)$this->user['is_owner'] === ROLE_OWNER) {
+            $this->form_validation->set_rules('installer_id', 'Installer ID', 'trim|required|is_natural_no_zero');
+        }
     }
 
     /**
@@ -1315,6 +1509,7 @@ class ProjectController extends BaseController
 
         foreach ($this->requestData as $id => $room) {
             $this->form_validation->set_rules('rooms['. $id .'][projectId]', 'Project id', 'trim|required|is_natural_no_zero');
+            $this->form_validation->set_rules('rooms['. $id .'][level]', 'Level', 'trim|required|is_natural_no_zero');
             $this->form_validation->set_rules('rooms['. $id .'][roomId]', 'Room id', 'trim|required|is_natural_no_zero');
             $this->form_validation->set_rules('rooms['. $id .'][name]', 'Name', 'trim|required');
             $this->form_validation->set_rules('rooms['. $id .'][length]', 'Length', 'trim|required|numeric');
@@ -1413,7 +1608,12 @@ class ProjectController extends BaseController
                 'label' => 'Project',
                 'field' => 'project_id',
                 'rules' => 'trim|required|is_natural_no_zero'
-            ]
+            ],
+            [
+                'label' => 'Level',
+                'field' => 'level',
+                'rules' => 'trim|is_natural_no_zero'
+            ],
         ]);
     }
 

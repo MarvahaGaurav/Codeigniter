@@ -1321,6 +1321,60 @@
                 }
             }
         },
+        "/products/articles": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Products Article List",
+                "description": "Fetch proudcts article API",
+                "operationId": "productArticleFetch_get",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Language-Code",
+                        "in": "header",
+                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "uld",
+                        "in": "query",
+                        "description": "1 - to fetch only products with uld, ignore this key to fetch all products",
+                        "type": "string"
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search text",
+                        "type": "string"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "404": {
+                        "description": "No data found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
         "/user/profile": {
             "get": {
                 "tags": [
@@ -1708,6 +1762,12 @@
                         "type": "string"
                     },
                     {
+                        "name": "installer_id",
+                        "in": "formData",
+                        "description": "Required for Installer Owner type",
+                        "type": "string"
+                    },
+                    {
                         "name": "levels",
                         "in": "formData",
                         "description": "",
@@ -1919,6 +1979,69 @@
                 }
             }
         },
+        "/projects/{project_id}/levels/{level}/rooms": {
+            "get": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "List project rooms by project level",
+                "description": "List rooms for a given project",
+                "operationId": "projectsRooms_get",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Language-Code",
+                        "in": "header",
+                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "accesstoken",
+                        "in": "header",
+                        "description": "Access token received during signup or login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "levels",
+                        "in": "path",
+                        "description": "",
+                        "type": "string"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "404": {
+                        "description": "Data not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
         "/projects/rooms": {
             "delete": {
                 "tags": [
@@ -1952,6 +2075,195 @@
                         "name": "project_room_id",
                         "in": "formData",
                         "description": "",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "422": {
+                        "description": "Validation Errors"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/projects/{project_id}/levels": {
+            "get": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "List project Levels",
+                "description": "List projects levels posted by current user",
+                "operationId": "projectLevels_get",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Language-Code",
+                        "in": "header",
+                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "accesstoken",
+                        "in": "header",
+                        "description": "Access token received during signup or login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "404": {
+                        "description": "Data not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/projects/levels": {
+            "put": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Update project levels status",
+                "description": "Update project level status",
+                "operationId": "levelDone_put",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Language-Code",
+                        "in": "header",
+                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "accesstoken",
+                        "in": "header",
+                        "description": "Access token received during signup or login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "project_id",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "level",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "422": {
+                        "description": "Validation Errors"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Post Project Level resource - (clone)",
+                "description": "inserts to resource based on tasks (eg. clone)",
+                "operationId": "levelDone_post",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Language-Code",
+                        "in": "header",
+                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "accesstoken",
+                        "in": "header",
+                        "description": "Access token received during signup or login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "project_id",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "reference_level",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "destination_levels[]",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "task",
+                        "in": "formData",
+                        "description": "task = clone (for cloning  levels)",
                         "required": true,
                         "type": "string"
                     }
@@ -2383,6 +2695,13 @@
                         "type": "string"
                     },
                     {
+                        "name": "project_id",
+                        "in": "query",
+                        "description": "Project ID - search will be based on project location",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
                         "name": "search_radius",
                         "in": "query",
                         "description": "Maxiumum Search Radius for which the installers will be fetched",
@@ -2615,6 +2934,24 @@
                         "type": "string"
                     },
                     {
+                        "name": "company_address",
+                        "in": "formData",
+                        "description": "Required when user type is Installer, with role owner",
+                        "type": "string"
+                    },
+                    {
+                        "name": "latitude",
+                        "in": "formData",
+                        "description": "Required when user type is Installer, with role owner",
+                        "type": "string"
+                    },
+                    {
+                        "name": "longitude",
+                        "in": "formData",
+                        "description": "Required when user type is Installer, with role owner",
+                        "type": "string"
+                    },
+                    {
                         "name": "prm_user_countrycode",
                         "in": "formData",
                         "description": "91",
@@ -2800,6 +3137,66 @@
                     },
                     "200": {
                         "description": "Location updated"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/users/projects": {
+            "post": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Post Project resource - (clone)",
+                "description": "inserts to resource based on tasks (eg. clone)",
+                "operationId": "clone_post",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Language-Code",
+                        "in": "header",
+                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "accesstoken",
+                        "in": "header",
+                        "description": "Access token received during signup or login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "project_id",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "task",
+                        "in": "formData",
+                        "description": "task = clone (for cloning  projects)",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "422": {
+                        "description": "Validation Errors"
                     },
                     "500": {
                         "description": "Internal server error"

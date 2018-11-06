@@ -12,3 +12,9 @@
 .pac-container{
     z-index: 9999;
 }
+
+#address-map-icon {
+    position: absolute !important;
+    bottom: 13px !important;
+    right: 11px !important;
+}

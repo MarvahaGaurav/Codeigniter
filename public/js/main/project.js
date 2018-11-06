@@ -1,4 +1,4 @@
-requirejs.config( {
+requirejs.config({
     baseUrl: "public/js",
     waitSeconds: 60,
     paths: {
@@ -18,57 +18,57 @@ requirejs.config( {
     },
     shim: {
         //dependencies
-        bootstrap: [ 'jquery' ],
-        selectPicker: [ 'bootstrap' ],
-        common: [ 'bootstrap' ],
-        jqueryScrollbar: [ 'jquery' ],
-        jqueryValidator: [ 'jquery' ],
-        helper: [ 'jqueryValidator' ],
-        autocomplete: [ 'jquery' ],
-        location: [ 'autocomplete' ],
+        bootstrap: ['jquery'],
+        selectPicker: ['bootstrap'],
+        common: ['bootstrap'],
+        jqueryScrollbar: ['jquery'],
+        jqueryValidator: ['jquery'],
+        helper: ['jqueryValidator'],
+        autocomplete: ['jquery'],
+        location: ['autocomplete'],
         mapsAPI: ['jquery'],
         mapsRender: ['mapsAPI'],
         mapsPlaces: ['mapsMarker'],
         mapsMarker: ['mapsRender'],
     }
-} );
+});
 
 requirejs(
-        [ 
-            "jquery", "bootstrap", "common", "jqueryScrollbar", "jqueryValidator",
-            "helper", "autocomplete", "location", "selectPicker", "mapsAPI", "mapsRender",
-            "mapsPlaces", "mapsMarker"
-        ],
-        function ( $ ) {
-            var $otherProjectCount = $("#other-project-count");
+    [
+        "jquery", "bootstrap", "common", "jqueryScrollbar", "jqueryValidator",
+        "helper", "autocomplete", "location", "selectPicker", "mapsAPI", "mapsRender",
+        "mapsPlaces", "mapsMarker"
+    ],
+    function ($) {
+        var $otherProjectCount = $("#other-project-count");
 
-            $otherProjectCount.on('keypress', function () {
-                var self = this,
-                    $self = $(this),
-                    val = parseInt($self.val());
+        $otherProjectCount.on('keypress', function () {
+            var self = this,
+                $self = $(this),
+                val = parseInt($self.val());
 
-                if (val < 12) {
-                    $self.val('');
-                    $self.val(11);
-                }
-            });
+            if (val < 12) {
+                $self.val('');
+                $self.val(11);
+            }
+        });
 
-            $("#increment-others").on("click", function() {
-                var otherProjectCount = parseInt($otherProjectCount.val());
-                $otherProjectCount.val(otherProjectCount + 1);
-            });
+        $("#increment-others").on("click", function () {
+            var otherProjectCount = parseInt($otherProjectCount.val());
+            $otherProjectCount.val(otherProjectCount + 1);
+        });
 
-            $("#decrement-others").on("click", function() {
-                var otherProjectCount = parseInt($otherProjectCount.val());
-                if (otherProjectCount < 12 ) {
-                    $otherProjectCount.val(11);
-                    return;
-                }
-                $otherProjectCount.val(otherProjectCount - 1);
-            }); 
-            // $( "#levels" ).selectpicker();
-        },
-        function () {
+        $("#decrement-others").on("click", function () {
+            var otherProjectCount = parseInt($otherProjectCount.val());
+            if (otherProjectCount < 12) {
+                $otherProjectCount.val(11);
+                return;
+            }
+            $otherProjectCount.val(otherProjectCount - 1);
+        });
+        // $( "#levels" ).selectpicker();
+    },
+    function () {
 
-        }
+    }
 );

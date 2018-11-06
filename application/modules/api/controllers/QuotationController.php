@@ -137,9 +137,9 @@ class QuotationController extends BaseController
                 'company_id' => $user_data['company_id'],
                 'user_id' => $user_data['user_id'],
                 'additional_product_charges' =>
-                     isset($this->requestData['additional_product_charges'])?(double)$this->requestData['additional_product_charges']:0.00,
+                    isset($this->requestData['additional_product_charges'])?(double)$this->requestData['additional_product_charges']:0.00,
                 'discount' =>
-                     isset($this->requestData['discount'])?(double)$this->requestData['discount']:0.00,
+                    isset($this->requestData['discount'])?(double)$this->requestData['discount']:0.00,
                 'created_at' => $this->datetime,
                 'created_at_timestamp' => time(),
                 'updated_at' => $this->datetime,
@@ -246,20 +246,21 @@ class QuotationController extends BaseController
                 ]);
             }
 
-            $this->load->model('utility');
+            $this->load->helper('utility');
             $quotations = array_map(function ($quotation) {
                 $quotation['quotation_price'] = json_decode($quotation['quotation_price'], true);
                 $quotation['quotation_price']['additional_product_charges'] = (double)$quotation['additional_product_charges'];
                 $quotation['quotation_price']['discount'] = (double)$quotation['discount'];
                 $quotation['quotation_price']['main_product_charge'] = 0.00;
                 $quotation['quotation_price']['accessory_product_charge'] = 0.00;
+                $quotation['quotation_price']['total'] = 0.00;
                 $quotation['quotation_price']['total'] = $quotation['quotation_price']['main_product_charge'] +
                                                     $quotation['quotation_price']['accessory_product_charge'] +
                                                     get_percentage(
-                                                        $quotation['price']['price_per_luminaries'] +
-                                                        $quotation['price']['installation_charges'] +
-                                                        $quotation['price']['additional_product_charges'],
-                                                        $quotation['price']['discount']
+                                                        $quotation['quotation_price']['price_per_luminaries'] +
+                                                        $quotation['quotation_price']['installation_charges'] +
+                                                        $quotation['quotation_price']['additional_product_charges'],
+                                                        $quotation['quotation_price']['discount']
                                                     );
 
                 unset($quotation['discount'], $quotation['additional_product_charges']);
@@ -274,6 +275,10 @@ class QuotationController extends BaseController
                 $nextCount = $params['offset'] + API_RECORDS_PER_PAGE;
             }
 
+            $approvedQuotation = array_filter($quotations, function ($quotation) {
+                return (int)$quotation['status'] === QUOTATION_STATUS_APPROVED;
+            });
+
             $this->response([
                 'code' => HTTP_OK,
                 'msg' => $this->lang->line('quotation_fetched'),
@@ -281,7 +286,8 @@ class QuotationController extends BaseController
                 'total' => $count,
                 'next_count' => $nextCount,
                 'has_more_pages' => $hasMorePages,
-                'per_page_count' => $params['limit']
+                'per_page_count' => $params['limit'],
+                'is_quotation_approved' => (bool)!empty($approvedQuotation)
             ]);
         } catch (\Exception $error) {
             $this->response([

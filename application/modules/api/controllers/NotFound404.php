@@ -14,10 +14,11 @@ class NotFound404 extends BaseController
     {
         $this->response(
             [
-            "code" => HTTP_NOT_FOUND,
-            "api_code_result" => "NOT_FOUND",
-            "msg" => $this->lang->line("invalid_url")
-            ], HTTP_NOT_FOUND
+                "code" => HTTP_NOT_FOUND,
+                "api_code_result" => "NOT_FOUND",
+                "msg" => $this->lang->line("invalid_url")
+            ],
+            HTTP_NOT_FOUND
         );
     }
     
@@ -25,10 +26,11 @@ class NotFound404 extends BaseController
     {
         $this->response(
             [
-            "code" => HTTP_NOT_FOUND,
-            "api_code_result" => "NOT_FOUND",
-            "msg" => $this->lang->line("invalid_url")
-            ], HTTP_NOT_FOUND
+                "code" => HTTP_NOT_FOUND,
+                "api_code_result" => "NOT_FOUND",
+                "msg" => $this->lang->line("invalid_url")
+            ],
+            HTTP_NOT_FOUND
         );
     }
 
@@ -36,10 +38,11 @@ class NotFound404 extends BaseController
     {
         $this->response(
             [
-            "code" => HTTP_NOT_FOUND,
-            "api_code_result" => "NOT_FOUND",
-            "msg" => $this->lang->line("invalid_url")
-            ], HTTP_NOT_FOUND
+                "code" => HTTP_NOT_FOUND,
+                "api_code_result" => "NOT_FOUND",
+                "msg" => $this->lang->line("invalid_url")
+            ],
+            HTTP_NOT_FOUND
         );
     }
 
@@ -47,11 +50,11 @@ class NotFound404 extends BaseController
     {
         $this->response(
             [
-            "code" => HTTP_NOT_FOUND,
-            "api_code_result" => "NOT_FOUND",
-            "msg" => $this->lang->line("invalid_url")
-            ], HTTP_NOT_FOUND
+                "code" => HTTP_NOT_FOUND,
+                "api_code_result" => "NOT_FOUND",
+                "msg" => $this->lang->line("invalid_url")
+            ],
+            HTTP_NOT_FOUND
         );
     }
-
 }

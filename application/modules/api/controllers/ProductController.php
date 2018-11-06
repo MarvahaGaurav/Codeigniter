@@ -358,7 +358,6 @@ class ProductController extends BaseController
                     $product['is_selected'] = (bool)in_array($product['product_id'], $projectRoomProductIds);
                     return $product;
                 }, $data);
-
             }
 
             $this->load->helper('utility');
@@ -604,6 +603,123 @@ class ProductController extends BaseController
     }
 
     /**
+     * @SWG\Get(path="/products/articles",
+     *   tags={"Products"},
+     *   summary="Products Article List",
+     *   description="Fetch proudcts article API",
+     *   operationId="productArticleFetch_get",
+     *   produces={"application/json"},
+     * @SWG\Parameter(
+     *     name="X-Language-Code",
+     *     in="header",
+     *     description="en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+     *     type="string",
+     *     required=true
+     * ),
+     * @SWG\Parameter(
+     *     name="uld",
+     *     in="query",
+     *     description="1 - to fetch only products with uld, ignore this key to fetch all products",
+     *     type="string",
+     *   ),
+     * @SWG\Parameter(
+     *     name="search",
+     *     in="query",
+     *     description="Search text",
+     *     type="string",
+     *   ),
+     * @SWG\Parameter(
+     *     name="offset",
+     *     in="query",
+     *     description="",
+     *     type="string",
+     *   ),
+     * @SWG\Response(response=200, description="OK"),
+     * @SWG\Response(response=401, description="Unauthorize"),
+     * @SWG\Response(response=404, description="No data found"),
+     * @SWG\Response(response=500, description="Internal server error"),
+     * )
+     */
+    public function productArticles_get()
+    {
+        $language_code = $this->langcode_validate();
+
+        $this->requestData = $this->get();
+
+        $this->requestData = trim_input_parameters($this->requestData, false);
+
+        $params['where']['language_code'] = $language_code;
+        $params['offset'] =
+                isset($this->requestData['offset'])&&is_numeric($this->requestData['offset'])&&(int)$this->requestData['offset'] > 0 ? (int)$this->requestData['offset']: 0;
+        $params['limit'] = API_RECORDS_PER_PAGE;
+
+        if (isset($this->requestData['uld']) && (int)$this->requestData['uld'] === 1) {
+            $params['where']['CHAR_LENGTH(uld) >'] = 0;
+        }
+
+        if (isset($this->requestData['search']) && strlen(trim($this->requestData['search'])) > 0) {
+            $search = trim($this->requestData['search']);
+            $params['where']['title LIKE'] = "%{$search}%";
+        }
+
+        $this->load->model(['ProductSpecification', 'ProductMountingTypes']);
+        $this->load->helper(['db']);
+
+        $this->benchmark->mark('start');
+        $data = $this->ProductSpecification->fetchArticles($params);
+        $this->benchmark->mark('stop');
+        $articlesData = $data['data'];
+        $count = $data['count'];
+
+        if (empty($articlesData)) {
+            $this->response([
+                'code' => HTTP_NOT_FOUND,
+                'msg' => $this->lang->line('no_data_found')
+            ]);
+        }
+
+        $productIds = array_unique(array_column($articlesData, 'product_id'));
+
+        $productMountingTypeData = $this->ProductMountingTypes->get($productIds);
+
+        $articlesData = getDataWith(
+            $articlesData,
+            $productMountingTypeData,
+            'product_id',
+            'product_id',
+            'mounting_types',
+            'type'
+        );
+
+        $articlesData = array_map(function ($article) {
+            $article['image'] = preg_replace("/^\/home\/forge\//", "https://", $article['image']);
+            $article['title'] = trim(strip_tags($article['title']));
+            return $article;
+        }, $articlesData);
+
+        $hasMorePages = false;
+        $nextCount = -1;
+
+        if ((int)$count > ($params['offset'] + $params['limit'])) {
+            $hasMorePages = true;
+            $nextCount = $params['offset'] + $params['limit'];
+        }
+
+        $this->response([
+            'code' => HTTP_OK,
+            'msg' => $this->lang->line('success'),
+            'data' => $articlesData,
+            'next_count' => isset($nextCount)?$nextCount:-1,
+            'has_more_pages' => $hasMorePages,
+            'per_page_count' => $params['limit'],
+            'total' => isset($count)?$count:0,
+            'elapsed_time' => $this->benchmark->elapsed_time('start', 'stop')
+        ]);
+
+    }
+
+
+    /**
      * Rooms related products
      *
      * @return void
@@ -611,9 +727,7 @@ class ProductController extends BaseController
     public function roomRelatedProducts()
     {
         try {
-
         } catch (\Exception $error) {
-
         }
     }
 }

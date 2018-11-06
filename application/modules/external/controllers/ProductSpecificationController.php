@@ -53,6 +53,7 @@ class ProductSpecificationController extends BaseController
     {
         $data['product_id'] = $product_id;
         $data["articlecode"]= $specification_data["articlecode"];
+        $data['language_code'] = $language_code;
         $data['image'] = $specification_data['image'];
         $data["ean"]= $specification_data["ean"];
         $data["title"]= $specification_data["title"];

@@ -6,13 +6,13 @@ require_once 'BaseModel.php';
 
 use DatabaseExceptions\SelectException;
 
-class Room extends BaseModel {
+class Room extends BaseModel
+{
 
     public function __construct()
     {
         $this->load->database();
         $this->tableName = "rooms";
-
     }
 
 
@@ -25,8 +25,7 @@ class Room extends BaseModel {
             $query     = "*";
             $this->db->where("rooms.room_id", $options['room_id']);
             $singleRow = true;
-        }
-        else {
+        } else {
             $query = "SQL_CALC_FOUND_ROWS room_id, title, image, icon, ugr, uo, reflection_values_wall,
                     reflection_values_ceiling, reflection_values_floor, maintainance_factor, lux_values,
                     reference_height";
@@ -52,19 +51,12 @@ class Room extends BaseModel {
         $data = [];
 
         $exec = $this->db->get();
-
         if ($singleRow) {
             $data = $exec->row_array();
-        }
-        else {
+        } else {
             $data['result'] = $exec->result_array();
             $data['count']  = $this->db->query("SELECT FOUND_ROWS() as count")->row()->count;
         }
-
         return $data;
-
     }
-
-
-
 }

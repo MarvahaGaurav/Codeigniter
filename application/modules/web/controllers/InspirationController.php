@@ -190,7 +190,6 @@ class InspirationController extends BaseController
                     $this->session->set_flashdata("flash-message", $this->lang->line("inspiration_added"));
                     $this->session->set_flashdata("flash-type", "success");
                     redirect(base_url("home/inspirations"));
-                
                 } else {
 
                 }

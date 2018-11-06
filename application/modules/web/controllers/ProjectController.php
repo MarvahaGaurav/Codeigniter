@@ -3,15 +3,13 @@
 defined("BASEPATH") or exit("No direct script access allowed");
 require_once "BaseController.php";
 
-class ProjectController extends BaseController {
+class ProjectController extends BaseController
+{
 
     public function __construct()
     {
         parent::__construct();
-
     }
-
-
 
     public function index()
     {
@@ -19,7 +17,7 @@ class ProjectController extends BaseController {
         if (isset($this->userInfo, $this->userInfo['user_id']) && ! empty($this->userInfo['user_id'])) {
             $this->data['userInfo'] = $this->userInfo;
         }
-        if ( ! empty($this->userInfo) && isset($this->userInfo['status']) && $this->userInfo['status'] != BLOCKED) {
+        if (! empty($this->userInfo) && isset($this->userInfo['status']) && $this->userInfo['status'] != BLOCKED) {
             $params['limit'] = 5;
             $page            = $this->input->get('page');
             $search          = $this->input->get('search');
@@ -45,6 +43,11 @@ class ProjectController extends BaseController {
         }
     }
 
+    /**
+     * create project
+     *
+     * @return void
+     */
     public function create()
     {
         $this->activeSessionGuard();
@@ -52,35 +55,78 @@ class ProjectController extends BaseController {
         $this->load->config('css_config');
         $this->data['css'] = $this->config->item('create-project');
 
+        $this->userTypeHandling([INSTALLER, PRIVATE_USER, BUSINESS_USER, WHOLESALER, ELECTRICAL_PLANNER], base_url('home/applications'));
+
+        $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['project_add'], base_url('home/applications'));
+
+        $languageCode = "en";
+
+        $this->data['employees'] = [];
+
+        if ((int)$this->userInfo['user_type'] === INSTALLER && (int)$this->userInfo['is_owner'] === ROLE_OWNER) {
+            $this->load->model('Employee');
+            $this->data['employees'] = $this->Employee->employees([
+                'where' => ['company_id' => $this->userInfo['company_id'], 'is_owner' => ROLE_EMPLOYEE]
+            ]);
+        }
+
         try {
             $post = $this->input->post();
             if (isset($post) and ! empty($post)) {
-
                 $this->load->library('form_validation');
                 $this->form_validation->CI = & $this;
                 $rules                     = $this->setValidationRule();
                 $this->form_validation->set_rules($rules);
                 if ($this->form_validation->run()) {
-
                     $insert = [
                         "user_id"       => $this->userInfo['user_id'],
-                        "number"        => $post['project_number'],
-                        "name"          => $post['project_name'],
-                        "address"       => $post['address'],
-                        "levels"        => $post['levels'],
-                        "created_at"    => date('Y-m-d H:i:s'),
-                        "language_code" => "en"
+                        "number"        => trim($post['project_number']),
+                        "name"          => trim($post['project_name']),
+                        "address"       => trim($post['address']),
+                        "lat"       => trim($post['address_lat']),
+                        "lng"       => trim($post['address_lng']),
+                        "levels"        => trim($post['levels']),
+                        "created_at"    => $this->datetime,
+                        "updated_at"    => $this->datetime,
+                        'created_at_timestamp' => $this->timestamp,
+                        'updated_at_timestamp' => $this->timestamp,
+                        "language_code" => $languageCode
                     ];
+
+                    $levelsCount = (int)trim($post['levels']);
+                    $levelsData = [];
+
+                    if (in_array((int)$this->userInfo['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], true)) {
+                        $insert['company_id'] = (int)$this->userInfo['company_id'];
+                    }
+
+                    if ((int)$this->userInfo['user_type'] === INSTALLER &&
+                     (int)$this->userInfo['is_owner'] === ROLE_OWNER
+                     && strlen(trim($post['installers'])) > 0) {
+                        $insert['installer_id'] = encryptDecrypt(trim($post['installers']), 'decrypt');
+                    }
 
                     $this->load->model("Project");
                     $this->db->trans_begin();
-                    $id = $this->Project->save_project($insert);
+                    $projectId = $this->Project->save_project($insert);
+
+                    foreach (range(1, $levelsCount) as $key => $level) {
+                        $levelsData[$key] = [
+                            'project_id' => $projectId,
+                            'level' => $level
+                        ];
+                    }
+
+                    $this->load->model("UtilModel");
+            
+                    $this->UtilModel->insertBatch('project_levels', $levelsData);
                     if ($this->db->trans_status() === true) {
                         $this->db->trans_commit();
-                        $this->session->set_userdata('project_id', $id);
+                        $this->session->set_userdata('project_id', $projectId);
                         $this->session->set_flashdata("flash-message", 'Project Created Successfully');
                         $this->session->set_flashdata("flash-type", "success");
-                        redirect(base_url("home/projects/application"));
+
+                        redirect(base_url("home/create-projects/levels"));
                     } else {
                         throw new Exception("Something Went Wrong", 500);
                     }
@@ -91,20 +137,28 @@ class ProjectController extends BaseController {
         } catch (Exception $ex) {
             $this->db->trans_rollback();
         }
-
     }
 
 
 
     private function setValidationRule()
     {
-        return [
+        $rules =  [
             ['field' => 'project_number', 'label' => 'Project Number', 'rules' => 'trim'],
             ['field' => 'project_name', 'label' => 'Project Name', 'rules' => 'required|trim'],
             ['field' => 'levels', 'label' => 'Levels', 'rules' => 'required|trim'],
-            ['field' => 'address', 'label' => 'Address', 'rules' => 'required|trim']
+            ['field' => 'address', 'label' => 'Address', 'rules' => 'required|trim'],
+            ['field' => 'address_lat', 'label' => 'Address', 'rules' => 'required|trim'],
+            ['field' => 'address_lng', 'label' => 'Address', 'rules' => 'required|trim'],
         ];
 
+        if ((int)$this->userInfo['user_type'] === INSTALLER && (int)$this->userInfo['is_owner'] === ROLE_OWNER) {
+            $rules[] = [
+                'field' => 'installer_id', 'label' => 'Installer', 'rules' => 'trim|is_natural_no_zero'
+            ];
+        }
+
+        return $rules;
     }
 
 
@@ -134,11 +188,8 @@ class ProjectController extends BaseController {
             $this->data['type']              = $params['type'];
 
             website_view('projects/application', $this->data);
+        } catch (\Exception $error) {
         }
-        catch (\Exception $error) {
-
-        }
-
     }
 
 
@@ -182,11 +233,8 @@ class ProjectController extends BaseController {
             $this->data['js']        = 'caltest';
             $this->data['is_edit']   = $this->checkData($this->data['project_id']);
             website_view('projects/room_list', $this->data);
+        } catch (Exception $ex) {
         }
-        catch (Exception $ex) {
-
-        }
-
     }
 
 
@@ -201,7 +249,6 @@ class ProjectController extends BaseController {
             $i = $i * 0;
         }
         return $i;
-
     }
 
 
@@ -217,7 +264,7 @@ class ProjectController extends BaseController {
             $this->activeSessionGuard();
             $this->data['userInfo']       = $this->userInfo;
             $this->data['project_id']     = $this->session->userdata('project_id');
-            $this->data['application_id'] = $application_id;
+            $this->data['application_id'] = isset($application_id)?$application_id:'';
 
             $applicationId = encryptDecrypt($applicationId, 'decrypt');
 
@@ -246,11 +293,8 @@ class ProjectController extends BaseController {
             $this->data['roomChunks']  = $rooms['result'];
 
             website_view('projects/rooms_type', $this->data);
+        } catch (\Exception $error) {
         }
-        catch (\Exception $error) {
-
-        }
-
     }
 
 
@@ -270,7 +314,7 @@ class ProjectController extends BaseController {
             $this->load->helper('cookie');
             $cookie_data            = get_cookie("add_room_form_data");
             parse_str($cookie_data, $get_array);
-            if ( ! count($get_array)) {
+            if (! count($get_array)) {
                 $get_array = $this->setBlankArray();
             }
 
@@ -279,7 +323,7 @@ class ProjectController extends BaseController {
             $this->data['cookie_data']   = $get_array;
             $this->data['js']            = 'room_js';
             $this->load->model("Room");
-            $option                      = ["where" => ["room_id" => encryptDecrypt($roomId, 'decrypt'), "application_id" => encryptDecrypt($applicationId, 'decrypt')]];
+            $option = ["where" => ["room_id" => encryptDecrypt($roomId, 'decrypt'), "application_id" => encryptDecrypt($applicationId, 'decrypt')]];
 
             $this->data['room_id']        = $roomId;
             $this->data['units']          = ["Meter", "Inch", "Yard"];
@@ -287,11 +331,8 @@ class ProjectController extends BaseController {
             $this->data['room']           = $this->Room->get($option, true);
 
             website_view('projects/add_room', $this->data);
+        } catch (Exception $ex) {
         }
-        catch (Exception $ex) {
-
-        }
-
     }
 
 
@@ -318,7 +359,6 @@ class ProjectController extends BaseController {
             "room_pendant_length"      => "",
             "room_pendant_length_unit" => ""
         ];
-
     }
 
 
@@ -334,11 +374,8 @@ class ProjectController extends BaseController {
                 return json_decode($selectd_room, true);
             }
             return ["articel_id" => "", "product_id" => "", "type" => "", "product_name" => ""];
+        } catch (Exception $ex) {
         }
-        catch (Exception $ex) {
-
-        }
-
     }
 
 
@@ -349,7 +386,6 @@ class ProjectController extends BaseController {
     private function mountingType()
     {
         return get_cookie("mounting");
-
     }
 
 
@@ -360,7 +396,6 @@ class ProjectController extends BaseController {
     private function EditMountingType()
     {
         return get_cookie("quick_mounting");
-
     }
 
 
@@ -389,11 +424,8 @@ class ProjectController extends BaseController {
             $this->data["csrfName"]        = $this->security->get_csrf_token_name();
             $this->data["csrfToken"]       = $this->security->get_csrf_hash();
             website_view('projects/select_product', $this->data);
+        } catch (Exception $ex) {
         }
-        catch (Exception $ex) {
-
-        }
-
     }
 
 
@@ -440,11 +472,9 @@ class ProjectController extends BaseController {
             $this->data['related_products'] = $relatedProducts;
 
             website_view('projects/select_article', $this->data);
-        }
-        catch (Exception $ex) {
+        } catch (Exception $ex) {
             show404("ERROR");
         }
-
     }
 
 
@@ -455,7 +485,7 @@ class ProjectController extends BaseController {
     function get_product()
     {
         try {
-            if ( ! $this->input->is_ajax_request()) {
+            if (! $this->input->is_ajax_request()) {
                 exit('No direct script access allowed');
             }
             $post = $this->input->post();
@@ -473,19 +503,15 @@ class ProjectController extends BaseController {
                     "code" => 200,
                     "data" => $array['data']
                 ];
-            }
-            else {
+            } else {
                 $res = [
                     "code" => 500,
                     "data" => []
                 ];
             }
             echo json_encode($res);
+        } catch (Exception $ex) {
         }
-        catch (Exception $ex) {
-
-        }
-
     }
 
 
@@ -496,7 +522,6 @@ class ProjectController extends BaseController {
         $this->data["csrfName"]  = $this->security->get_csrf_token_name();
         $this->data["csrfToken"] = $this->security->get_csrf_hash();
         website_view('quickcalc/evaluation_result', $this->data);
-
     }
 
 
@@ -517,7 +542,7 @@ class ProjectController extends BaseController {
                 "project_id"           => $post['project_id'],
                 "room_id"              => $room['room_id'],
                 "name"                 => $room['title'],
-                "count"                => 1,
+                "level"                => 1,
                 "length"               => $lenght,
                 "width"                => $width,
                 "height"               => $height,
@@ -540,11 +565,9 @@ class ProjectController extends BaseController {
             $this->saveRoomProduct($room_id, $post);
             $this->db->trans_commit();
             redirect(base_url("home/projects/XwD3wMO9DZgBkyTR19PDWgPer3DPer3DPer3A6265617574796c69766b696e67646f6d/rooms"));
-        }
-        catch (Exception $ex) {
+        } catch (Exception $ex) {
             show404("Something Went Worng!! Please Try After Some Time");
         }
-
     }
 
 
@@ -563,7 +586,6 @@ class ProjectController extends BaseController {
         ];
         $this->load->model("UtilModel");
         return $this->UtilModel->insertTableData($insert, 'project_room_products', true);
-
     }
 
 
@@ -587,7 +609,6 @@ class ProjectController extends BaseController {
         $this->load->helper("utility_helper");
 
         return convert_units($length, $specification_string);
-
     }
 
 
@@ -603,11 +624,8 @@ class ProjectController extends BaseController {
             $this->load->model("UtilModel");
             $this->data['room_data'] = $this->UtilModel->selectQuery("*", "project_rooms", ["single_row" => true, "where" => ["id" => $id]]);
             website_view('projects/view_result', $this->data);
+        } catch (Exception $ex) {
         }
-        catch (Exception $ex) {
-
-        }
-
     }
 
 
@@ -618,16 +636,18 @@ class ProjectController extends BaseController {
     public function project_details($project_id)
     {
         try {
+            $this->activeSessionGuard();
             $id                                = encryptDecrypt($project_id, "decrypt");
             $this->load->model("Project");
             $this->load->model("ProjectRooms");
+            $this->data['userInfo'] = $this->userInfo;
             $roomParams['where']['project_id'] = $id;
             $roomParams['limit']               = 5;
             $roomData                          = $this->ProjectRooms->get($roomParams);
             $this->data['project']             = $this->Project->details(["project_id" => $id]);
             $rooms                             = $roomData['data'];
             $roomCount                         = (int) $roomData['count'];
-            if ( ! empty($rooms)) {
+            if (! empty($rooms)) {
                 $roomIds                                       = array_column($rooms, 'project_room_id');
                 $this->load->model('ProjectRoomProducts');
                 $roomProductParams['where']['project_room_id'] = $roomIds;
@@ -648,13 +668,9 @@ class ProjectController extends BaseController {
 
 
             website_view('projects/project_details', $this->data);
+        } catch (Exception $ex) {
         }
-        catch (Exception $ex) {
-
-        }
-
     }
-
 
 
     function edit_room($applicationId, $project_room_id)
@@ -675,8 +691,11 @@ class ProjectController extends BaseController {
             $this->data['js']              = 'room_edit';
 
             $product                   = $this->UtilModel->selectQuery("*", "project_room_products", ["single_row" => true, "where" => ["project_room_id" => $room_id]]);
-            $product_spe               = $this->UtilModel->selectQuery("*", "product_specifications",
-                                                                       ["single_row" => true, "where" => ["articlecode" => $product['article_code'], "product_id" => $product['product_id']]]);
+            $product_spe               = $this->UtilModel->selectQuery(
+                "*",
+                "product_specifications",
+                ["single_row" => true, "where" => ["articlecode" => $product['article_code'], "product_id" => $product['product_id']]]
+            );
             $this->data['product_spe'] = $product_spe;
             $this->data['product']     = $product;
 
@@ -684,11 +703,8 @@ class ProjectController extends BaseController {
             $this->data['mounting_type'] = $this->EditMountingType();
             $this->data['selectd_room']  = $this->editSelectedRoomrray();
             website_view('projects/edit_room', $this->data);
+        } catch (Exception $ex) {
         }
-        catch (Exception $ex) {
-
-        }
-
     }
 
 
@@ -729,11 +745,9 @@ class ProjectController extends BaseController {
             $this->UtilModel->updateTableData($update, "project_room_products", ['project_room_id' => $post['project_room_id']]);
             $this->db->trans_commit();
             redirect(base_url("home/projects/" . $post['application_id'] . "/rooms"));
-        }
-        catch (Exception $ex) {
+        } catch (Exception $ex) {
             show404("Something Went Worng!! Please Try After Some Time");
         }
-
     }
 
 
@@ -760,7 +774,6 @@ class ProjectController extends BaseController {
             "room_pendant_length"      => "",
             "room_pendant_length_unit" => "Meter"
         ];
-
     }
 
 
@@ -776,13 +789,7 @@ class ProjectController extends BaseController {
                 return json_decode($selectd_room, true);
             }
             return ["articel_id" => "", "product_id" => "", "type" => "", "product_name" => ""];
+        } catch (Exception $ex) {
         }
-        catch (Exception $ex) {
-
-        }
-
     }
-
-
-
 }

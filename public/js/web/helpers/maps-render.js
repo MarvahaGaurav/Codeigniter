@@ -13,6 +13,30 @@
         window.map = map;
     }
 
+    var updateMapAddress = function (address) {
+        document.getElementById('address').value = address;
+    }
+
+    var updateMapCoordinates = function(LatLng) {
+        document.getElementById('address-lat').value = LatLng.lat();
+        document.getElementById('address-lng').value = LatLng.lng();
+    }
+
+    var geocoder = new google.maps.Geocoder();
+
+    var geocodePosition = function (LatLng) {
+        geocoder.geocode({latLng: LatLng}, function (response) {
+            if (response && response.length > 0) {
+                document.getElementById('maps-places').value = response[0]['formatted_address'];
+                window.updateMapCoordinates(LatLng);
+                window.updateMapAddress(response[0]['formatted_address']);
+            }
+        });
+    }
+
+    window.updateMapAddress = updateMapAddress;
+    window.updateMapCoordinates = updateMapCoordinates;
+    window.geocodePosition = window.geocodePosition|| geocodePosition;
     window.mapRender = mapRender;
     window.map = window.map || map;
 })($, window);

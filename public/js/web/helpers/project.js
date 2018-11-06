@@ -1,36 +1,57 @@
 (function ($) {
+    var $isInstallerOwner = $("#is-installer-owner");
     var normalizer = function (value) {
         return $.trim(value);
     };
 
     var validationRules = {
         // ignore: ":hidden:not(.selectpicker)",
-        ignore: [],
         project_number: {
-            normalizer: normalizer
         },
         project_name: {
             required: true,
-            normalizer: normalizer
         },
         levels: {
             required: true,
-            normalizer: normalizer
         },
         address: {
             required: true,
-            normalizer: normalizer,
             minlength: 3,
-            maxlength: 100
+            maxlength: 500
+        },
+        address_lat: {
+            required: true,
+            number: true
+        },
+        address_lng: {
+            required: true,
+            number: true
         }
     }
 
+    if ($isInstallerOwner.attr("data-status") == "true") {
+        validationRules['installers'] = {
+            required: true
+        };
+    }
+
     $("#add_project").validate({
+        ignore: [],
         rules: validationRules,
-        submitHandler: function (form) {
-            $(form).submit();
+        errorPlacement: function (error, $element) {
+            if ($element.attr('id') == 'other-project-count') {
+                $("#other-levels-wrapper").after(error);
+            } else if ($element.attr('name') == 'project_name' || $element.attr('name') == 'project_number') {
+                $element.after(error);
+            } else if ($element.attr('name') == 'address_lat' || $element.attr('name') == 'address_lng' || $element.attr('name') === 'address') {
+                $("#maps-modal").modal('show');
+                $("#address-map-error").html(error);
+            }
         }
     });
+
+    var $otherLevelCountDiv = $("#other-level-count-div"),
+        $otherProjectCount = $("#other-project-count");
 
     $("#levels").on('change', function () {
         var self = this,
@@ -40,21 +61,18 @@
             $self.closest(".block-div")
                 .removeClass("col-lg-4 col-md-4 col-sm-4 col-xs-12")
                 .addClass("col-lg-2 col-md-2 col-sm-2 col-xs-6");
-            $("#other-level-count-div").removeClass("concealable");
-            
+            $otherLevelCountDiv.removeClass("concealable");
+            $self.attr('name', '');
+            $otherProjectCount.attr('name', 'levels');
+
         } else {
             $self.closest(".block-div")
                 .addClass("col-lg-4 col-md-4 col-sm-4 col-xs-12")
                 .removeClass("col-lg-2 col-md-2 col-sm-2 col-xs-6");
-            $("#other-level-count-div").addClass("concealable");
+            $otherLevelCountDiv.addClass("concealable");
+            $self.attr('name', 'levels');
+            $otherProjectCount.attr('name', '');
         }
     });
 
-    $("#increment-others").on("click", function () {
-        var self = this,
-            $self = $(self),
-            $otherProjectCount = $("#other-project-count");
-        
-        $otherProjectCount.val();
-    });
 })($);

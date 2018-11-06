@@ -32,8 +32,8 @@
      *
      */
     $( "#choose_product" ).click( function () {
-        let formData = $( "#add_room_form" );
-        let form_data = $( formData ).serialize();
+        var formData = $( "#add_room_form" );
+        var form_data = $( formData ).serialize();
         console.log( form_data );
         /*Creating cookie with all form element*/
         eraseCookie( "add_room_form_data" );
@@ -65,9 +65,11 @@
      * @returns {undefined}
      */
     var openNewWindow = function () {
-        let application_id = $( "#application_id" ).val();
-        let room_id = $( "#room_id" ).val();
-        let url = window.location.protocol + "//" + window.location.hostname + "/home/projects/" + application_id + "/rooms/" + room_id + "/select-porduct";
+        var project_id = $( "#project_id" ).val();
+        var level = $( "#level" ).val();
+        var application_id = $( "#application_id" ).val();
+        var room_id = $( "#room_id" ).val();
+        var url = window.location.protocol + "//" + window.location.hostname + "/home/projects/" + project_id + "/levels/" + level + "/rooms/applications/" + application_id + "/rooms/" + room_id + "/dimensions" + "/products";
         window.location = url;
     };
 
@@ -105,8 +107,8 @@
      *
      */
     $( ":input" ).bind( "keyup change", function ( e ) {
-        let formData = $( "#add_room_form" );
-        let form_data = $( formData ).serialize();
+        var formData = $( "#add_room_form" );
+        var form_data = $( formData ).serialize();
         /*Creating cookie with all form element*/
         eraseCookie( "add_room_form_data" );
         setCookie( "add_room_form_data", form_data, 7 );
@@ -135,9 +137,9 @@
      */
     var calculate = function () {
         $( "#xy_total_error" ).html( "" );
-        let x = $( "#room_luminaries_x" ).val();
-        let y = $( "#room_luminaries_y" ).val();
-        let total = 0;
+        var x = $( "#room_luminaries_x" ).val();
+        var y = $( "#room_luminaries_y" ).val();
+        var total = 0;
         if ( '' != x && '' != y ) {
             total = x * y;
             if ( total > 500 ) {

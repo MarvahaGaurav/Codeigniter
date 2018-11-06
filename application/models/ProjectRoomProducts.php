@@ -1,12 +1,13 @@
 <?php
 
-defined("BASEPATH") OR exit("No direct script access allowed");
+defined("BASEPATH") or exit("No direct script access allowed");
 
 require_once 'BaseModel.php';
 
 use DatabaseExceptions\SelectException;
 
-class ProjectRoomProducts extends BaseModel {
+class ProjectRoomProducts extends BaseModel
+{
 
     public function __construct()
     {
@@ -14,13 +15,6 @@ class ProjectRoomProducts extends BaseModel {
         $this->tableName = "project_room_products as prs";
     }
 
-
-
-    public function save_project(array $data)
-    {
-        $this->db->insert($this->tableName, $data);
-        return $this->db->insert_id();
-    }
 
     /**
      * get project listing
@@ -33,7 +27,7 @@ class ProjectRoomProducts extends BaseModel {
         $this->db->select("project_room_id, prs.product_id, prs.type, products.title,
         IFNULL(articlecode, '') as articlecode, IFNULL(ps.image, '') as article_image,
          IFNULL(price, 0.00) as  price, IFNULL(currency, 0.00) as  currency, IFNULL(uld, '') as  uld,", false)
-            ->join('products' , 'products.product_id=prs.product_id')
+            ->join('products', 'products.product_id=prs.product_id')
             ->join('product_specifications as ps', 'ps.product_id=products.product_id AND prs.article_code=ps.articlecode', 'left')
             ->from($this->tableName)
             ->group_by('product_id, project_room_id');
@@ -47,7 +41,6 @@ class ProjectRoomProducts extends BaseModel {
         }
 
         if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
-
             foreach ($params['where'] as $tableColumn => $searchValue) {
                 if (is_array($searchValue)) {
                     $this->db->where_in($tableColumn, $searchValue);
@@ -68,6 +61,111 @@ class ProjectRoomProducts extends BaseModel {
             $images = $this->ProductGallery->get($productIds);
             $result['data'] = getDataWith($result['data'], $images, 'product_id', 'product_id', 'images', 'image');
         }
+
+        return $result;
+    }
+
+    /**
+     * fetch all project rooms products
+     *
+     * @param array $params
+     * @return array
+     */
+    public function projectRoomProducts($params)
+    {
+        $this->db->select("prs.*")
+            ->from($this->tableName)
+            ->join('project_rooms as pr', 'pr.id=prs.project_room_id');
+
+        if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
+            foreach ($params['where'] as $tableColumn => $searchValue) {
+                $this->db->where($tableColumn, $searchValue);
+            }
+        }
+
+        if (isset($params['where_in']) && is_array($params['where_in']) && !empty($params['where_in'])) {
+            foreach ($params['where_in'] as $tableColumn => $searchValue) {
+                $this->db->where_in($tableColumn, $searchValue);
+            }
+        }
+
+        $query = $this->db->get();
+
+        if (isset($params['single_row']) && (bool)$params['single_row']) {
+            $data = $query->row_array();
+        } else {
+            $data = $query->result_array();
+        }
+
+        return $data;
+    }
+
+    /**
+     * Clone Project Rooms Products Data
+     *
+     * @throws \Exception
+     * @param array $productsData
+     * @param array $sourceDestinationRoomIdMap
+     * @return bool
+     */
+    public function cloneProjectRoomProducts($productsData, $sourceDestinationRoomIdMap)
+    {
+        $productInsertData = [];
+        foreach ($productsData as $product) {
+            $productInsertData[] = [
+                'project_room_id' => $sourceDestinationRoomIdMap[$product['project_room_id']],
+                'article_code' => $product['article_code'],
+                'product_id' => $product['product_id'],
+                'type' => $product['type']
+            ];
+        }
+
+        $status = $this->db->insert_batch('project_room_products', $productInsertData);
+
+        if (!$status) {
+            throw new \Exception('Insert Error');
+        }
+
+        return $status;
+    }
+
+    /**
+     * Total project charges
+    *
+     * @param array $params
+     * @return array
+     */
+    public function totalProductCharges($params)
+    {
+        $this->db->select('sum(price) as total_product_price, prp.type')
+            ->from('project_room_products as prp')
+            ->join('project_rooms as pr', 'pr.id=prp.project_room_id')
+            ->join('product_specifications as ps', 'ps.articlecode=prp.article_code', 'left')
+            ->where('pr.project_id', $params['project_id'])
+            ->group_by('prp.type')
+            ->group_by('ps.articlecode');
+
+        if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
+            foreach ($params['where'] as $tableColumn => $searchValue) {
+                $this->db->where($tableColumn, $searchValue);
+            }
+        }
+
+        if (isset($params['where_in']) && is_array($params['where_in']) && !empty($params['where_in'])) {
+            foreach ($params['where_in'] as $tableColumn => $searchValue) {
+                $this->db->where_in($tableColumn, $searchValue);
+            }
+        }
+
+        if (isset($params['group_by']) && is_array($params['group_by']) && !empty($params['group_by'])) {
+            foreach ($params['group_by'] as $field) {
+                $this->db->group_by($field);
+            }
+        }
+
+        $query = $this->db->get();
+
+        $result = $query->row_array();
 
         return $result;
     }

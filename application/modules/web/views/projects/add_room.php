@@ -43,12 +43,12 @@
                     <div class="form-group">
                         <label class="labelTxt">Room Length</label>
                         <div class="form-group-field form-dimention">
-                            <input class="is_number" type="text" placeholder="10" name="room_lenght" id="room_lenght" value="<?php echo $cookie_data['room_lenght']; ?>">
+                            <input class="is_number" type="text" placeholder="10" name="room_lenght" id="room_lenght" value="<?php echo isset($cookie_data['room_lenght'])?$cookie_data['room_lenght']:''; ?>">
                             <label class="field-type">
                                 <select name="room_lenght_unit" id="room_lenght_unit" class="select-filed-name">
                                     <?php
                                     foreach ($units as $unit) {
-                                        $selected = ($cookie_data['room_lenght_unit'] == $unit) ? " selected " : '';
+                                        $selected = (isset($cookie_data['room_lenght_unit'])?$cookie_data['room_lenght_unit']:'' == $unit) ? " selected " : '';
                                         echo "<option $selected value='" . $unit . "'>$unit</option>";
                                     }
                                     ?>
@@ -62,12 +62,12 @@
                     <div class="form-group">
                         <label class="labelTxt">Room Breadth</label>
                         <div class="form-group-field form-dimention">
-                            <input class="is_number"  type="text" placeholder="8" name="room_breadth" id="room_breadth" value="<?php echo $cookie_data['room_breadth']; ?>">
+                            <input class="is_number"  type="text" placeholder="8" name="room_breadth" id="room_breadth" value="<?php echo isset($cookie_data['room_breadth'])?$cookie_data['room_breadth']:''; ?>">
                             <label class="field-type">
                                 <select class="select-filed-name" name="room_breadth_unit" id="room_breadth_unit">
                                     <?php
                                     foreach ($units as $unit) {
-                                        $selected = ($cookie_data['room_breadth_unit'] == $unit) ? " selected " : '';
+                                        $selected = (isset($cookie_data['room_breadth_unit'])?$cookie_data['room_breadth_unit']:'' == $unit) ? " selected " : '';
                                         echo "<option $selected value='" . $unit . "'>$unit</option>";
                                     }
                                     ?>
@@ -81,12 +81,12 @@
                     <div class="form-group">
                         <label class="labelTxt">Room Height</label>
                         <div class="form-group-field form-dimention">
-                            <input class="is_number"  type="text" placeholder="8" name="room_height" id="room_height" value="<?php echo $cookie_data['room_height']; ?>">
+                            <input class="is_number"  type="text" placeholder="8" name="room_height" id="room_height" value="<?php echo isset($cookie_data['room_height'])?$cookie_data['room_height']:''; ?>">
                             <label class="field-type">
                                 <select class="select-filed-name" name="room_height_unit" id="room_height_unit">
                                     <?php
                                     foreach ($units as $unit) {
-                                        $selected = ($cookie_data['room_height_unit'] == $unit) ? " selected " : '';
+                                        $selected = (isset($cookie_data['room_height_unit'])?$cookie_data['room_height_unit']:'' == $unit) ? " selected " : '';
                                         echo "<option $selected value='" . $unit . "'>$unit</option>";
                                     }
                                     ?>
@@ -101,12 +101,12 @@
                     <div class="form-group">
                         <label class="labelTxt">Working Plane Height</label>
                         <div class="form-group-field form-dimention">
-                            <input class="is_number"  type="text" placeholder="0.75"  name="room_plane_height" id="room_plane_height" value="<?php echo $cookie_data['room_plane_height']; ?>">
+                            <input class="is_number"  type="text" placeholder="0.75"  name="room_plane_height" id="room_plane_height" value="<?php echo isset($cookie_data['room_plane_height'])?$cookie_data['room_plane_height']:''; ?>">
                             <label class="field-type">
                                 <select class="select-filed-name"  name="room_plane_height_unit" id="room_plane_height_unit">
                                     <?php
                                     foreach ($units as $unit) {
-                                        $selected = ($cookie_data['room_plane_height_unit'] == $unit) ? " selected " : '';
+                                        $selected = (isset($cookie_data['room_plane_height_unit'])?$cookie_data['room_plane_height_unit']:'' == $unit) ? " selected " : '';
                                         echo "<option $selected value='" . $unit . "'>$unit</option>";
                                     }
                                     ?>
@@ -120,7 +120,7 @@
                     <div class="form-group">
                         <label class="labelTxt">Number of Luminaries</label>
                         <div class="form-group-field form-dimention">
-                            <input class="is_number"  type="text" placeholder="8" name="room_luminaries_x" id="room_luminaries_x" value="<?php echo $cookie_data['room_luminaries_x']; ?>">
+                            <input class="is_number"  type="text" placeholder="8" name="room_luminaries_x" id="room_luminaries_x" value="<?php echo isset($cookie_data['room_luminaries_x'])?$cookie_data['room_luminaries_x']:''; ?>">
                             <label class="field-type">
                                 <select class="select-filed-name">
                                     <option>X</option>
@@ -134,7 +134,7 @@
                     <div class="form-group">
                         <label class="labelTxt"> .</label>
                         <div class="form-group-field form-dimention">
-                            <input class="is_number"  type="text" placeholder="8" name="room_luminaries_y" id="room_luminaries_y" value="<?php echo $cookie_data['room_luminaries_y']; ?>">
+                            <input class="is_number"  type="text" placeholder="8" name="room_luminaries_y" id="room_luminaries_y" value="<?php echo isset($cookie_data['room_luminaries_y'])?$cookie_data['room_luminaries_y']:''; ?>">
                             <label class="field-type">
                                 <select class="select-filed-name">
                                     <option>Y</option>
@@ -169,7 +169,7 @@
                     <div class="form-group">
                         <label class="labelTxt">Select Product</label>
                         <div class="form-group-field">
-                            <input id="uploadfile" class="select-filed-name2 chooseFile" type="text" placeholder="Choose File" disabled="display" value="<?php echo $selectd_room['product_name']; ?>">
+                            <input id="uploadfile" class="select-filed-name2 chooseFile" type="text" placeholder="Choose File" disabled="display" value="<?php echo isset($selectd_room['product_name'])?$selectd_room['product_name']:''; ?>">
                             <label class="choosebtn">
                                 <a name="choose_product" id="choose_product">Choose</a>
                             </label>
@@ -183,12 +183,12 @@
                         <div class="form-group">
                             <label class="labelTxt">Pendant Length</label>
                             <div class="form-group-field form-dimention">
-                                <input value="<?php echo $cookie_data['room_pendant_length']; ?>" class="is_number" type="text" placeholder="1.75" name="room_pendant_length" id="room_pendant_length">
+                                <input value="<?php echo isset($cookie_data['room_pendant_length'])?$cookie_data['room_pendant_length']:''; ?>" class="is_number" type="text" placeholder="1.75" name="room_pendant_length" id="room_pendant_length">
                                 <label class="field-type">
                                     <select class="select-filed-name"  name="room_pendant_length_unit" id="room_pendant_length_unit">
                                         <?php
                                         foreach ($units as $unit) {
-                                            $selected = ($cookie_data['room_pendant_length_unit'] == $unit) ? " selected " : '';
+                                            $selected = (isset($cookie_data['room_pendant_length_unit'])?$cookie_data['room_pendant_length_unit']:'' == $unit) ? " selected " : '';
                                             echo "<option $selected value='" . $unit . "'>$unit</option>";
                                         }
                                         ?>

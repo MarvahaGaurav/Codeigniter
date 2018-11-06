@@ -1,12 +1,13 @@
 <?php
 
-defined("BASEPATH") OR exit("No direct script access allowed");
+defined("BASEPATH") or exit("No direct script access allowed");
 
 require_once 'BaseModel.php';
 
 use DatabaseExceptions\SelectException;
 
-class ProjectRooms extends BaseModel {
+class ProjectRooms extends BaseModel
+{
 
     public function __construct()
     {
@@ -30,7 +31,7 @@ class ProjectRooms extends BaseModel {
      */
     public function get($params)
     {
-        $this->db->select("id as project_room_id, room_id, project_levels, project_id, name, length, width, height,
+        $this->db->select("id as project_room_id, room_id, level, project_id, name, length, width, height,
             maintainance_factor, shape, working_plane_height, rho_wall, rho_ceiling, rho_floor,
             lux_value, luminaries_count_x, luminaries_count_y, fast_calc_response, created_at", false)
             ->from($this->tableName);
@@ -68,13 +69,182 @@ class ProjectRooms extends BaseModel {
         $this->db->select('project_room_id, IFNULL(prq.id, "empty") as empty_room_quotations')
             ->from($this->tableName . ' as pr')
             ->join('project_requests as preq', 'preq.project_id=pr.project_id')
-            ->join('project_room_quotations as prq', 'prq.project_room_id=pr.id AND prq.company_id=' . $params['company_id'], 'left')
-            ->where('preq.id', $params['request_id']);
+            ->join('project_room_quotations as prq', 'prq.project_room_id=pr.id AND prq.company_id=' . $params['company_id'], 'left');
+            
+        if (isset($params['request_id'])) {
+            $this->db->where('preq.id', $params['request_id']);
+        }
+
+        if (isset($params['project_id'])) {
+            $this->db->where('pr.project_id', $params['project_id']);
+        }
 
         $query = $this->db->get();
         
         $data = $query->result_array();
 
         return $data;
+    }
+
+    /**
+     * Fetches complete room data
+     *
+     * @param array $params
+     * @return array
+     */
+    public function roomsData($params, $field = "*")
+    {
+        $this->db->select($field)
+            ->from($this->tableName);
+
+        if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
+            foreach ($params['where'] as $tableColumn => $searchValue) {
+                $this->db->where($tableColumn, $searchValue);
+            }
+        }
+
+        if (isset($params['where_in']) && is_array($params['where_in']) && !empty($params['where_in'])) {
+            foreach ($params['where_in'] as $tableColumn => $searchValue) {
+                $this->db->where_in($tableColumn, $searchValue);
+            }
+        }
+
+        if (isset($params['group_by']) && is_array($params['group_by']) && !empty($params['group_by'])) {
+            foreach ($params['group_by'] as $field) {
+                $this->db->group_by($field);
+            }
+        }
+
+        $query = $this->db->get();
+        
+        if (isset($params['single_row']) && (bool)$params['single_row']) {
+            $data = $query->row_array();
+        } else {
+            $data = $query->result_array();
+        }
+
+        return $data;
+    }
+
+    /**
+     * Clone Rooms for a Level
+     *
+     * @throws \Exception
+     * @param array $roomsData
+     * @param array $destinationLevels
+     * @return bool
+     */
+    public function cloneLevelRooms($roomsData, $destinationLevels, $time)
+    {
+        $levelsData = [];
+
+        foreach ($destinationLevels as $level) {
+            foreach ($roomsData as $room) {
+                $levelsData[] = [
+                    "language_code" => $room['language_code'],
+                    "project_id" => $room['project_id'],
+                    "room_id" => $room['room_id'],
+                    "level" => $level,
+                    "name" => $room['name'],
+                    "length" => $room['length'],
+                    "width" => $room['width'],
+                    "height" => $room['height'],
+                    "maintainance_factor" => $room['maintainance_factor'],
+                    "shape" => $room['shape'],
+                    "working_plane_height" => $room['working_plane_height'],
+                    "rho_wall" => $room['rho_wall'],
+                    "rho_ceiling" => $room['rho_ceiling'],
+                    "rho_floor" => $room['rho_floor'],
+                    "lux_value" => $room['lux_value'],
+                    "luminaries_count_x" => $room['luminaries_count_x'],
+                    "luminaries_count_y" => $room['luminaries_count_y'],
+                    "fast_calc_response" => $room['fast_calc_response'],
+                    "side_view" => $room['side_view'],
+                    "top_view" => $room['top_view'],
+                    "front_view" => $room['front_view'],
+                    "created_at" => $time['time'],
+                    "created_at_timestamp" => $time['timestamp'],
+                    "updated_at" => $time['time'],
+                    "updated_at_timestamp" => $time['timestamp'],
+                ];
+            }
+        }
+
+        $status = $this->db->insert_batch('project_rooms', $levelsData);
+
+        if (!$status) {
+            throw new \Exception('Insert Error');
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Fetch room count by level
+     * 
+     * @param string $projectId
+     *
+     * @return void
+     */
+    public function roomCountByLevel($projectId)
+    {
+        $this->db->select('id, COUNT(id) as room_count, level')
+            ->from('project_rooms')
+            ->where('project_id', $projectId)
+            ->group_by('level');
+
+        $query = $this->db->get();
+
+        $result = $query->result_array();
+
+        return $result;
+    }
+
+    /**
+     * Clone
+     *
+     * @return void
+     */
+    public function cloneProjectRooms($roomsData, $projectId, $time)
+    {
+        $levelsData = [];
+
+        foreach ($roomsData as $room) {
+            $levelsData[] = [
+                "language_code" => $room['language_code'],
+                "project_id" => $projectId,
+                "room_id" => $room['room_id'],
+                "level" => $room['level'],
+                "name" => $room['name'],
+                "length" => $room['length'],
+                "width" => $room['width'],
+                "height" => $room['height'],
+                "maintainance_factor" => $room['maintainance_factor'],
+                "shape" => $room['shape'],
+                "working_plane_height" => $room['working_plane_height'],
+                "rho_wall" => $room['rho_wall'],
+                "rho_ceiling" => $room['rho_ceiling'],
+                "rho_floor" => $room['rho_floor'],
+                "lux_value" => $room['lux_value'],
+                "luminaries_count_x" => $room['luminaries_count_x'],
+                "luminaries_count_y" => $room['luminaries_count_y'],
+                "fast_calc_response" => $room['fast_calc_response'],
+                "side_view" => $room['side_view'],
+                "top_view" => $room['top_view'],
+                "front_view" => $room['front_view'],
+                "created_at" => $time['datetime'],
+                "created_at_timestamp" => $time['timestamp'],
+                "updated_at" => $time['datetime'],
+                "updated_at_timestamp" => $time['timestamp'],
+            ];
+        }
+
+        $status = $this->db->insert_batch('project_rooms', $levelsData);
+
+        if (!$status) {
+            throw new \Exception('Insert Error');
+        } else {
+            return true;
+        }
     }
 }

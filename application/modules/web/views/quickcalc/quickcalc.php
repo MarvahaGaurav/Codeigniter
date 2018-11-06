@@ -180,7 +180,7 @@
                         <div class="form-group">
                             <label class="labelTxt">Pendant Length</label>
                             <div class="form-group-field form-dimention">
-                                <input value="<?php echo $cookie_data['room_pendant_length']; ?>" class="is_number" type="text" placeholder="1.75" name="room_pendant_length" id="room_pendant_length">
+                                <input value="<?php echo isset($cookie_data['room_pendant_length'])?$cookie_data['room_pendant_length']:''; ?>" class="is_number" type="text" placeholder="1.75" name="room_pendant_length" id="room_pendant_length">
                                 <label class="field-type">
                                     <select class="select-filed-name"  name="room_pendant_length_unit" id="room_pendant_length_unit">
                                         <?php

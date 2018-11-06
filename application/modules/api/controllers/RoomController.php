@@ -93,14 +93,18 @@ class RoomController extends BaseController
             if ($is_single_row) {
                 $data = $room_data;
             } else {
-                $data = $room_data['result'];
+                $data = $room_data;
                 $offset = (int)$offset + RECORDS_PER_PAGE;
-                if ((int)$offset >= (int)$result['count']) {
-                    $offset = -1;
-                } else {
-                    $link = base_url("api/v1/applications/{$request_data['application_id']}/rooms?offset={$offset}");
+                if (!empty($data['data'])) {
+                    $this->load->helper("url");
+                    if ((int)$offset >= (int)$data['count']) {
+                        $offset = -1;
+                    } else {
+                        $link =
+                            base_url("api/v1/applications/{$request_data['application_id']}/rooms?offset={$offset}");
+                    }
                 }
-                $this->load->helper("url");
+                $data = $data['result'];
             }
 
             if (empty($data)) {

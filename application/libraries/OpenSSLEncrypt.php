@@ -1,4 +1,4 @@
-<?php 
+<?php
 // defined('BASEPATH') OR exit('No direct script access allowed');
 
 
@@ -6,8 +6,8 @@
  * @property string $data data for encryption
  * @property string $method method for encryption (use constants eg. OpenSSLEncrypt::AES_128_CBC - default value)
  * @property int $keySize set key size, default 32
- * @property int $options options for encryption default value 
- * @property string $keyPath 
+ * @property int $options options for encryption default value
+ * @property string $keyPath
  */
 
 class OpenSSLEncrypt
@@ -20,12 +20,12 @@ class OpenSSLEncrypt
     const AES_256_CTR = 'aes-256-ctr';
 
     /**
-     * @var string $data 
-     * @var string $method 
-     * @var string $initializationVector 
-     * @var string $key 
-     * @var int $keySize 
-     * @var int $options 
+     * @var string $data
+     * @var string $method
+     * @var string $initializationVector
+     * @var string $key
+     * @var int $keySize
+     * @var int $options
      */
     private $data;
     private $method;
@@ -36,13 +36,12 @@ class OpenSSLEncrypt
     private $keyPath;
 
     public function __construct(
-        $data="",
+        $data = "",
         $options = 0,
         $keySize = 32,
         $method = self::AES_256_CBC,
         $keyPath = "./"
-    )
-    {
+    ) {
         $this->options = $options;
         $this->keySize = $keySize;
 //        $this->initializationVector = openssl_random_pseudo_bytes(openssl_cipher_iv_length($method));
@@ -57,7 +56,7 @@ class OpenSSLEncrypt
         if ($property == "key") {
             return false;
         }
-        if ( $property == "initializationVector" ) {
+        if ($property == "initializationVector") {
             return bin2hex($this->$property);
         }
         if (property_exists($this, $property)) {
@@ -97,7 +96,7 @@ class OpenSSLEncrypt
     /**
      * Generates key using openssl random pseudo bytes
      * @param bool $writeToFile if True writes key to file
-     * 
+     *
      * @return string encryption key
      */
     public function generateKey($writeToFile = false)
@@ -114,8 +113,7 @@ class OpenSSLEncrypt
             if ($file) {
                 $this->key = $encryptionKey;
             }
-        }
-        else {
+        } else {
             $this->key = $encryptionKey;
         }
 
@@ -123,14 +121,14 @@ class OpenSSLEncrypt
     }
 
     /**
-     * Encryption function 
-     * 
+     * Encryption function
+     *
      * @param bool $readKeyFromFile if True reads key from file
-     * 
+     *
      * @return string encrypted data
      */
     public function encrypt($readKeyFromFile = false)
-    {                
+    {
 
         if (!isset($this->key) || empty($this->key)) {
             throw new \Exception("Set Encryption Key");
@@ -148,19 +146,21 @@ class OpenSSLEncrypt
     }
 
     /**
-     * Decryption function 
-     * @param string $encryptedData 
-     * @param string $initializationVector 
+     * Decryption function
+     * @param string $encryptedData
+     * @param string $initializationVector
      * @param bool $readKeyFromFile if True reads key from file
-     * 
+     *
      * @return string decrypted clear text
      */
     public function decrypt($encryptedData, $initializationVector, $readKeyFromFile = false)
     {
-
-
         if (!isset($this->key) || empty($this->key)) {
             throw new \Exception("Set Encryption Key");
+        }
+
+        if (strlen($initializationVector) % 2 == 1) {
+            $initializationVector = '1' . $initializationVector;
         }
 
         $initializationVector = hex2bin($initializationVector);
@@ -175,5 +175,4 @@ class OpenSSLEncrypt
 
         return $decryptedData;
     }
-
 }

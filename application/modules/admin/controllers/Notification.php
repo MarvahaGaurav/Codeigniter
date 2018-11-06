@@ -1,16 +1,16 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 class Notification extends MY_Controller
 {
 
-    function __construct() 
+    function __construct()
     {
         parent::__construct();
         $this->load->helper(['url', 'custom_cookie', 'encrypt_openssl']);
         $this->load->helper(array('form', 'url', 'date'));
         $this->load->model('Common_model');
         $this->load->model('Admin_Model');
-        $this->load->library('form_validation');        
+        $this->load->library('form_validation');
         $this->load->library('session');
         $this->load->helper("images");
         $this->lang->load('common', "english");
@@ -24,14 +24,14 @@ class Notification extends MY_Controller
         }
         $this->data = [];
         $this->data['admininfo'] = $this->admininfo;
-        if($this->admininfo['role_id'] == 2) {
+        if ($this->admininfo['role_id'] == 2) {
             $whereArr = ['where'=>['admin_id'=>$this->admininfo['admin_id']]];
             $access_detail = $this->Common_model->fetch_data('sub_admin', ['viewp', 'addp', 'editp', 'blockp', 'deletep', 'access_permission', 'admin_id', 'id'], $whereArr, false);
             $this->data['admin_access_detail'] = $access_detail;
         }
     }
 
-    public function index() 
+    public function index()
     {
         $role_id = $this->admininfo['role_id'];
         /*
@@ -83,7 +83,7 @@ class Notification extends MY_Controller
         load_views("notification/index", $this->data);
     }
 
-    public function add() 
+    public function add()
     {
 
         /*
@@ -101,19 +101,18 @@ class Notification extends MY_Controller
 
         $this->load->helper('form');
         $postDataArr = $this->input->post();
-        if (!empty($postDataArr)) {            
+        if (!empty($postDataArr)) {
             if (isset($postDataArr['imgurl']) && !empty($postDataArr['imgurl'])) {
                 $this->load->library('commonfn');
-                try
-                {
+                try {
                     $postDataArr['image'] = $imageName=s3_image_uploader(ABS_PATH.$postDataArr['imgurl'], $postDataArr['imgurl']);
                 } catch (Exception $e) {
                     $this->data['imageErr'] = $e->getMessage();
                     $this->data['imageErr'] = strip_tags($this->upload->display_errors());
                     $this->session->set_flashdata('message', $this->lang->line('error_prefix') .strip_tags($this->upload->display_errors()). $this->lang->line('error_suffix'));
                     redirect(base_url() . "notification/add");
-                }                
-            }else{
+                }
+            } else {
                 $postDataArr['image'] = $imageName = '';
             }
             $isSuccess = $this->sendNotification($postDataArr);
@@ -121,7 +120,7 @@ class Notification extends MY_Controller
         load_views_cropper("notification/add", $this->data);
     }
 
-    public function edit() 
+    public function edit()
     {
         /*
          * If logged user is sub admin check for his permission
@@ -134,7 +133,7 @@ class Notification extends MY_Controller
             if (!$access_detail['editp']) {
                 redirect('admin/notification');
             }
-        }        
+        }
         $getDataArr = $this->input->get();
         $postDataArr = $this->input->post();
         $notiId = (isset($getDataArr['id']) && !empty($getDataArr['id'])) ? encryptDecrypt($getDataArr['id'], 'decrypt') : '';
@@ -142,26 +141,24 @@ class Notification extends MY_Controller
             show_404();
         }
         
-        if (!empty($postDataArr)) {    
+        if (!empty($postDataArr)) {
             // pr($postDataArr);
             if (isset($postDataArr['imgurl']) && !empty($postDataArr['imgurl'])) {
                 $this->load->library('commonfn');
-                try
-                {
+                try {
                     $postDataArr['image'] = $imageName=s3_image_uploader(ABS_PATH.$postDataArr['imgurl'], $postDataArr['imgurl']);
-                } 
-                catch (Exception $e) {
+                } catch (Exception $e) {
                     $this->data['imageErr'] = $e->getMessage();
                     $this->data['imageErr'] = strip_tags($this->upload->display_errors());
                     $this->session->set_flashdata('message', $this->lang->line('error_prefix') .strip_tags($this->upload->display_errors()). $this->lang->line('error_suffix'));
                     redirect(base_url() . "notification/edit?id=".$notiId);
-                }                
-            }else{
+                }
+            } else {
                 $postDataArr['image'] = $imageName = '';
             }
             $postDataArr['id'] = $notiId;
             $this->sendNotification($postDataArr);
-        } else if (!empty($notiId)) {
+        } elseif (!empty($notiId)) {
             $whereArr = [];
             $whereArr['where'] = array('id' => $notiId);
             $notiDetail = $this->Common_model->fetch_data('admin_notification', array(), $whereArr, true);
@@ -176,7 +173,7 @@ class Notification extends MY_Controller
         }
     }
 
-    public function resendNotification() 
+    public function resendNotification()
     {
         $notiId = $this->input->get('notiToken');
         $notiId = encryptDecrypt($notiId, 'decrypt');
@@ -189,7 +186,7 @@ class Notification extends MY_Controller
         $this->sendNotification($notiDetail, true);
     }
 
-    private function sendNotification($dataArr, $isResend = false) 
+    private function sendNotification($dataArr, $isResend = false)
     {
 
         $params = [];
@@ -285,7 +282,7 @@ class Notification extends MY_Controller
         }
     }
 
-    public function sendNotiViaCurl($chunkId) 
+    public function sendNotiViaCurl($chunkId)
     {
 
         $url = base_url() . 'admin/notify?chunkId=' . $chunkId;
@@ -303,5 +300,4 @@ class Notification extends MY_Controller
         curl_close($ch);
         return;
     }
-
 }

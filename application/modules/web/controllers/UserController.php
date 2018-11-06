@@ -248,16 +248,16 @@ class UserController extends BaseController
         
         $rules = [
             'settings' => [
-                [
-                    'field' => 'currency',
-                    'label' => 'Currency',
-                    'rules' => 'required'
-                ],
-                [
-                    'field' => 'language',
-                    'label' => 'Language',
-                    'rules' => 'required'
-                ]
+                // [
+                //     'field' => 'currency',
+                //     'label' => 'Currency',
+                //     'rules' => 'required'
+                // ],
+                // [
+                //     'field' => 'language',
+                //     'label' => 'Language',
+                //     'rules' => 'required'
+                // ]
             ],
             'change-password' => [
                 [

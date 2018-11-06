@@ -51,12 +51,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
   |       my-controller/my-method -> my_controller/my_method
  */
 if (isset($_SERVER["REQUEST_URI"]) && preg_match('/.*\/(api)\/.*/', $_SERVER["REQUEST_URI"]) == true) {
-    $route['404_override'] = 'api/NotFound404';
-}
-elseif (isset($_SERVER["REQUEST_URI"]) && preg_match('/.*\/admin\/.*/', $_SERVER["REQUEST_URI"]) == true) {
+    $route['404_override'] = 'NotFound/api';
+} elseif (isset($_SERVER["REQUEST_URI"]) && preg_match('/.*\/admin\/.*/', $_SERVER["REQUEST_URI"]) == true) {
     // $route['404_override'] = 'admin/Page404';
-}
-else {
+} else {
     //$route['404_override'] = 'website/Page404';
 }
 
@@ -74,23 +72,30 @@ $route['home/inspirations/(.+)']      = 'web/InspirationController/details/$1';
 /**
  * Projects
  */
+$route['home/create-projects/levels']                                  = 'web/ProjectLevelsController/levelsListing';
+$route['home/projects/(:any)/details']                                 = 'web/ProjectController/project_details/$1';
+$route['home/projects/(:any)/levels/(:num)/rooms']                     = 'web/ProjectRoomsController/projectCreateRoomListing/$1/$2';
+$route['home/projects/(:any)/levels/(:num)/rooms/applications']        = 'web/ProjectRoomsController/applications/$1/$2';
+$route['home/projects/(:any)/levels/(:num)/rooms/applications/(:any)/rooms'] = 'web/ProjectRoomsController/roomType/$1/$2/$3';
+$route['home/projects/(:any)/levels/(:num)/rooms/applications/(:any)/rooms/(:any)/dimensions'] = 'web/ProjectRoomsController/dimensions/$1/$2/$3/$4';
+$route['home/projects/(:any)/levels/(:num)/rooms/applications/(:any)/rooms/(:any)/dimensions/products'] = 'web/ProjectProductController/selectProduct/$1/$2/$3/$4';
+$route['home/projects/(:any)/levels/(:num)/rooms/applications/(:any)/rooms/(:any)/dimensions/products/(:any)'] = 'web/ProjectProductController/selectProduct/$1/$2/$3/$4/$5';
 $route['home/projects']                                                = 'web/ProjectController';
 $route['home/projects/create']                                         = 'web/ProjectController/create';
-$route['home/projects/(:any)/details']                                 = 'web/ProjectController/project_details/$1';
-$route['home/projects/create_room']                                    = 'web/ProjectController/create_room';
-$route['home/projects/update_room']                                    = 'web/ProjectController/update_room';
-$route['home/projects/(:any)/room-edit/(:any)']                        = 'web/ProjectController/edit_room/$1/$2';
-$route['home/projects/(:any)/rooms/(:any)/articles/(:any)']            = 'web/ProjectController/articles/$1/$2/$3';
-$route['home/projects/(:any)/room-edit/(:any)/articles/(:any)']        = 'web/ProjectController/articles/$1/$2/$3';
-$route['home/projects/(:any)/room-edit/(:any)/articles/(:any)/(:any)'] = 'web/ProjectController/articles/$1/$2/$3/$4';
-$route['home/projects/application']                                    = 'web/ProjectController/applications';
-$route['home/projects/(:any)/rooms']                                   = 'web/ProjectController/rooms/$1';
-$route['home/projects/(:any)/rooms/(:any)/add-room']                   = 'web/ProjectController/add_rooms/$1/$2';
-$route['home/projects/(:any)/rooms/(:any)/select-porduct']             = 'web/ProjectController/select_product/$1/$2';
-$route['home/projects/(:any)/room-edit/(:any)/select-porduct/(:any)']  = 'web/ProjectController/select_product/$1/$2/$3';
-$route['home/projects/(:any)/select-room-type']                        = 'web/ProjectController/room_type/$1';
+// $route['home/projects/create_room']                                    = 'web/ProjectController/create_room';
+// $route['home/projects/update_room']                                    = 'web/ProjectController/update_room';
+// $route['home/projects/(:any)/room-edit/(:any)']                        = 'web/ProjectController/edit_room/$1/$2';
+// $route['home/projects/(:any)/rooms/(:any)/articles/(:any)']            = 'web/ProjectController/articles/$1/$2/$3';
+// $route['home/projects/(:any)/room-edit/(:any)/articles/(:any)']        = 'web/ProjectController/articles/$1/$2/$3';
+// $route['home/projects/(:any)/room-edit/(:any)/articles/(:any)/(:any)'] = 'web/ProjectController/articles/$1/$2/$3/$4';
+// $route['home/projects/application']                                    = 'web/ProjectController/applications';
+// $route['home/projects/(:any)/rooms']                                   = 'web/ProjectController/rooms/$1';
+// $route['home/projects/(:any)/rooms/(:any)/add-room']                   = 'web/ProjectController/add_rooms/$1/$2';
+// $route['home/projects/(:any)/rooms/(:any)/select-porduct']             = 'web/ProjectController/select_product/$1/$2';
+// $route['home/projects/(:any)/room-edit/(:any)/select-porduct/(:any)']  = 'web/ProjectController/select_product/$1/$2/$3';
+// $route['home/projects/(:any)/select-room-type']                        = 'web/ProjectController/room_type/$1';
 $route['home/projects/get-porduct']                                    = 'web/ProjectController/get_product/$1';
-$route['home/projects/view-result/(:any)']                             = 'web/ProjectController/view_result/$1';
+// $route['home/projects/view-result/(:any)']                             = 'web/ProjectController/view_result/$1';
 
 $route['home/quotes']               = 'web/QuotesController';
 $route['home/technicians']          = 'web/TechnicianController';

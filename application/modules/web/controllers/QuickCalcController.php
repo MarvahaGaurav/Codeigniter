@@ -220,9 +220,11 @@ class QuickCalcController extends BaseController
             $this->data['room_id']        = $roomId;
             $this->data['application_id'] = $applicationId;
             $this->data['room']           = $this->Room->get($option, true);
+            // pd($this->data['room']);
+
             $this->data["csrfName"]       = $this->security->get_csrf_token_name();
             $this->data["csrfToken"]      = $this->security->get_csrf_hash();
-            website_view('projects/select_product', $this->data);
+            website_view('quickcalc/select_product', $this->data);
         } catch (Exception $ex) {
         }
     }
@@ -253,11 +255,18 @@ class QuickCalcController extends BaseController
             $productTechnicalData          = $this->ProductTechnicalData->get($params);
             $productSpecifications         = $this->ProductSpecification->get($params);
             $relatedProducts               = $this->ProductRelated->get($params);
-            $productSpecifications         = array_strip_tags($productSpecifications, ['title']);
-            $productTechnicalData          = array_strip_tags($productTechnicalData, ['title', 'info']);
+            // $productSpecifications         = array_strip_tags($productSpecifications, ['title']);
+            // $productTechnicalData          = array_strip_tags($productTechnicalData, ['title', 'info']);
             $productData['body']           = trim(strip_tags($productData['body']));
             $productData['how_to_specity'] = trim(strip_tags($productData['how_to_specity']));
             $this->data['images']          = $this->ProductGallery->get($product_id);
+
+
+            $productSpecifications = array_map(function ($article) {
+                $article['image'] = preg_replace("/^\/home\/forge\//", "https://", $article['image']);
+                // $article['title'] = trim(strip_tags($article['title']));
+                return $article;
+            }, $productSpecifications);
 
             $this->data['js']               = "article_quick";
             $this->data['product']          = $productData;

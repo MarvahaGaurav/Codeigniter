@@ -13,6 +13,36 @@ class Employee extends BaseModel
         $this->tableName = 'employee_request_master as erm';
     }
 
+    public function employees($params)
+    {
+        $this->db->select('first_name, email, user_id')
+            ->from('ai_user as users');
+
+        if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
+            foreach ($params['where'] as $tableColumn => $searchValue) {
+                $this->db->where($tableColumn, $searchValue);
+            }
+        }
+    
+        if (isset($params['where_in']) && is_array($params['where_in']) && !empty($params['where_in'])) {
+            foreach ($params['where_in'] as $tableColumn => $searchValue) {
+                $this->db->where_in($tableColumn, $searchValue);
+            }
+        }
+
+        $query = $this->db->get();
+
+        $result = $query->result_array();
+
+        return $result;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param [type] $options
+     * @return void
+     */
     public function get($options)
     {
         $this->load->library("session");
@@ -55,12 +85,12 @@ class Employee extends BaseModel
             $this->db->join('user_employee_permission as permission', 'erm.requested_by=permission.employee_id AND permission.status = 1', "left");
         }
 
-        if ( ! empty($options['search']) ) {
+        if (! empty($options['search'])) {
             $this->db->where("users.first_name LIKE", "%{$options['search']}%");
         }
 
-        if ( ! empty($options['where']) && is_array($options['where']) ) {
-            foreach ( $options['where'] as $column => $value ) {
+        if (! empty($options['where']) && is_array($options['where'])) {
+            foreach ($options['where'] as $column => $value) {
                 $this->db->where($column, $value);
             }
         }

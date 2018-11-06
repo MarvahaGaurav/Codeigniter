@@ -10,7 +10,7 @@ if (! function_exists("dd")) {
     {
         echo "<pre>";
         var_dump($mixed);
-        echo "<pre>";
+        echo "</pre>";
         if ($exit) {
             exit;
         }

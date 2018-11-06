@@ -31,6 +31,7 @@ $lang['text_rest_unknown_method'] = 'Unknown method';
 $lang['text_rest_unsupported'] = 'Unsupported protocol';
 $lang['invalid_promo_code'] = 'Entered promo code is invalid, please check entered promo code';
 $lang['promo_code_applied'] = 'Promocode successfully applied';
+$lang['bad_request'] = 'Bad Request';
 
 /* SEERVE LANG */
 /* API MESSAGE */
@@ -197,3 +198,4 @@ $lang['employee_rejected'] = "Employee request has been rejected";
 
 $lang['room_fetched'] = "Rooms found";
 $lang['incorrect_password'] = 'Your password is incorrect, Please enter your correct password and Try again.';
+$lang['add_rooms_to_mark_as_done'] = 'Add rooms to mark as done';

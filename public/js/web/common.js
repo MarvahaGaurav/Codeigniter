@@ -156,108 +156,105 @@ $(document).ready(function () {
         });
     }
 
-    $("document").on("click", '.redirectable', function () {
+    $(document).on("click", '.redirectable', function () {
         var self = this,
             $self = $(self),
             redirectTo = $self.attr("data-redirect-to");
-
-        $(document).on("click", ".redirectable", function () {
-            let redirectTo = $(this).attr("data-redirect-to");
-            window.location.href = redirectTo;
-        });
+            
+        window.location.href = redirectTo;
+    });
 
 
-        $(".back-button").on("click", function () {
+    $(".back-button").on("click", function () {
+        var $self = $(this),
+            redirectTo = $self.attr("data-redirect");
+        if (redirectTo.length > 0) {
+            window.location = redirectTo;
+        }
+    });
+
+    var $confirmationModal = $("#myModal-confirmation");
+    var $confirmationActionXhttp = $(".confirmation-action-xhttp");
+    if ($confirmationActionXhttp.length > 0) {
+        $confirmationActionXhttp.on("click", function () {
             var $self = $(this),
-                redirectTo = $self.attr("data-redirect");
-            if (redirectTo.length > 0) {
-                window.location = redirectTo;
-            }
+                dataJson = $self.attr("data-json"),
+                dataUrl = $self.attr("data-url"),
+                dataAction = $self.attr("data-action"),
+                dataRedirect = $self.attr("data-redirect"),
+                dataTitle = $self.attr("data-title"),
+                dataTarget = $self.attr("data-target"),
+                dataMessage = $self.attr("data-message");
+
+            var $modalTitle = $confirmationModal.find(".modal-header h5"),
+                $modalMessage = $confirmationModal.find(".modal-body .modal-description"),
+                $modalActionButton = $confirmationModal.find(".modal-button-wrapper button.yes");
+
+            $modalTitle.html(dataTitle);
+            $modalMessage.html(dataMessage);
+            $modalActionButton.attr("data-json", dataJson);
+            $modalActionButton.attr("data-url", dataUrl);
+            $modalActionButton.attr("data-action", dataAction);
+            $modalActionButton.attr("data-redirect", dataRedirect);
+            $modalActionButton.attr("data-target", dataTarget);
+
+            $confirmationModal.modal("show");
+
         });
 
-        var $confirmationModal = $("#myModal-confirmation");
-        var $confirmationActionXhttp = $(".confirmation-action-xhttp");
-        if ($confirmationActionXhttp.length > 0) {
-            $confirmationActionXhttp.on("click", function () {
-                var $self = $(this),
-                    dataJson = $self.attr("data-json"),
-                    dataUrl = $self.attr("data-url"),
-                    dataAction = $self.attr("data-action"),
-                    dataRedirect = $self.attr("data-redirect"),
-                    dataTitle = $self.attr("data-title"),
-                    dataTarget = $self.attr("data-target"),
-                    dataMessage = $self.attr("data-message");
+        $("#confirmation-ok").on("click", function () {
+            var $self = $(this),
+                dataJson = $self.attr("data-json"),
+                dataUrl = $self.attr("data-url"),
+                dataAction = $self.attr("data-action"),
+                dataRedirect = $self.attr("data-redirect"),
+                dataTarget = $self.attr("data-target");
 
-                var $modalTitle = $confirmationModal.find(".modal-header h5"),
-                    $modalMessage = $confirmationModal.find(".modal-body .modal-description"),
-                    $modalActionButton = $confirmationModal.find(".modal-button-wrapper button.yes");
-
-                $modalTitle.html(dataTitle);
-                $modalMessage.html(dataMessage);
-                $modalActionButton.attr("data-json", dataJson);
-                $modalActionButton.attr("data-url", dataUrl);
-                $modalActionButton.attr("data-action", dataAction);
-                $modalActionButton.attr("data-redirect", dataRedirect);
-                $modalActionButton.attr("data-target", dataTarget);
-
-                $confirmationModal.modal("show");
-
-            });
-
-            $("#confirmation-ok").on("click", function () {
-                var $self = $(this),
-                    dataJson = $self.attr("data-json"),
-                    dataUrl = $self.attr("data-url"),
-                    dataAction = $self.attr("data-action"),
-                    dataRedirect = $self.attr("data-redirect"),
-                    dataTarget = $self.attr("data-target");
-
-                $.ajax({
-                    url: dataUrl,
-                    method: "POST",
-                    data: JSON.parse(dataJson),
-                    dataType: 'json',
-                    beforeSend: function () {
-                        $self.prepend("<span class='fa fa-circle-o-notch fa-spin'></span>");
-                    },
-                    success: function (response) {
-                        $self.find("span.fa-circle-o-notch").remove();
-                        if (response.success) {
-                            if (dataAction == "remove") {
-                                $confirmationModal.modal("hide");
-                                $(dataTarget).remove();
-                                // $flashCard.addClass("alert alert-success");
-                                // displayFlashCard(response.message);
-                                window.location = dataRedirect;
-                            }
+            $.ajax({
+                url: dataUrl,
+                method: "POST",
+                data: JSON.parse(dataJson),
+                dataType: 'json',
+                beforeSend: function () {
+                    $self.prepend("<span class='fa fa-circle-o-notch fa-spin'></span>");
+                },
+                success: function (response) {
+                    $self.find("span.fa-circle-o-notch").remove();
+                    if (response.success) {
+                        if (dataAction == "remove") {
+                            $confirmationModal.modal("hide");
+                            $(dataTarget).remove();
+                            // $flashCard.addClass("alert alert-success");
+                            // displayFlashCard(response.message);
+                            window.location = dataRedirect;
                         }
                     }
-                });
+                }
             });
-        }
-
-        /* on type close icon show in search field end */
-        $(".password-toggle").on("mousedown", function () {
-            var $self = $(this),
-                $inputSibling = $self.siblings('input');
-
-            $self.removeClass("fa-eye-slash");
-            $self.addClass("fa-eye");
-
-            $inputSibling.attr("type", "text");
-            $self.attr('data-state', 'visible');
-
         });
+    }
 
-        $(".password-toggle").on("mouseup", function () {
-            var $self = $(this),
-                $inputSibling = $self.siblings('input');
+    /* on type close icon show in search field end */
+    $(".password-toggle").on("mousedown", function () {
+        var $self = $(this),
+            $inputSibling = $self.siblings('input');
 
-            $self.removeClass("fa-eye");
-            $self.addClass("fa-eye-slash");
-            $inputSibling.attr("type", "password");
-            $self.attr('data-state', 'hidden');
-        });
+        $self.removeClass("fa-eye-slash");
+        $self.addClass("fa-eye");
+
+        $inputSibling.attr("type", "text");
+        $self.attr('data-state', 'visible');
+
+    });
+
+    $(".password-toggle").on("mouseup", function () {
+        var $self = $(this),
+            $inputSibling = $self.siblings('input');
+
+        $self.removeClass("fa-eye");
+        $self.addClass("fa-eye-slash");
+        $inputSibling.attr("type", "password");
+        $self.attr('data-state', 'hidden');
     });
 });
 

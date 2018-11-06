@@ -62,19 +62,16 @@
             <!-- select pricing wrapper end -->
             <?php endif ?>
             <!-- Caption before section -->
-            <div class="section-title section-border">
+            <!-- <div class="section-title section-border">
                 <h3>Change Language</h3>
-            </div>
+            </div> -->
             <!-- //Caption before section end -->
 
             <!-- Language Wrapper -->
-            <div class="language-wrapper">
-                
-                <!-- More than one Language -->
+            <!-- <div class="language-wrapper">
                 <div class="language-divide setting-section">
                     <ul>
                         <li>
-                            <!-- language section-->
                             <div class="language-list">
                                 <div class="row">
                                     <div class="col-lg-12">
@@ -90,10 +87,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- language section-->
                         </li>
                         <li>
-                            <!-- language section-->
                             <div class="language-list">
                                 <div class="row">
                                     <div class="col-lg-12">
@@ -109,10 +104,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- language section-->
                         </li>
                         <li>
-                            <!-- language section-->
                             <div class="language-list">
                                 <div class="row">
                                     <div class="col-lg-12">
@@ -128,10 +121,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- language section-->
                         </li>
                         <li>
-                            <!-- language section-->
                             <div class="language-list">
                                 <div class="row">
                                     <div class="col-lg-12">
@@ -147,10 +138,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- language section-->
                         </li>
                         <li>
-                            <!-- language section-->
                             <div class="language-list">
                                 <div class="row">
                                     <div class="col-lg-12">
@@ -166,10 +155,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- language section-->
                         </li>
                         <li>
-                            <!-- language section-->
                             <div class="language-list">
                                 <div class="row">
                                     <div class="col-lg-12">
@@ -177,7 +164,7 @@
                                             <input id="main-check6" name="language"  value="de" <?php echo $user['language'] == "de" ? "checked": "" ?> class="custom-control-input"  type="radio">
                                             <label for="main-check6">
                                                 <span class="custom-control-indicator"></span>
-                                                <!-- <strong class="op-semibold">Finland</strong> -->
+                                                <strong class="op-semibold">Finland</strong>
                                             </label>
                                             <div class="custom-control custom-radio">
                                                 <label><strong class="op-semibold">German</strong></label>
@@ -186,10 +173,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- language section-->
                         </li>
                         <li>
-                            <!-- language section-->
                             <div class="language-list">
                                 <div class="row">
                                     <div class="col-lg-12">
@@ -197,7 +182,7 @@
                                             <input id="main-check7" name="language"  value="nb" <?php echo $user['language'] == "nb" ? "checked": "" ?> class="custom-control-input"  type="radio">
                                             <label for="main-check7">
                                                 <span class="custom-control-indicator"></span>
-                                                <!-- <strong class="op-semibold">Finland</strong> -->
+                                                <strong class="op-semibold">Finland</strong>
                                             </label>
                                             <div class="custom-control custom-radio">
                                                 <label><strong class="op-semibold">Norwegian</strong></label>
@@ -206,10 +191,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- language section-->
                         </li>
                         <li>
-                            <!-- language section-->
                             <div class="language-list">
                                 <div class="row">
                                     <div class="col-lg-12">
@@ -217,7 +200,7 @@
                                             <input id="main-check8" name="language"  value="sv" <?php echo $user['language'] == "sv" ? "checked": "" ?> class="custom-control-input"  type="radio">
                                             <label for="main-check8">
                                                 <span class="custom-control-indicator"></span>
-                                                <!-- <strong class="op-semibold">Finland</strong> -->
+                                                <strong class="op-semibold">Finland</strong>
                                             </label>
                                             <div class="custom-control custom-radio">
                                                 <label><strong class="op-semibold">Swedish</strong></label>
@@ -226,26 +209,22 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- language section-->
                         </li>
                         
                         
                     </ul>
                     <div class="clearfix"></div>
                 </div>
-                <!-- More than one Language -->
-
-            </div>
-            <!-- Language Wrapper end -->
+            </div> -->
 
             <!-- Caption before section -->
-            <div class="section-title section-border">
+            <!-- <div class="section-title section-border">
                 <h3>Change Currency</h3>
-            </div>
+            </div> -->
             <!-- //Caption before section end -->
 
             <!-- currency wrapper -->
-            <div class="currency-wrapper setting-section2">
+            <!-- <div class="currency-wrapper setting-section2">
                 <div class="change-currency">
                     <ul>
                         <li>
@@ -290,7 +269,7 @@
                         </li>
                     </ul>
                 </div>
-            </div>
+            </div> -->
             <!-- currency wrapper end -->
 
             <!-- Caption before section -->

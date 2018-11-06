@@ -149,7 +149,7 @@ class CompanyController extends BaseController
            "data" => $result,
            "offset" => $offset
         ];
-        if (! isset($getData['favorite']) && (int)$getData['favorite'] !== 1 && ! $paginate) {
+        if (isset($getData['favorite']) && (int)$getData['favorite'] !== 1 && ! $paginate) {
             unset($response['offset']);
         }
         $this->response($response, HTTP_OK);

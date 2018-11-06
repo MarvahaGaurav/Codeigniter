@@ -33,6 +33,33 @@ if (! function_exists("convert_units")) {
     }
 }
 
+if (!function_exists('conver_to_meter')) {
+    /**
+     * Convert given unit to meter
+     *
+     * @param string $from
+     * @param double $value
+     * @return double
+     */
+    function convert_to_meter($from, $value)
+    {
+        $formulat_list = [
+            "yard" => function ($yard) {
+                return $yard * 0.9144;
+            }, //returns meter
+            "inches" => function ($inches) {
+                return $inches * 0.0254;
+            }, //returns meters
+        ];
+        
+        if (! array_key_exists($from, $formulat_list)) {
+            return 0;
+        }
+
+        return round((double)$formulat_list[$from]($value), 2);
+    }
+}
+
 /**
  *
  */
@@ -59,7 +86,7 @@ if (! function_exists('get_percentage')) {
      * @param string $operator
      * @return double
      */
-    function get_percentage($amount, $percentage, $operator="minus") 
+    function get_percentage($amount, $percentage, $operator = "minus")
     {
         $percentageAmount = $amount * ($percentage / 100);
 
@@ -68,6 +95,5 @@ if (! function_exists('get_percentage')) {
         } else {
             return $amount + $percentageAmount;
         }
-
     }
 }

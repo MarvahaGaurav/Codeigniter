@@ -4,8 +4,12 @@
         <!-- breadcrumb -->
         <ul class="breadcrumb">
             <li><a href="javascript:void(0)">Home</a></li>
-            <li><a href="<?php echo base_url('home/applications?type=' . $application['type']) ?>">Applications</a></li>
-            <li class="active">Room Type</li>
+            <li><a href="javascript:void(0)">Projects</a></li>
+            <li><a href="javascript:void(0)">Create New Project</a></li>
+            <li><a href="javascript:void(0)">Levels</a></li>
+            <li><a href="javascript:void(0)">Rooms</a></li>
+            <li><a href="javascript:void(0)">Applications</a></li>
+            <li><a href="javascript:void(0)">Room Type</a></li>
         </ul>
         <!-- //breadcrumb -->
 
@@ -26,7 +30,7 @@
             <?php foreach ($roomChunks as $rooms) { ?>
                 <div class="row">
                     <?php foreach ($rooms as $room) { ?>
-                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 col-for-thumb redirectable" data-redirect-to="<?php echo base_url("home/projects/{$encrypted_application_id}/rooms/{$room['encrypted_room_id']}/add-room") ?>">
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 col-for-thumb redirectable" data-redirect-to="<?php echo base_url(uri_string() . "/{$room['encrypted_room_id']}/dimensions") ?>">
                             <div class="thumb-box">
                                 <div class="thumb-view-wrapper thumb-view-fullp img-viewbdr-radius4">
                                     <div class="thumb-view thumb-viewfullheight-1" style="background:url('<?php echo ! empty($room['image']) ? $room['image'] : base_url('public/images/placeholder/no-found-ico-2.svg') ?>')"></div>

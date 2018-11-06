@@ -317,55 +317,6 @@ class CommonModel extends CI_Model
     }
 
     /**
-     * Send Mail using PHPMailer
-     *
-     * @access private
-     * @param  array  $toName  Name and Email as Key Value Pair eg. ["John" => "john@aol.com"]
-     * @param  string $subject Subject of Mail
-     * @param  string $body    Body of Mail
-     * @param  string $altBody Alternate Body should the user be using a Mail client that doesn't render HTML
-     *
-     * @return array with message status ["error"=>true, "message" => "error message"]
-     */
-    public function sendMail($toName, $subject, $body, $altBody = "") 
-    {
-        $mail = new PHPMailer;
-
-        //$mail->SMTPDebug = 3;                               
-
-        $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';
-        $mail->SMTPAuth = true;
-        $mail->Username = 'rana.amritanshu.appinventiv@gmail.com';
-        $mail->Password = 'App@20171234';
-        $mail->SMTPSecure = 'tls';
-        $mail->Port = 587;
-
-        $mail->setFrom("rana.amritanshu.appinventiv@gmail.com", "seerve");
-        $mail->addAddress($toName[key($toName)], key($toName));
-
-        // $mail->addAttachment('/var/tmp/file.tar.gz');        
-        // $mail->addAttachment('/tmp/image.jpg', 'new.jpg');   
-        $mail->isHTML(true);
-
-        $mail->Subject = $subject;
-        $mail->Body = $body;
-        $mail->AltBody = $altBody;
-
-        if (!$mail->send()) {
-            return [
-                "error" => true,
-                "message" => "Mailer Error" . $mail->ErrorInfo
-            ];
-        } else {
-            return [
-                "error" => false,
-                "message" => "Message successfull sent"
-            ];
-        }
-    }
-
-    /**
      * Inserts Data into database
      *
      * @param array  $data               Data to be inserted into database

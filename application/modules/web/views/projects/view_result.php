@@ -18,8 +18,36 @@
             <p class="prj-description">SG Lighting has vast experience of and expertise in a wide range of different types of projects, such as schools, hospitals, offices, industry, retail and outdoor lighting. Under
                 each type of project in the overview below, there are references to the various areas, as well as product recommendations.</p>
         </div>
+        <div class="section-title section-subtitute clearfix">
+            <h3>Details</h3>
+        </div>
+
+        <div class="thumb-view-footer">
+
+            <!-- thumb-footer-detail -->
+            <div class="row thumb-footer-detail">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <h3 class="thumb-footer-title">Recommended Data</h3>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <p class="rd-property">Lux</p>
+                            <p class="rd-value"><?php
+                                $temp = json_decode($room_data['fast_calc_response'], true);
+                                echo round($temp['illuminance'], 2);
+                                ?></p>
+                        </div>
+                        <div class="col-xs-12">
+                            <p class="rd-property">Number of Luminaries</p>
+                            <p class="rd-value"><?php echo $room_data['luminaries_count_x'] * $room_data['luminaries_count_y']; ?></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- thumb-footer-detail -->
+        </div>
+        <div class="clearfix"></div>
         <?php
-        $data = json_decode($room_data['fast_calc_response'], true);
+            $data = json_decode($room_data['fast_calc_response'], true);
         ?>
         <!-- thumb view -->
         <div class="thumbview-table">
@@ -90,34 +118,6 @@
                 </div>
                 <!-- //thumbnail list -->
             </div>
-        </div>
-
-        <div class="section-title section-subtitute clearfix">
-            <h3>Details</h3>
-        </div>
-
-        <div class="thumb-view-footer">
-
-            <!-- thumb-footer-detail -->
-            <div class="row thumb-footer-detail">
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                    <h3 class="thumb-footer-title">Recommended Data</h3>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <p class="rd-property">Lux</p>
-                            <p class="rd-value"><?php
-                                $temp = json_decode($room_data['fast_calc_response'], true);
-                                echo round($temp['illuminance'], 2);
-                                ?></p>
-                        </div>
-                        <div class="col-xs-12">
-                            <p class="rd-property">Number of Luminaries</p>
-                            <p class="rd-value"><?php echo $room_data['luminaries_count_x'] * $room_data['luminaries_count_y']; ?></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- thumb-footer-detail -->
         </div>
         <!-- thumb view end -->
 

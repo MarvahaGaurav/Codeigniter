@@ -36,9 +36,18 @@ $config = [
     'create-project' => [
         base_url("public/css/bootstrap.min.css"),
         base_url("public/css/jquery.scrollbar.css"),
+        base_url("public/css/plugin/font-awesome.min.css"),
         base_url("public/css/web/common.css"),
         base_url("public/css/web/style.css"),
         base_url("public/css/web/sgmedia.css"),
         base_url("public/css/web/maps.css"),
+    ],
+    'project-levels' => [
+        base_url("public/css/bootstrap.min.css"),
+        base_url("public/css/jquery.scrollbar.css"),
+        base_url("public/css/web/common.css"),
+        base_url("public/css/web/style.css"),
+        base_url("public/css/web/sgmedia.css"),
+        base_url("public/css/web/levels.css"),
     ]
 ];

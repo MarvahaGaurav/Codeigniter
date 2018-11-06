@@ -23,8 +23,8 @@ if (count($images)) {
             <div class="pagination-content col-xs-12 col-md-3">
                 <ul class="pagination">
                     <?php
-                    for ($i = 0; $i <= 2; $i ++ ) {
-                        if ( ! isset($images[$i])) {
+                    for ($i = 0; $i <= 2; $i ++) {
+                        if (! isset($images[$i])) {
                             continue;
                         }
                         ?>
@@ -82,13 +82,12 @@ if (count($images)) {
                     <!--<td colspan="7" class="group">2700K</td>-->
                 </tr>
                 <?php
-                foreach ($specifications as $specification)
-
+                foreach ($specifications as $specification) :
                     ?>
                 <tr class="">
 
                     <td class="image"><a>
-                            <img  style="width:200px" src="<?php echo $first; ?>" title="5046905201" class="img-responsive"></a></td>
+                            <img  style="width:200px" src="<?php echo $specification['image']; ?>" title="5046905201" class="img-responsive"></a></td>
 
                     <td data-title="Article" class="light-technic">
                         <a name="<?php echo $specification['articlecode']; ?>"></a>
@@ -99,10 +98,10 @@ if (count($images)) {
                         </span>
                     </td>
 
-                    <td data-title="Protection" class="protection"><span style="font-weight: bold;">Class II</span><br><span style="font-weight: bold;">IP44</span><br></td>
-                    <td data-title="Control gear" class="driver"><span style="font-weight: bold;">Trailing edge dimming</span><br></td>
-                    <td data-title="Mounting/Connection" class="connection">Recessed, Indoor</td>
-                    <td data-title="Dimensions (mm)" class="dimensions"></td>
+                    <td data-title="Protection" class="protection"><span style="font-weight: bold;"><?php echo isset($technical_data[2], $technical_data[2]['info'])?$technical_data[2]['info']:'' ?></span></td>
+                    <td data-title="Control gear" class="driver"><span style="font-weight: bold;"><?php echo isset($technical_data[1], $technical_data[1]['info'])?$technical_data[1]['info']:'' ?></span><br></td>
+                    <td data-title="Mounting/Connection" class="connection"><?php echo isset($technical_data[5], $technical_data[5]['info'])?$technical_data[5]['info']:'' ?></td>
+                    <td data-title="Dimensions (mm)" class="dimensions"><?php echo isset($specification['length'], $specification['width'], $specification['height'])?$specification['length']. 'X'.$specification['width']. 'X'.$specification['height']:'' ?></td>
 
                     <td class="download text-right">
                         <div>
@@ -116,7 +115,7 @@ if (count($images)) {
                         </div>
                     </td>
                 </tr>
-                <?php ?>
+                <?php endforeach ?>
             </tbody>
         </table>
     </div>
@@ -142,10 +141,10 @@ if (count($images)) {
         ?>
 
     </div>
-    <input type="hidden" name="application_id" id="application_id" value="<?php echo $application_id; ?>">
-    <input type="hidden" name="room_id" id="room_id" value="<?php echo $room_id; ?>">
-    <input type="hidden" name="product_name" id="product_name" value="<?php echo $product_name; ?>">
-    <input type="hidden" name="project_room_id" id="project_room_id" value="<?php echo $project_room_id; ?>">
+    <input type="hidden" name="application_id" id="application_id" value="<?php echo isset($application_id)?$application_id:''; ?>">
+    <input type="hidden" name="room_id" id="room_id" value="<?php echo isset($room_id)?$room_id:''; ?>">
+    <input type="hidden" name="product_name" id="product_name" value="<?php echo isset($product_name)?$product_name:''; ?>">
+    <input type="hidden" name="project_room_id" id="project_room_id" value="<?php echo isset($project_room_id)?$project_room_id:''; ?>">
 </div>
 <!--Related Products close-->
 

@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+// $route['404_override'] = 'NotFound404';
+
 $route['api/v1/user/password/change'] = 'Changepassword';
 $route['api/v1/user/password/forgot'] = 'Forgot';
 $route['api/v1/user/password/reset'] = 'Resetpass';
@@ -26,6 +28,7 @@ $route['api/v1/company/favorite'] = 'FavoriteController/favorite';
 $route['api/v1/applications'] = 'ApplicationController/application';
 $route['api/v1/applications/(:num)/products'] = 'ProductController/application_products/application_id/$1';
 $route['api/v1/products'] = 'ProductController/products';
+$route['api/v1/products/articles'] = 'ProductController/productArticles';
 // $route['api/v1/products/(:num)'] = 'ProductController/products/product_id/$1';
 $route['api/v1/applications/(:num)/rooms'] = 'RoomController/rooms/application_id/$1';
 $route['api/v1/rooms/(:num)/products'] = 'ProductController/accessoryProducts/room_id/$1';
@@ -39,9 +42,13 @@ $route['api/v1/projects'] = 'ProjectController/index';
 $route['api/v1/projects/rooms'] = 'ProjectController/projectRooms';
 $route['api/v1/projects/quotation-request'] = 'ProjectController/sendQuotationRequest';
 $route['api/v1/projects/rooms/quotations'] = 'QuotationController/roomsQuotation';
+$route['api/v1/projects/levels'] = 'ProjectLevelsController';
+$route['api/v1/projects/(:any)/levels/(:any)/rooms'] = 'ProjectController/projectRoomsFetch/project_id/$1/levels/$2';
+$route['api/v1/projects/(:any)/levels'] = 'ProjectLevelsController/projectLevels/project_id/$1';
 $route['api/v1/projects/(:any)/rooms'] = 'ProjectController/projectRoomsFetch/project_id/$1';
 $route['api/v1/projects/(:any)'] = 'ProjectController/details/project_id/$1';
 $route['api/v1/project-rooms/products'] = 'ProjectController/projectRoomProducts';
 $route['api/v1/quotations'] = 'QuotationController';
 $route['api/v1/requests'] = 'RequestController';
 $route['api/v1/installers/companies'] = 'RequestController/installerCompanies';
+$route['api/v1/users/projects'] = 'UserProjectsController/clone';

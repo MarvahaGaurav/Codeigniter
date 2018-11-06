@@ -4,15 +4,15 @@
  */
 $( "#mounting_type" ).change( function () {
 
-    let data = {
+    var data = {
         mounting: $( this ).val(),
         room_id: $( "#room_id" ).val(),
         csrf_token: $( "#token" ).val()
     };
     setCookie( "mounting", $( this ).val(), 7 );
-    let application_id = $( "#application_id" ).val();
-    let room_id = $( "#room_id" ).val();
-    let url = window.location.protocol + "//" + window.location.hostname + "/home/projects/get-porduct";
+    var application_id = $( "#application_id" ).val();
+    var room_id = $( "#room_id" ).val();
+    var url = window.location.protocol + "//" + window.location.hostname + "/home/projects/get-porduct";
     $.ajax( {
         url: url,
         data: data,
@@ -21,13 +21,13 @@ $( "#mounting_type" ).change( function () {
 
         },
         success: function ( res ) {
-            let obj = JSON.parse( res );
+            var obj = JSON.parse( res );
 
-            let html = "";
+            var html = "";
             $( "#product_div" ).empty();
             $( obj.data ).each( function ( i, v ) {
                 console.log( v );
-                let redirect_url = window.location.protocol + "//" + window.location.hostname + "/home/projects/" + application_id + "/rooms/" + room_id + "/articles/" + v.product_id;
+                var redirect_url = window.location.protocol + "//" + window.location.hostname + "/home/projects/" + application_id + "/rooms/" + room_id + "/articles/" + v.product_id;
                 html += '<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 col-for-thumb redirectable" data-redirect-to="' + redirect_url + '">';
                 html += '<div class="thumb-box">';
                 html += '<div class="thumb-view-wrapper thumb-view-contain thumb-view-contain-pd thumb-view-fullp img-viewbdr-radius4">';

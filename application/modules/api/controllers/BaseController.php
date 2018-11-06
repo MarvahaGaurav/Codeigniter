@@ -14,6 +14,7 @@ class BaseController extends REST_Controller
      */
     protected $datetime;
     protected $header;
+    protected $timestamp;
     /**
      * User data
      *
@@ -23,12 +24,15 @@ class BaseController extends REST_Controller
     
     public function __construct()
     {
+        error_reporting(-1);
+        ini_set('display_errors', 1);
         parent::__construct();
         $this->load->helper(["input_data", "debuging"]);
         $this->load->language("common", 'english');
         $this->load->model("UtilModel");
         $this->datetime = date("Y-m-d H:i:s");
         $this->header = $this->head();
+        $this->timestamp = time();
     }
 
     /**
@@ -53,9 +57,9 @@ class BaseController extends REST_Controller
         if (empty($accessToken)) {
             $this->response(
                 [
-                "code" => HTTP_UNAUTHORIZED,
-                "api_code_result" => "UNAUTHORIZED",
-                "msg" => $this->lang->line("invalid_access_token")
+                    "code" => HTTP_UNAUTHORIZED,
+                    "api_code_result" => "UNAUTHORIZED",
+                    "msg" => $this->lang->line("invalid_access_token")
                 ],
                 HTTP_UNAUTHORIZED
             );
@@ -113,9 +117,9 @@ class BaseController extends REST_Controller
             if ($userData['user_status'] == BLOCKED) {
                 $this->response(
                     [
-                    "code" => HTTP_FORBIDDEN,
-                    "api_code_result" => "FORBIDDEN",
-                    "msg" => $this->lang->line("account_blocked")
+                        "code" => BLOCKED_USER_CODE,
+                        "api_code_result" => "FORBIDDEN",
+                        "msg" => $this->lang->line("account_blocked")
                     ],
                     HTTP_FORBIDDEN
                 );
@@ -125,9 +129,9 @@ class BaseController extends REST_Controller
         } else {
             $this->response(
                 [
-                "code" => HTTP_INTERNAL_SERVER_ERROR,
-                "api_code_result" => "INTERNAL_SERVER_ERROR",
-                "msg" => $this->lang->line("internal_server_error")
+                    "code" => HTTP_INTERNAL_SERVER_ERROR,
+                    "api_code_result" => "INTERNAL_SERVER_ERROR",
+                    "msg" => $this->lang->line("internal_server_error")
                 ],
                 HTTP_INTERNAL_SERVER_ERROR
             );
@@ -149,6 +153,11 @@ class BaseController extends REST_Controller
         }
     }
 
+    /**
+     * Validates language code
+     *
+     * @return string
+     */
     protected function langcode_validate()
     {
         $language_code = $this->head("X-Language-Code");
@@ -215,14 +224,15 @@ class BaseController extends REST_Controller
     }
 
     /**
-     * Handles employee permissions, this logic is abstracted and can be replaced
-     * with anyother abstaction which basically needs to exit the program
-     * and provide a relevant message in a valid JSON String format
-     * should the given employee not have adequate permissions
+     * Handles employee permissions, this logic can be replaced
+     * with any other abstaction which would exit the program
+     * and provide a relevant message in a valid JSON
+     * String format, should the given employee
+     * not have adequate permissions
      *
      * @param array $userTypesToCheck
      * @param array $permissionsToCheck
-     * @return void
+     * @return array
      */
     protected function handleEmployeePermission($userTypesToCheck, $permissionsToCheck)
     {

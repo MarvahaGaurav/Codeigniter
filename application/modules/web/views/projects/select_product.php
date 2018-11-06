@@ -4,18 +4,19 @@
         <!-- breadcrumb -->
         <ul class="breadcrumb">
             <li><a href="javascript:void(0)">Home</a></li>
-            <li><a href="javascript:void(0)">Project</a></li>
+            <li><a href="javascript:void(0)">Projects</a></li>
             <li><a href="javascript:void(0)">Create New Project</a></li>
-            <li><a href="javascript:void(0)">Select Application</a></li>
+            <li><a href="javascript:void(0)">Levels</a></li>
             <li><a href="javascript:void(0)">Rooms</a></li>
+            <li><a href="javascript:void(0)">Applications</a></li>
             <li><a href="javascript:void(0)">Room Type</a></li>
-            <li><a href="javascript:void(0)">Room Dimensions</a></li>
+            <li><a href="javascript:void(0)">Room Dimensions</li>
             <li class="active">Products</li>
         </ul>
         <!-- //breadcrumb -->
 
         <div class="page-heading">
-            <h1 class="page-title"><?php echo $room['title']; ?> Products</h1>
+            <h1 class="page-title"><?php echo $room['title']; ?>Products</h1>
             <p>Lots of possibilities for bathroom lighting</p>
             <p class="prj-description">This room requires different forms of lighting. When we go to the bathroom at night, we want as little light as possible, whereas when we’re doing our makeup, etc., we want
                 very good lighting. The tiles are key when it comes to bathroom lighting. For example, if dark floor tiles are used, the lighting must take this into account.</p>
@@ -32,13 +33,11 @@
                 <div id="filter-section" class="filter-section section-arrow">
                     <!-- form wrapper -->
                     <div class="form-wrapper">
-
                         <!-- Caption before section -->
                         <div class="section-title clearfix">
                             <h3>Filter</h3>
                         </div>
                         <!-- Caption before section -->
-
                         <div class="row form-inline-wrapper">
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                 <div class="form-group">
@@ -113,7 +112,7 @@
                 <input type="hidden" name="room_id" id="room_id" value="<?php echo $room_id; ?>">
                 <input type="hidden" name="token" id ="token" value="<?php echo $csrfToken; ?>">
                 <input type="hidden" name="token_nme" id ="token_nme" value="<?php echo $csrfName; ?>">
-                <input type="hidden" name="project_room_id" id ="project_room_id" value="<?php echo $project_room_id; ?>">
+                <input type="hidden" name="project_room_id" id ="project_room_id" value="<?php echo isset($project_room_id)?$project_room_id:''; ?>">
 
                 <input type="hidden" name="application_id" id="application_id" value="<?php echo $application_id; ?>">
                 <!--<input type="submit" value="Search" class="search-btn" />-->

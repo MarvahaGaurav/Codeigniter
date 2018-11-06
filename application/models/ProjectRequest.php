@@ -170,7 +170,7 @@ class ProjectRequest extends BaseModel
     {
         $fields = 'SQL_CALC_FOUND_ROWS pr.id as request_id, projects.name as project_name, user.first_name as customer_name,
             projects.address as project_address, projects.id as project_id, projects.lat as project_lat,
-            projects.lng as project_lng, pr.created_at as request_created_at,
+            projects.lng as project_lng, pr.created_at as request_created_at, projects.levels,
             pr.created_at_timestamp as request_created_at_timestamp,
             pq.additional_product_charges, pq.discount,
             totalQuotationChargesPerRoom(projects.id, pq.company_id) as price,
@@ -225,7 +225,7 @@ class ProjectRequest extends BaseModel
         $fields = 'SQL_CALC_FOUND_ROWS pr.id as request_id, projects.name as project_name, 
             user.first_name as customer_name, projects.address as project_address, projects.id as project_id,
             projects.lat as project_lat, projects.lng as project_lng, pr.created_at as request_created_at,
-            totalQuotationChargesPerRoom(projects.id, pq.company_id) as price,
+            totalQuotationChargesPerRoom(projects.id, pq.company_id) as price, projects.levels,
             pq.additional_product_charges, pq.discount,
             pr.approved_at, pr.approved_at_timestamp,
             pr.created_at_timestamp as request_created_at_timestamp,

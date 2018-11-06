@@ -61,7 +61,8 @@ class User extends BaseModel
     public function installers($params)
     {
         $this->db->select("company_name, company.company_id, first_name as user_name, user_lat, user_long as user_lng,
-        GeoDistDiff('km', user_lat, user_long, {$params['lat']}, {$params['lng']}) as distance")
+        lat as company_lat, lng as company_lng,
+        GeoDistDiff('km', lat, lng, {$params['lat']}, {$params['lng']}) as distance", false)
                 ->from('ai_user as users')
                 ->join('company_master as company', 'company.company_id=users.company_id')
                 ->having('distance <', $params['search_radius'])

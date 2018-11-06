@@ -78,9 +78,16 @@ class RequestController extends BaseController
 
             $this->user = $user_data;
 
+            $this->requestData = $this->get();
+
             $this->userTypeHandling([INSTALLER, PRIVATE_USER, BUSINESS_USER]);
 
             $this->handleEmployeePermission([INSTALLER], ['quote_view']);
+
+            $this->params['offset'] =
+                isset($this->requestData['offset'])&&
+                is_numeric($this->requestData['offset'])&&
+                (int)$this->requestData['offset'] > 0 ? (int)$this->requestData['offset']: 0;
 
             $this->params['limit'] = API_RECORDS_PER_PAGE;
             $this->params['language_code'] = $language_code;
@@ -89,8 +96,6 @@ class RequestController extends BaseController
                 $this->params['user_id'] = $this->user['user_id'];
                 $data = $this->customerRequestData();
             } elseif ((int)$user_data['user_type'] === INSTALLER) {
-                $this->requestData = $this->get();
-                
                 $this->validateRequestList();
 
                 $this->validationRun();
@@ -158,6 +163,13 @@ class RequestController extends BaseController
      *     type="string"
      *   ),
      *  @SWG\Parameter(
+     *     name="project_id",
+     *     in="query",
+     *     description="Project ID - search will be based on project location",
+     *     type="string",
+     *     required=true
+     *   ),
+     *  @SWG\Parameter(
      *     name="search_radius",
      *     in="query",
      *     description="Maxiumum Search Radius for which the installers will be fetched",
@@ -189,6 +201,10 @@ class RequestController extends BaseController
 
             $this->requestData = $this->get();
 
+            $this->validateInstallerCompanies();
+
+            $this->validationRun();
+
             $searchRadius =
                 isset($this->requestData['search_radius'])&&(double)$this->requestData['search_radius'] > 0 ?
                 (double)$this->requestData['search_radius']:REQUEST_SEARCH_RADIUS;
@@ -196,10 +212,22 @@ class RequestController extends BaseController
             $search = isset($this->requestData['search'])&&strlen(trim($this->requestData['search'])) > 0?
                 trim($this->requestData['search']):'';
 
+            $projectData = $this->UtilModel->selectQuery('lat, lng', 'projects', [
+                'where' => ['id' => $this->requestData['project_id']],
+                'single_row' => true
+            ]);
+
+            if (empty($projectData)) {
+                $this->response([
+                    'code' => HTTP_NOT_FOUND,
+                    'msg' => $this->lang->line('no_data_found')
+                ]);
+            }
+
             $this->load->model('User');
 
-            $params['lat'] = $user_data['user_lat'];
-            $params['lng'] = $user_data['user_long'];
+            $params['lat'] = $projectData['lat'];
+            $params['lng'] = $projectData['lng'];
             $params['search_radius'] = $searchRadius;
 
             if (!empty($search)) {
@@ -299,6 +327,27 @@ class RequestController extends BaseController
         }, $data);
 
         return $data;
+    }
+
+    /**
+     * Validate Levels Listing
+     *
+     * @return void
+     */
+    private function validateInstallerCompanies()
+    {
+        $this->form_validation->set_data($this->requestData);
+
+        $this->form_validation->set_rules([
+            [
+                'label' => 'Project',
+                'field' => 'project_id',
+                'rules' => 'trim|required|is_natural_no_zero',
+                'errors' => [
+                    'required' => '%s is required'
+                ]
+            ]
+        ]);
     }
 
     /**

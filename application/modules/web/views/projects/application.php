@@ -6,7 +6,9 @@
             <li><a href="javascript:void(0)">Home</a></li>
             <li><a href="javascript:void(0)">Projects</a></li>
             <li><a href="javascript:void(0)">Create New Project</a></li>
-            <li class="active">Select Application</li>
+            <li><a href="javascript:void(0)">Levels</a></li>
+            <li><a href="javascript:void(0)">Rooms</a></li>
+            <li class="active">Applications</li>
         </ul>
         <!-- //breadcrumb -->
 
@@ -41,7 +43,7 @@
             <?php foreach ($applicationChunks as $applications) { ?>
                 <div class="row">
                     <?php foreach ($applications as $application) { ?>
-                        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 col-for-thumb redirectable" data-redirect-to="<?php echo base_url('home/projects/' . encryptDecrypt($application['application_id']) . '/rooms') ?>">
+                        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 col-for-thumb redirectable" data-redirect-to="<?php echo base_url("home/projects/{$projectId}/levels/{$level}/rooms/applications/{$application['application_id']}/rooms") ?>">
                             <div class="thumb-box">
                                 <div class="thumb-view-wrapper thumb-view-fullp img-viewbdr-radius4">
                                     <div class="thumb-view thumb-viewfullheight-1" style="background:url('<?php echo ! empty($application['image']) ? $application['image'] : base_url('public/images/placeholder/no-found-ico-2.svg') ?>')"></div>

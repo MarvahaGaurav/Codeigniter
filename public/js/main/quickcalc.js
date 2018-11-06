@@ -11,7 +11,6 @@ requirejs.config( {
         autocomplete: 'jquery.autocomplete.min',
         location: 'lib/location',
         helper: 'web/helpers/quickcalc'
-
     },
     shim: {
         //dependencies
