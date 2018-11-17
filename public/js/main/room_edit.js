@@ -9,8 +9,7 @@ requirejs.config( {
         jqueryScrollbar: "plugin/jquery.scrollbar.min",
         jqueryValidator: 'jquery.validate.min',
         autocomplete: 'jquery.autocomplete.min',
-        location: 'lib/location',
-        helper: 'web/helpers/room_js'
+        location: 'lib/location'
     },
     shim: {
         //dependencies
@@ -19,34 +18,84 @@ requirejs.config( {
         common: [ 'bootstrap' ],
         jqueryScrollbar: [ 'jquery' ],
         jqueryValidator: [ 'jquery' ],
-        helper: [ 'jqueryValidator' ],
         autocomplete: [ 'jquery' ],
         location: [ 'autocomplete' ]
     }
 } );
 
 requirejs(
-        [ "jquery", "bootstrap", "common", "jqueryScrollbar", "jqueryValidator", "helper", "autocomplete", "location", "selectPicker" ],
+        [ "jquery", "bootstrap", "common", "jqueryScrollbar", "jqueryValidator", "autocomplete", "location", "selectPicker" ],
         function ( $ ) {
             var normalizer = function ( value ) {
                 return $.trim( value );
             };
 
+            var $projectRoomId = $("#project_room_id");
+            var projectRoomId = $projectRoomId.val();
+
             var validationRules = {
                 // ignore: ":hidden:not(.selectpicker)",
-                ignore: [ ],
                 room_refrence: {
                     required: true,
                     normalizer: normalizer
+                },
+                length: {
+                    required: true,
+                    normalizer: normalizer,
+                    number: true
+                },
+                width: {
+                    required: true,
+                    normalizer: normalizer,
+                    number: true
+                },
+                height: {
+                    required: true,
+                    normalizer: normalizer,
+                    number: true
+                },
+                room_plane_height: {
+                    required: true,
+                    normalizer: normalizer,
+                    number: true
+                },
+                room_luminaries_x: {
+                    required: true,
+                    normalizer: normalizer,
+                    number: true
+                },
+                room_luminaries_y: {
+                    required: true,
+                    normalizer: normalizer,
+                    number: true
+                },
+                rho_wall:{
+                    number: true  
+                },
+                rho_ceiling:{
+                    number: true  
+                },
+                rho_floor:{
+                    number: true  
+                },
+                rho_floor:{
+                    number: true  
+                },
+                lux_values:{
+                    number: true  
                 }
             };
 
-            $( "#add_room_form" ).validate( {
-                rules: validationRules,
-                submitHandler: function ( form ) {
-                    $( form ).submit();
-                }
+            $( "#edit_room_form" ).validate( {
+                rules: validationRules
             } );
+
+            $("#advanced-option-div").on("click", function(){
+                var self = this,
+                    $self = $(self);
+        
+                $self.toggleClass("dropup");
+            });
 
 
             $( ".is_number" ).keypress( function ( e ) {
@@ -61,12 +110,12 @@ requirejs(
              *
              */
             $( "#choose_product" ).click( function () {
-                let formData = $( "#add_room_form" );
+                let formData = $( "#edit_room_form" );
                 let form_data = $( formData ).serialize();
                 console.log( form_data );
                 /*Creating cookie with all form element*/
-                eraseCookie( "add_room_form_data" );
-                setCookie( "add_room_form_data", form_data, 7 );
+                eraseCookie( "edit_room_form_data_" + projectRoomId );
+                setCookie( "edit_room_form_data_" + projectRoomId, form_data, 1);
                 openNewWindow();
             } );
 
@@ -94,10 +143,10 @@ requirejs(
              * @returns {undefined}
              */
             var openNewWindow = function () {
-                let application_id = $( "#application_id" ).val();
-                let room_id = $( "#room_id" ).val();
-                let project_room_id = $( "#project_room_id" ).val();
-                let url = window.location.protocol + "//" + window.location.hostname + "/home/projects/" + application_id + "/room-edit/" + room_id + "/select-porduct/" + project_room_id;
+                let level = $( "#level" ).val();
+                let project_id = $( "#project_id" ).val();
+                let enc_project_room_id = $( "#enc_project_room_id" ).val();
+                let url = window.location.protocol + "//" + window.location.hostname + "/home/projects/" + project_id + "/levels/" + level + "/rooms/" + enc_project_room_id + "/edit/products";
                 window.location = url;
             };
 
@@ -135,11 +184,11 @@ requirejs(
              *
              */
             $( ":input" ).bind( "keyup change", function ( e ) {
-                let formData = $( "#add_room_form" );
+                let formData = $( "#edit_room_form" );
                 let form_data = $( formData ).serialize();
                 /*Creating cookie with all form element*/
-                eraseCookie( "add_room_form_data" );
-                setCookie( "add_room_form_data", form_data, 7 );
+                eraseCookie( "edit_room_form_data_" + projectRoomId );
+                setCookie( "edit_room_form_data_" + projectRoomId, form_data, 1);
             } );
 
 

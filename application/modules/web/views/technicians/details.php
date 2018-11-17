@@ -250,7 +250,7 @@
                             <div class="row user-permission-type-block">
                                 <div class="col-xs-12">
                                     <div class="button-wrapper">
-                                        <input type="submit" value="Save" class="custom-btn btn-margin btn-width save">
+                                        <input type="submit" name="permissions_submit" value="Save" class="custom-btn btn-margin btn-width save">
                                         <button type="button" class="custom-btn btn-margin btn-width cancel back-button" data-redirect="<?php echo base_url("home/technicians") ?>">Cancel</button>
                                     </div>
                                 </div>

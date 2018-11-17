@@ -27,16 +27,18 @@ requirejs(
              */
             $( "#mounting_type" ).change( function () {
 
-                let data = {
+                var data = {
                     mounting: $( this ).val(),
                     room_id: $( "#room_id" ).val(),
                     csrf_token: $( "#token" ).val()
                 };
                 setCookie( "quick_mounting", $( this ).val(), 7 );
-                let project_room_id = $( "#project_room_id" ).val();
-                let application_id = $( "#application_id" ).val();
-                let room_id = $( "#room_id" ).val();
-                let url = window.location.protocol + "//" + window.location.hostname + "/home/projects/get-porduct";
+                var project_room_id = $( "#project_room_id" ).val();
+                var application_id = $( "#application_id" ).val();
+                var room_id = $( "#room_id" ).val();
+                var project_id = $("#project_id").val();
+                var level = $("#level").val();
+                var url = window.location.protocol + "//" + window.location.hostname + "/home/projects/get-porduct";
                 $.ajax( {
                     url: url,
                     data: data,
@@ -45,13 +47,13 @@ requirejs(
 
                     },
                     success: function ( res ) {
-                        let obj = JSON.parse( res );
+                        var obj = JSON.parse( res );
 
-                        let html = "";
+                        var html = "";
                         $( "#product_div" ).empty();
                         $( obj.data ).each( function ( i, v ) {
                             console.log( v );
-                            let redirect_url = window.location.protocol + "//" + window.location.hostname + "/home/projects/" + application_id + "/room-edit/" + room_id + "/articles/" + v.product_id + "/" + project_room_id;
+                            var redirect_url = window.location.protocol + "//" + window.location.hostname + "/home/projects/" + project_id + "/levels/" + level + "/rooms/" + project_room_id + "/edit/products/" + v.product_id + "/mounting/" + v.type;
                             html += '<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 col-for-thumb redirectable" data-redirect-to="' + redirect_url + '">';
                             html += '<div class="thumb-box">';
                             html += '<div class="thumb-view-wrapper thumb-view-contain thumb-view-contain-pd thumb-view-fullp img-viewbdr-radius4">';

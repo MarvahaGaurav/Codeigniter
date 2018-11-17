@@ -3,13 +3,12 @@
 
         <!-- breadcrumb -->
         <ul class="breadcrumb">
-            <li><a href="javascript:void(0)">Home</a></li>
-            <li><a href="javascript:void(0)">Project</a></li>
-            <li><a href="javascript:void(0)">Create New Project</a></li>
-            <li><a href="javascript:void(0)">Select Application</a></li>
-            <li><a href="javascript:void(0)">Rooms</a></li>
-            <li><a href="javascript:void(0)">Result</a></li>
-            <li class="active">Result Details</li>
+        <li><a href="javascript:void(0)">Home</a></li>
+            <li><a href="<?php echo base_url('home/projects') ?>">Projects</a></li>
+            <li><a href="<?php echo base_url('home/projects/' . $projectId) ?>">Details</a></li>
+            <li><a href="<?php echo base_url('home/projects/' . $projectId . '/levels') ?>">Levels</a></li>
+            <li><a href="<?php echo base_url('home/projects/' . $projectId . '/levels/' . $room_data['level'] . '/rooms') ?>">Rooms</a></li>
+            <li class="active">Result</li>
         </ul>
         <!-- //breadcrumb -->
 
@@ -26,6 +25,27 @@
 
             <!-- thumb-footer-detail -->
             <div class="row thumb-footer-detail">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <h3 class="thumb-footer-title">Technican Data</h3>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <p class="rd-property">Article Code</p>
+                            <p class="rd-value"><?php echo $product_specification_data['articlecode']; ?></p>
+                        </div>
+                        <div class="col-xs-12">
+                            <p class="rd-property">Color Temprature</p>
+                            <p class="rd-value"><?php echo $product_specification_data['colour_temperature']; ?></p>
+                        </div>
+                        <div class="col-xs-12">
+                            <p class="rd-property">Beam Angle</p>
+                            <p class="rd-value"><?php echo $product_specification_data['beam_angle']; ?></p>
+                        </div>
+                        <div class="col-xs-12">
+                            <p class="rd-property">Colour Rendering</p>
+                            <p class="rd-value"><?php echo $product_specification_data['colour_rendering']; ?></p>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <h3 class="thumb-footer-title">Recommended Data</h3>
                     <div class="row">
@@ -51,30 +71,8 @@
         ?>
         <!-- thumb view -->
         <div class="thumbview-table">
-            <div class="thumbview-tablecell thumbview-tablecell-one">
-                <div class="thumb-view-evenly">
-                    <!-- thumbnail -->
-                    <div id="thumb-tab1" class="thumb-view-wrapper thumb-view-fullp active">
-                        <?php
-                        echo $room_data['top_view'];
-                        ?>
-                    </div>
 
-                    <div id="thumb-tab2" class="thumb-view-wrapper thumb-view-fullp">
-                        <?php
-                        echo $room_data['front_view'];
-                        ?>
-                    </div>
-
-                    <div id="thumb-tab3" class="thumb-view-wrapper thumb-view-fullp">
-                        <?php
-                        echo $room_data['side_view'];
-                        ?>
-                    </div>
-                    <!-- //thumbnail -->
-                </div>
-            </div>
-            <div class="thumbview-tablecell thumbview-tablecell-two">
+             <div class="thumbview-tablecell thumbview-tablecell-two">
                 <!-- thumbnail list -->
                 <div class="thumb-view-listing-wrapper thumb-tab">
                     <ul>
@@ -120,6 +118,31 @@
             </div>
         </div>
         <!-- thumb view end -->
+
+            <div class="thumbview-tablecell thumbview-tablecell-one">
+                <div class="thumb-view-evenly">
+                    <!-- thumbnail -->
+                    <div id="thumb-tab1" class="thumb-view-wrapper thumb-view-fullp active">
+                        <?php
+                        echo $room_data['top_view'];
+                        ?>
+                    </div>
+
+                    <div id="thumb-tab2" class="thumb-view-wrapper thumb-view-fullp">
+                        <?php
+                        echo $room_data['front_view'];
+                        ?>
+                    </div>
+
+                    <div id="thumb-tab3" class="thumb-view-wrapper thumb-view-fullp">
+                        <?php
+                        echo $room_data['side_view'];
+                        ?>
+                    </div>
+                    <!-- //thumbnail -->
+                </div>
+            </div>
+           
 
         <!-- Caption before section -->
         <!--        <div class="section-title clearfix">

@@ -19,6 +19,7 @@ class ProjectController extends BaseController
         }
         if (! empty($this->userInfo) && isset($this->userInfo['status']) && $this->userInfo['status'] != BLOCKED) {
             $params['limit'] = 5;
+            $this->data['js'] = 'project-listing';
             $page            = $this->input->get('page');
             $search          = $this->input->get('search');
             $search          = trim($search);
@@ -34,7 +35,16 @@ class ProjectController extends BaseController
             $this->load->model("Project");
             $this->data['search']   = (string) $search;
             $temp                   = $this->Project->get($params);
-            $this->data['projects'] = $temp['data'];
+            $projects = $temp['data'];
+            $projects = array_map(function($project) {
+                $project['clone_data'] = json_encode([
+                    $this->data["csrfName"] = $this->security->get_csrf_token_name() =>
+                        $this->data["csrfToken"] = $this->security->get_csrf_hash(),
+                    'project_id' => encryptDecrypt($project['project_id'])
+                ]);
+                return $project;
+            }, $projects);
+            $this->data['projects'] = $projects;
             $this->load->library('Commonfn');
             $this->data['links']    = $this->commonfn->pagination(uri_string(), $temp['count'], $params['limit']);
             load_website_views("projects/main", $this->data);
@@ -125,8 +135,8 @@ class ProjectController extends BaseController
                         $this->session->set_userdata('project_id', $projectId);
                         $this->session->set_flashdata("flash-message", 'Project Created Successfully');
                         $this->session->set_flashdata("flash-type", "success");
-
-                        redirect(base_url("home/create-projects/levels"));
+                        $projectId = encryptDecrypt($projectId);
+                        redirect(base_url("home/projects/{$projectId}/levels"));
                     } else {
                         throw new Exception("Something Went Wrong", 500);
                     }
@@ -206,7 +216,7 @@ class ProjectController extends BaseController
             $this->data['application_id'] = $application_id;
             $this->session->set_userdata('application_id', $application_id);
             $this->load->model("ProjectRooms");
-            $params                       = [
+            $params = [
                 "where" => [
                     "project_id" => $this->data['project_id']
                 ]
@@ -250,7 +260,6 @@ class ProjectController extends BaseController
         }
         return $i;
     }
-
 
 
     /**
@@ -617,8 +626,6 @@ class ProjectController extends BaseController
         return convert_units($length, $specification_string);
     }
 
-
-
     public function view_result($project_room_id)
     {
         try {
@@ -626,9 +633,22 @@ class ProjectController extends BaseController
             if (isset($this->userInfo, $this->userInfo['user_id']) && ! empty($this->userInfo['user_id'])) {
                 $this->data['userInfo'] = $this->userInfo;
             }
-            $id                      = encryptDecrypt($project_room_id, "decrypt");
-            $this->load->model("UtilModel");
+            $id = encryptDecrypt($project_room_id, "decrypt");
+
+            $this->load->model(["UtilModel", "ProjectRoomProducts", "ProductSpecification"]);
             $this->data['room_data'] = $this->UtilModel->selectQuery("*", "project_rooms", ["single_row" => true, "where" => ["id" => $id]]);
+            $this->data['projectId'] = encryptDecrypt($this->data['room_data']['project_id']);
+            $roomProductData = $this->ProjectRoomProducts->get([
+                'where' => ['project_room_id' => $id]
+            ]);
+            
+            $roomProductData = $roomProductData['data'][0];
+            $productSpecifications = $this->ProductSpecification->getch([
+                'product_id' => $roomProductData['product_id'],
+                'where' => ['articlecode' => $roomProductData['articlecode']],
+                'single_row' => true
+            ]);
+            $this->data['product_specification_data'] = $productSpecifications;
             website_view('projects/view_result', $this->data);
         } catch (Exception $ex) {
         }
@@ -671,6 +691,10 @@ class ProjectController extends BaseController
             $this->data['room_count']      = $roomCount;
             $this->data['has_more_rooms']  = $roomCount > 4;
             $this->data['page_room_count'] = $roomParams['limit'];
+            $this->load->model(['UtilModel']);
+            $this->data['quotationRequest'] = $this->UtilModel->selectQuery('id', 'project_requests', [
+                'where' => ['project_id' => $this->data['project']['project_id']]
+            ]);
 
 
             website_view('projects/project_details', $this->data);

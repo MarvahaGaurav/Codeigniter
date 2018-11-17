@@ -32,9 +32,8 @@
             <table cellspacing="0" class="table-custom">
                 <thead>
                     <tr>
-                        <th>Project Number</th>
                         <th>Project Name</th>
-                        <th>Company Name</th>
+                        <th>Project Number</th>
                         <th class="text-center">Project Level</th>
 <!--                        <th class="text-center">Project Version</th>
                         <th class="text-center">Received Quotes</th>-->
@@ -43,24 +42,31 @@
                 </thead>
                 <tbody>
                     <?php
-                    foreach ($projects as $project) {
+                    foreach ($projects as $key => $project) {
                         ?>
                         <tr>
-                            <td class="op-semibold"><?php echo $project['number']; ?></td>
                             <td class="op-semibold"><?php echo $project['name']; ?></td>
-                            <td>--</td>
+                            <td class="op-semibold"><?php echo $project['number']; ?></td>
                             <td class="text-center"><?php echo $project['levels']; ?></td>
     <!--                            <td class="text-center">v1.1</td>
                             <td class="text-center">20</td>-->
                             <td class="op-semibold">
-                                <a href="<?php echo base_url("home/projects/" . encryptDecrypt($project['project_id'])) . "/details"; ?>" class="tb-view-list" title="View">
+                                <a href="<?php echo base_url("home/projects/" . encryptDecrypt($project['project_id'])) ?>" class="tb-view-list project-action" title="View">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
+                                </a>
+                                <a href="javascript:void(0)" class="tb-view-list confirmation-action-xhttp project-action" title="<?php echo $this->lang->line('clone') ?>" data-url="<?php echo base_url("xhttp/projects/clone") ?>" data-target="#project-<?php echo $key ?>" data-json='<?php echo $project['clone_data'] ?>' data-action="clone" data-redirect="<?php echo base_url(uri_string()) ?>" data-title="<?php echo $this->lang->line('clone_project_tilte') ?>" data-message="<?php echo $this->lang->line('clone_project_confirmation') ?>">
+                                    <i class="fa fa-clone"></i>
                                 </a>
                             </td>
                         </tr>
                         <?php
                     }
                     ?>
+                    <?php if (empty($projects)) { ?>
+                        <tr>
+                            <td colspan="10"><?php echo $this->lang->line("no_projects_found") ?></td>
+                        </tr>
+                    <?php }?>
                 </tbody>
             </table>
         </div>

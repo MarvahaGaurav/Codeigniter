@@ -50,6 +50,9 @@ if (!function_exists('conver_to_meter')) {
             "inches" => function ($inches) {
                 return $inches * 0.0254;
             }, //returns meters
+            "meter" => function ($meter) {
+                return $meter;
+            }
         ];
         
         if (! array_key_exists($from, $formulat_list)) {

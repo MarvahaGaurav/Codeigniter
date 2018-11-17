@@ -53,18 +53,19 @@ class UserController extends BaseController
     public function edit_put()
     {
         try {
-            $user_data = $this->accessTokenCheck();
+            $user_data = $this->accessTokenCheck('company_id');
             $language_code = $this->langcode_validate();
 
             $request_data = $this->put();
-            $request_data = trim_input_parameters($request_data);
+            $request_data = trim_input_parameters($request_data, false);
 
-            $validUpdateKeys = ["language", "currency"];
+            $validUpdateKeys = ["language", "currency", "company_discount"];
             foreach ($request_data as $key => $value) {
                 if (!in_array($key, $validUpdateKeys)) {
                     unset($request_data[$key]);
                 }
             }
+
 
             if (empty($request_data)) {
                 $this->response(
@@ -75,6 +76,20 @@ class UserController extends BaseController
                     ]
                 );
             }
+
+            if (isset($request_data['company_discount']) &&
+             !is_numeric($request_data['company_discount']) &&
+             (double)$request_data['company_discount'] < 0) {
+                $this->response(
+                    [
+                    'code' => HTTP_UNPROCESSABLE_ENTITY,
+                    'api_code_result' => 'UNPROCESSABLE_ENTITY',
+                    'msg' => $this->lang->line('invalid_discount')
+                    ]
+                );
+            }
+
+
 
             //used to map request data keys to database keys
             $updateMap = [
@@ -95,6 +110,9 @@ class UserController extends BaseController
 
             $this->load->model("User");
             foreach ($request_data as $key => $value) {
+                if ($key === "company_discount") {
+                    continue;
+                }
                 if (isset($conditional_maps[$key])
                     && !empty($conditional_maps[$key])
                     && !preg_match($conditional_maps[$key]["pattern"], $value)
@@ -110,6 +128,15 @@ class UserController extends BaseController
                 $this->User->{$updateMap[$key]} = $value;
             }
 
+            if (isset($request_data['company_discount'])) {
+                $this->load->model("UtilModel");
+                $this->UtilModel->updateTableData([
+                    'company_discount' => (double)$request_data['company_discount']
+                ], 'company_master', [
+                    'company_id' => $user_data['company_id']
+                ]);
+            }
+
             $where = [
                 "ai_user.user_id" => $user_data['user_id']
             ];
@@ -121,7 +148,10 @@ class UserController extends BaseController
                 }
             }
 
-            $this->User->update($where);
+            if (isset($this->User->language) || isset($this->User->currency)) {
+                $this->User->update($where);
+            }
+
             $this->response(
                 [
                 'code' => HTTP_OK,

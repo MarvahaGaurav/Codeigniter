@@ -29,7 +29,7 @@ $( "#mounting_type" ).change( function () {
             $( "#product_div" ).empty();
             $( obj.data ).each( function ( i, v ) {
                 console.log( v );
-                var redirect_url = window.location.protocol + "//" + window.location.hostname + "/home/projects/" + project_id + "/levels/" + level + "/rooms/applications/" + application_id + "/rooms/" + room_id + "/dimensions/products/" + v.product_id;
+                var redirect_url = window.location.protocol + "//" + window.location.hostname + "/home/projects/" + project_id + "/levels/" + level + "/rooms/applications/" + application_id + "/rooms/" + room_id + "/dimensions/products/" + v.product_id + "/mounting/" + v.type;
                 html += '<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 col-for-thumb redirectable" data-redirect-to="' + redirect_url + '">';
                 html += '<div class="thumb-box">';
                 html += '<div class="thumb-view-wrapper thumb-view-contain thumb-view-contain-pd thumb-view-fullp img-viewbdr-radius4">';

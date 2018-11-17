@@ -27,6 +27,30 @@ class ProductSpecification extends BaseModel
         return $data;
     }
 
+    public function getch($params)
+    {
+        $this->db->select('*')
+            ->from($this->tableName)
+            ->where('product_id', $params['product_id'])
+            ->group_by('articlecode');
+        
+        if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
+            foreach ($params['where'] as $tableColumn => $searchValue) {
+                $this->db->where($tableColumn, $searchValue);
+            }
+        }
+
+        $query = $this->db->get();
+
+        if (isset($params['single_row']) && (bool)$params['single_row']) {
+            $data = $query->row_array();
+        } else {
+            $data = $query->result_array();
+        }
+
+        return $data;
+    }
+
     /**
      * fetch product articles
      *

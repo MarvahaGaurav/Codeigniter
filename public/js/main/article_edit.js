@@ -22,10 +22,11 @@ requirejs(
         [ "jquery", "bootstrap", "common", "jqueryScrollbar" ],
         function ( $ ) {
             $( document ).on( "click", ".image-gallery", function () {
-                let src = $( this ).attr( "data-src" );
+                var src = $( this ).attr( "data-src" );
                 $( "#gellary-main-image" ).attr( "src", src );
             } );
 
+            var projectRoomId = $( "#projectRoomId" ).val();
             /**
              *
              * @param {type} articel_id
@@ -34,14 +35,14 @@ requirejs(
              * @returns {undefined}
              */
             var select_product = function ( articel_id, product_id, product_type ) {
-                let data = {
+                var data = {
                     articel_id: articel_id,
                     product_id: product_id,
                     type: product_type,
                     product_name: $( "#product_name" ).val()
                 };
                 eraseCookie();
-                setCookie( "quick_cal_selectd_room", JSON.stringify( data ), 7 );
+                setCookie( "project_selected_product_" + projectRoomId, JSON.stringify( data ), 7 );
                 openNewWindow();
             };
 
@@ -50,9 +51,11 @@ requirejs(
              * @returns {undefined}
              */
             var openNewWindow = function () {
-                let application_id = $( "#application_id" ).val();
-                let project_room_id = $( "#project_room_id" ).val();
-                let url = window.location.protocol + "//" + window.location.hostname + "/home/projects/" + application_id + "/room-edit/" + project_room_id;
+                var project_room_id = $( "#project_room_id" ).val();
+                var project_id = $("#project_id").val();
+                var level = $("#level").val();
+
+                var url = window.location.protocol + "//" + window.location.hostname + "/home/projects/" + project_id + "/levels/" + level + "/rooms/" + project_room_id + "/edit";
                 window.location = url;
             };
 

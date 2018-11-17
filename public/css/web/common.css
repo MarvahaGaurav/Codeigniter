@@ -619,7 +619,7 @@ input:-ms-input-placeholder {
 }
 
 .concealable {
-    display: none;
+    display: none !important;
 }
 
 .clickable {

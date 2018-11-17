@@ -216,6 +216,7 @@ $(document).ready(function () {
                 data: JSON.parse(dataJson),
                 dataType: 'json',
                 beforeSend: function () {
+                    $self.attr("disabled", "disabled");
                     $self.prepend("<span class='fa fa-circle-o-notch fa-spin'></span>");
                 },
                 success: function (response) {
@@ -226,7 +227,13 @@ $(document).ready(function () {
                             $(dataTarget).remove();
                             // $flashCard.addClass("alert alert-success");
                             // displayFlashCard(response.message);
-                            window.location = dataRedirect;
+                            window.location.href = dataRedirect;
+                        } else if (dataAction == "clone") {
+                            $confirmationModal.modal("hide");
+                            // $(dataTarget).remove();
+                            // $flashCard.addClass("alert alert-success");
+                            // displayFlashCard(response.message);
+                            window.location.href = dataRedirect;
                         }
                     }
                 }

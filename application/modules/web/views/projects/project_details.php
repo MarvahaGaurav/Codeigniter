@@ -4,8 +4,8 @@
         <!-- breadcrumb -->
         <ul class="breadcrumb">
             <li><a href="javascript:void(0)">Home</a></li>
-            <li><a href="project-list.html">Project</a></li>
-            <li class="active">Projects Details</li>
+            <li><a href="<?php echo base_url('home/projects') ?>">Project</a></li>
+            <li class="active">Details</li>
         </ul>
         <!-- //breadcrumb -->
 
@@ -16,7 +16,7 @@
 
         <!-- Caption before section -->
         <div class="section-title2">
-            <h3>Johnson & Sons</h3>
+            <h3><?php echo $project['name']; ?></h3>
         </div>
         <!-- Caption before section -->
 
@@ -39,8 +39,7 @@
                         <td class="op-semibold text-center"><?php echo $project['levels']; ?></td>
                         <td class="op-semibold text-center">0 Quotes</td>
                         <td class="op-semibold">
-                            <!--<a href="javascript:void(0)" class="tb-view-list">View Quotes</a>-->
-                            View Quotes
+                            <a href="javascript:void(0)" class="tb-view-list">View Quotes</a>
                         </td>
                     </tr>
                 </tbody>
@@ -49,11 +48,16 @@
         <!-- //Project list table -->
 
         <!-- Caption before section -->
-        <div class="section-title">
-            <h3>Room List</h3>
+        <div class="section-title clearfix">
+            <h3 class="pull-left">Room List</h3>
+            <div class="button-wrapper-two pull-right">
+                <a href="<?php echo base_url("home/projects/" . encryptDecrypt($project['project_id']) . "/levels"); ?>" class="custom-btn btn-width save">
+                    <i class="fa fa-eye fa-p-circle"></i>View Room Details
+                </a>
+            </div>
         </div>
         <!-- Caption before section -->
-
+        <!-- <div class="clearfix"></div> -->
         <!-- Project list table -->
         <div class="table-responsive table-wrapper" id="scrollbar-inner2">
             <table cellspacing="0" class="table-custom">

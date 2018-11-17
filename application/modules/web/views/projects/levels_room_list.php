@@ -4,9 +4,9 @@
         <!-- breadcrumb -->
         <ul class="breadcrumb">
             <li><a href="javascript:void(0)">Home</a></li>
-            <li><a href="javascript:void(0)">Project</a></li>
-            <li><a href="javascript:void(0)">Create New Project</a></li>
-            <li><a href="javascript:void(0)">Levels</a></li>
+            <li><a href="<?php echo base_url('home/projects') ?>">Projects</a></li>
+            <li><a href="<?php echo base_url('home/projects/' . $projectId) ?>">Details</a></li>
+            <li><a href="<?php echo base_url('home/projects/' . $projectId . '/levels') ?>">Levels</a></li>
             <li class="active">Rooms</li>
         </ul>
         <!-- //breadcrumb -->
@@ -21,11 +21,16 @@
         <!-- Caption before section -->
         <div class="section-title clearfix">
             <h3 class="pull-left">Room List</h3>
+            <?php if (
+                (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && empty($quotationRequest)) ||
+                (!in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true))
+            ) { ?>
             <div class="button-wrapper-two pull-right">
                 <a href="<?php echo base_url("home/projects/" . $projectId . "/levels/{$level}/rooms/applications"); ?>" class="custom-btn btn-width save">
                     <i class="fa fa-plus fa-p-circle"></i>Add Room
                 </a>
             </div>
+            <?php }?>
         </div>
         <!-- Caption before section -->
 
@@ -39,6 +44,7 @@
                         <th class="text-center">No. of Products</th>
                         <th class="text-center">Products</th>
                         <th>Actions</th>
+                        <th>Quick Calc</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -52,7 +58,7 @@
                         <td class="text-nowrap text-center">
                             <!-- Change the `data-field` of buttons and `name` of input field's for multiple plus minus buttons-->
                             <div class="input-group plus-minus-input">
-                                <input class="input-group-field input-square-space" type="number" name="quantity" value="0">
+                                <input class="input-group-field input-square-space" type="number" name="quantity" value="<?php echo count($room['products']) ?>">
                                 <div class="input-group-button btn-square">
                                     <button type="button" class="button hollow square" data-quantity="oplus" data-field="quantity">
                                         <i class="fa fa-plus" aria-hidden="true"></i>
@@ -61,10 +67,20 @@
                             </div>
                         </td>
                         <td class="op-semibold">
-                            <a href="javascript:void(0)" class="tb-view-list" title="View List">View List</a>
+                            <a href="<?php echo base_url('home/projects/' . $projectId . '/levels/' . $level . '/rooms/' . encryptDecrypt($room['room_id']) . '/project-rooms/' . encryptDecrypt($room['project_room_id']) . '/accessory-products') ?>" class="tb-view-list" title="View List">View List</a>
                         </td>
-                        <td class="op-semibold">
-                            <a href="javascript:void(0)" class="tb-view-list" title="Edit">Edit</a>
+                        <td class="op-semibold text-center">
+                        <?php if (
+                            (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && empty($quotationRequest)) ||
+                            (!in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true))
+                        ) { ?>
+                            <a href="<?php echo base_url("/home/projects/{$projectId}/levels/{$level}/rooms/" . encryptDecrypt($room['project_room_id']) . "/edit") ?>" class="tb-view-list" title="Edit">Edit</a>
+                        <?php } else { ?>
+                            <div class="text-center">--</div>
+                        <?php } ?>
+                        </td>
+                        <td class="op-semibold text-center">
+                            <a href="<?php echo base_url("/home/projects/view-result/" . encryptDecrypt($room['project_room_id'])) ?>" class="tb-view-list" title="View Results">View Results</a>
                         </td>
                     </tr>
                     <?php endforeach ?>
@@ -84,13 +100,17 @@
         <!-- //Project list table -->
 
         <!-- Caption before section -->
+        <?php if (is_numeric($levelCheck['status']) && (int)$levelCheck['status'] === 0 && empty($quotationRequest)) { ?>
+        <?php if (!empty($rooms)) { ?>
         <div class="section-title clearfix">
             <div class="button-wrapper">
-                <a href="javascript:void(0)" class="custom-btn btn-margin btn-width save">
-                    Evaluate
-                </a>
+                <button type="button" <?php echo empty($rooms)?"disabled":"" ?> title="<?php echo empty($rooms)?$this->lang->line("add_rooms_to_mark_as_done"):"" ?>" data-level-data='<?php echo $levelData ?>' data-redirect-to="<?php echo base_url('/home/projects/' . $projectId . '/levels') ?>" class="custom-btn btn-margin btn-width save" id="mark-as-done-btn">
+                    Mark As Done
+                </button>
             </div>
         </div>
+        <?php } ?>
+        <?php } ?>
         <!-- Caption before section -->
 
         <!-- no record found -->

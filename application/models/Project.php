@@ -61,11 +61,12 @@ class Project extends BaseModel
 
     public function details($params)
     {
-        $this->db->select("id as project_id, name, number, levels, address, lat, lng, created_at, 
-                    created_at_timestamp, version,
+        $this->db->select("id as project_id, projects.name, projects.number, projects.levels, projects.address, projects.lat, projects.lng, projects.created_at, 
+                    projects.created_at_timestamp, projects.version, IFNULL(users.first_name, '') as installer_name, IFNULL(installer_id, 0) as installer_id,
                     (SELECT count(ps.id) FROM project_quotations as ps JOIN project_requests as pr ON pr.id=ps.request_id  WHERE pr.project_id = projects.id) as quotation_count,
                     IF((SELECT count(id) FROM project_requests WHERE project_id = projects.id) > 0, 1, 0) as is_quotation_requested")
                 ->from($this->tableName)
+                ->join('ai_user as users', 'users.user_id=projects.installer_id', 'left')
                 ->where('id', $params['project_id']);
         
         $query = $this->db->get();

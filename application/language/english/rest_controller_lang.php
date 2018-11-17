@@ -123,6 +123,7 @@ $lang['internal_server_error'] = "Internal Server Error";
 $lang['something_went_wrong'] = 'Something went wrong please try again';
 
 //Products
+$lang['invalid_mounting_type'] = 'Invalid mounting type';
 $lang['mounting_types'] = 'Mounting types has been fetched';
 $lang['product_fetched'] = 'Products fetched successfully';
 $lang['project_added'] = 'Your project has been added';
@@ -163,3 +164,19 @@ $lang['adequate_permission_required'] = 'You do not have adequate permissions';
 $lang['project_not_found'] = 'Project not found';
 $lang['room_not_found'] = 'Room not found';
 $lang['add_rooms_to_all_levels'] = 'Add rooms to all levels before proceeding to send quotation';
+$lang['request_sent_for_this_project'] = 'Action not allowed';
+$lang['installer_selected'] = 'This installer has been selected';
+$lang['select_installer_before_quote'] = "Please select installers before requesting for a quote";
+$lang['maximum_installer_selection_exceeded'] = 'Maximum number of installers to be selected is %d'; //%s is the placeholder for the number eg. 3
+$lang['complete_level_data'] = 'All Project Levels need to be marked as done';
+$lang['we_are_unable_to_get_data'] = 'We are unable to evaluate this product, please try a different product';
+$lang['invalid_measurement_unit'] = 'Only Meter, Inch and Yard allowed';
+$lang['room_updated'] = 'Your room has been updated';
+$lang['product_already_added'] = 'This product has already been added';
+$lang['product_added_successfully'] = 'Your product has been successfully added';
+$lang['selected'] = 'Selected';
+$lang['clone'] = 'Clone';
+$lang['clone_project_confirmation'] = 'Are you sure you want to clone this project';
+$lang['clone_project_tilte'] = 'Clone Project';
+$lang['no_projects_found'] = 'No Projects Found';
+$lang['invalid_discount'] = 'Provided discount is invalid';

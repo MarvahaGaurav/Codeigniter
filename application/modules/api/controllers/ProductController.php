@@ -207,6 +207,13 @@ class ProductController extends BaseController
      *     type="string",
      *     required = true
      *   ),
+     * @SWG\Parameter(
+     *     name="is_uld",
+     *     in="path",
+     *     description="is_uld = 1 uld only specifications and is_uld = 0 all specifications",
+     *     type="string",
+     *     required = true
+     *   ),
      * @SWG\Response(response=200, description="OK"),
      * @SWG\Response(response=401, description="Unauthorize"),
      * @SWG\Response(response=404, description="No data found"),
@@ -242,14 +249,22 @@ class ProductController extends BaseController
             $params = [
                 'product_id' => $get['product_id']
             ];
+
+            $uld = isset($get['is_uld'])&&is_numeric($get['is_uld'])&&in_array((int)$get['is_uld'], [1,0], true)?(int)$get['is_uld']:1;
+
             $this->load->model('Product');
             $this->load->model('ProductTechnicalData');
             $this->load->model('ProductSpecification');
             $this->load->model('ProductRelated');
 
+            $specificationParam = $params;
+            if ($uld === 1) {
+                $specificationParam['where']['CHAR_LENGTH(uld) >'] = 0;
+            }
+
             $productData = $this->Product->details($params);
             $productTechnicalData = $this->ProductTechnicalData->get($params);
-            $productSpecifications = $this->ProductSpecification->get($params);
+            $productSpecifications = $this->ProductSpecification->getch($specificationParam);
             $relatedProducts = $this->ProductRelated->get($params);
 
             if (empty($productData)) {

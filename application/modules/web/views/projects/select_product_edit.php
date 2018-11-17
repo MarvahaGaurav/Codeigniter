@@ -4,13 +4,11 @@
         <!-- breadcrumb -->
         <ul class="breadcrumb">
             <li><a href="javascript:void(0)">Home</a></li>
-            <li><a href="<?php echo base_url('home/projects') ?>">Projects</a></li>
-            <li><a href="<?php echo base_url('home/projects/' . $project_id) ?>">Details</a></li>
-            <li><a href="<?php echo base_url('home/projects/' . $project_id . '/levels') ?>">Levels</a></li>
-            <li><a href="<?php echo base_url('home/projects/' . $project_id . '/levels/' . $level . '/rooms') ?>">Rooms</a></li>
-            <li><a href="<?php echo base_url('home/projects/' . $project_id . '/levels/' . $level . '/rooms/applications') ?>">Applications</a></li>
-            <li><a href="<?php echo base_url('home/projects/' . $project_id . '/levels/' . $level . '/rooms/applications/' . $application_id . '/rooms') ?>">Room Type</a></li>
-            <li><a href="javascript:void(0)">Add Room</a></li>
+            <li><a href="<?php echo base_url("home/projects") ?>">Projects</a></li>
+            <li><a href="<?php echo base_url("home/projects/{$project_id}") ?>">Details</a></li>
+            <li><a href="<?php echo base_url("home/projects/{$project_id}/levels/{$level}") ?>">Levels</a></li>
+            <li><a href="<?php echo base_url("home/projects/{$project_id}/levels/{$level}/rooms") ?>">Rooms</a></li>
+            <li><a href="<?php echo base_url("home/projects/{$project_id}/levels/{$level}/rooms/{$project_room_id}/edit") ?>">Edit Room Dimensions</a></li>
             <li class="active">Products</li>
         </ul>
         <!-- //breadcrumb -->
@@ -116,7 +114,6 @@
                 <input type="hidden" name="token_nme" id ="token_nme" value="<?php echo $csrfName; ?>">
                 <input type="hidden" name="project_room_id" id ="project_room_id" value="<?php echo isset($project_room_id)?$project_room_id:''; ?>">
 
-                <input type="hidden" name="application_id" id="application_id" value="<?php echo $application_id; ?>">
                 <!--<input type="submit" value="Search" class="search-btn" />-->
             </div>
         </div>

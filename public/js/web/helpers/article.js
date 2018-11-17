@@ -2,7 +2,7 @@
 
 
     $( document ).on( "click", ".image-gallery", function () {
-        let src = $( this ).attr( "data-src" );
+        var src = $( this ).attr( "data-src" );
         $( "#gellary-main-image" ).attr( "src", src );
     } );
 
@@ -14,7 +14,7 @@
      * @returns {undefined}
      */
     var select_product = function ( articel_id, product_id, product_type ) {
-        let data = {
+        var data = {
             articel_id: articel_id,
             product_id: product_id,
             type: product_type,
@@ -30,9 +30,11 @@
      * @returns {undefined}
      */
     var openNewWindow = function () {
-        let application_id = $( "#application_id" ).val();
-        let room_id = $( "#room_id" ).val();
-        let url = window.location.protocol + "//" + window.location.hostname + "/home/projects/" + application_id + "/rooms/" + room_id + "/add-room";
+        var project_id = $( "#project_id" ).val();
+        var level = $( "#level" ).val();
+        var application_id = $( "#application_id" ).val();
+        var room_id = $( "#room_id" ).val();
+        var url = window.location.protocol + "//" + window.location.hostname + "/home/projects/"+project_id+"/levels/"+level+"/rooms/applications/"+application_id+"/rooms/"+room_id+"/dimensions";
         window.location = url;
     };
 

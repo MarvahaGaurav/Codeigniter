@@ -262,6 +262,9 @@ class Index extends BaseController {
                             $companyData['company_name']       = $postData['company_name'];
                             $companyData['company_reg_number'] = $postData['company_registration_number'];
                             $companyData['insert_date']        = $this->datetime;
+                            $companyData['country'] = $postData['country'];
+                            $companyData['city'] = $postData['city'];
+                            $companyData['zipcode'] = $postData['zipcode'];
                         }
                         else {
                             $isEmployee             = true;

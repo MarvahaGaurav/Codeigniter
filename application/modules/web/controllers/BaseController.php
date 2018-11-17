@@ -19,6 +19,7 @@ class BaseController extends MY_Controller
     protected $datetime;
     protected $timestamp;
     protected $user;
+    protected $languageCode;
 
     public function __construct()
     {
@@ -35,6 +36,7 @@ class BaseController extends MY_Controller
         $this->timestamp                   = time();
         $this->user_query_fields           = 'status,user_id,first_name,image,email, user_type, is_owner, company_id';
         $this->session_data                = $this->session->userdata('sg_userinfo');
+        $this->languageCode = "en";
         // $this->employeePermission          = retrieveEmployeePermission($this->session->userdata('sg_userinfo')['user_id']);
         // $this->data['employee_permission'] = $this->employeePermission;
     }
@@ -55,6 +57,7 @@ class BaseController extends MY_Controller
                 redirect(base_url());
             }
             $this->userInfo = $this->Common_model->fetch_data('ai_user', $this->user_query_fields, array ('where' => array ('user_id' => $sg_userinfo['user_id'], 'status' => 1)), true);
+            $this->data['userInfo'] = $this->userInfo;
         } else {
             redirect(base_url("login"));
         }
@@ -86,6 +89,7 @@ class BaseController extends MY_Controller
         if (! empty($this->session_data) && ($this->session_data != '')) {
             $sg_userinfo    = $this->session_data;
             $this->userInfo = $this->Common_model->fetch_data('ai_user', $this->user_query_fields, array ('where' => array ('user_id' => $sg_userinfo['user_id'], 'status' => 1)), true);
+            $this->data['userInfo'] = $this->userInfo;
         }
     }
 
@@ -112,15 +116,15 @@ class BaseController extends MY_Controller
         ) {
             $this->load->helper('common');
             $permissions = retrieveEmployeePermission($this->userInfo['user_id']);
-
+            $this->data['permissions'] = $permissions;
             if (empty($permissions)) {
-                show404($this->lang->line('bad_request'), $redirectUrl);
+                show404($this->lang->line('adequate_permission_required'), $redirectUrl);
             }
 
             $permissionKeys = array_keys($permissions);
             foreach ($permissionsToCheck as $permissionToCheck) {
                 if (!in_array($permissionToCheck, $permissionKeys)) {
-                    show404($this->lang->line('bad_request'), $redirectUrl);
+                    show404($this->lang->line('adequate_permission_required'), $redirectUrl);
                 }
                     
                 if (!(bool)$permissions[$permissionToCheck]) {

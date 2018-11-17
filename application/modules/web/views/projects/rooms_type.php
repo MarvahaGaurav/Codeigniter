@@ -4,12 +4,12 @@
         <!-- breadcrumb -->
         <ul class="breadcrumb">
             <li><a href="javascript:void(0)">Home</a></li>
-            <li><a href="javascript:void(0)">Projects</a></li>
-            <li><a href="javascript:void(0)">Create New Project</a></li>
-            <li><a href="javascript:void(0)">Levels</a></li>
-            <li><a href="javascript:void(0)">Rooms</a></li>
-            <li><a href="javascript:void(0)">Applications</a></li>
-            <li><a href="javascript:void(0)">Room Type</a></li>
+            <li><a href="<?php echo base_url('home/projects') ?>">Projects</a></li>
+            <li><a href="<?php echo base_url('home/projects/' . $projectId) ?>">Details</a></li>
+            <li><a href="<?php echo base_url('home/projects/' . $projectId . '/levels') ?>">Levels</a></li>
+            <li><a href="<?php echo base_url('home/projects/' . $projectId . '/levels/' . $level . '/rooms') ?>">Rooms</a></li>
+            <li><a href="<?php echo base_url('home/projects/' . $projectId . '/levels/' . $level . '/rooms/applications') ?>">Applications</a></li>
+            <li class="active">Room Type</li>
         </ul>
         <!-- //breadcrumb -->
 

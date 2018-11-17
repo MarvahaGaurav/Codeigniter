@@ -52,9 +52,11 @@ requirejs(
              * @returns {undefined}
              */
             var openNewWindow = function () {
-                let application_id = $( "#application_id" ).val();
-                let room_id = $( "#room_id" ).val();
-                let url = window.location.protocol + "//" + window.location.hostname + "/home/projects/" + application_id + "/rooms/" + room_id + "/add-room";
+                var project_id = $( "#project_id" ).val();
+                var level = $( "#level" ).val();
+                var application_id = $( "#application_id" ).val();
+                var room_id = $( "#room_id" ).val();
+                var url = window.location.protocol + "//" + window.location.hostname + "/home/projects/"+project_id+"/levels/"+level+"/rooms/applications/"+application_id+"/rooms/"+room_id+"/dimensions";
                 window.location = url;
             };
 

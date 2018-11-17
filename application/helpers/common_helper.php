@@ -222,7 +222,7 @@ function show404($err_msg = "", $redurl = 'admin/')
     $jsscript = '';
     $cssstyle = '<link href="/public/css/style.css" rel="stylesheet"><link href="/public/css/media.css" rel="stylesheet">';
     // $jsscript = '<script>setTimeout(function(){ window.location.href="' . $redurl . '"; }, 5000);</script>';
-    $errorpage_html = '<html><head><title>Smart Guide admin</title>'.$jsscript.' '.$cssstyle.'</head><body>';
+    $errorpage_html = '<html><head><title>Smart Guide</title>'.$jsscript.' '.$cssstyle.'</head><body style="margin:0px !important;">';
     $errorpage_html .= '<div class="form-section"><div class="form-inner-section"><div class="logo"><img src="/public/images/logo.png" alt="logo"></div><div class="form-wrapper"><div class="login-error"><span class="error"></span></div>';
     $errorpage_html .= '<h1 class="form-heading" style="text-align:center;width:100%;">'.$err_msg.'</h1>';
     $errorpage_html .= '<div class="form-group" style="text-align:center;"><a class="commn-btn save" style="text-align:center;text-decoration:none;" href='.$redurl.'>Click here to redirect</a></div>';

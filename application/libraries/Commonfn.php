@@ -166,7 +166,8 @@ class Commonfn {
         $this->CI->email->subject($subject);
         $body = $this->CI->load->view('mail/' . $mailtemplate, $data, TRUE);
         $this->CI->email->message($body);
-        return $this->CI->email->send() ? true : false;
+        $status = $this->CI->email->send();
+        return (bool)$status ? true : false;
     }
 
     public function thumb_create($filename, $filepath, $targetpath, $width = 150, $height = 150) {

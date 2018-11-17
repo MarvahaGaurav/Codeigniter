@@ -1,5 +1,5 @@
 <?php
-// defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 if (! function_exists("get_sg_data")) {
     function get_sg_data($url)

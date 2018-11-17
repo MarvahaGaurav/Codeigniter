@@ -1,5 +1,5 @@
 <div class="container">
-    <ul class="breadcrumb"> 
+    <ul class="breadcrumb">
         <li><a href="javascript:void(0)">Home</a></li>
         <li><a href="<?php echo base_url("home/projects") ?>">Projects</a></li>
         <li><a href="<?php echo base_url("home/projects/{$project_id}") ?>">Details</a></li>
@@ -12,7 +12,6 @@
     <div class="">
         <h1 class="heading-red"><?php echo $product_name = $product['title']; ?></h1>
     </div>
-    
 </div>
 
 
@@ -100,7 +99,6 @@ if (count($images)) {
                 </tr>
                 <?php foreach($article as $specification) : ?>
                 <tr class="">
-
                     <td class="image"><a>
                             <img  style="width:100%" src="<?php echo $specification['image']; ?>" title="<?php echo $specification['articlecode']; ?>" class="img-responsive"></a></td>
 
@@ -115,7 +113,7 @@ if (count($images)) {
 
                     <td data-title="Protection" class="protection"><span style="font-weight: bold;"><?php echo isset($technical_data[2], $technical_data[2]['info'])?$technical_data[2]['info']:'' ?></span></td>
                     <td data-title="Control gear" class="driver"><span style="font-weight: bold;"><?php echo isset($technical_data[1], $technical_data[1]['info'])?$technical_data[1]['info']:'' ?></span><br></td>
-                    <td data-title="Mounting/Connection" class="connection"><?php echo $specification['mounting'] ?></td>
+                    <td data-title="Mounting/Connection" class="connection"><?php echo isset($technical_data[5], $technical_data[5]['info'])?$technical_data[5]['info']:'' ?></td>
                     <td data-title="Dimensions (mm)" class="dimensions"><?php echo isset($specification['length'], $specification['width'], $specification['height'])?$specification['length']. 'X'.$specification['width']. 'X'.$specification['height']:'' ?></td>
 
                     <td class="download text-right">
@@ -159,10 +157,10 @@ if (count($images)) {
     </div>
     <input type="hidden" name="level" id="level" value="<?php echo $level; ?>">
     <input type="hidden" name="project_id" id="project_id" value="<?php echo $project_id; ?>">
-    <input type="hidden" name="application_id" id="application_id" value="<?php echo isset($application_id)?$application_id:''; ?>">
     <input type="hidden" name="room_id" id="room_id" value="<?php echo isset($room_id)?$room_id:''; ?>">
     <input type="hidden" name="product_name" id="product_name" value="<?php echo isset($product_name)?$product_name:''; ?>">
     <input type="hidden" name="project_room_id" id="project_room_id" value="<?php echo isset($project_room_id)?$project_room_id:''; ?>">
+    <input type="hidden" name="projectRoomId" id="projectRoomId" value="<?php echo isset($projectRoomId)?$projectRoomId:''; ?>">
 </div>
 <!--Related Products close-->
 

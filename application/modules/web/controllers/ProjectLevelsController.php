@@ -16,13 +16,14 @@ class ProjectLevelsController extends BaseController
      *
      * @return void
      */
-    public function levelsListing()
+    public function levelsListing($projectId)
     {
         try {
             $this->activeSessionGuard();
             $this->data['userInfo'] = $this->userInfo;
             $this->load->config('css_config');
             $this->data['css'] = $this->config->item('project-levels');
+            $this->data['js'] = 'level-listing';
 
             $this->userTypeHandling([INSTALLER, PRIVATE_USER, BUSINESS_USER, WHOLESALER, ELECTRICAL_PLANNER], base_url('home/applications'));
 
@@ -30,7 +31,7 @@ class ProjectLevelsController extends BaseController
 
             $languageCode = "en";
 
-            $projectId = $this->session->userdata('project_id');
+            $projectId = encryptDecrypt($projectId, 'decrypt');
             $this->load->model("UtilModel");
 
             if (empty($projectId)) {
@@ -56,18 +57,30 @@ class ProjectLevelsController extends BaseController
 
             $projectLevels = level_activity_status_handler($projectLevels);
 
-            $projectLevels = 
-            getDataWith($projectLevels, $roomCount, 'level', 'level', 'room_count', 'room_count');
+            $projectLevels =
+                getDataWith($projectLevels, $roomCount, 'level', 'level', 'room_count', 'room_count');
+
+            $this->data['projectId'] = encryptDecrypt($projectId);
+            $this->data['permissions'] = $permissions;
+
             $projectLevels = array_map(function ($project) {
-                $project['room_count'] = is_array($project['room_count'])&&
-                    count($project['room_count'])&&
-                    isset($project['room_count'][0])?(int)$project['room_count'][0]:0;
+                $project['data'] = json_encode([
+                    $this->data["csrfName"] = $this->security->get_csrf_token_name() =>
+                        $this->data["csrfToken"] = $this->security->get_csrf_hash(),
+                    'project_id' => $this->data['projectId'],
+                    'level' => $project['level']
+                ]);
+                $project['room_count'] = is_array($project['room_count']) &&
+                    count($project['room_count']) &&
+                    isset($project['room_count'][0]) ? (int)$project['room_count'][0] : 0;
                 return $project;
             }, $projectLevels);
 
             $this->data['projectLevels'] = $projectLevels;
-            $this->data['projectId'] = encryptDecrypt($projectId);
-            $this->data['permissions'] = $permissions;
+
+            $this->data['quotationRequest'] = $this->UtilModel->selectQuery('id', 'project_requests', [
+                'where' => ['project_id' => $projectId]
+            ]);
 
             $this->data['all_levels_done'] = is_bool(array_search(0, array_column($projectLevels, 'status')));
 

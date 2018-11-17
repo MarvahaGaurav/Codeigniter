@@ -290,9 +290,14 @@ class Signup extends REST_Controller
                 $user_info = $this->Common_model->fetch_data('ai_user', ['email', 'status'], $whereArr, true);
                 if (!empty($user_info) && $user_info['status'] == 2) {
                     $this->response(array('code' => ACCOUNT_BLOCKED, 'msg' => $this->lang->line('account_blocked'), 'result' => (object)[]));
-                } elseif (!empty($user_info) && $user_info['status'] == 1) {
+                }
+
+                $userEmailCheck = $this->Common_model->fetch_data('ai_user', 'email', ['where' => ['email' => trim($postDataArr['email'])]], true);
+
+                if (!empty($userEmailCheck)) {
                     $this->response(array('code' => EMAIL_ALREADY_EXIST, 'msg' => $this->lang->line('account_exist'), 'result' => (object)[]));
                 }
+
                 $signupArr = [];
                 $signupArr["first_name"] = trim($postDataArr["first_name"]);
                 $signupArr["middle_name"] = isset($postDataArr["middle_name"]) ? trim($postDataArr["middle_name"]) : "";

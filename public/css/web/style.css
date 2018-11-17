@@ -2,6 +2,10 @@
     padding:11px 15px 10px 21px !important;
 }
 
+.selection-div-active {
+    border: 2px solid !important;
+}
+
 .clickable {
     cursor: pointer;
 }
@@ -40,16 +44,22 @@ header.scrollhidden {
 }
 .footer {
     position: absolute;
-    bottom: -182px;
+    /* bottom: -182px; */
+    bottom: 0;
     width:100%;
 }
 .main-container {
-    display: block;
+    /* display: block;
     padding-top: 78px;
-    width:100%;
+    width: 100%;
     min-height: calc(100% - 233px);
     background: #fff;
-    position: absolute;
+    position: absolute; */
+    position: relative;
+    min-height: 100%;
+    padding: 100px 0 350px 0;
+    width: 100%;
+    background: #ffffff;
 }
 .inner-container {
     margin-bottom: 70px;
@@ -1247,6 +1257,23 @@ h2 { font-size: 14px; }
 .delete-thumb:hover {
     background: #e00016;
 }
+.selected-accessory-product {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: #e03014;
+    border-radius: 50%;
+    line-height: 24px;
+    height: 25px;
+    width: 25px;
+    z-index: 11;
+    cursor: pointer;
+    text-align: center;
+}
+.selected-accessory-product .fa {
+    color: #fff;
+    font-size: 14px;
+}
 
 /* Image wrapper */
 
@@ -1322,6 +1349,7 @@ h2 { font-size: 14px; }
 }
 .thumb-viewfullheight-1 { /* this is using for all normal images */
     height:148px;
+    background-size: contain !important;
 }
 .thumb-viewfullheight-2 { /* this is using for room dimention screnn */
     height:483px;
@@ -1892,4 +1920,35 @@ div.error {
 
 .favorite-wrapper {
     /* position: relative; */
+}
+
+.alert-danger {
+    color: #a94442;
+    background-color: #f2dede !important;
+    border-color: #ebccd1;
+}
+
+
+.table-mb {
+    margin: 0 0 45px 0;
+    max-height: 500px;
+}
+
+.table-wrapper .table-custom thead tr th {
+    font-size: 14px;
+    white-space: nowrap;
+    border-bottom: 1px solid #ccc;
+    position: sticky;
+    top: 0;
+}
+
+td.group {
+    font-size: 20px;
+    padding: 0 0 0 0;
+    display: block;
+    width: 100%;
+}
+
+.project-action {
+    padding: 0 5px;
 }

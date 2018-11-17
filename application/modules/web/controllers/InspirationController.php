@@ -23,6 +23,7 @@ class InspirationController extends BaseController
 
     public function index()
     {
+        // $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['insp'], base_url('home/applications'));
         $this->load->helper("input_data");
         $limit = 5;
         $get = $this->input->get();

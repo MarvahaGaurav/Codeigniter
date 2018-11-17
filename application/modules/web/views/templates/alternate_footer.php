@@ -64,6 +64,10 @@
     <strong class="strong-message"></strong>
     <span class="message"></span>
 </div>
+<div id="flash-card-info" style="display:none;z-index:99999999;position:fixed;right:33.3%;top:10%;">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> 
+  <div style="text-align:center;"><strong class="card-message-strong"></strong> <span class="card-message"></span></div>
+</div>
 <script data-main="<?php echo base_url("public/js/main/" . (isset($js) && !empty(trim($js)) ? $js : "main")) ?>" src="<?php echo base_url("public/js/require.js") ?>"></script>
 
 <!-- <div id="myModal-logout" class="modal fade" role="dialog">

@@ -148,7 +148,7 @@ class ProjectController extends BaseController
                 $project['company_id'] = $user_data['company_id'];
             }
             
-            if ((int)$user_data['user_type'] === INSTALLER && (int)$user_data['is_owner'] === ROLE_OWNER) {
+            if ((int)$user_data['user_type'] === INSTALLER && (int)$user_data['is_owner'] === ROLE_OWNER && isset($this->requestData['installer_id'])) {
                 $project['installer_id'] = $this->requestData['installer_id'];
             }
 
@@ -331,6 +331,10 @@ class ProjectController extends BaseController
                 'updated_at_timestamp' => time()
             ];
 
+            if ((int)$user_data['user_type'] === INSTALLER && (int)$user_data['is_owner'] === ROLE_OWNER && isset($this->requestData['installer_id'])) {
+                $project['installer_id'] = $this->requestData['installer_id'];
+            }
+
             $projectId = $this->UtilModel->updateTableData($project, 'projects', [
                 'id' => $this->requestData['project_id']
             ]);
@@ -419,7 +423,9 @@ class ProjectController extends BaseController
             $roomsData = array_map(function ($room) use ($language_code) {
                 $data['language_code'] = $language_code;
                 $data['project_id'] = $room['projectId'];
+                $data['suspension_height'] = isset($room['suspensionHeight'])?round((double)$room['suspensionHeight'],2):0.00;
                 $data['level'] = $room['level'];
+                // $data['application_id'] = $room['applicationId'];
                 $data['room_id'] = $room['roomId'];
                 $data['name'] = $room['name'];
                 $data['length'] = $room['length'];
@@ -1287,6 +1293,9 @@ class ProjectController extends BaseController
             if (isset($this->requestData["height"])) {
                 $updateData["height"] =  $this->requestData['height'];
             }
+            if (isset($this->requestData["suspensionHeight"])) {
+                $updateData["suspension_height"] =  $this->requestData['suspensionHeight'];
+            }
             if (isset($this->requestData["maintainanceFactor"])) {
                 $updateData["maintainance_factor"] =  $this->requestData['maintainanceFactor'];
             }
@@ -1490,7 +1499,7 @@ class ProjectController extends BaseController
         $this->form_validation->set_rules($validationRules);
 
         if ((int)$this->user['user_type'] === INSTALLER && (int)$this->user['is_owner'] === ROLE_OWNER) {
-            $this->form_validation->set_rules('installer_id', 'Installer ID', 'trim|required|is_natural_no_zero');
+            $this->form_validation->set_rules('installer_id', 'Installer ID', 'trim|is_natural_no_zero');
         }
     }
 
@@ -1510,6 +1519,8 @@ class ProjectController extends BaseController
         foreach ($this->requestData as $id => $room) {
             $this->form_validation->set_rules('rooms['. $id .'][projectId]', 'Project id', 'trim|required|is_natural_no_zero');
             $this->form_validation->set_rules('rooms['. $id .'][level]', 'Level', 'trim|required|is_natural_no_zero');
+            $this->form_validation->set_rules('rooms['. $id .'][suspensionHeight]', 'Suspension Height', 'trim|is_natural_no_zero');
+            // $this->form_validation->set_rules('rooms['. $id .'][applicationId]', 'Application id', 'trim|required|is_natural_no_zero');
             $this->form_validation->set_rules('rooms['. $id .'][roomId]', 'Room id', 'trim|required|is_natural_no_zero');
             $this->form_validation->set_rules('rooms['. $id .'][name]', 'Name', 'trim|required');
             $this->form_validation->set_rules('rooms['. $id .'][length]', 'Length', 'trim|required|numeric');
@@ -1534,6 +1545,7 @@ class ProjectController extends BaseController
         $this->form_validation->set_data($this->requestData);
 
         $this->form_validation->set_rules('projectRoomId', 'Project Room id', 'trim|required|is_natural_no_zero');
+        $this->form_validation->set_rules('suspensionHeight', 'Suspension Height', 'trim|numeric');
         $this->form_validation->set_rules('name', 'Name', 'trim');
         $this->form_validation->set_rules('length', 'Length', 'trim|numeric');
         $this->form_validation->set_rules('width', 'Width', 'trim|numeric');

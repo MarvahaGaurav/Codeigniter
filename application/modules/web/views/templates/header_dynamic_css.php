@@ -30,6 +30,7 @@
     <body>
         <!-- header -->
         <header>
+            <span id="something-went-wrong" data-message="<?php echo $this->lang->line('something_went_wrong') ?>"></span>
             <nav class="navbar navbar-default navbar-inverse" role="navigation">
                 <div class="container">
 

@@ -5,18 +5,69 @@
 
     var validationRules = {
         // ignore: ":hidden:not(.selectpicker)",
-        ignore: [ ],
         room_refrence: {
             required: true,
             normalizer: normalizer
+        },
+        length: {
+            required: true,
+            normalizer: normalizer,
+            number: true
+        },
+        width: {
+            required: true,
+            normalizer: normalizer,
+            number: true
+        },
+        height: {
+            required: true,
+            normalizer: normalizer,
+            number: true
+        },
+        room_plane_height: {
+            required: true,
+            normalizer: normalizer,
+            number: true
+        },
+        room_luminaries_x: {
+            required: true,
+            normalizer: normalizer,
+            number: true
+        },
+        room_luminaries_y: {
+            required: true,
+            normalizer: normalizer,
+            number: true
+        },
+        rho_wall:{
+            number: true  
+        },
+        rho_ceiling:{
+            number: true  
+        },
+        rho_floor:{
+            number: true  
+        },
+        rho_floor:{
+            number: true  
+        },
+        lux_values:{
+            number: true  
         }
     };
 
+    $("#advanced-option-div").on("click", function(){
+        var self = this,
+            $self = $(self);
+
+        $self.toggleClass("dropup");
+    });
+
     $( "#add_room_form" ).validate( {
-        rules: validationRules,
-        submitHandler: function ( form ) {
-            $( form ).submit();
-        }
+        rules: validationRules
+        // submitHandler: function ( form ) {
+        //     $( form ).submit();
+        // }
     } );
 
 

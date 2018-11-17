@@ -8,9 +8,7 @@
             <li><a href="<?php echo base_url('home/projects/' . $projectId) ?>">Details</a></li>
             <li><a href="<?php echo base_url('home/projects/' . $projectId . '/levels') ?>">Levels</a></li>
             <li><a href="<?php echo base_url('home/projects/' . $projectId . '/levels/' . $level . '/rooms') ?>">Rooms</a></li>
-            <li><a href="<?php echo base_url('home/projects/' . $projectId . '/levels/' . $level . '/rooms/applications') ?>">Applications</a></li>
-            <li><a href="<?php echo base_url('home/projects/' . $projectId . '/levels/' . $level . '/rooms/applications/' . $application_id . '/rooms') ?>">Room Type</a></li>
-            <li class="active">Room Dimensions</li>
+            <li class="active">Edit Room Dimensions</li>
         </ul>
         <!-- //breadcrumb -->
 
@@ -29,7 +27,7 @@
         </div>
         <!-- Caption before section -->
 
-        <?php echo form_open_multipart(base_url(uri_string()), array ('id' => 'add_room_form', 'name' => "add_room_form")) ?>
+        <?php echo form_open_multipart(base_url(uri_string()), array ('id' => 'edit_room_form', 'name' => "edit_room_form")) ?>
 
         <!-- form wrapper -->
         <div class="form-wrapper">
@@ -38,7 +36,7 @@
                     <div class="form-group">
                         <label class="labelTxt">Room Reference</label>
                         <div class="form-group-field">
-                            <input type="text" name="name" placeholder="Bathroom" value="<?php echo isset($cookie_data['name'])?$cookie_data['name']:$room['title'] ?>" readonly>
+                            <input type="text" name="name" placeholder="Bathroom" value="<?php echo isset($cookie_data['name'])?$cookie_data['name']:$room['name'] ?>" readonly>
                             <label for="name" id="name-error" class="error"><?php echo form_error('name') ?></label>
                         </div>
                     </div>
@@ -48,7 +46,7 @@
                     <div class="form-group">
                         <label class="labelTxt">Room Length</label>
                         <div class="form-group-field form-dimention">
-                            <input type="text" placeholder="10" name="length" value="<?php echo isset($cookie_data['length'])?$cookie_data['length']:"" ?>">
+                            <input type="text" placeholder="10" name="length" value="<?php echo isset($cookie_data['length'])?$cookie_data['length']:$room['length'] ?>">
                             <label for="length" id="length-error" class="error"><?php echo form_error('length') ?></label>
                             <label class="field-type">
                                 <select class="select-filed-name" name="length_unit">
@@ -65,7 +63,7 @@
                     <div class="form-group">
                         <label class="labelTxt">Room Width</label>
                         <div class="form-group-field form-dimention">
-                            <input type="text" placeholder="8" name="width" value="<?php echo isset($cookie_data['width'])?$cookie_data['width']:"" ?>">
+                            <input type="text" placeholder="8" name="width" value="<?php echo isset($cookie_data['width'])?$cookie_data['width']:$room['width'] ?>">
                             <label for="width" id="width-error" class="error"><?php echo form_error('width') ?></label>
                             <label class="field-type">
                                 <select class="select-filed-name" name="width_unit">
@@ -82,7 +80,7 @@
                     <div class="form-group">
                         <label class="labelTxt">Room Height</label>
                         <div class="form-group-field form-dimention">
-                            <input type="text" placeholder="8" name="height" value="<?php echo isset($cookie_data['height'])?$cookie_data['height']:"" ?>">
+                            <input type="text" placeholder="8" name="height" value="<?php echo isset($cookie_data['height'])?$cookie_data['height']:$room['height'] ?>">
                             <label for="height" id="height-error" class="error"><?php echo form_error('height') ?></label>
                             <label class="field-type">
                                 <select class="select-filed-name" name="height_unit">
@@ -100,7 +98,7 @@
                     <div class="form-group">
                         <label class="labelTxt">Working Plane Height</label>
                         <div class="form-group-field form-dimention">
-                            <input class="is_number"  type="text" placeholder=""  name="room_plane_height" id="room_plane_height" value="<?php echo isset($cookie_data['room_plane_height'])?$cookie_data['room_plane_height']:$room['reference_height'] ?>">
+                            <input class="is_number"  type="text" placeholder=""  name="room_plane_height" id="room_plane_height" value="<?php echo isset($cookie_data['room_plane_height'])?$cookie_data['room_plane_height']:$room['working_plane_height'] ?>">
                             <label for="room_plane_height" id="room_plane_height-error" class="error"><?php echo form_error('room_plane_height') ?></label>
                             <label class="field-type">
                                 <select class="select-filed-name"  name="room_plane_height_unit" id="room_plane_height_unit">
@@ -117,7 +115,7 @@
                     <div class="form-group">
                         <label class="labelTxt">Number of Luminaries</label>
                         <div class="form-group-field form-dimention">
-                            <input class="is_number"  type="text" placeholder="8" name="room_luminaries_x" id="room_luminaries_x" value="<?php echo isset($cookie_data['room_luminaries_x'])?$cookie_data['room_luminaries_x']:"" ?>">
+                            <input class="is_number"  type="text" placeholder="8" name="room_luminaries_x" id="room_luminaries_x" value="<?php echo isset($cookie_data['room_luminaries_x'])?$cookie_data['room_luminaries_x']:$room['luminaries_count_x'] ?>">
                             <label for="room_luminaries_x" id="room_luminaries_x-error" class="error"><?php echo form_error('room_luminaries_x') ?></label>
                             <label class="field-type">
                                 <select class="select-filed-name">
@@ -132,7 +130,7 @@
                     <div class="form-group">
                         <label class="labelTxt"> .</label>
                         <div class="form-group-field form-dimention">
-                            <input class="is_number"  type="text" placeholder="8" name="room_luminaries_y" id="room_luminaries_y" value="<?php echo isset($cookie_data['room_luminaries_y'])?$cookie_data['room_luminaries_y']:"" ?>">
+                            <input class="is_number"  type="text" placeholder="8" name="room_luminaries_y" id="room_luminaries_y" value="<?php echo isset($cookie_data['room_luminaries_y'])?$cookie_data['room_luminaries_y']:$room['luminaries_count_y'] ?>">
                             <label for="room_luminaries_y" id="room_luminaries_y-error" class="error"><?php echo form_error('room_luminaries_y') ?></label>
                             <label class="field-type">
                                 <select class="select-filed-name">
@@ -147,11 +145,12 @@
                     <div class="form-group">
                         <label class="labelTxt">Total</label>
                         <div class="form-group-field">
-                            <input disabled="true" value="<?php echo isset($cookie_data['room_luminaries_x'], $cookie_data['room_luminaries_y'])?(int)$cookie_data['room_luminaries_x'] * (int)$cookie_data['room_luminaries_y']:"" ?>" readonly="true" type="text" name="xy_total" id="xy_total">
+                            <input disabled="true" value="<?php echo isset($cookie_data['room_luminaries_x'], $cookie_data['room_luminaries_y'])?(int)$cookie_data['room_luminaries_x'] * (int)$cookie_data['room_luminaries_y']:(int)$room['luminaries_count_x'] * (int)$room['luminaries_count_y'] ?>" readonly="true" type="text" name="xy_total" id="xy_total">
                             <span name="xy_total_error" id="xy_total_error"></span>
                         </div>
                     </div>
                 </div>
+                <div class="clearfix"></div>
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                     <div class="form-group">
                         <label class="labelTxt">Room Shape</label>
@@ -167,7 +166,7 @@
                     <div class="form-group">
                         <label class="labelTxt">Select Product</label>
                         <div class="form-group-field">
-                            <input id="uploadfile" class="select-filed-name2 chooseFile" type="text" placeholder="Choose File" disabled="display" value="<?php echo isset($selected_product['product_name'])?$selected_product['product_name']:''; ?>">
+                            <input id="uploadfile" class="select-filed-name2 chooseFile" type="text" placeholder="Choose File" disabled="display" value="<?php echo isset($selected_product['product_name'])?$selected_product['product_name']:$roomProducts['title']; ?>">
                             <label for="product_id" id="product_id-error" class="error"><?php echo form_error('product_id') ?></label>
                             <label class="choosebtn">
                                 <a name="choose_product" id="choose_product">Choose</a>
@@ -175,12 +174,14 @@
                         </div>
                     </div>
                 </div>
-                <?php if (isset($selected_product['type']) && in_array((int)$selected_product['type'], [MOUNTING_PENDANT], true)) { ?>
+                <?php if ((isset($selected_product['type']) && in_array((int)$selected_product['type'], [MOUNTING_PENDANT], true)) ||
+                    (isset($roomProducts['mounting_type']) && in_array((int)$roomProducts['mounting_type'], [MOUNTING_PENDANT], true))
+                ) { ?>
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                     <div class="form-group">
                         <label class="labelTxt">Pendant Length</label>
                         <div class="form-group-field form-dimention">
-                            <input type="number" name="pendant_length" id="pendant_length" placeholder="" value="0.00">
+                            <input type="number" value="<?php echo $room['suspension_height'] ?>" name="pendant_length" id="pendant_length" placeholder="">
                             <label class="field-type">
                                 <select class="select-filed-name" name="pendant_length_unit">
                                     <?php foreach ($units as $unit) : ?>
@@ -211,7 +212,7 @@
                     <div class="form-group">
                         <label class="labelTxt">Wall</label>
                         <div class="form-group-field">
-                            <input type="text" name="rho_wall" value="<?php echo isset($cookie_data['rho_wall'])?$cookie_data['rho_wall']:$room['reflection_values_wall'] ?>" placeholder="">
+                            <input type="text" name="rho_wall" value="<?php echo isset($cookie_data['rho_wall'])?$cookie_data['rho_wall']:$room['rho_wall'] ?>" placeholder="">
                             <label for="rho_wall" id="rho_wall-error" class="error"><?php echo form_error('rho_wall') ?></label>
                         </div>
                     </div>
@@ -220,7 +221,7 @@
                     <div class="form-group">
                         <label class="labelTxt">Ceiling</label>
                         <div class="form-group-field">
-                            <input type="text" name="rho_ceiling" value="<?php echo isset($cookie_data['rho_ceiling'])?$cookie_data['rho_ceiling']:$room['reflection_values_ceiling'] ?>" placeholder="">
+                            <input type="text" name="rho_ceiling" value="<?php echo isset($cookie_data['rho_ceiling'])?$cookie_data['rho_ceiling']:$room['rho_ceiling'] ?>" placeholder="">
                             <label for="rho_ceiling" id="rho_ceiling-error" class="error"><?php echo form_error('rho_ceiling') ?></label>
                         </div>
                     </div>
@@ -229,7 +230,7 @@
                     <div class="form-group">
                         <label class="labelTxt">Floor</label>
                         <div class="form-group-field">
-                            <input type="text" name="rho_floor" value="<?php echo isset($cookie_data['rho_floor'])?$cookie_data['rho_floor']:$room['reflection_values_floor'] ?>" placeholder="">
+                            <input type="text" name="rho_floor" value="<?php echo isset($cookie_data['rho_floor'])?$cookie_data['rho_floor']:$room['rho_floor'] ?>" placeholder="">
                             <label for="rho_floor" id="rho_floor-error" class="error"><?php echo form_error('rho_floor') ?></label>
                         </div>
                     </div>
@@ -248,7 +249,7 @@
                     <div class="form-group">
                         <label class="labelTxt">Lux Value</label>
                         <div class="form-group-field">
-                            <input type="text" name="lux_values" value="<?php echo isset($cookie_data['lux_values'])?$cookie_data['lux_values']:$room['lux_values'] ?>" placeholder="">
+                            <input type="text" name="lux_values" value="<?php echo isset($cookie_data['lux_values'])?$cookie_data['lux_values']:$room['lux_value'] ?>" placeholder="">
                             <label for="lux_values" id="lux_values-error" class="error"><?php echo form_error('lux_values') ?></label>
                         </div>
                     </div>
@@ -258,7 +259,7 @@
         </div>
             
         <!-- //form wrapper -->
-        <?php $disabled = (isset($selected_product['product_name']) and '' != $selected_product['product_name']) ? " " : " disabled "; ?>
+        <?php $disabled = ((isset($selected_product['product_name']) and '' != $selected_product['product_name'])||(isset($roomProducts['product_id']) && is_numeric($roomProducts['product_id']))) ? " " : " disabled "; ?>
         <!-- button wrapper section -->
         <div class="section-title clearfix">
             <div class="button-wrapper">
@@ -267,13 +268,14 @@
             </div>
         </div>
 
+        <input type="hidden" name="project_room_id" id="project_room_id" value="<?php echo $room['project_room_id'] ?>">
+        <input type="hidden" name="enc_project_room_id" id="enc_project_room_id" value="<?php echo encryptDecrypt($room['project_room_id']) ?>">
+
         <input type="hidden" name="project_id" id="project_id" value="<?php echo $projectId; ?>">
-        <input type="hidden" name="room_id" id="room_id" value="<?php echo $room_id; ?>">
         <input type="hidden" name="level" id="level" value="<?php echo $level; ?>">
-        <input type="hidden" name="application_id" id="application_id" value="<?php echo $application_id; ?>">
-        <input type="hidden" name="article_code" id="article_code" value="<?php echo isset($selected_product['articel_id'])?$selected_product['articel_id']:''; ?>">
-        <input type="hidden" name="type" id="type" value="<?php echo isset($selected_product['type'])?$selected_product['type']:''; ?>">
-        <input type="hidden" name="product_id" id="product_id" value="<?php echo isset($selected_product['product_id'])?$selected_product['product_id']:''; ?>">
+        <input type="hidden" name="article_code" id="article_code" value="<?php echo isset($selected_product['articel_id'])?$selected_product['articel_id']:$roomProducts['articlecode']; ?>">
+        <input type="hidden" name="type" id="type" value="<?php echo isset($selected_product['type'])?$selected_product['type']:$roomProducts['mounting_type']; ?>">
+        <input type="hidden" name="product_id" id="product_id" value="<?php echo isset($selected_product['product_id'])?$selected_product['product_id']:$roomProducts['product_id']; ?>">
         <?php echo form_close(); ?>
         <!-- button wrapper section -->
 

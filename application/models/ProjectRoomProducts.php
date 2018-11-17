@@ -24,7 +24,7 @@ class ProjectRoomProducts extends BaseModel
      */
     public function get($params)
     {
-        $this->db->select("project_room_id, prs.product_id, prs.type, products.title,
+        $this->db->select("project_room_id, prs.product_id, prs.type, products.title, prs.mounting_type,
         IFNULL(articlecode, '') as articlecode, IFNULL(ps.image, '') as article_image,
          IFNULL(price, 0.00) as  price, IFNULL(currency, 0.00) as  currency, IFNULL(uld, '') as  uld,", false)
             ->join('products', 'products.product_id=prs.product_id')

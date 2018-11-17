@@ -15,6 +15,7 @@ class BaseController extends MY_Controller
     protected $userInfo;
     private $user_query_fields;
     protected $session_data;
+    protected $timestamp;
     public function __construct()
     {
         parent::__construct();
@@ -22,14 +23,16 @@ class BaseController extends MY_Controller
         $this->load->model(['Common_model', 'UtilModel']);
         $this->load->library('session');
         $this->lang->load('common', "english");
+        $this->lang->load('rest_controller', "english");
         $this->lang->load('xhttp', "english");
         $this->userInfo = [];
-        $this->user_query_fields = 'status,user_id,first_name,image,email';
+        $this->user_query_fields = 'status,user_id,first_name,image,email,user_type,company_id';
         $this->session_data = $this->session->userdata('sg_userinfo');
         $this->datetime = date("Y-m-d H:i:s");
+        $this->timestamp = time();
         $is_ajax_request = $this->input->is_ajax_request();
         if (! $is_ajax_request ) {
-            exit("Only XHTTP request allowed");
+            exit("Only XHR request allowed");
         }
     }
 
@@ -37,13 +40,23 @@ class BaseController extends MY_Controller
     {
         if(!empty($this->session_data) && ($this->session_data != '')) { 
             $sg_userinfo = $this->session_data;
-            if ($sg_userinfo['status'] == BLOCKED ) {
+            $this->userInfo = $this->Common_model->fetch_data('ai_user', $this->user_query_fields, array('where' => array('user_id' => $sg_userinfo['user_id'])), true);
+            if ((int)$this->userInfo['status'] === BLOCKED ) {
                 $this->session->unset_userdata("sg_userinfo");
-                redirect(base_url());
+                json_dump(
+                    [
+                        "success" => false,
+                        "error" => $this->lang->line('account_blocked'),
+                    ]
+                );
             }
-            $this->userInfo = $this->Common_model->fetch_data('ai_user', $this->user_query_fields, array('where' => array('user_id' => $sg_userinfo['user_id'],'status'=>1)), true);
         } else {
-            redirect(base_url("login"));
+            json_dump(
+                [
+                    "success" => false,
+                    "error" => $this->lang->line('forbidden_action'),
+                ]
+            );
         }
     }
 

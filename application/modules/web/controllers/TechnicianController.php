@@ -85,7 +85,8 @@ class TechnicianController extends BaseController
 
         $post = $this->input->post();
         $this->load->helper("input_data");
-        $post = trim_input_parameters($post);
+
+        $post = trim_input_parameters($post, false);
         if (! empty($post) ) {
             $fieldMaps = [
                 "quote_view" => "quote_view",
