@@ -13,6 +13,11 @@ class ProjectProductController extends BaseController
         $this->load->helper("location");
     }
 
+    /**
+     * Add Product Article
+     *
+     * @return void
+     */
     public function addProductArticle()
     {
         try {

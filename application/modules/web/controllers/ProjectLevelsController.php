@@ -34,16 +34,23 @@ class ProjectLevelsController extends BaseController
             $projectId = encryptDecrypt($projectId, 'decrypt');
             $this->load->model("UtilModel");
 
-            if (empty($projectId)) {
+            if (empty($projectId) || !is_numeric($projectId)) {
                 show404($this->lang->line('bad_request'), base_url('/home/applications'));
             }
 
-            $projectData = $this->UtilModel->selectQuery('id', 'projects', [
-                'where' => ['id' => $projectId, 'language_code' => $languageCode]
+            $projectData = $this->UtilModel->selectQuery('id, user_id, company_id', 'projects', [
+                'where' => ['id' => $projectId, 'language_code' => $languageCode], 'single_row' => true
             ]);
 
             if (empty($projectData)) {
                 show404($this->lang->line('project_not_found'), base_url('/home/applications'));
+            } 
+
+            if ((in_array((int)$this->userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) &&
+                (int)$this->userInfo['user_id'] !== (int)$projectData['user_id']) ||
+                (in_array((int)$this->userInfo['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], true) &&
+                (int)$this->userInfo['company_id'] !== (int)$projectData['company_id'])) {
+                show404($this->lang->line('forbidden_action'), base_url(''));
             }
 
             $this->load->model(["ProjectLevel", "ProjectRooms"]);
@@ -63,19 +70,39 @@ class ProjectLevelsController extends BaseController
             $this->data['projectId'] = encryptDecrypt($projectId);
             $this->data['permissions'] = $permissions;
 
-            $projectLevels = array_map(function ($project) {
-                $project['data'] = json_encode([
+            $activeLevels = array_filter($projectLevels, function ($projectLevel) {
+                return (bool)$projectLevel['active'];
+            });
+
+            $activeLevels = array_column($activeLevels, 'level');
+            $activeLevels = array_map(function ($level) {return (int)$level;}, $activeLevels);
+
+            $projectLevels = array_map(function ($level) use ($activeLevels) {
+                $level['level'] = (int)$level['level'];
+                $level['data'] = json_encode([
                     $this->data["csrfName"] = $this->security->get_csrf_token_name() =>
                         $this->data["csrfToken"] = $this->security->get_csrf_hash(),
                     'project_id' => $this->data['projectId'],
-                    'level' => $project['level']
+                    'level' => $level['level']
                 ]);
-                $project['room_count'] = is_array($project['room_count']) &&
-                    count($project['room_count']) &&
-                    isset($project['room_count'][0]) ? (int)$project['room_count'][0] : 0;
-                return $project;
+                $level['room_count'] = is_array($level['room_count']) &&
+                    count($level['room_count']) &&
+                    isset($level['room_count'][0]) ? (int)$level['room_count'][0] : 0;
+
+                $level['cloneable_destinations'] = json_encode(array_values(array_filter($activeLevels, function ($activeLevel) use ($level) {
+                    return (int)$activeLevel !== $level['level'] && (bool)$level['active'];
+                })));
+                return $level;
             }, $projectLevels);
 
+            $this->data['csrf'] = json_encode([
+                $this->data["csrfName"] = $this->security->get_csrf_token_name() =>
+                        $this->data["csrfToken"] = $this->security->get_csrf_hash(),
+                'project_id' => $this->data['projectId']
+            ]);
+            
+            $this->data['active_levels'] = $activeLevels;
+            
             $this->data['projectLevels'] = $projectLevels;
 
             $this->data['quotationRequest'] = $this->UtilModel->selectQuery('id', 'project_requests', [

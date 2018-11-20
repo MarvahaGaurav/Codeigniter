@@ -12,4 +12,6 @@ $route['xhttp/companies/favorite'] = 'CompanyController/favoriteCompany';
 $route['xhttp/projects/mark-as-done'] = 'ProjectLevelController/markAsDone';
 $route['xhttp/projects/add/accessory-products'] = 'ProjectProductController/addProductArticle';
 $route['xhttp/projects/clone'] = 'ProjectController/projectClone';
-
+$route['xhttp/projects/levels/clone'] = 'ProjectLevelController/levelClone';
+$route['xhttp/quick-calc/suggestions'] = 'QuickCalController/quickCalcSuggestion';
+$route['xhttp/projects/rooms/add-price'] = 'ProjectRoomController/addRoomQuotation';

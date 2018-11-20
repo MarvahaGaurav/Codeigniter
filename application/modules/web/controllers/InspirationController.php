@@ -169,21 +169,21 @@ class InspirationController extends BaseController
 
                     if (!empty($files)) {
                         $this->load->helper(['mime', 'images']);
-                        $mediaData = array_map(function ($file) use ($inspirationId) {
+                        $mediaData = array_map(function ($file, $count) use ($inspirationId) {
                             $data['inspiration_id'] = $inspirationId;
                             $mime = mime_content_type($file['tmp_name']);
                             if (preg_match("/^(image)\/.+$/", $mime)) {
                                 $data['media_type'] = 1;
                                 $data['media'] = 
-                                    s3_image_uploader($file['tmp_name'], 'sg/inspirations/' . encryptDecrypt($inspirationId) . '/' . time() . '.' . mime2ext($mime), $mime);
+                                    s3_image_uploader($file['tmp_name'], 'sg/inspirations/' . encryptDecrypt($inspirationId) . '/' . $count . '' . time() . '.' . mime2ext($mime), $mime);
                             } elseif (preg_match("/^(video)\/.+$/", $mime)) {
                                 $data['media_type'] = 2;
                                 $data['media'] = 
-                                    s3_image_uploader($file['tmp_name'], 'sg/inspirations/' . encryptDecrypt($inspirationId) . '/' . time() . '.' . mime2ext($mime), $mime);
+                                    s3_image_uploader($file['tmp_name'], 'sg/inspirations/' . encryptDecrypt($inspirationId) . '/' . $count . '' . time() . '.' . mime2ext($mime), $mime);
                                 // $data['video_thumbnail'] = generate_video_thumbnail($data['media']);
                             }
                             return $data;
-                        }, $files);
+                        }, $files, range(1, count($files)));
                         $this->UtilModel->insertBatch('inspiration_media', $mediaData);
                     }
 
@@ -322,21 +322,21 @@ class InspirationController extends BaseController
 
                     if (!empty($files)) {
                         $this->load->helper(['mime', 'images']);
-                        $mediaData = array_map(function ($file) use ($inspiration_id) {
+                        $mediaData = array_map(function ($file, $count) use ($inspiration_id) {
                             $data['inspiration_id'] = $inspiration_id;
                             $mime = mime_content_type($file['tmp_name']);
                             if (preg_match("/^(image)\/.+$/", $mime)) {
                                 $data['media_type'] = 1;
                                 $data['media'] = 
-                                    s3_image_uploader($file['tmp_name'], 'sg/inspirations/' . encryptDecrypt($inspiration_id) . '/' . time() . '.' . mime2ext($mime), $mime);
+                                    s3_image_uploader($file['tmp_name'], 'sg/inspirations/' . encryptDecrypt($inspiration_id) . '/' . $count . '' . time() . '.' . mime2ext($mime), $mime);
                             } elseif (preg_match("/^(video)\/.+$/", $mime)) {
                                 $data['media_type'] = 2;
                                 $data['media'] = 
-                                    s3_image_uploader($file['tmp_name'], 'sg/inspirations/' . encryptDecrypt($inspiration_id) . '/' . time() . '.' . mime2ext($mime), $mime);
+                                    s3_image_uploader($file['tmp_name'], 'sg/inspirations/' . encryptDecrypt($inspiration_id) . '/' . $count . '' . time() . '.' . mime2ext($mime), $mime);
                                 // $data['video_thumbnail'] = generate_video_thumbnail($data['media']);
                             }
                             return $data;
-                        }, $files);
+                        }, $files, range(1, count($files)));
                         $this->UtilModel->insertBatch('inspiration_media', $mediaData);
                     }
                     $this->session->set_flashdata("flash-message", $this->lang->line("inspiration_updated"));

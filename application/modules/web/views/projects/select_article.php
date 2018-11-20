@@ -1,13 +1,15 @@
 <div class="container">
     <ul class="breadcrumb"> 
-        <li><a href="javascript:void(0)">Home</a></li>
-        <li><a href="<?php echo base_url("home/projects") ?>">Projects</a></li>
-        <li><a href="<?php echo base_url("home/projects/{$project_id}") ?>">Details</a></li>
-        <li><a href="<?php echo base_url("home/projects/{$project_id}/levels/{$level}") ?>">Levels</a></li>
-        <li><a href="<?php echo base_url("home/projects/{$project_id}/levels/{$level}/rooms") ?>">Rooms</a></li>
-        <li><a href="<?php echo base_url("home/projects/{$project_id}/levels/{$level}/rooms/{$project_room_id}/edit") ?>">Edit Room Dimensions</a></li>
-        <li><a href="<?php echo base_url("home/projects/{$project_id}/levels/{$level}/rooms/{$project_room_id}/edit/products") ?>">Products</a></li>
-        <li class="active">Details</li>
+    <li><a href="javascript:void(0)">Home</a></li>
+            <li><a href="<?php echo base_url('home/projects') ?>">Projects</a></li>
+            <li><a href="<?php echo base_url('home/projects/' . $project_id) ?>">Details</a></li>
+            <li><a href="<?php echo base_url('home/projects/' . $project_id . '/levels') ?>">Levels</a></li>
+            <li><a href="<?php echo base_url('home/projects/' . $project_id . '/levels/' . $level . '/rooms') ?>">Rooms</a></li>
+            <li><a href="<?php echo base_url('home/projects/' . $project_id . '/levels/' . $level . '/rooms/applications') ?>">Applications</a></li>
+            <li><a href="<?php echo base_url('home/projects/' . $project_id . '/levels/' . $level . '/rooms/applications/' . $application_id . '/rooms') ?>">Room Type</a></li>
+            <li><a href="<?php echo base_url('home/projects/' . $project_id . '/levels/' . $level . '/rooms/applications/' . $application_id . '/rooms/' . $room_id . '/dimensions') ?>">Add Room</a></li>
+            <li><a href="<?php echo base_url('home/projects/' . $project_id . '/levels/' . $level . '/rooms/applications/' . $application_id . '/rooms/' . $room_id . '/dimensions/products') ?>">Products</a></li>
+            <li class="active">Details</li>
     </ul>
     <div class="">
         <h1 class="heading-red"><?php echo $product_name = $product['title']; ?></h1>
@@ -102,11 +104,11 @@ if (count($images)) {
                 <tr class="">
 
                     <td class="image"><a>
-                            <img  style="width:100%" src="<?php echo $specification['image']; ?>" title="<?php echo $specification['articlecode']; ?>" class="img-responsive"></a></td>
-
+                        <img data-redirect-to="<?php echo base_url("home/projects/{$project_id}/levels/{$level}/rooms/applications/{$application_id}/rooms/{$room_id}/dimensions/products/" . encryptDecrypt($product_id) . "/mounting/{$mounting}/articles/{$specification['articlecode']}") ?>" style="width:100%" src="<?php echo $specification['image']; ?>" title="<?php echo $specification['articlecode']; ?>" class="img-responsive redirectable clickable"></a>
+                    </td>
                     <td data-title="Article" class="light-technic">
                         <a name="<?php echo $specification['articlecode']; ?>"></a>
-                        <span id="5046905201" class="articlecode"><strong><?php echo $specification['articlecode']; ?>"</strong></span>
+                        <span id="5046905201" class="articlecode"><strong><?php echo $specification['articlecode']; ?></strong></span>
                         <!----> <br>
                         <span>
                             <?php echo $specification['title']; ?>
@@ -122,9 +124,7 @@ if (count($images)) {
                         <div>
                             <div class="btn-group">
                                 <button title="Select Product"  class="outline-btn" onclick="select_product( '<?php echo $specification['articlecode']; ?>', '<?php echo $specification['product_id']; ?>', <?php echo $mounting ?>)">Select</button>
-                                <!--                                <button title="More info"  class="outline-btn">
-                                                                    Info
-                                                                </button>-->
+                                <!-- <button title="More info"  class="outline-btn redirectable">Info</button> -->
 
                             </div>
                         </div>

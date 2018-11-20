@@ -17,6 +17,7 @@ class ProjectController extends BaseController
         if (isset($this->userInfo, $this->userInfo['user_id']) && ! empty($this->userInfo['user_id'])) {
             $this->data['userInfo'] = $this->userInfo;
         }
+        $languageCode = $this->languageCode;
         if (! empty($this->userInfo) && isset($this->userInfo['status']) && $this->userInfo['status'] != BLOCKED) {
             $params['limit'] = 5;
             $this->data['js'] = 'project-listing';
@@ -31,8 +32,9 @@ class ProjectController extends BaseController
                 $params['where']['name LIKE'] = "%{$search}%";
             }
             $params['where']['user_id'] = $this->userInfo['user_id'];
+            $params['where']['language_code'] = $languageCode;
 
-            $this->load->model("Project");
+            $this->load->model(["Project", "UtilModel"]);
             $this->data['search']   = (string) $search;
             $temp                   = $this->Project->get($params);
             $projects = $temp['data'];
@@ -44,6 +46,18 @@ class ProjectController extends BaseController
                 ]);
                 return $project;
             }, $projects);
+            
+            $this->load->helper(['db']);
+            $projectIds = array_column($projects, 'project_id');
+            $projectRequest = [];
+            if (!empty($projectIds)) {
+                $projectRequest = $this->UtilModel->selectQuery('project_id','project_requests', [
+                    'where_in' => ['project_id' => $projectIds]
+                ]);
+            }
+
+            $projects = getDataWith($projects, $projectRequest, 'project_id', 'project_id', 'requests', 'project_id');
+
             $this->data['projects'] = $projects;
             $this->load->library('Commonfn');
             $this->data['links']    = $this->commonfn->pagination(uri_string(), $temp['count'], $params['limit']);
@@ -150,6 +164,110 @@ class ProjectController extends BaseController
     }
 
 
+    /**
+     * create project
+     *
+     * @return void
+     */
+    public function edit($projectId)
+    {
+        $this->activeSessionGuard();
+        $this->data['userInfo'] = $this->userInfo;
+        $this->load->config('css_config');
+        $this->data['css'] = $this->config->item('create-project');
+
+        $this->userTypeHandling([INSTALLER, PRIVATE_USER, BUSINESS_USER, WHOLESALER, ELECTRICAL_PLANNER], base_url('home/applications'));
+
+        $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['project_add'], base_url('home/applications'));
+
+        $languageCode = "en";
+
+        $this->data['projectId'] = $projectId;
+
+        $projectId = encryptDecrypt($projectId, 'decrypt');
+        $this->load->model("UtilModel");
+
+        if (empty($projectId) || !is_numeric($projectId)) {
+            show404($this->lang->line('bad_request'), base_url('/home/applications'));
+        }
+
+        $projectData = $this->UtilModel->selectQuery('*', 'projects', [
+            'where' => ['id' => $projectId, 'language_code' => $languageCode], 'single_row' => true
+        ]);
+
+        if (empty($projectData)) {
+            show404($this->lang->line('project_not_found'), base_url('/home/applications'));
+        }
+
+        if ((in_array((int)$this->userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) &&
+            (int)$this->userInfo['user_id'] !== (int)$projectData['user_id']) || (in_array((int)$this->userInfo['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], true) &&
+            (int)$this->userInfo['company_id'] !== (int)$projectData['company_id'])) {
+            show404($this->lang->line('forbidden_action'), base_url(''));
+        }
+
+        $this->data['employees'] = [];
+
+        if ((int)$this->userInfo['user_type'] === INSTALLER && (int)$this->userInfo['is_owner'] === ROLE_OWNER) {
+            $this->load->model('Employee');
+            $this->data['employees'] = $this->Employee->employees([
+                'where' => ['company_id' => $this->userInfo['company_id'], 'is_owner' => ROLE_EMPLOYEE]
+            ]);
+        }
+
+        $this->data['projectData'] = $projectData;
+
+        try {
+            $post = $this->input->post();
+            if (isset($post) and ! empty($post)) {
+                $this->load->library('form_validation');
+                $this->form_validation->CI = & $this;
+                $rules                     = $this->setEditValidationRule();
+                $this->form_validation->set_rules($rules);
+                if ($this->form_validation->run()) {
+                    $update = [
+                        "number"        => trim($post['project_number']),
+                        "name"          => trim($post['project_name']),
+                        "address"       => trim($post['address']),
+                        "lat"       => trim($post['address_lat']),
+                        "lng"       => trim($post['address_lng']),
+                        "updated_at"    => $this->datetime,
+                        'updated_at_timestamp' => $this->timestamp,
+                    ];
+
+                    $levelsCount = (int)trim($post['levels']);
+                    $levelsData = [];
+
+                    if ((int)$this->userInfo['user_type'] === INSTALLER &&
+                     (int)$this->userInfo['is_owner'] === ROLE_OWNER
+                     && strlen(trim($post['installers'])) > 0) {
+                        $update['installer_id'] = (int)encryptDecrypt(trim($post['installers']), 'decrypt');
+                    }
+
+                    $this->db->trans_begin();
+                    // $projectId = $this->Project->save_project($insert);
+                    $this->UtilModel->updateTableData($update, 'projects', [
+                        'id' => $projectId 
+                    ]);
+
+                    $this->load->model("UtilModel");
+            
+                    if ($this->db->trans_status() === true) {
+                        $this->db->trans_commit();
+                        $this->session->set_flashdata("flash-message", $this->lang->line('project_updated'));
+                        $this->session->set_flashdata("flash-type", "success");
+                        redirect(base_url("home/projects"));
+                    } else {
+                        throw new Exception("Something Went Wrong", 500);
+                    }
+                }
+            }
+            $this->data['js'] = 'project_edit';
+            website_map_modal_view("projects/edit_project", $this->data);
+        } catch (Exception $ex) {
+            $this->db->trans_rollback();
+        }
+    }
+
 
     private function setValidationRule()
     {
@@ -164,7 +282,26 @@ class ProjectController extends BaseController
 
         if ((int)$this->userInfo['user_type'] === INSTALLER && (int)$this->userInfo['is_owner'] === ROLE_OWNER) {
             $rules[] = [
-                'field' => 'installer_id', 'label' => 'Installer', 'rules' => 'trim|is_natural_no_zero'
+                'field' => 'installer_id', 'label' => 'Installer', 'rules' => 'trim'
+            ];
+        }
+
+        return $rules;
+    }
+
+    private function setEditValidationRule()
+    {
+        $rules =  [
+            ['field' => 'project_number', 'label' => 'Project Number', 'rules' => 'trim'],
+            ['field' => 'project_name', 'label' => 'Project Name', 'rules' => 'required|trim'],
+            ['field' => 'address', 'label' => 'Address', 'rules' => 'required|trim'],
+            ['field' => 'address_lat', 'label' => 'Address', 'rules' => 'required|trim'],
+            ['field' => 'address_lng', 'label' => 'Address', 'rules' => 'required|trim'],
+        ];
+
+        if ((int)$this->userInfo['user_type'] === INSTALLER && (int)$this->userInfo['is_owner'] === ROLE_OWNER) {
+            $rules[] = [
+                'field' => 'installer_id', 'label' => 'Installer', 'rules' => 'trim'
             ];
         }
 
@@ -629,7 +766,7 @@ class ProjectController extends BaseController
     public function view_result($project_room_id)
     {
         try {
-            $this->neutralGuard();
+            $this->activeSessionGuard();
             if (isset($this->userInfo, $this->userInfo['user_id']) && ! empty($this->userInfo['user_id'])) {
                 $this->data['userInfo'] = $this->userInfo;
             }
@@ -637,6 +774,10 @@ class ProjectController extends BaseController
 
             $this->load->model(["UtilModel", "ProjectRoomProducts", "ProductSpecification"]);
             $this->data['room_data'] = $this->UtilModel->selectQuery("*", "project_rooms", ["single_row" => true, "where" => ["id" => $id]]);
+
+            if (empty($this->data['room_data'])) {
+                show404($this->lang->line('no_data_found'), base_url('home/projects'));
+            }
             $this->data['projectId'] = encryptDecrypt($this->data['room_data']['project_id']);
             $roomProductData = $this->ProjectRoomProducts->get([
                 'where' => ['project_room_id' => $id]
@@ -648,6 +789,7 @@ class ProjectController extends BaseController
                 'where' => ['articlecode' => $roomProductData['articlecode']],
                 'single_row' => true
             ]);
+            $this->data['product_data'] = $roomProductData;
             $this->data['product_specification_data'] = $productSpecifications;
             website_view('projects/view_result', $this->data);
         } catch (Exception $ex) {

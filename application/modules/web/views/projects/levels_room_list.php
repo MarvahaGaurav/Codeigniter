@@ -43,12 +43,12 @@
                         <th>Room Dimension</th>
                         <th class="text-center">No. of Products</th>
                         <th class="text-center">Products</th>
-                        <th>Actions</th>
                         <th>Quick Calc</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach($rooms as $room) : ?>
+                    <?php foreach($rooms as $key => $room) : ?>
                     <tr>
                         <td class="td-thumb text-nowrap">
                             <img src="<?php echo base_url("public/images/placeholder/no-found-ico-2.svg")?>"  />
@@ -70,17 +70,20 @@
                             <a href="<?php echo base_url('home/projects/' . $projectId . '/levels/' . $level . '/rooms/' . encryptDecrypt($room['room_id']) . '/project-rooms/' . encryptDecrypt($room['project_room_id']) . '/accessory-products') ?>" class="tb-view-list" title="View List">View List</a>
                         </td>
                         <td class="op-semibold text-center">
+                            <a href="<?php echo base_url("/home/projects/view-result/" . encryptDecrypt($room['project_room_id'])) ?>" class="tb-view-list" title="View Results">View Results</a>
+                        </td>
+                        <td class="op-semibold text-center">
                         <?php if (
                             (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && empty($quotationRequest)) ||
                             (!in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true))
                         ) { ?>
-                            <a href="<?php echo base_url("/home/projects/{$projectId}/levels/{$level}/rooms/" . encryptDecrypt($room['project_room_id']) . "/edit") ?>" class="tb-view-list" title="Edit">Edit</a>
+                            <a href="<?php echo base_url("/home/projects/{$projectId}/levels/{$level}/rooms/" . encryptDecrypt($room['project_room_id']) . "/edit") ?>" class="tb-view-list" title="Edit"><i class="fa fa-pencil"></i></a>
                         <?php } else { ?>
                             <div class="text-center">--</div>
                         <?php } ?>
-                        </td>
-                        <td class="op-semibold text-center">
-                            <a href="<?php echo base_url("/home/projects/view-result/" . encryptDecrypt($room['project_room_id'])) ?>" class="tb-view-list" title="View Results">View Results</a>
+                        <?php if (in_array((int)$userInfo['user_type'], [INSTALLER], true)) { ?>
+                            <a href="javascript:void(0)" id="add-price-<?php echo $key ?>" data-target-value="<?php echo $key ?>" data-room-price='<?php echo $room['price_data'] ?>'' class="tb-view-list installer-add-price" title="<?php echo $this->lang->line('add_price') ?>" data-project-room-id="<?php echo encryptDecrypt($room['project_room_id']) ?>"><i class="fa fa-money"></i></a>
+                        <?php }?>
                         </td>
                     </tr>
                     <?php endforeach ?>
@@ -120,6 +123,59 @@
                     <p>Tap on <a href="login.html" class="page-link">Add Room</a> button to add a room.</p>
                 </div> -->
         <!-- no record found -->
+    </div>
+</div>
+
+<div id="add-price-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <div class="text-center">
+                    <h4 class="modal-title"><?php echo $this->lang->line('add_price') ?></h4>
+                </div>
+            </div>
+            <div class="modal-body">
+                <?php echo form_open(base_url(uri_string()), ['id' => 'add-price-form']) ?>
+                <div class="row form-inline-wrapper">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="form-group">
+                            <label class="labelTxt"><?php echo $this->lang->line('price_per_luminaries') ?></label>
+                            <div class="form-group-field">
+                                <input name="price_per_luminaries" id="price-per-luminaries" type="number" placeholder="10.00" maxlength="12">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="form-group">
+                            <label class="labelTxt"><?php echo $this->lang->line('installation_charges') ?></label>
+                            <div class="form-group-field">
+                                <input type="number" name="installation_charges" id="installation-charges" placeholder="10.00" maxlength="12">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="form-group">
+                            <label class="labelTxt"><?php echo $this->lang->line('discount_price') ?></label>
+                            <div class="form-group-field">
+                                <input type="number" name="discount_price" id="discount-price" placeholder="10.00" maxlength="12">
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="project_room_id" id="project-room-id" value="">;
+                    <span id="target-handler" data-target=""></span>
+                </div>
+                <?php echo form_close() ?>
+            </div>
+            <div class="modal-footer">
+                <div class="text-center button-wrapper">
+                    <button type="button" class="custom-btn btn-margin btn-width save" data-csrf='<?php echo $csrf ?>' data-text="<?php echo $this->lang->line('add_price') ?>" id="add-price-submit"><?php echo $this->lang->line('add_price') ?></button>
+                </div>
+            </div>
+        </div>
 
     </div>
 </div>

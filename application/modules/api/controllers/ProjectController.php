@@ -670,6 +670,11 @@ class ProjectController extends BaseController
             $params['offset'] =
                 isset($get['offset'])&&is_numeric($get['offset'])&&(int)$get['offset'] > 0 ? (int)$get['offset']: 0;
             $params['limit'] = API_RECORDS_PER_PAGE;
+            
+            if (isset($get['search'])&&is_string($get['search'])&&strlen(trim($get['search'])) > 0) {
+                $search = trim($get['search']);
+                $params['where']['name LIKE'] = "%{$search}%";
+            }
 
             if ((int)$user_data['user_type'] === INSTALLER && (int)$user_data['is_owner'] === ROLE_EMPLOYEE) {
                 $this->load->helper('common');
@@ -814,7 +819,7 @@ class ProjectController extends BaseController
             $roomCount = (int)$roomData['count'];
             if (!empty($rooms)) {
                 $roomIds = array_column($rooms, 'project_room_id');
-                $this->load->model('ProjectRoomProducts');
+                $this->load->model(['ProjectRoomProducts', 'ProductMountingTypes']);
                 $roomProductParams['where']['project_room_id'] = $roomIds;
                 $roomProducts = $this->ProjectRoomProducts->get($roomProductParams);
                 $roomProducts = $roomProducts['data'];
@@ -823,6 +828,16 @@ class ProjectController extends BaseController
                         preg_replace("/^\/home\/forge\//", "https://", $product['article_image']);
                     return $product;
                 }, $roomProducts);
+                $productIds = array_column($roomProducts, 'product_id');
+                $productMountingTypeData = $this->ProductMountingTypes->get($productIds);
+                $roomProducts = getDataWith(
+                    $roomProducts,
+                    $productMountingTypeData,
+                    'product_id',
+                    'product_id',
+                    'mounting_type',
+                    'type'
+                );
                 $this->load->helper('db');
                 $rooms = getDataWith($rooms, $roomProducts, 'project_room_id', 'project_room_id', 'products');
             }
@@ -985,7 +1000,7 @@ class ProjectController extends BaseController
             $this->load->helper('utility');
             if (!empty($rooms)) {
                 $roomIds = array_column($rooms, 'project_room_id');
-                $this->load->model('ProjectRoomProducts');
+                $this->load->model(['ProjectRoomProducts', 'ProductMountingTypes']);
                 $roomProductParams['where']['project_room_id'] = $roomIds;
                 $roomProducts = $this->ProjectRoomProducts->get($roomProductParams);
                 $roomProducts = $roomProducts['data'];
@@ -994,6 +1009,16 @@ class ProjectController extends BaseController
                         preg_replace("/^\/home\/forge\//", "https://", $product['article_image']);
                     return $product;
                 }, $roomProducts);
+                $productIds = array_column($roomProducts, 'product_id');
+                $productMountingTypeData = $this->ProductMountingTypes->get($productIds);
+                $roomProducts = getDataWith(
+                    $roomProducts,
+                    $productMountingTypeData,
+                    'product_id',
+                    'product_id',
+                    'mounting_type',
+                    'type'
+                );
                 $this->load->helper('db');
                 $rooms = getDataWith($rooms, $roomProducts, 'project_room_id', 'project_room_id', 'products');
 
@@ -1043,6 +1068,8 @@ class ProjectController extends BaseController
                         $totalPrice->main_product_charge = 0.00;
                         $totalPrice->accessory_product_charge = 0.00;
                     // }
+
+                    
                     
                     $totalPrice->price_per_luminaries =
                             !empty($totalRoomQuotationPrice)&&
@@ -1519,7 +1546,7 @@ class ProjectController extends BaseController
         foreach ($this->requestData as $id => $room) {
             $this->form_validation->set_rules('rooms['. $id .'][projectId]', 'Project id', 'trim|required|is_natural_no_zero');
             $this->form_validation->set_rules('rooms['. $id .'][level]', 'Level', 'trim|required|is_natural_no_zero');
-            $this->form_validation->set_rules('rooms['. $id .'][suspensionHeight]', 'Suspension Height', 'trim|is_natural_no_zero');
+            $this->form_validation->set_rules('rooms['. $id .'][suspensionHeight]', 'Suspension Height', 'trim|numeric');
             // $this->form_validation->set_rules('rooms['. $id .'][applicationId]', 'Application id', 'trim|required|is_natural_no_zero');
             $this->form_validation->set_rules('rooms['. $id .'][roomId]', 'Room id', 'trim|required|is_natural_no_zero');
             $this->form_validation->set_rules('rooms['. $id .'][name]', 'Name', 'trim|required');

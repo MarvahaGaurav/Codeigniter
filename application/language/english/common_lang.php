@@ -200,3 +200,4 @@ $lang['room_fetched'] = "Rooms found";
 $lang['incorrect_password'] = 'Your password is incorrect, Please enter your correct password and Try again.';
 $lang['add_rooms_to_mark_as_done'] = 'Add rooms to mark as done';
 $lang['done'] = 'done';
+$lang['add_price'] = 'Add price';

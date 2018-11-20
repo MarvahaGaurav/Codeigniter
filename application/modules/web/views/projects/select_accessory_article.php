@@ -101,10 +101,10 @@ if (count($images)) {
                 <tr class="">
 
                     <td class="image"><a>
-                    <img  style="width:200px" src="<?php echo $specification['image']; ?>" title="<?php echo $specification['articlecode']; ?>" class="img-responsive"></a></td>
+                    <img  style="width:200px" data-redirect-to="<?php echo base_url('home/projects/' . $project_id . '/levels/' . $level .'/rooms/'. $room_id . '/project-rooms/' . $project_room_id . '/accessory-products/' . encryptDecrypt($product_id) . '/articles/' . $specification['articlecode']) ?>" src="<?php echo $specification['image']; ?>" title="<?php echo $specification['articlecode']; ?>" class="img-responsive redirectable clickable"></a></td>
                     <td data-title="Article" class="light-technic">
                         <a name="<?php echo $specification['articlecode']; ?>"></a>
-                        <span id="5046905201" class="articlecode"><strong><?php echo $specification['articlecode']; ?>"</strong></span>
+                        <span id="5046905201" class="articlecode"><strong><?php echo $specification['articlecode']; ?></strong></span>
                         <!----> <br>
                         <span>
                             <?php echo $specification['title']; ?>

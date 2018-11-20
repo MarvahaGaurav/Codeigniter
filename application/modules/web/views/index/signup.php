@@ -125,7 +125,7 @@
                                     <option value="<?php echo $country['calling_code'] ?>" <?php echo set_select('contact_number_code', $country['calling_code']) ?>><?php echo "+{$country['calling_code']}" ?></option>
                                 <?php } ?>
                             </select>
-                            <input type="number" class="form-control contact-number-input" name="contact_number" value="<?php echo set_value('contact_number') ?>" placeholder="Contact Number" autofocus="" />
+                            <input type="number" maxlength="20" class="form-control contact-number-input" name="contact_number" value="<?php echo set_value('contact_number') ?>" placeholder="Contact Number" autofocus="" />
                             <?php echo form_error('contact_number', '<label for="contact_number" class="error">', "</label>"); ?>
                         </div>
                         <div class="form-group">
@@ -134,7 +134,7 @@
                                     <option value="<?php echo $country['calling_code'] ?>" <?php echo set_select('alternate_contact_number_code', $country['calling_code']) ?>><?php echo "+{$country['calling_code']}" ?></option>
                                 <?php } ?>
                             </select>
-                            <input type="number" class="form-control contact-number-input" name="alternate_contact_number" placeholder="Alternate Number" value="<?php echo set_value('alternate_contact_number') ?>"/>
+                            <input type="number" maxlength="20" class="form-control contact-number-input" name="alternate_contact_number" placeholder="Alternate Number" value="<?php echo set_value('alternate_contact_number') ?>"/>
                             <?php echo form_error('alternate_contact_number', '<label for="alternate_contact_number" class="error">', "</label>"); ?>
                         </div>
                     </div>

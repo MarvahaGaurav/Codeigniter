@@ -23,9 +23,12 @@
                     <div class="action-btn-wrapper">
                         <ul>
                             <?php if ((int)$level['status'] === 0) { ?>
-                            <li> <button class="level-btn" type="button" <?php echo (int)$level['room_count'] < 1?"disabled":"" ?> data-level-data='<?php echo $level['data'] ?>' title="<?php echo (int)$level['room_count'] < 1?$this->lang->line("add_rooms_to_mark_as_done"):"" ?>"> Mark as Done </button> </li>
+                            <li> <button class="level-btn mark-as-done" type="button" <?php echo (int)$level['room_count'] < 1?"disabled":"" ?> data-level-data='<?php echo $level['data'] ?>' title="<?php echo (int)$level['room_count'] < 1?$this->lang->line("add_rooms_to_mark_as_done"):"" ?>"> Mark as Done </button> </li>
                             <?php } else {?>
-                            <li title="<?php echo $this->lang->line('level_marked_done') ?>"><i class="fa fa-check-circle level-done-check"></i></li>
+                            <li class="level-done-li" title="<?php echo $this->lang->line('level_marked_done') ?>"><i class="fa fa-check-circle level-done-check"></i></li>
+                            <?php } ?>
+                            <?php if ((in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && empty($quotationRequest)) || in_array((int)$userInfo['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], true)) { ?>
+                            <li><button type="button" data-source-levels="<?php echo $level['level'] ?>" data-destination-levels="<?php echo $level['cloneable_destinations'] ?>" class="level-btn level-clone-btn"><?php echo $this->lang->line('clone') ?></button></li>
                             <?php } ?>
                             <!-- <li> <button class="level-btn"> + Add </button></li> -->
                         </ul>
@@ -91,6 +94,11 @@
     .action-btn-wrapper ul li {
         display: inline-block;
         margin: 0 10px;
+    }
+    .action-btn-wrapper ul li.level-done-li {
+        display: inline-block;
+        margin: 0 10px;
+        vertical-align: -6px;
     }
 
 
@@ -167,3 +175,42 @@
     box-shadow: 0px 3px 6px #0000001f;
 }
 </style>
+<div id="level-clone-modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <div class="text-center">
+            <h4 class="modal-title"><?php echo $this->lang->line('clone') ?></h4>
+        </div>
+      </div>
+      <div class="modal-body">
+        <p class="text-center"><?php echo $this->lang->line('clone_level_confirmation') ?></p>
+        <div class="form-group">
+            <label class="labelTxt"><?php echo $this->lang->line('source') ?></label>
+            <div class="form-group-field">
+                <select name="" id="clone-source"></select>
+                <span class="customArrow"></span>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="form-group">
+            <label class="labelTxt"><?php echo $this->lang->line('destination') ?></label>
+            <div class="form-group-field">
+                <select name="" id="clone-destination"></select>
+                <span class="customArrow"></span>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="text-center button-wrapper">
+            <button type="button" class="custom-btn btn-margin btn-width save" data-csrf='<?php echo $csrf ?>' data-text="<?php echo $this->lang->line('select') ?>" id="level-clone-submit" data-clone=""><?php echo $this->lang->line('clone') ?></button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+

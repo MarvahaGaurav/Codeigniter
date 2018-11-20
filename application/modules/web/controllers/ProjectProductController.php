@@ -521,6 +521,8 @@ class ProjectProductController extends BaseController
         try {
             $this->activeSessionGuard();
             $this->load->helper('utility');
+            $this->load->config('css_config');
+            $this->data['css'] = $this->config->item('basic-with-font-awesome');
 
             $projectId = encryptDecrypt($projectId, "decrypt");
             $roomId = encryptDecrypt($roomId, "decrypt");

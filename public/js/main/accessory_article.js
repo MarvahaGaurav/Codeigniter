@@ -28,7 +28,6 @@ requirejs(
 
             $(".select-project-accessory").on('click', function(){
                 
-                console.log('here');
                 var self = this,
                     $self = $(self),
                     selected = $self.attr("data-selected");
@@ -37,7 +36,6 @@ requirejs(
                 try {
                     var accessoryData = JSON.parse($self.attr("data-accessory"));
                 } catch (e) {
-                    console.log('there');
                     displayErrorMessage(message);
                     return 0;
                 }
@@ -52,6 +50,7 @@ requirejs(
                         $self.html(html+"<i class='fa fa-circle-o-notch fa-spin'></i>");
                     },
                     success: function (response) {
+                        $self.find('.fa').remove();
                         if (response.success) {
                             $self.html(selected);
                             $self.removeAttr("data-selected");
@@ -64,28 +63,12 @@ requirejs(
                         }
                     },
                     error: function (error) {
+                        $self.find('.fa').remove();
                         displayErrorMessage(message);
                     }
                 })
                 
             });
-
-            function displayErrorMessage(message)
-            {
-                var $flashCardInfo = $("#flash-card-info"),
-                    $cardMessageStrong = $flashCardInfo.find(".card-message-strong"),
-                    $cardMessage = $flashCardInfo.find(".card-message");
-
-                $cardMessageStrong.html(message);
-                $flashCardInfo.removeAttr("class");
-                $flashCardInfo.addClass("alert alert-danger");
-                $flashCardInfo.css({
-                    display: 'block'
-                });
-                setTimeout(function(){
-                    $flashCardInfo.fadeOut(450);
-                }, 2500);
-            }
 
             /**
              *

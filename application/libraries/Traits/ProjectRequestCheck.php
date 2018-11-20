@@ -30,6 +30,11 @@ trait ProjectRequestCheck
                     'code' => HTTP_BAD_REQUEST,
                     'msg' => $this->lang->line('request_sent_for_this_project')
                 ]);
+            } elseif ($for === 'xhr') {
+                json_dump([
+                    'success' => false,
+                    'msg' => $this->lang->line('forbidden_action')
+                ]);
             }
         }
     }

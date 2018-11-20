@@ -23,13 +23,13 @@
                     <div class="form-group">
                         <!-- <label class="labelTxt">Distance</label> -->
                         <div class="form-group-field">
-                            <select name="distance" id="distance">
+                            <select name="distance" id="distance" data-redirect-to="<?php echo base_url('home/projects/' . $projectId . '/quotation/installers') ?>">
                                 <option value="">Select Distance</option>
-                                <option value="5">5kms</option>
-                                <option value="10">10kms</option>
-                                <option value="15">15kms</option>
-                                <option value="20">20kms</option>
-                                <option value="25">25kms</option>
+                                <option value="5" <?php echo (int)$searchRadius == 5?"selected":"" ?>>5kms</option>
+                                <option value="10" <?php echo (int)$searchRadius == 10?"selected":"" ?>>10kms</option>
+                                <option value="15" <?php echo (int)$searchRadius == 15?"selected":"" ?>>15kms</option>
+                                <option value="20" <?php echo (int)$searchRadius == 20?"selected":"" ?>>20kms</option>
+                                <option value="25" <?php echo (int)$searchRadius == 25?"selected":"" ?>>25kms</option>
                             </select>
                             <span class="customArrow"></span>
                         </div>
@@ -63,7 +63,7 @@
             <div class="clearfix"></div>
             <div class="request-quotation-btn-wrapper">
                 <?php echo form_open(base_url(uri_string()), ['id' => 'request-quotation-form'])?>
-                <div id="selected-installers">
+                <div id="selected-installers" data-max-count="<?php echo MAXIMUM_REQUEST_COUNTS_PER_PROJECT ?>" data-maximum-message="<?php echo sprintf($this->lang->line('maximum_installer_selection_exceeded'), MAXIMUM_REQUEST_COUNTS_PER_PROJECT) ?>">
 
                 </div>
                 <button id="request-quotation-btn" class="col-md-3 custom-btn save" type="submit" data-redirect-to="" data-title="<?php echo $this->lang->line('select_installer_before_quote') ?>" title="<?php echo $this->lang->line('select_installer_before_quote') ?>" disabled>Request Quotation</button>

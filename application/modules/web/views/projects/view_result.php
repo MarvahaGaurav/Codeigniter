@@ -13,7 +13,7 @@
         <!-- //breadcrumb -->
 
         <div class="page-heading">
-            <h1 class="page-title">Result</h1>
+            <h1 class="page-title">Result: <?php echo $product_data['title'] ?></h1>
             <p class="prj-description">SG Lighting has vast experience of and expertise in a wide range of different types of projects, such as schools, hospitals, offices, industry, retail and outdoor lighting. Under
                 each type of project in the overview below, there are references to the various areas, as well as product recommendations.</p>
         </div>

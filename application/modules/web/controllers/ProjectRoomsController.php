@@ -88,6 +88,7 @@
                 $params['where']['level'] = $level;
 
                 $roomData = $this->ProjectRooms->get($params);
+                $this->load->helper('db');
 
                 if (!empty($roomData['data'])) {
                     $roomIds = array_column($roomData['data'], 'project_room_id');
@@ -95,11 +96,32 @@
                         'where' => ['project_room_id' => $roomIds]
                     ]);
 
-                    $this->load->helper('db');
-                    
                     $roomData['data'] = getDataWith($roomData['data'], $roomProducts['data'], 'project_room_id', 'project_room_id', 'products');
                 }
-                
+
+                if (in_array((int)$this->userInfo['user_type'], [INSTALLER], true) && !empty($roomData['data'])) {
+                    $this->load->model('ProjectRoomQuotation');
+                    $roomPrice = $this->UtilModel->selectQuery(
+                        'project_room_id, price_per_luminaries, installation_charges, discount_price',
+                        'project_room_quotations',
+                        [
+                            'where_in' => ['project_room_id' => $roomIds]
+                        ]
+                    );
+
+
+                    $roomData['data'] = getDataWith($roomData['data'], $roomPrice, 'project_room_id', 'project_room_id', 'price');
+
+                    $roomData['data'] = array_map(function ($room) {
+                        $room['price'] = isset($room['price'][0]) ? $room['price'][0] : [];
+                        $room['price_data'] = is_array($room['price']) && count($room['price']) > 0 ? $room['price'] : (object)[];
+                        $room['price_data'] = json_encode($room['price_data']);
+                        return $room;
+                    }, $roomData['data']);
+                }
+
+
+
                 $this->data['levelCheck'] = $levelCheck;
                 $this->data['rooms'] = $roomData['data'];
                 $this->data['projectId'] = encryptDecrypt($projectData['id']);
@@ -109,6 +131,11 @@
                         $this->data["csrfToken"] = $this->security->get_csrf_hash(),
                     'project_id' => $this->data['projectId'],
                     'level' => $level
+                ]);
+
+                $this->data['csrf'] = json_encode([
+                    $this->data["csrfName"] = $this->security->get_csrf_token_name() =>
+                        $this->data["csrfToken"] = $this->security->get_csrf_hash()
                 ]);
 
                 $this->data['quotationRequest'] = $this->UtilModel->selectQuery('id', 'project_requests', [
@@ -469,16 +496,17 @@
                 if (empty($this->data['room'])) {
                     show404($this->lang->line('no_data_found'), base_url(''));
                 }
-                
+
                 $roomData = $this->Room->get([
                     'room_id' => $this->data['room']['room_id']
                 ], true);
+
                 $this->data['roomProducts'] = $this->ProjectRoomProducts->get([
                     'where' => ['project_room_id' => $this->data['room']['project_room_id'], 'prs.type' => ROOM_MAIN_PRODUCT]
                 ]);
 
-                $this->data['roomProducts'] = isset($this->data['roomProducts']['data'], $this->data['roomProducts']['data'][0])?
-                                $this->data['roomProducts']['data'][0]:[];
+                $this->data['roomProducts'] = isset($this->data['roomProducts']['data'], $this->data['roomProducts']['data'][0]) ?
+                    $this->data['roomProducts']['data'][0] : [];
 
                 $this->data['projectId'] = encryptDecrypt($projectId);
                 $this->data['level'] = $level;
@@ -488,7 +516,6 @@
                     $this->editRoomDimensionPostHandler($roomData, $projectRoomId, $this->data['projectId']);
                 }
 
-                
                 $this->data['cookie_data'] = $get_array;
 
                 $this->data['selected_product'] = [];
@@ -533,14 +560,15 @@
             $uld = "";
             if (isset($this->postRequest['product_id'], $this->postRequest['article_code'])) {
                 $uld = $this->UtilModel->selectQuery('uld', 'product_specifications', [
-                    'where' => ['product_id' => $this->postRequest['product_id'],
-                    'articlecode' => $this->postRequest['article_code']],
+                    'where' => [
+                        'product_id' => $this->postRequest['product_id'],
+                        'articlecode' => $this->postRequest['article_code']
+                    ],
                     'single_row' => true
                 ]);
 
                 $uld = $uld['uld'];
             }
-
             if (empty($uld)) {
                 $this->session->set_flashdata("flash-message", $this->lang->line('we_are_unable_to_get_data'));
                 $this->session->set_flashdata("flash-type", "danger");
@@ -564,7 +592,7 @@
                     "height" => $height,
                     "maintainance_factor" => isset($this->postRequest['maintainance_factor']) && !empty($this->postRequest['maintainance_factor']) ? $this->postRequest['maintainance_factor'] : $room['maintainance_factor'],
                     "shape" => "Rectangular",
-                    "suspension_height" => isset($this->postRequest['pendant_length'])?convert_to_meter($this->postRequest['pendant_length_unit'], $this->postRequest['pendant_length']):0.00,
+                    "suspension_height" => isset($this->postRequest['pendant_length']) ? convert_to_meter($this->postRequest['pendant_length_unit'], $this->postRequest['pendant_length']) : 0.00,
                     "working_plane_height" => isset($this->postRequest['room_plane_height']) ? convert_to_meter($this->postRequest['room_plane_height_unit'], $this->postRequest['room_plane_height']) : 0.00, //need to confirm
                     "rho_wall" => isset($this->postRequest['rho_wall']) && !empty($this->postRequest['rho_wall']) ? $this->postRequest['rho_wall'] : $room['reflection_values_wall'],
                     "rho_ceiling" => isset($this->postRequest['rho_ceiling']) && !empty($this->postRequest['rho_ceiling']) ? $this->postRequest['rho_ceiling'] : $room['reflection_values_ceiling'],
@@ -633,8 +661,10 @@
             $uld = "";
             if (isset($this->postRequest['product_id'], $this->postRequest['article_code'])) {
                 $uld = $this->UtilModel->selectQuery('uld', 'product_specifications', [
-                    'where' => ['product_id' => $this->postRequest['product_id'],
-                    'articlecode' => $this->postRequest['article_code']],
+                    'where' => [
+                        'product_id' => $this->postRequest['product_id'],
+                        'articlecode' => $this->postRequest['article_code']
+                    ],
                     'single_row' => true
                 ]);
 
@@ -659,9 +689,9 @@
                     "width" => $width,
                     "height" => $height,
                     "maintainance_factor" => isset($this->postRequest['maintainance_factor']) && !empty($this->postRequest['maintainance_factor']) ? $this->postRequest['maintainance_factor'] : $room['maintainance_factor'],
-                    "suspension_height" => isset($this->postRequest['pendant_length'])?convert_to_meter($this->postRequest['pendant_length_unit'], $this->postRequest['pendant_length']):0.00,
-                    "shape" => isset($this->postRequest['room_shape'])?$this->postRequest['room_shape']:"Rectangular",
-                    "working_plane_height" => isset($this->postRequest['room_plane_height'])? convert_to_meter($this->postRequest['room_plane_height_unit'], $this->postRequest['room_plane_height']) : 0.00, //need to confirm
+                    "suspension_height" => isset($this->postRequest['pendant_length']) ? convert_to_meter($this->postRequest['pendant_length_unit'], $this->postRequest['pendant_length']) : 0.00,
+                    "shape" => isset($this->postRequest['room_shape']) ? $this->postRequest['room_shape'] : "Rectangular",
+                    "working_plane_height" => isset($this->postRequest['room_plane_height']) ? convert_to_meter($this->postRequest['room_plane_height_unit'], $this->postRequest['room_plane_height']) : 0.00, //need to confirm
                     "rho_wall" => isset($this->postRequest['rho_wall']) && !empty($this->postRequest['rho_wall']) ? $this->postRequest['rho_wall'] : $room['reflection_values_wall'],
                     "rho_ceiling" => isset($this->postRequest['rho_ceiling']) && !empty($this->postRequest['rho_ceiling']) ? $this->postRequest['rho_ceiling'] : $room['reflection_values_ceiling'],
                     "rho_floor" => isset($this->postRequest['rho_floor']) && !empty($this->postRequest['rho_floor']) ? $this->postRequest['rho_floor'] : $room['reflection_values_floor'],
@@ -1130,21 +1160,21 @@
         private function fetchQuickCalcData($data, $uld)
         {
             $request_data = [
-                "authToken"          => "28c129e0aca88efb6f29d926ac4bab4d",
-                "roomLength"         => floatval($data['length']),
-                "roomWidth"          => floatval($data['width']),
-                "roomHeight"         => floatval($data['height']),
-                "roomType"           => $data['name'],
+                "authToken" => "28c129e0aca88efb6f29d926ac4bab4d",
+                "roomLength" => floatval($data['length']),
+                "roomWidth" => floatval($data['width']),
+                "roomHeight" => floatval($data['height']),
+                "roomType" => $data['name'],
                 "workingPlaneHeight" => floatval($data['working_plane_height']),
-                "suspension"         => isset($data['suspension_height'])?floatval($data['suspension_height']):0,
-                "illuminance"        => $data['lux_value'],
-                "luminaireCountInX"  => floatval($data['luminaries_count_x']),
-                "luminaireCountInY"  => floatval($data['luminaries_count_y']),
-                "rhoCeiling"         => floatval($data['rho_ceiling']),
-                "rhoWall"            => floatval($data['rho_wall']),
-                "rhoFloor"           => floatval($data['rho_floor']),
-                "maintenanceFactor"  => floatval($data['maintainance_factor']),
-                "uldUri"             => $uld
+                "suspension" => isset($data['suspension_height']) ? floatval($data['suspension_height']) : 0,
+                "illuminance" => $data['lux_value'],
+                "luminaireCountInX" => floatval($data['luminaries_count_x']),
+                "luminaireCountInY" => floatval($data['luminaries_count_y']),
+                "rhoCeiling" => floatval($data['rho_ceiling']),
+                "rhoWall" => floatval($data['rho_wall']),
+                "rhoFloor" => floatval($data['rho_floor']),
+                "maintenanceFactor" => floatval($data['maintainance_factor']),
+                "uldUri" => $uld
             ];
 
             $response = hitCulrQuickCal($request_data);

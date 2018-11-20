@@ -211,7 +211,7 @@ class UserController extends BaseController
         
         load_website_views("users/settings", $this->data);
     }
-
+    
     private function validateUser($user_id)
     {
         $userId = encryptDecrypt($user_id, 'decrypt');
@@ -226,7 +226,7 @@ class UserController extends BaseController
             "*, cl.name as city_name, country.name as country_name",
             "ai_user",
             [
-                "where" => ["user_id" => $userId, "status !=" => DELETED],
+                "where" => ["user_id" => $this->userInfo['user_id'], "status !=" => DELETED],
                 "join" => [
                     "city_list as cl" => "cl.id=ai_user.city_id",
                     "country_list as country" => "country.country_code1=ai_user.country_id"

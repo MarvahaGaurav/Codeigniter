@@ -100,7 +100,7 @@ if (count($images)) {
                 <?php foreach($article as $specification) : ?>
                 <tr class="">
                     <td class="image"><a>
-                            <img  style="width:100%" src="<?php echo $specification['image']; ?>" title="<?php echo $specification['articlecode']; ?>" class="img-responsive"></a></td>
+                            <img  style="width:100%" src="<?php echo $specification['image']; ?>" data-redirect-to="<?php echo base_url("home/projects/{$project_id}/levels/{$level}/rooms/{$project_room_id}/edit/products/". encryptDecrypt($product_id) . "/mounting/{$mounting}/articles/{$specification['articlecode']}") ?>" title="<?php echo $specification['articlecode']; ?>" class="img-responsive redirectable clickable"></a></td>
 
                     <td data-title="Article" class="light-technic">
                         <a name="<?php echo $specification['articlecode']; ?>"></a>

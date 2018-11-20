@@ -36,6 +36,60 @@ if ($(window).width() < 992) {
     $("ul.nav li.dropdown").off("hover");
 }
 
+function encodeQueryData(data) {
+    const ret = [];
+    for (let d in data)
+      ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
+    return ret.join('&');
+ }
+
+function getFormData($form){
+    var unindexed_array = $form.serializeArray();
+    var indexed_array = {};
+
+    $.map(unindexed_array, function(n, i){
+        indexed_array[n['name']] = n['value'];
+    });
+
+    return indexed_array;
+}
+
+function displayErrorMessage(message)
+{
+    var $flashCardInfo = $("#flash-card-info"),
+        $cardMessageStrong = $flashCardInfo.find(".card-message-strong"),
+        $cardMessage = $flashCardInfo.find(".card-message");
+
+    $cardMessageStrong.html(message);
+    $flashCardInfo.removeAttr("class");
+    $flashCardInfo.addClass("alert alert-danger");
+    $flashCardInfo.css({
+        display: 'block'
+    });
+    setTimeout(function(){
+        $flashCardInfo.fadeOut(450);
+    }, 2500);
+}
+
+function displaySuccessMessage(message)
+{
+    var $flashCardInfo = $("#flash-card-info"),
+        $cardMessageStrong = $flashCardInfo.find(".card-message-strong"),
+        $cardMessage = $flashCardInfo.find(".card-message");
+
+    $cardMessageStrong.html(message);
+    $flashCardInfo.removeAttr("class");
+    $flashCardInfo.addClass("alert alert-success");
+    $flashCardInfo.css({
+        display: 'block'
+    });
+    setTimeout(function(){
+        $flashCardInfo.fadeOut(450);
+    }, 2500);
+}
+
+
+
 $(document).ready(function () {
 
     /* on search click search expand */

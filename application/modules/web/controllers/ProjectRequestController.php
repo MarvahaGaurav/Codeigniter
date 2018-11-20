@@ -96,12 +96,18 @@ class ProjectRequestController extends BaseController
                 $params['where']['company_name LIKE'] = '%' . $search . '%';
             }
 
+            $this->data['searchRadius'] = '';
+            if (isset($this->requestData['search_radius']) && strlen($this->requestData['search_radius']) > 0) {
+                $this->data['searchRadius'] = $searchRadius;
+            }
+
             if (isset($this->requestData['company_id']) && is_numeric($this->requestData['company_id'])) {
                 $params['where']['company.company_id'] = (int)$this->requestData['company_id'];
             }
 
             $data = $this->User->installers($params);
 
+            $this->data['projectId'] = encryptDecrypt($projectId);
             $this->data['installers'] = $data;
             $this->data['search'] = $search;
 
@@ -195,7 +201,7 @@ class ProjectRequestController extends BaseController
 
             $this->session->set_flashdata("flash-message", $this->lang->line('quotation_sent'));
             $this->session->set_flashdata("flash-type", "success");
-            redirect(base_url('home/projects'));
+            redirect(base_url('home/projects/' . encryptDecrypt($projectId)));
 
         }
     }
