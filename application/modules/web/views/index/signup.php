@@ -163,7 +163,7 @@
                         </div>
                         <div class="form-group-inline clearfix">
                             <div class="form-group company-owner-wrapper <?php echo $isCompanyOwner ? "" : "concealable" ?>">
-                                <input type="number" value="<?php echo set_value('company_registration_number') ?>" id="company-registration-number" name="company_registration_number" class="form-control company-owner-field technician-fields" placeholder="Company Registration Number" <?php
+                                <input type="text" value="<?php echo set_value('company_registration_number') ?>" id="company-registration-number" name="company_registration_number" class="form-control company-owner-field technician-fields" placeholder="Company Registration Number" <?php
                                 echo $isCustomerUser || ! $isCompanyOwner ? "disabled" : ''
                                 ?>/>
                                        <?php

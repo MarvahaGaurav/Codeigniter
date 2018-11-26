@@ -138,8 +138,8 @@ define("THUMB_IMAGE_PATH", 'http://' . $_SERVER['HTTP_HOST'] . UPLOAD_PATH . "th
 define("DEFAULT_IMAGE", '/public/images/default.png');
 define("TIMEZONE", 'UTC');
 /* AWS S3  */
-defined("AWS_ACCESSKEY") or define('AWS_ACCESSKEY', 'AKIAI5YANLJPWEKLH3PQ');
-defined('AWS_SECRET_KEY') or define('AWS_SECRET_KEY', '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');
+defined("AWS_ACCESSKEY") or define('AWS_ACCESSKEY', 'AKIAIJ3RNOQSWBSOZOCQ');
+defined('AWS_SECRET_KEY') or define('AWS_SECRET_KEY', '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');
 
 /* image constants */
 defined("AMAZONS3_BUCKET") or define("AMAZONS3_BUCKET", "appinventiv-development");

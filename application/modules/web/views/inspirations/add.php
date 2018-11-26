@@ -92,13 +92,11 @@
                     </div>
                 </div>
             </div>
-        </div>
 
             <!-- Button wrapper section -->
-            <div class="section-title clearfix">
-                <div class="button-wrapper">
-                    <button type="submit" id="inspiration-add-submit" class="custom-btn btn-width save">Submit</button>
-                </div>
+        <div class="section-title clearfix">
+            <div class="button-wrapper">
+                <button type="submit" id="inspiration-add-submit" class="custom-btn btn-width save">Submit</button>
             </div>
         </div>
         </form>

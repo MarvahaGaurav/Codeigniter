@@ -138,11 +138,22 @@ class ProjectQuotation extends BaseModel
      */
     public function quotationChargesByInstaller($params)
     {
-        $this->db->select('additional_product_charges, discount')
-            ->from('project_quotations as pq')
-            ->join('project_requests as preq', 'preq.id=pq.request_id')
-            ->where('pq.company_id', $params['company_id'])
-            ->where('preq.project_id', $params['project_id']);
+        $this->db->select('sum(price_per_luminaries) as price_per_luminaries,
+        sum(installation_charges) as installation_charges, avg(discount_price) as discount_price,
+        IFNULL(additional_product_charges, 0.00) as additional_product_charges,
+        IFNULL(discount, 0.00) as discount')
+            ->from("project_room_quotations as prq")
+            ->join("project_rooms as pr", 'pr.id=prq.project_room_id')
+            ->join('project_requests as preq', 'preq.project_id=pr.project_id')
+            ->join("project_quotations as pq", "pq.request_id=preq.id", "left")
+            // ->from('project_quotations as pq')
+            ->where('prq.company_id', $params['company_id'])
+            ->where('preq.project_id', $params['project_id'])
+            ->group_by('pr.project_id');
+
+        if (isset($params['level'])) {
+            $this->db->where('pr.level', $params['level']);
+        }
 
         $query = $this->db->get();
 
@@ -164,10 +175,15 @@ class ProjectQuotation extends BaseModel
             avg(discount_price) as discount_price, additional_product_charges, discount')
             ->from('project_quotations as pq')
             ->join('project_room_quotations as prq', 'prq.user_id=pq.user_id AND prq.company_id=pq.company_id')
+            ->join('project_rooms as pr', 'pr.id=prq.project_room_id')
             ->join('project_requests as preq', 'preq.id=pq.request_id')
             ->where('preq.project_id', $params['project_id'])
             ->where('pq.status', QUOTATION_STATUS_APPROVED)
             ->group_by('preq.project_id');
+
+        if (isset($params['level'])) {
+            $this->db->where('pr.level', $params['level']);
+        }
 
         $query = $this->db->get();
 

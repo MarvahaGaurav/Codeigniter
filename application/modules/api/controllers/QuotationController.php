@@ -127,7 +127,7 @@ class QuotationController extends BaseController
             if (!empty($quotationData)) {
                 $this->response([
                     'code' => HTTP_BAD_REQUEST,
-                    'msg' => $this->lang->line('quoted_by_company'),
+                    'msg' => $this->lang->line('quoted_by_company')
                 ]);
             }
             
@@ -607,7 +607,7 @@ class QuotationController extends BaseController
 
             $this->requestData = trim_input_parameters($this->requestData);
 
-            $roomQuotationData = $this->UtilModel->selectQuery('id', '  project_room_quotations', [
+            $roomQuotationData = $this->UtilModel->selectQuery('id', 'project_room_quotations', [
                 'where' => ['id' => $this->requestData['room_quotation_id']],
                 'single_row' => true
             ]);

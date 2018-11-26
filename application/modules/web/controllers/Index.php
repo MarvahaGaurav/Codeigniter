@@ -265,6 +265,7 @@ class Index extends BaseController {
                             $companyData['country'] = $postData['country'];
                             $companyData['city'] = $postData['city'];
                             $companyData['zipcode'] = $postData['zipcode'];
+                            $companyData['owner_type'] = $postData['user_type'];
                         }
                         else {
                             $isEmployee             = true;

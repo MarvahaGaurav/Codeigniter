@@ -31,6 +31,8 @@ class InspirationController extends BaseController
         $page = isset($get['page'])&&!empty((int)$get['page'])?(int)$get['page']:1;
         $search = isset($get['search'])?$get['search']:"";
 
+        $permissions = $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER, ARCHITECT], ['insp_view'], base_url('home/applications'));
+
         $options['offset'] = ($page - 1) * $limit;
         $options['limit'] = $limit;
         $options['search'] = $search;
@@ -65,6 +67,7 @@ class InspirationController extends BaseController
             },
             $data['result']
         );
+
         $this->data['js'] = "inspirations";
         $this->data['owl'] = true;
         $this->data['inspirations'] = $result;
@@ -76,6 +79,8 @@ class InspirationController extends BaseController
     {
         $id = $inspiration_id;
         $inspiration_id = encryptDecrypt($inspiration_id, 'decrypt');
+
+        $permissions = $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER, ARCHITECT], ['insp_view'], base_url('home/applications'));
 
         if (! isset($inspiration_id) || empty($inspiration_id)) {
             error404("", base_url());
@@ -111,7 +116,8 @@ class InspirationController extends BaseController
             //     error404("", base_url());
             //     exit;
             // }
-            
+            $permissions = $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER, ARCHITECT], ['insp_add'], base_url('home/applications'));
+
             $this->load->helper(['products']);
             $products = products('en');
             $this->data['products'] = $products;
@@ -158,15 +164,24 @@ class InspirationController extends BaseController
                     $this->Inspiration->title = $post['title'];
                     $this->Inspiration->description = $post['description'];
                     $this->Inspiration->user_id = $this->userInfo['user_id'];
-                    $this->Inspiration->company_id = $this->userInfo['company_id'];
+                    if (in_array((int)$this->userInfo['user_type'], [INSTALLER, WHOLESALER, ARCHITECT, ELECTRICAL_PLANNER])) {
+                        $this->Inspiration->company_id = $this->userInfo['company_id'];
+                    } else {
+                        $this->Inspiration->company_id = null;
+                    }
+
+                    $this->Inspiration->created_at = $this->datetime;
+                    $this->Inspiration->created_at_timestamp = $this->timestamp;
+                    $this->Inspiration->updated_at = $this->datetime;
+                    $this->Inspiration->updated_at_timestamp = $this->timestamp;
                 
+                    $this->db->trans_begin();
                     $inspirationId = $this->Inspiration->save();
                     $inspirationProductData = array_map(function ($productId) use ($inspirationId){
                         $data['inspiration_id'] = $inspirationId;
                         $data['product_id'] = $productId;
                         return $data;
                     }, $inspirationProducts);
-
                     if (!empty($files)) {
                         $this->load->helper(['mime', 'images']);
                         $mediaData = array_map(function ($file, $count) use ($inspirationId) {
@@ -188,6 +203,7 @@ class InspirationController extends BaseController
                     }
 
                     $this->UtilModel->insertBatch('inspiration_products', $inspirationProductData);
+                    $this->db->trans_commit();
                     $this->session->set_flashdata("flash-message", $this->lang->line("inspiration_added"));
                     $this->session->set_flashdata("flash-type", "success");
                     redirect(base_url("home/inspirations"));
@@ -200,8 +216,11 @@ class InspirationController extends BaseController
             $this->data['image_video_uploader'] = true;
             load_website_views("inspirations/add", $this->data);
         } catch (\Exception $error) {
-            // $this->session->set_flashdata("flash-message", $this->lang->line("something_went_Worng"));
-            // $this->session->set_flashdata("flash-type", "danger");
+            $this->db->trans_rollback();
+            pd($error->getMessage());
+            $this->session->set_flashdata("flash-message", $this->lang->line("something_went_Worng"));
+            $this->session->set_flashdata("flash-type", "danger");
+            load_website_views("inspirations/add", $this->data);
         }
     }
     
@@ -214,6 +233,8 @@ class InspirationController extends BaseController
         //     error404("", base_url());
         //     exit;
         // }
+
+        $permissions = $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER, ARCHITECT], ['insp_edit'], base_url('home/applications'));
 
         $inspiration_id = encryptDecrypt($inspiration_id, 'decrypt');
 

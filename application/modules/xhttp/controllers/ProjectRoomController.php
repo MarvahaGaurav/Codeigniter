@@ -95,13 +95,16 @@ class ProjectRoomController extends BaseController
                 $message = $this->lang->line('room_quotation_updated');
             }
 
+            $this->load->helper('utility');
             json_dump([
                 'success' => true,
                 'msg' => $message,
                 'data' => [
                     "price_per_luminaries" => $this->requestData['price_per_luminaries'],
                     "installation_charges" => $this->requestData['installation_charges'],
-                    "discount_price" => $this->requestData['discount_price']
+                    "discount_price" => $this->requestData['discount_price'],
+                    "subtotal" => $this->requestData['price_per_luminaries'] + $this->requestData['installation_charges'],
+                    'total' => get_percentage($this->requestData['price_per_luminaries'] + $this->requestData['installation_charges'], $this->requestData['discount_price'])
                 ]
             ]);
         } catch (\Exception $error) {

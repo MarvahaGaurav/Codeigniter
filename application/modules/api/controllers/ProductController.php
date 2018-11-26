@@ -65,7 +65,7 @@ class ProductController extends BaseController
             $this->response([
                 'code' => HTTP_INTERNAL_SERVER_ERROR,
                 'api_code_result' => 'INTERNAL_SERVER_ERROR',
-                'msg' =>  $this->lang->line("internal_server_error")
+                'msg' => $this->lang->line("internal_server_error")
             ]);
         }
     }
@@ -122,17 +122,17 @@ class ProductController extends BaseController
             $this->form_validation->set_data($get);
             $this->form_validation->set_rules([
                 [
-                    'label' =>  'room_id',
+                    'label' => 'room_id',
                     'field' => 'room_id',
                     'rules' => 'trim|required|is_natural_no_zero',
                 ],
                 [
-                    'label' =>  'mounting_type',
+                    'label' => 'mounting_type',
                     'field' => 'mounting_type',
                     'rules' => 'trim|required|is_natural_no_zero',
                 ]
             ]);
-            
+
             if (!(bool)$this->form_validation->run()) {
                 $errorMessage = $this->form_validation->error_array();
                 $this->response([
@@ -181,7 +181,7 @@ class ProductController extends BaseController
             $this->response([
                 'code' => HTTP_INTERNAL_SERVER_ERROR,
                 'api_code_result' => 'INTERNAL_SERVER_ERROR',
-                'msg' =>  $this->lang->line("internal_server_error")
+                'msg' => $this->lang->line("internal_server_error")
             ]);
         }
     }
@@ -232,12 +232,12 @@ class ProductController extends BaseController
             $this->form_validation->set_data($get);
             $this->form_validation->set_rules([
                 [
-                    'label' =>  'product_id',
+                    'label' => 'product_id',
                     'field' => 'product_id',
                     'rules' => 'trim|required|is_natural_no_zero',
                 ],
             ]);
-            
+
             if (!(bool)$this->form_validation->run()) {
                 $errorMessage = $this->form_validation->error_array();
                 $this->response([
@@ -250,7 +250,7 @@ class ProductController extends BaseController
                 'product_id' => $get['product_id']
             ];
 
-            $uld = isset($get['is_uld'])&&is_numeric($get['is_uld'])&&in_array((int)$get['is_uld'], [1,0], true)?(int)$get['is_uld']:1;
+            $uld = isset($get['is_uld']) && is_numeric($get['is_uld']) && in_array((int)$get['is_uld'], [1, 0], true) ? (int)$get['is_uld'] : 1;
 
             $this->load->model('Product');
             $this->load->model('ProductTechnicalData');
@@ -300,7 +300,7 @@ class ProductController extends BaseController
             $this->response([
                 'code' => HTTP_INTERNAL_SERVER_ERROR,
                 'api_code_result' => 'INTERNAL_SERVER_ERROR',
-                'msg' =>  $this->lang->line("internal_server_error")
+                'msg' => $this->lang->line("internal_server_error")
             ]);
         }
     }
@@ -359,7 +359,7 @@ class ProductController extends BaseController
             $this->requestData = trim_input_parameters($this->requestData);
 
             $params['room_id'] = $this->requestData['room_id'];
-            
+
             $data = $this->Product->roomProducts($params);
 
             if (isset($this->requestData['project_room_id']) && !empty($this->requestData['project_room_id'])) {
@@ -387,7 +387,7 @@ class ProductController extends BaseController
             $this->response([
                 'code' => HTTP_INTERNAL_SERVER_ERROR,
                 'api_code_result' => 'INTERNAL_SERVER_ERROR',
-                'msg' =>  $this->lang->line("internal_server_error")
+                'msg' => $this->lang->line("internal_server_error")
             ]);
         }
     }
@@ -455,32 +455,32 @@ class ProductController extends BaseController
         if ($check['error']) {
             $this->response(
                 [
-                'code' => HTTP_UNPROCESSABLE_ENTITY,
-                'api_code_result' => 'UNPROCESSABLE_ENTITY',
-                'msg' => $this->lang->line('missing_parameter'),
-                'extra_info' => [
-                    "missing_parameter" => $check['parameter']
-                ]
+                    'code' => HTTP_UNPROCESSABLE_ENTITY,
+                    'api_code_result' => 'UNPROCESSABLE_ENTITY',
+                    'msg' => $this->lang->line('missing_parameter'),
+                    'extra_info' => [
+                        "missing_parameter" => $check['parameter']
+                    ]
                 ]
             );
         }
 
-        $offset = isset($request_data['offset'])?(int)$request_data['offset']:0;
+        $offset = isset($request_data['offset']) ? (int)$request_data['offset'] : 0;
         $link = "";
         $alt_link = "";
         $params['offset'] = $offset;
         $params['application_id'] = $request_data['application_id'];
-        
+
         $products = $this->Product->get($params);
         $count = (int)$products['count'];
         $next_count = $offset + RECORDS_PER_PAGE;
 
-        if (! $products['result']) {
+        if (!$products['result']) {
             $this->response(
                 [
-                "code" => NO_DATA_FOUND,
-                "api_code_result" => "NO_DATA_FOUND",
-                "msg" => $this->lang->line("no_records_found")
+                    "code" => NO_DATA_FOUND,
+                    "api_code_result" => "NO_DATA_FOUND",
+                    "msg" => $this->lang->line("no_records_found")
                 ]
             );
         }
@@ -557,7 +557,7 @@ class ProductController extends BaseController
 
         $params['language_code'] = $language_code;
         $params['offset'] =
-                isset($this->requestData['offset'])&&is_numeric($this->requestData['offset'])&&(int)$this->requestData['offset'] > 0 ? (int)$this->requestData['offset']: 0;
+            isset($this->requestData['offset']) && is_numeric($this->requestData['offset']) && (int)$this->requestData['offset'] > 0 ? (int)$this->requestData['offset'] : 0;
         $params['limit'] = API_RECORDS_PER_PAGE;
 
         if (isset($this->requestData['uld']) && (int)$this->requestData['uld'] === 1) {
@@ -573,7 +573,7 @@ class ProductController extends BaseController
         $this->benchmark->mark('start');
         $data = $this->Product->products($params);
         $this->benchmark->mark('stop');
-        
+
         if (isset($this->requestData['uld']) && (int)$this->requestData['uld'] === 1) {
             $hasMorePages = false;
             $nextCount = -1;
@@ -586,13 +586,13 @@ class ProductController extends BaseController
             $count = $data['count'];
             $hasMorePages = false;
             $nextCount = -1;
-    
+
             if ((int)$count > ($params['offset'] + $params['limit'])) {
                 $hasMorePages = true;
                 $nextCount = $params['offset'] + $params['limit'];
             }
         }
-       
+
 
         if (empty($data['data'])) {
             $this->response([
@@ -600,7 +600,7 @@ class ProductController extends BaseController
                 'msg' => $this->lang->line('no_data_found')
             ]);
         }
-        
+
         $this->load->helper('utility');
 
         $data['data'] = array_strip_tags($data['data'], ['body']);
@@ -609,13 +609,15 @@ class ProductController extends BaseController
             'code' => HTTP_OK,
             'msg' => $this->lang->line('success'),
             'data' => $data['data'],
-            'next_count' => isset($nextCount)?$nextCount:-1,
+            'next_count' => isset($nextCount) ? $nextCount : -1,
             'has_more_pages' => $hasMorePages,
             'per_page_count' => $params['limit'],
-            'total' => isset($data['count'])?$data['count']:0,
+            'total' => isset($data['count']) ? $data['count'] : 0,
             'elapsed_time' => $this->benchmark->elapsed_time('start', 'stop')
         ]);
     }
+
+
 
     /**
      * @SWG\Get(path="/products/articles",
@@ -644,6 +646,18 @@ class ProductController extends BaseController
      *     type="string",
      *   ),
      * @SWG\Parameter(
+     *     name="room_id",
+     *     in="query",
+     *     description="Room Id",
+     *     type="string",
+     *   ),
+     * @SWG\Parameter(
+     *     name="mounting_type",
+     *     in="query",
+     *     description="mounting type 1,2,3,4,5,6,7",
+     *     type="string",
+     *   ),
+     * @SWG\Parameter(
      *     name="offset",
      *     in="query",
      *     description="",
@@ -665,7 +679,7 @@ class ProductController extends BaseController
 
         $params['where']['language_code'] = $language_code;
         $params['offset'] =
-                isset($this->requestData['offset'])&&is_numeric($this->requestData['offset'])&&(int)$this->requestData['offset'] > 0 ? (int)$this->requestData['offset']: 0;
+            isset($this->requestData['offset']) && is_numeric($this->requestData['offset']) && (int)$this->requestData['offset'] > 0 ? (int)$this->requestData['offset'] : 0;
         $params['limit'] = API_RECORDS_PER_PAGE;
 
         if (isset($this->requestData['uld']) && (int)$this->requestData['uld'] === 1) {
@@ -675,6 +689,16 @@ class ProductController extends BaseController
         if (isset($this->requestData['search']) && strlen(trim($this->requestData['search'])) > 0) {
             $search = trim($this->requestData['search']);
             $params['where']['title LIKE'] = "%{$search}%";
+        }
+
+        if (isset($this->requestData['room_id'], $this->requestData['mounting_type'])) {
+            $roomId = (int)$this->requestData['room_id'];
+            $mountingType = (int)$this->requestData['mounting_type'];
+            $params['where']["EXISTS(SELECT id FROM room_products WHERE room_products.product_id=product_specifications.product_id AND room_products.room_id='{$roomId}' AND room_products.type='{$mountingType}')"] = null;
+        } else if (isset($this->requestData['room_id'])) {
+            $roomId = (int)$this->requestData['room_id'];
+            $params['where']["EXISTS(SELECT id FROM room_products WHERE room_products.product_id=product_specifications.product_id AND room_products.room_id='{$roomId}')"] = null;
+
         }
 
         $this->load->model(['ProductSpecification', 'ProductMountingTypes']);
@@ -724,14 +748,16 @@ class ProductController extends BaseController
             'code' => HTTP_OK,
             'msg' => $this->lang->line('success'),
             'data' => $articlesData,
-            'next_count' => isset($nextCount)?$nextCount:-1,
+            'next_count' => isset($nextCount) ? $nextCount : -1,
             'has_more_pages' => $hasMorePages,
             'per_page_count' => $params['limit'],
-            'total' => isset($count)?$count:0,
+            'total' => isset($count) ? $count : 0,
             'elapsed_time' => $this->benchmark->elapsed_time('start', 'stop')
         ]);
 
     }
+
+    
 
 
     /**

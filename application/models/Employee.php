@@ -13,6 +13,36 @@ class Employee extends BaseModel
         $this->tableName = 'employee_request_master as erm';
     }
 
+    public function employeeList($params)
+    {
+        $this->db->select('u.user_id,u.first_name as full_name, u.email,u.user_type,u.is_owner,IF(u.image !="",u.image,"") as image,IF(u.image_thumb !="",u.image_thumb,"") as image_thumb')
+            ->from("ai_user as u")
+            ->where("company_id", $params['company_id'])
+            ->where("u.is_owner", ROLE_EMPLOYEE)
+            ->order_by('u.user_id', 'DESC');
+
+        if (isset($params['limit']) && is_numeric($params['limit']) && (int)$params['limit'] > 0) {
+            $this->db->limit((int)$params['limit']);
+        }
+
+        if (isset($params['offset']) && is_numeric($params['offset']) && (int)$params['offset'] > 0) {
+            $this->db->offset((int)$params['offset']);
+        }
+
+        if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
+            foreach ($params['where'] as $tableColumn => $searchValue) {
+                $this->db->where($tableColumn, $searchValue);
+            }
+        }
+
+        $query = $this->db->get();
+        
+        $result['data'] = $query->result_array();
+        $result['count'] = $this->db->query('SELECT FOUND_ROWS() as count')->row()->count;
+
+        return $result;
+    }
+
     public function employees($params)
     {
         $this->db->select('first_name, email, user_id')
@@ -23,7 +53,7 @@ class Employee extends BaseModel
                 $this->db->where($tableColumn, $searchValue);
             }
         }
-    
+
         if (isset($params['where_in']) && is_array($params['where_in']) && !empty($params['where_in'])) {
             foreach ($params['where_in'] as $tableColumn => $searchValue) {
                 $this->db->where_in($tableColumn, $searchValue);
@@ -61,14 +91,14 @@ class Employee extends BaseModel
             }
         }
 
-        $query = "users.user_id as id, users.first_name, users.image, country_list.name as country,".
-        "city_list.name as city, user_type, is_owner, erm.status as request_status";
+        $query = "users.user_id as id, users.first_name, users.image, country_list.name as country," .
+            "city_list.name as city, user_type, is_owner, erm.status as request_status";
         $single_row = false;
 
         if (isset($options['employee_id']) && !empty((int)$options['employee_id'])) {
             $single_row = true;
-            $query = $query . ",users.email, users.prm_user_countrycode, users.phone,".
-            "users.alt_userphone, users.alt_user_countrycode, users.zipcode";
+            $query = $query . ",users.email, users.prm_user_countrycode, users.phone," .
+                "users.alt_userphone, users.alt_user_countrycode, users.zipcode";
             $this->db->where("erm.requested_by", $options['employee_id']);
         } else {
             $query = "SQL_CALC_FOUND_ROWS " . $query;
@@ -80,16 +110,16 @@ class Employee extends BaseModel
                 "IFNULL(insp_view, 0) as insp_view," .
                 "IFNULL(insp_add, 0) as insp_add, IFNULL(insp_edit, 0) as insp_edit," .
                 "IFNULL(insp_delete, 0) as insp_delete, IFNULL(project_view, 0) as project_view," .
-                "IFNULL(project_add, 0) as project_add, IFNULL(project_edit, 0) as project_edit, IFNULL(project_delete, 0) as project_delete,".
+                "IFNULL(project_add, 0) as project_add, IFNULL(project_edit, 0) as project_edit, IFNULL(project_delete, 0) as project_delete," .
                 "IFNULL(quote_edit, 'not_exists') as exist_check";
             $this->db->join('user_employee_permission as permission', 'erm.requested_by=permission.employee_id AND permission.status = 1', "left");
         }
 
-        if (! empty($options['search'])) {
+        if (!empty($options['search'])) {
             $this->db->where("users.first_name LIKE", "%{$options['search']}%");
         }
 
-        if (! empty($options['where']) && is_array($options['where'])) {
+        if (!empty($options['where']) && is_array($options['where'])) {
             foreach ($options['where'] as $column => $value) {
                 $this->db->where($column, $value);
             }

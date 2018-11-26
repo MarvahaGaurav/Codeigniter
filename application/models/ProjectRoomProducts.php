@@ -135,6 +135,7 @@ class ProjectRoomProducts extends BaseModel
      * @param array $params
      * @return array
      */
+    
     public function totalProductCharges($params)
     {
         $this->db->select('sum(price) as total_product_price, prp.type')
@@ -165,8 +166,43 @@ class ProjectRoomProducts extends BaseModel
 
         $query = $this->db->get();
 
-        $result = $query->row_array();
+        $result = $query->result_array();
 
         return $result;
+    }
+
+    /**
+     * fetch product articles
+     *
+     * @param array $params
+     * @return array
+     */
+    public function fetchArticles($params)
+    {
+        $this->db->select('SQL_CALC_FOUND_ROWS image, ps.product_id, ps.articlecode, title, uld,
+                        ps.type, driver, length, width, height', false)
+                    ->from("product_specifications as ps")
+                    ->where('ps.product_id', $params['product_id']);
+
+        if (isset($params['limit']) && is_numeric($params['limit']) && (int)$params['limit'] > 0) {
+            $this->db->limit((int)$params['limit']);
+        }
+            
+        if (isset($params['offset']) && is_numeric($params['offset']) && (int)$params['offset'] > 0) {
+            $this->db->offset((int)$params['offset']);
+        }
+    
+        if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
+            foreach ($params['where'] as $tableColumn => $searchValue) {
+                $this->db->where($tableColumn, $searchValue);
+            }
+        }
+        
+        $query = $this->db->get();
+
+        $data['data'] = $query->result_array();
+        $data['count'] = $this->db->query('SELECT FOUND_ROWS() as count')->row()->count;
+
+        return $data;
     }
 }

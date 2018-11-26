@@ -705,10 +705,46 @@
                 }
             }
         },
-        "/company/inspiration": {
+        "inspirations": {
+            "get": {
+                "tags": [
+                    "Inspirations"
+                ],
+                "summary": "Inspiration List and detail",
+                "description": "Inspiration List and detail",
+                "operationId": "employee_get",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "inspiration_id",
+                        "in": "query",
+                        "description": "Inspiration id is optional and can be passed to fetch inspiration details",
+                        "type": "string"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "offset value to be passed back to paginate, if offset is -1, there is no further data",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "No data found"
+                    },
+                    "200": {
+                        "description": "Inspiration added"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
             "put": {
                 "tags": [
-                    "Company"
+                    "Inspirations"
                 ],
                 "summary": "Put inspiration",
                 "description": "Put inspiration",
@@ -784,7 +820,7 @@
             },
             "post": {
                 "tags": [
-                    "Company"
+                    "Inspirations"
                 ],
                 "summary": "Post inspiration",
                 "description": "Post inspiration",
@@ -852,7 +888,7 @@
             },
             "delete": {
                 "tags": [
-                    "Company"
+                    "Inspirations"
                 ],
                 "summary": "Delete inspiration",
                 "description": "Delete inspiration",
@@ -891,13 +927,13 @@
                 }
             }
         },
-        "/company/inspiration/{company_id}/{inspiration_id}": {
+        "/companies/{company_id}/inspirations ": {
             "get": {
                 "tags": [
                     "Company"
                 ],
-                "summary": "Inspiration List and detail",
-                "description": "Inspiration List and detail",
+                "summary": "Get Company Inspiration",
+                "description": "Get Company Inspiration",
                 "operationId": "employee_get",
                 "produces": [
                     "application/json"
@@ -911,8 +947,8 @@
                     },
                     {
                         "name": "company_id",
-                        "in": "query",
-                        "description": "if company Id is given it will fetch based on company Id",
+                        "in": "path",
+                        "description": "Company Id",
                         "type": "string"
                     },
                     {
@@ -1155,6 +1191,13 @@
                         "description": "product_id",
                         "required": true,
                         "type": "string"
+                    },
+                    {
+                        "name": "is_uld",
+                        "in": "path",
+                        "description": "is_uld = 1 uld only specifications and is_uld = 0 all specifications",
+                        "required": true,
+                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -1350,6 +1393,18 @@
                         "name": "search",
                         "in": "query",
                         "description": "Search text",
+                        "type": "string"
+                    },
+                    {
+                        "name": "room_id",
+                        "in": "query",
+                        "description": "Room Id",
+                        "type": "string"
+                    },
+                    {
+                        "name": "mounting_type",
+                        "in": "query",
+                        "description": "mounting type 1,2,3,4,5,6,7",
                         "type": "string"
                     },
                     {
@@ -1922,179 +1977,6 @@
                 }
             }
         },
-        "/projects/{project_id}/rooms": {
-            "get": {
-                "tags": [
-                    "Projects"
-                ],
-                "summary": "List project rooms",
-                "description": "List rooms for a given project",
-                "operationId": "projectsRooms_get",
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "X-Language-Code",
-                        "in": "header",
-                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "accesstoken",
-                        "in": "header",
-                        "description": "Access token received during signup or login",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "project_id",
-                        "in": "path",
-                        "description": "",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "offset",
-                        "in": "query",
-                        "description": "",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "401": {
-                        "description": "Unauthorize"
-                    },
-                    "404": {
-                        "description": "Data not found"
-                    },
-                    "500": {
-                        "description": "Internal server error"
-                    }
-                }
-            }
-        },
-        "/projects/{project_id}/levels/{level}/rooms": {
-            "get": {
-                "tags": [
-                    "Projects"
-                ],
-                "summary": "List project rooms by project level",
-                "description": "List rooms for a given project",
-                "operationId": "projectsRooms_get",
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "X-Language-Code",
-                        "in": "header",
-                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "accesstoken",
-                        "in": "header",
-                        "description": "Access token received during signup or login",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "project_id",
-                        "in": "path",
-                        "description": "",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "levels",
-                        "in": "path",
-                        "description": "",
-                        "type": "string"
-                    },
-                    {
-                        "name": "offset",
-                        "in": "query",
-                        "description": "",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "401": {
-                        "description": "Unauthorize"
-                    },
-                    "404": {
-                        "description": "Data not found"
-                    },
-                    "500": {
-                        "description": "Internal server error"
-                    }
-                }
-            }
-        },
-        "/projects/rooms": {
-            "delete": {
-                "tags": [
-                    "Projects"
-                ],
-                "summary": "Delete Project Rooms",
-                "description": "Delete project room for a current user",
-                "operationId": "projects_rooms_delete",
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "X-Language-Code",
-                        "in": "header",
-                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "accesstoken",
-                        "in": "header",
-                        "description": "Access token received during signup or login",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "project_room_id",
-                        "in": "formData",
-                        "description": "",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "401": {
-                        "description": "Unauthorize"
-                    },
-                    "422": {
-                        "description": "Validation Errors"
-                    },
-                    "500": {
-                        "description": "Internal server error"
-                    }
-                }
-            }
-        },
         "/projects/{project_id}/levels": {
             "get": {
                 "tags": [
@@ -2277,6 +2159,259 @@
                     },
                     "422": {
                         "description": "Validation Errors"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/project-rooms/{project_room_id}/products/{product_id}": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Accessory Articles",
+                "description": "Fetch accessory",
+                "operationId": "mountingTypes_get",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "accesstoken",
+                        "in": "header",
+                        "description": "Access token received during signup or login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "X-Language-Code",
+                        "in": "header",
+                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "project_room_id",
+                        "in": "path",
+                        "description": "Project room id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "uld",
+                        "in": "query",
+                        "description": "1 - to fetch only products with uld, ignore this key to fetch all products",
+                        "type": "string"
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search text",
+                        "type": "string"
+                    },
+                    {
+                        "name": "room_id",
+                        "in": "query",
+                        "description": "Room Id",
+                        "type": "string"
+                    },
+                    {
+                        "name": "mounting_type",
+                        "in": "query",
+                        "description": "mounting type 1,2,3,4,5,6,7",
+                        "type": "string"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "404": {
+                        "description": "No data found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/projects/rooms": {
+            "delete": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Delete Project Rooms",
+                "description": "Delete project room for a current user",
+                "operationId": "projects_rooms_delete",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Language-Code",
+                        "in": "header",
+                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "accesstoken",
+                        "in": "header",
+                        "description": "Access token received during signup or login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "project_room_id",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "422": {
+                        "description": "Validation Errors"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/projects/{project_id}/rooms": {
+            "get": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "List project rooms",
+                "description": "List rooms for a given project",
+                "operationId": "projectsRooms_get",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Language-Code",
+                        "in": "header",
+                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "accesstoken",
+                        "in": "header",
+                        "description": "Access token received during signup or login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "404": {
+                        "description": "Data not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/projects/{project_id}/levels/{level}/rooms": {
+            "get": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "List project rooms by project level",
+                "description": "List rooms for a given project",
+                "operationId": "projectsRooms_get",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Language-Code",
+                        "in": "header",
+                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "accesstoken",
+                        "in": "header",
+                        "description": "Access token received during signup or login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "levels",
+                        "in": "path",
+                        "description": "",
+                        "type": "string"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "404": {
+                        "description": "Data not found"
                     },
                     "500": {
                         "description": "Internal server error"
@@ -3030,6 +3165,71 @@
                     },
                     "418": {
                         "description": "Required Parameter Missing or Invalid"
+                    }
+                }
+            }
+        },
+        "/projects/technician/charges": {
+            "post": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Save project final price for project",
+                "description": "Save project final price for project when added by an installer",
+                "operationId": "addCharges_post",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Language-Code",
+                        "in": "header",
+                        "description": "en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "accesstoken",
+                        "in": "header",
+                        "description": "Access token received during signup or login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "project_id",
+                        "in": "formData",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "additional_product_charges",
+                        "in": "formData",
+                        "description": "",
+                        "type": "string"
+                    },
+                    {
+                        "name": "discount",
+                        "in": "formData",
+                        "description": "",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "422": {
+                        "description": "Validation Errors"
+                    },
+                    "500": {
+                        "description": "Internal server error"
                     }
                 }
             }

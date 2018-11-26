@@ -42,7 +42,6 @@ class ProjectRoomQuotation extends BaseModel
             ->join('project_rooms as pr', 'pr.id=prq.project_room_id')
             ->where('project_id', $params['project_id']);
         
-        
         $query = $this->db->get();
 
         $data = $query->result_array();

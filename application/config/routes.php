@@ -82,6 +82,7 @@ $route['home/projects/(:any)/levels']                                  = 'web/Pr
 $route['home/projects/(:any)/levels/(:num)/rooms']                     = 'web/ProjectRoomsController/projectCreateRoomListing/$1/$2';
 $route['home/projects/(:any)/levels/(:num)/rooms/(:any)/edit']         = 'web/ProjectRoomsController/editDimensions/$1/$2/$3';
 $route['home/projects/(:any)/levels/(:num)/rooms/(:any)/project-rooms/(:any)/accessory-products'] = 'web/ProjectProductController/AccessoryProduct/$1/$2/$3/$4';
+$route['home/projects/(:any)/levels/(:num)/rooms/(:any)/project-rooms/(:any)/accessory-products'] = 'web/ProjectProductController/AccessoryProduct/$1/$2/$3/$4';
 $route['home/projects/(:any)/levels/(:num)/rooms/(:any)/project-rooms/(:any)/accessory-products/(:any)'] = 'web/ProjectProductController/accessoryProductDetail/$1/$2/$3/$4/$5';
 $route['home/projects/(:any)/levels/(:num)/rooms/(:any)/project-rooms/(:any)/accessory-products/(:any)/articles/(:any)'] = 'web/ProductArticlesController/accessoryArticleDetail/$1/$2/$3/$4/$5/$6';
 $route['home/projects/(:any)/levels/(:num)/rooms/(:any)/edit/products'] = 'web/ProjectProductController/editRoomSelectProduct/$1/$2/$3';
@@ -123,7 +124,7 @@ $route['home/applications']                                     = 'web/QuickCalc
 $route['home/applications/(:any)/rooms']                        = 'web/QuickCalcController/rooms/$1';
 $route['home/applications/(:any)/rooms/(:any)/fast-calc']       = 'web/QuickCalcController/quickcalc/$1/$2';
 $route['home/applications/(:any)/rooms/(:any)/select-porduct']  = 'web/QuickCalcController/select_product/$1/$2';
-$route['home/applications/(:any)/rooms/(:any)/articles/(:any)'] = 'web/QuickCalcController/articles/$1/$2/$3';
+$route['home/applications/(:any)/rooms/(:any)/mounting/(:num)/articles/(:any)'] = 'web/QuickCalcController/articles/$1/$2/$3/$4';
 $route['home/applications/quick_cal']                           = "web/QuickCalcController/quick_cal";
 $route['home/applications/view-result/(:any)']                  = "web/QuickCalcController/view_result/$1";
 

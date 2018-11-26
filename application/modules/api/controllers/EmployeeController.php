@@ -91,12 +91,16 @@ class EmployeeController extends BaseController
             }
         } else {
             $offset = isset($getData['offset'])&&!empty((int)$getData['offset'])?$getData['offset']:0;
-            $myEmployeeList = $this->Common_model->getMyEmployeesList('u.user_id,u.first_name as full_name, u.email,u.user_type,u.is_owner,IF(u.image !="",u.image,"") as image,IF(u.image_thumb !="",u.image_thumb,"") as image_thumb', $userData['user_id'], $userData['company_id'], $offset);
+            $this->load->model('Employee');
+            $params['company_id'] = $userData['company_id'];
+            $params['limit'] = RECORDS_PER_PAGE;
+            $params['offset'] = $offset;
+            $myEmployeeList = $this->Employee->employeeList($params);
             $offset = $myEmployeeList['count'] + RECORDS_PER_PAGE;
             if ((int)$myEmployeeList['count'] <= (int) $offset ) {
                 $offset = -1;
             }
-            if(!$myEmployeeList['result']) {
+            if(empty($myEmployeeList['data'])) {
                 $this->response(
                     [
                     'code' => NO_DATA_FOUND,
@@ -110,7 +114,7 @@ class EmployeeController extends BaseController
                 [
                 'code' => HTTP_OK,
                 'api_code_result' => "OK", 
-                'data' =>  $myEmployeeList['result'],
+                'data' =>  $myEmployeeList['data'],
                 'offset' => $offset
                 ]
             );

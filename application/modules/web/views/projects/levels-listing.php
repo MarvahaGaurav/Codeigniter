@@ -22,12 +22,13 @@
                 <div class="col-right text-right">
                     <div class="action-btn-wrapper">
                         <ul>
-                            <?php if ((int)$level['status'] === 0) { ?>
+                            <?php if ((int)$level['status'] === 0 && (int)$level['room_count'] > 0) { ?>
                             <li> <button class="level-btn mark-as-done" type="button" <?php echo (int)$level['room_count'] < 1?"disabled":"" ?> data-level-data='<?php echo $level['data'] ?>' title="<?php echo (int)$level['room_count'] < 1?$this->lang->line("add_rooms_to_mark_as_done"):"" ?>"> Mark as Done </button> </li>
-                            <?php } else {?>
+                            <?php } else if ((int)$level['status'] === 1) {?>
                             <li class="level-done-li" title="<?php echo $this->lang->line('level_marked_done') ?>"><i class="fa fa-check-circle level-done-check"></i></li>
                             <?php } ?>
-                            <?php if ((in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && empty($quotationRequest)) || in_array((int)$userInfo['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], true)) { ?>
+                            <?php if ((in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && empty($quotationRequest)) || in_array((int)$userInfo['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], true)
+                            &&((bool)$level['active']) && count($active_levels) > 1 && (int)$level['room_count'] > 0) { ?>
                             <li><button type="button" data-source-levels="<?php echo $level['level'] ?>" data-destination-levels="<?php echo $level['cloneable_destinations'] ?>" class="level-btn level-clone-btn"><?php echo $this->lang->line('clone') ?></button></li>
                             <?php } ?>
                             <!-- <li> <button class="level-btn"> + Add </button></li> -->
@@ -192,7 +193,6 @@
             <label class="labelTxt"><?php echo $this->lang->line('source') ?></label>
             <div class="form-group-field">
                 <select name="" id="clone-source"></select>
-                <span class="customArrow"></span>
             </div>
         </div>
         <div class="clearfix"></div>

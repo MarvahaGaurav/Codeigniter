@@ -46,14 +46,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach($inspirations as $key => $inspiration) : ?>
+                    <?php foreach($inspirations as $key => $inspiration) { ?>
                     <tr>
                         <td class="td-thumb-carousel text-nowrap">
                             <div class="thumb-carousel">
                                 <!-- td carousel -->
                                 <div class="owl-carousel inspiration_carousel">
                                 <?php if (is_array($inspiration['media'])) {?>
-                                    <?php foreach($inspiration['media'] as $media) :?>
+                                    <?php foreach($inspiration['media'] as $media) {?>
                                     <?php if (CONTENT_TYPE_IMAGE === (int)$media['media_type'] ) {?>
                                     <div class="item">
                                         <div class="thumb-view-wrapper thumb-view-fullp img-viewbdr-radius4">
@@ -66,6 +66,9 @@
                                             <div class="thumb-view thumb-viewfullheight-1" style="background:url('<?php echo !empty($media['video_thumbnail'])?$media['video_thumbnail']:base_url('public/images/logo.png')  ?>')"></div>
                                         </div>
                                     </div>
+                                    <?php } ?>
+                                    <?php } ?>
+                                <?php } ?>
 
                                     <!-- td carousel end -->
                                     <!--<span class="fa fa-heart faa-like heart-position1" aria-hidden="true"></span>-->
@@ -83,13 +86,13 @@
                         <td><?php echo $inspiration['city_name'] ?>, <?php echo $inspiration['country_name'] ?></td>
                         <td>
                             <ul class="inspiration-product">
-                                <?php foreach($inspiration['products'] as $key => $product) : ?>
+                                <?php foreach($inspiration['products'] as $key => $product) { ?>
                                 <?php if ((int)$key >= 2) { ?>
                                 <span>And more...</span>
                                 <?php break ?>
                                 <?php } ?>
                                 <li><?php echo $product['product_title'] ?></li>
-                                <?php endforeach ?>
+                                <?php } ?>
                             </ul>
                         </td>
                         <td class="text-nowrap action-user">
@@ -103,7 +106,7 @@
                             <?php } ?>
                         </td>
                     </tr>
-                    <?php endforeach?>
+                    <?php  } ?>
                     <?php if (empty($inspirations) ) { ?>
                         <tr>
                             <td colspan="5">No result found</td>

@@ -931,7 +931,7 @@ h2 { font-size: 14px; }
     color:#f1001d;
 }
 .tb-view-list {
-    color:#1f91fc;
+    color:#1f91fc;  
     text-decoration: underline;
 }
 .tb-view-list:hover {
@@ -1950,5 +1950,63 @@ td.group {
 }
 
 .project-action {
-    padding: 0 5px;
+    padding: 0 7px;
+}
+
+.disallow-cursor {
+    cursor: not-allowed;
+}
+
+/* The switch - the box around the slider */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .toggle-slider {
+  background-color: #e43119;
+}
+
+input:focus + .toggle-slider {
+  box-shadow: 0 0 1px #e43119;
+}
+
+input:checked + .toggle-slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
 }

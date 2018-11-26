@@ -2,9 +2,14 @@
 defined("BASEPATH") or exit("No direct script access allowed");
 
 require 'BaseController.php';
+require_once APPPATH . "/libraries/Traits/LevelRoomCheck.php";
+require_once APPPATH . "/libraries/Traits/TotalProjectPrice.php";
+require_once APPPATH . "/libraries/Traits/InstallerPriceCheck.php";
 
 class ProjectLevelsController extends BaseController
 {
+
+    use LevelRoomCheck, InstallerPriceCheck, TotalProjectPrice;
 
     public function __construct()
     {
@@ -79,7 +84,7 @@ class ProjectLevelsController extends BaseController
             $this->load->model('ProjectLevel');
 
             $params['project_id'] = $this->requestData['project_id'];
-
+            $projectId = $this->requestData['project_id'];
             $data = $this->ProjectLevel->get($params);
             $projectLevels = $data['data'];
             $totalPrice = (object)[];
@@ -103,7 +108,6 @@ class ProjectLevelsController extends BaseController
             $this->load->model(['ProjectRooms']);
             $roomCount = $this->ProjectRooms->roomCountByLevel($this->requestData['project_id']);
 
-
             $projectLevels = getDataWith($projectLevels, $roomCount, 'level', 'level', 'room_count', 'room_count');
             $projectLevels = array_map(function ($project) {
                 $project['room_count'] = is_array($project['room_count'])&&
@@ -111,7 +115,7 @@ class ProjectLevelsController extends BaseController
                     isset($project['room_count'][0])?(int)$project['room_count'][0]:0;
                 return $project;
             }, $projectLevels);
-            
+
             $projectLevelStatus = is_bool(array_search(0, array_column($projectLevels, 'status')));
 
             $response = [
@@ -120,18 +124,22 @@ class ProjectLevelsController extends BaseController
                 'data' => $projectLevels,
                 'project_level_status' => $projectLevelStatus,
                 'total_price' => $totalPrice,
-                'has_added_all_rooms' => false
+                'has_added_all_rooms' => $this->isAllRoomsAdded($projectId)
             ];
 
             if (in_array((int)$user_data['user_type'], [INSTALLER], true)) {
                 $params['company_id'] = (int)$user_data['company_id'];
-                $roomsData = $this->ProjectRooms->getQuotedRooms($params);
-            
-                $roomDataCheck = array_filter($roomsData, function ($data) {
-                    return $data['empty_room_quotations'] === "empty";
-                });
 
-                $respone['has_added_all_rooms'] = (bool)empty($roomDataCheck);
+                $response['has_added_all_price'] = $this->projectCheckPrice($projectId);
+                $companyData = $this->UtilModel->selectQuery('company_discount', 'company_master', [
+                    'where' => ['company_id' => $user_data['company_id']], 'single_row' => true
+                ]);
+
+                $response['company_discount'] = $companyData['company_discount'];
+                $technicianCharges = $this->UtilModel->selectQuery('id', 'project_technician_charges', [
+                    'where' => ['project_id' => $projectId]
+                ]);
+                $response['is_technician_final_price_added'] = !empty($technicianCharges);
             }
             
             $this->response($response);

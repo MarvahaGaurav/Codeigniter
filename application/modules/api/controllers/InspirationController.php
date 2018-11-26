@@ -18,8 +18,8 @@ class InspirationController extends BaseController
     }
 
     /**
-     * @SWG\Post(path="/company/inspiration",
-     *   tags={"Company"},
+     * @SWG\Post(path="inspirations",
+     *   tags={"Inspirations"},
      *   summary="Post inspiration",
      *   description="Post inspiration",
      *   operationId="inspiration_post",
@@ -73,24 +73,24 @@ class InspirationController extends BaseController
      */
     public function inspiration_post()
     {
-        $user_data = $this->accessTokenCheck();
+        $user_data = $this->accessTokenCheck("u.company_id, u.user_type");
         $language_code = $this->langcode_validate();
         $request_data = $this->post();
         $request_data = trim_input_parameters($request_data);
-        
-        $mandatoryFields = ["company_id", "title", "description", "media"];
+
+        $mandatoryFields = ["title", "description", "media", "address", "lat", "lng"];
 
         $check = check_empty_parameters($request_data, $mandatoryFields);
 
         if ($check['error']) {
             $this->response(
                 [
-                'code' => HTTP_UNPROCESSABLE_ENTITY,
-                'api_code_result' => 'UNPROCESSABLE_ENTITY',
-                'msg' => $this->lang->line('missing_parameter'),
-                'extra_info' => [
-                    "missing_parameter" => $check['parameter']
-                ]
+                    'code' => HTTP_UNPROCESSABLE_ENTITY,
+                    'api_code_result' => 'UNPROCESSABLE_ENTITY',
+                    'msg' => $this->lang->line('missing_parameter'),
+                    'extra_info' => [
+                        "missing_parameter" => $check['parameter']
+                    ]
                 ]
             );
         }
@@ -102,13 +102,20 @@ class InspirationController extends BaseController
             // pd($media);
         }
 
-        $this->Inspiration->company_id = $request_data['company_id'];
+        if (in_array((int)$user_data['user_type'], [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER, WHOLESALER], true)) {
+            $this->Inspiration->company_id = $user_data['company_id'];
+        }
+        $this->Inspiration->language_code = $language_code;
         $this->Inspiration->user_id = $user_data['user_id'];
         $this->Inspiration->title = $request_data['title'];
         $this->Inspiration->description = $request_data['description'];
+        $this->Inspiration->address = $request_data['address'];
+        $this->Inspiration->lat = $request_data['lat'];
+        $this->Inspiration->lng = $request_data['lng'];
         $this->Inspiration->created_at = $this->datetime;
         $this->Inspiration->updated_at = $this->datetime;
-
+        $this->Inspiration->updated_at_timestamp = $this->timestamp;
+        $this->Inspiration->created_at_timestamp = $this->timestamp;
 
         $add_products = false;
         if (isset($request_data['product_ids'])) {
@@ -133,9 +140,9 @@ class InspirationController extends BaseController
                 $this->InspirationProduct->batch_save();
             }
             //if media data is available, prepare batch
-            if (! empty($media) && is_array($media)) {
+            if (!empty($media) && is_array($media)) {
                 foreach ($media as $key => $value) {
-                    if (! is_array($value)) {
+                    if (!is_array($value)) {
                         $value = [];
                     }
                     $value = trim_input_parameters($value);
@@ -144,18 +151,18 @@ class InspirationController extends BaseController
                     if ($check_json['error']) {
                         $this->response(
                             [
-                            'code' => HTTP_UNPROCESSABLE_ENTITY,
-                            'api_code_result' => 'UNPROCESSABLE_ENTITY',
-                            'msg' => $this->lang->line('missing_json_parameter'),
-                            'extra_info' => [
-                                "missing_json_parameter" => $check_json['parameter']
-                            ]
+                                'code' => HTTP_UNPROCESSABLE_ENTITY,
+                                'api_code_result' => 'UNPROCESSABLE_ENTITY',
+                                'msg' => $this->lang->line('missing_json_parameter'),
+                                'extra_info' => [
+                                    "missing_json_parameter" => $check_json['parameter']
+                                ]
                             ]
                         );
                     }
-                    
+
                     $this->load->helper("images");
-                    $content =  [
+                    $content = [
                         "inspiration_id" => $inspirationId,
                         "media_type" => $value['type'],
                         "media" => $value['media'],
@@ -173,22 +180,22 @@ class InspirationController extends BaseController
             $this->db->trans_commit();
             $this->response(
                 [
-                'code' => HTTP_OK,
-                'api_code_result' => 'OK',
-                'msg' => $this->lang->line("inspiration_added")
+                    'code' => HTTP_OK,
+                    'api_code_result' => 'OK',
+                    'msg' => $this->lang->line("inspiration_added")
                 ]
             );
         } catch (InsertException $error) {
             $this->db->trans_rollback();
             $this->response(
                 [
-                'code' => HTTP_INTERNAL_SERVER_ERROR,
-                'api_code_result' => 'INTERNAL_SERVER_ERROR',
-                'msg' => $this->lang->line('internal_server_error'),
-                'debug' => [
-                    'info' => 'Insert Error',
-                    'query' => $error->getMessage()
-                ]
+                    'code' => HTTP_INTERNAL_SERVER_ERROR,
+                    'api_code_result' => 'INTERNAL_SERVER_ERROR',
+                    'msg' => $this->lang->line('internal_server_error'),
+                    'debug' => [
+                        'info' => 'Insert Error',
+                        'query' => $error->getMessage()
+                    ]
                 ],
                 HTTP_INTERNAL_SERVER_ERROR
             );
@@ -196,9 +203,9 @@ class InspirationController extends BaseController
             $this->db->trans_rollback();
             $this->response(
                 [
-                'code' => HTTP_INTERNAL_SERVER_ERROR,
-                'api_code_result' => 'INTERNAL_SERVER_ERROR',
-                'msg' => $this->lang->line('internal_server_error')
+                    'code' => HTTP_INTERNAL_SERVER_ERROR,
+                    'api_code_result' => 'INTERNAL_SERVER_ERROR',
+                    'msg' => $this->lang->line('internal_server_error')
                 ],
                 HTTP_INTERNAL_SERVER_ERROR
             );
@@ -206,8 +213,8 @@ class InspirationController extends BaseController
     }
 
     /**
-     * @SWG\Get(path="/company/inspiration/{company_id}/{inspiration_id}",
-     *   tags={"Company"},
+     * @SWG\Get(path="inspirations",
+     *   tags={"Inspirations"},
      *   summary="Inspiration List and detail",
      *   description="Inspiration List and detail",
      *   operationId="employee_get",
@@ -216,12 +223,6 @@ class InspirationController extends BaseController
      *     name="inspiration_id",
      *     in="query",
      *     description="Inspiration id is optional and can be passed to fetch inspiration details",
-     *     type="string"
-     *   ),
-     * @SWG\Parameter(
-     *     name="company_id",
-     *     in="query",
-     *     description="if company Id is given it will fetch based on company Id",
      *     type="string"
      *   ),
      * @SWG\Parameter(
@@ -237,93 +238,188 @@ class InspirationController extends BaseController
      */
     public function inspiration_get()
     {
-        // $userData = $this->accessTokenCheck("company_id");
-        $language_code = $this->langcode_validate();
-        $request_data = $this->get();
-        $request_data = trim_input_parameters($request_data);
+        try {
+            $userData = $this->accessTokenCheck('company_id, user_type');
+            $language_code = $this->langcode_validate();
+            $this->requestData = $this->get();
 
-        $companyId = isset($request_data['company_id'])&&!empty((int)$request_data['company_id'])?$request_data['company_id']:0;
-
-        $offset = isset($request_data['offset'])?$request_data['offset']:0;
-        
-        $options = [
-            "offset" => $offset,
-            "company_id" => $companyId,
-            "media" => true,
-            "products" => true
-        ];
-
-        $is_single_row = false;
-        if (isset($request_data['inspiration_id'])) {
-            $is_single_row = true;
-            $options['inspiration_id'] = $request_data['inspiration_id'];
-            unset($options['offset']);
-        }
-
-        $result = $this->Inspiration->get($options);
-        if ($is_single_row) {
-            $data = $result;
-        } else {
-            $data = $result['result'];
-            $offset = (int)$offset + RECORDS_PER_PAGE;
-            if ((int)$offset >= (int)$result['count']) {
-                $offset = -1;
+            $params = [];
+            
+            if (in_array((int)$userData['user_type'], [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER, WHOLESALER], true)) {
+                $params['company_id'] = $userData['company_id'];
+            } else {
+                $params['user_id'] = $userData['user_id'];
             }
-        }
 
-        if (empty($data)) {
+            $params['offset'] =
+                isset($this->requestData['offset'])&&is_numeric($this->requestData['offset'])&&(int)$this->requestData['offset'] > 0 ? (int)$this->requestData['offset']: 0;
+            $params['limit'] = API_RECORDS_PER_PAGE;
+            $params['language_code'] = $language_code;
+
+            $data = $this->getInspirationData($params);
+
+            $inspirations = $data['data'];
+            $inspirationCount = $data['count'];
+
+            if (empty($inspirations)) {
+                $this->response([
+                    'code' => HTTP_NOT_FOUND,
+                    'msg' => $this->lang->line('no_data_found')
+                ]);
+            }
+
+            $hasMorePages = false;
+            $nextCount = -1;
+
+            if ((int)$inspirationCount > ($params['offset'] + API_RECORDS_PER_PAGE)) {
+                $hasMorePages = true;
+                $nextCount = $params['offset'] + API_RECORDS_PER_PAGE;
+            }
+
+            $this->response([
+                'code' => HTTP_OK,
+                'msg' => $this->lang->line('success'),
+                'data' => $inspirations,
+                'total' => $inspirationCount,
+                'next_count' => $nextCount
+            ]);
+        } catch (\Exception $error) {
             $this->response(
                 [
-                "code" => NO_DATA_FOUND,
-                "api_code_result" => "NO_DATA_FOUND",
-                "msg" => $this->lang->line("no_records_found")
-                ]
+                    'code' => HTTP_INTERNAL_SERVER_ERROR,
+                    'api_code_result' => 'INTERNAL_SERVER_ERROR',
+                    'msg' => $this->lang->line('internal_server_error')
+                ],
+                HTTP_INTERNAL_SERVER_ERROR
             );
         }
+    }
 
-        if ($is_single_row) {
-            $data['media'] = "[" . $data['media'] . "]";
-            $data['media'] = json_decode($data['media'], true);
-            $data['products'] = "[" . $data['products'] . "]";
-            $data['products'] = json_decode($data['products'], true);
-            unset($data['media_id']);
-            unset($data['media_type']);
-            unset($data['video_thumbnail']);
-        } else {
-            $data = array_map(
-                function ($inspiration) {
-                    $inspiration['media'] = "[" . $inspiration['media'] . "]";
-                    $inspiration['media'] = json_decode($inspiration['media'], true);
-                    $inspiration['products'] = "[" . $inspiration['products'] . "]";
-                    $inspiration['products'] = json_decode($inspiration['products'], true);
-                    // unset($inspiration['media']);
-                    unset($inspiration['media_id']);
-                    unset($inspiration['media_type']);
-                    unset($inspiration['video_thumbnail']);
-                    return $inspiration;
-                },
-                $data
+     /**
+     * @SWG\Get(path="/companies/{company_id}/inspirations ",
+     *   tags={"Company"},
+     *   summary="Get Company Inspiration",
+     *   description="Get Company Inspiration",
+     *   operationId="employee_get",
+     *   produces={"application/json"},
+     * @SWG\Parameter(
+     *     name="inspiration_id",
+     *     in="query",
+     *     description="Inspiration id is optional and can be passed to fetch inspiration details",
+     *     type="string"
+     *   ),
+     * @SWG\Parameter(
+     *     name="company_id",
+     *     in="path",
+     *     description="Company Id",
+     *     type="string"
+     *   ),
+     * @SWG\Parameter(
+     *     name="offset",
+     *     in="query",
+     *     description="offset value to be passed back to paginate, if offset is -1, there is no further data",
+     *     type="string"
+     *   ),
+     * @SWG\Response(response=202, description="No data found"),
+     * @SWG\Response(response=200, description="Inspiration added"),
+     * @SWG\Response(response=500, description="Internal server error")
+     * )
+     */
+    public function companyInspiration_get()
+    {
+        try {
+            $language_code = $this->langcode_validate();
+            
+            $this->requestData = $this->get();
+
+            if (isset($this->requestData['company_id'])) {
+
+                $companyData = $this->UtilModel->selectQuery('company_id', 'company_master', [
+                    'where' => ['company_id' => $this->requestData['company_id']], 'single_row' => true
+                ]);
+
+                if (empty($companyData)) {
+                    $this->response([
+                        'code' => HTTP_NOT_FOUND,
+                        'msg' => $this->lang->line('company_not_found')
+                    ]);
+                }
+                $params['company_id'] = $this->requestData['company_id'];
+            }
+
+            $params['offset'] =
+                isset($this->requestData['offset'])&&is_numeric($this->requestData['offset'])&&(int)$this->requestData['offset'] > 0 ? (int)$this->requestData['offset']: 0;
+            $params['limit'] = API_RECORDS_PER_PAGE;
+            $params['language_code'] = $language_code;
+
+            $data = $this->getInspirationData($params);
+
+            $inspirations = $data['data'];
+            $inspirationCount = $data['count'];
+
+            if (empty($inspirations)) {
+                $this->response([
+                    'code' => HTTP_NOT_FOUND,
+                    'msg' => $this->lang->line('no_data_found')
+                ]);
+            }
+
+            $hasMorePages = false;
+            $nextCount = -1;
+
+            if ((int)$inspirationCount > ($params['offset'] + API_RECORDS_PER_PAGE)) {
+                $hasMorePages = true;
+                $nextCount = $params['offset'] + API_RECORDS_PER_PAGE;
+            }
+
+            $this->response([
+                'code' => HTTP_OK,
+                'msg' => $this->lang->line('success'),
+                'data' => $inspirations,
+                'total' => $inspirationCount,
+                'next_count' => $nextCount
+            ]);
+        } catch (\Exception $error) {
+            $this->response(
+                [
+                    'code' => HTTP_INTERNAL_SERVER_ERROR,
+                    'api_code_result' => 'INTERNAL_SERVER_ERROR',
+                    'msg' => $this->lang->line('internal_server_error')
+                ],
+                HTTP_INTERNAL_SERVER_ERROR
             );
         }
+    }
 
-        $response = [
-            "code" => HTTP_OK,
-            "api_code_result" => "OK",
-            "msg" => $this->lang->line("inspiration_fetched"),
-            "data" => $data
-        ];
-
-        if (! $is_single_row) {
-            $response['offset'] = $offset;
+    private function getInspirationData($params)
+    {
+        $options = [];
+        if (isset($params['company_id'])) {
+            $options['where']['inspirations.company_id'] = $params['company_id'];
         }
-        
-        $this->load->helper("json");
-        $this->response($response, HTTP_OK);
+
+        if (isset($params['user_id'])) {
+            $options['where']['inspirations.user_id'] = $params['user_id'];
+        }
+
+        $options['where']['language_code'] = $params['language_code'];
+        $options['offset'] = $params['offset'];
+        $options['limit'] = $params['limit'];
+
+        if ($this->uri->segment(4) === "all") {
+            $options['where']['inspirations.company_id !=']  = null;
+        }
+
+        $this->load->model('Inspiration');
+
+        $data = $this->Inspiration->inspirations($options);
+
+        return $data;
     }
 
     /**
-     * @SWG\Put(path="/company/inspiration",
-     *   tags={"Company"},
+     * @SWG\Put(path="inspirations",
+     *   tags={"Inspirations"},
      *   summary="Put inspiration",
      *   description="Put inspiration",
      *   operationId="inspiration_put",
@@ -385,7 +481,7 @@ class InspirationController extends BaseController
      */
     public function inspiration_put()
     {
-        $user_data = $this->accessTokenCheck('company_id');
+        $user_data = $this->accessTokenCheck('company_id, user_type');
         $language_code = $this->langcode_validate();
         $request_data = $this->put();
         $request_data = trim_input_parameters($request_data);
@@ -396,14 +492,14 @@ class InspirationController extends BaseController
 
         if (isset($request_data['media_to_delete'])) {
             $media_remove_list = json_decode($request_data['media_to_delete'], true);
-            if (isset($media_remove_list) && ! empty($media_remove_list)) {
+            if (isset($media_remove_list) && !empty($media_remove_list)) {
                 $remove_media = true;
             }
         }
 
         if (isset($request_data['media'])) {
             $add_media_data = json_decode($request_data['media'], true);
-            if (isset($add_media_data) && ! empty($add_media_data)) {
+            if (isset($add_media_data) && !empty($add_media_data)) {
                 $add_media = true;
             }
         }
@@ -415,12 +511,12 @@ class InspirationController extends BaseController
         if ($check['error']) {
             $this->response(
                 [
-                'code' => HTTP_UNPROCESSABLE_ENTITY,
-                'api_code_result' => 'UNPROCESSABLE_ENTITY',
-                'msg' => $this->lang->line('missing_parameter'),
-                'extra_info' => [
-                    "missing_parameter" => $check['parameter']
-                ]
+                    'code' => HTTP_UNPROCESSABLE_ENTITY,
+                    'api_code_result' => 'UNPROCESSABLE_ENTITY',
+                    'msg' => $this->lang->line('missing_parameter'),
+                    'extra_info' => [
+                        "missing_parameter" => $check['parameter']
+                    ]
                 ]
             );
         }
@@ -430,15 +526,15 @@ class InspirationController extends BaseController
         if (empty($check)) {
             $this->response(
                 [
-                'code' => HTTP_UNPROCESSABLE_ENTITY,
-                'api_code_result' => 'UNPROCESSABLE_ENTITY',
-                'msg' => $this->lang->line('nothing_to_update')
+                    'code' => HTTP_UNPROCESSABLE_ENTITY,
+                    'api_code_result' => 'UNPROCESSABLE_ENTITY',
+                    'msg' => $this->lang->line('nothing_to_update')
                 ]
             );
         }
 
         $inspirationData = $this->UtilModel->selectQuery(
-            'company_id',
+            'company_id, user_id',
             'inspirations',
             [
                 "where" => ['id' => $request_data['inspiration_id']],
@@ -446,22 +542,22 @@ class InspirationController extends BaseController
             ]
         );
 
-        if (! $inspirationData) {
+        if (!$inspirationData) {
             $this->response(
                 [
-                "code" => NO_DATA_FOUND,
-                "api_code_result" => "NO_DATA_FOUND",
-                "msg" => $this->lang->line("no_records_found")
+                    "code" => NO_DATA_FOUND,
+                    "api_code_result" => "NO_DATA_FOUND",
+                    "msg" => $this->lang->line("no_records_found")
                 ]
             );
         }
 
-        if ($inspirationData['company_id'] != $user_data['company_id']) {
+        if ((in_array((int)$user_data['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && (int)$user_data['user_id'] !== (int)$inspirationData['user_id']) || (in_array((int)$user_data['user_type'], [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER, WHOLESALER], true) && (int)$user_data['company_id'] !== (int)$inspirationData['user_id'])) {
             $this->response(
                 [
-                "code" => HTTP_FORBIDDEN,
-                "api_code_result" => "FORBIDDEN",
-                "msg" => $this->lang->line("cannot_update_inspiration")
+                    "code" => HTTP_FORBIDDEN,
+                    "api_code_result" => "FORBIDDEN",
+                    "msg" => $this->lang->line("cannot_update_inspiration")
                 ],
                 HTTP_FORBIDDEN
             );
@@ -485,28 +581,28 @@ class InspirationController extends BaseController
 
         if ($add_media) {
             foreach ($add_media_data as $key => $value) {
-                if (! is_array($value)) {
+                if (!is_array($value)) {
                     $value = [];
                 }
-                
+
                 $value = trim_input_parameters($value);
                 $mandatory_json = ["type", "media"];
                 $check_json = check_empty_parameters($value, $mandatory_json);
                 if ($check_json['error']) {
                     $this->response(
                         [
-                        'code' => HTTP_UNPROCESSABLE_ENTITY,
-                        'api_code_result' => 'UNPROCESSABLE_ENTITY',
-                        'msg' => $this->lang->line('missing_json_parameter'),
-                        'extra_info' => [
-                            "missing_json_parameter" => $check_json['parameter']
-                        ]
+                            'code' => HTTP_UNPROCESSABLE_ENTITY,
+                            'api_code_result' => 'UNPROCESSABLE_ENTITY',
+                            'msg' => $this->lang->line('missing_json_parameter'),
+                            'extra_info' => [
+                                "missing_json_parameter" => $check_json['parameter']
+                            ]
                         ]
                     );
                 }
 
                 $this->load->helper("images");
-                $content =  [
+                $content = [
                     "inspiration_id" => $request_data['inspiration_id'],
                     "media_type" => $value['type'],
                     "media" => $value['media'],
@@ -517,7 +613,7 @@ class InspirationController extends BaseController
                 } elseif (CONTENT_TYPE_VIDEO === (int)$value['type'] && isset($value['video_thumbnail'])) {
                     $content['video_thumbnail'] = $value['video_thumbnail'];
                 }
-                
+
                 $this->InspirationMedia->batch_data[] = $content;
             }
         }
@@ -536,14 +632,14 @@ class InspirationController extends BaseController
         }
 
          //add more products
-         $remove_products = false;
+        $remove_products = false;
         if (isset($request_data['remove_product_ids'])) {
             $request_data['remove_product_ids'] = json_decode($request_data['remove_product_ids']);
             if (is_array($request_data['remove_product_ids'])) {
                 $remove_products = true;
             }
         }
-        
+
         try {
             $this->db->trans_begin();
             if (isset($request_data['title']) || isset($request_data['description'])) {
@@ -574,16 +670,16 @@ class InspirationController extends BaseController
 
                 $this->InspirationProduct->batch_save();
             }
-            
+
             if ($remove_media) {
                 $this->InspirationMedia->delete(['inspiration_id' => $request_data['inspiration_id']], $remove_media_where);
             }
             $this->db->trans_commit();
             $this->response(
                 [
-                'code' => HTTP_OK,
-                'api_code_result' => 'OK',
-                'msg' => $this->lang->line("inspiration_updated")
+                    'code' => HTTP_OK,
+                    'api_code_result' => 'OK',
+                    'msg' => $this->lang->line("inspiration_updated")
                 ]
             );
         } catch (UpdateException $error) {
@@ -592,21 +688,21 @@ class InspirationController extends BaseController
                 //success
                 $this->response(
                     [
-                    'code' => HTTP_OK,
-                    'api_code_result' => 'OK',
-                    'msg' => $this->lang->line("inspiration_updated")
+                        'code' => HTTP_OK,
+                        'api_code_result' => 'OK',
+                        'msg' => $this->lang->line("inspiration_updated")
                     ]
                 );
             } else {
                 $this->response(
                     [
-                    'code' => HTTP_INTERNAL_SERVER_ERROR,
-                    'api_code_result' => 'INTERNAL_SERVER_ERROR',
-                    'msg' => $this->lang->line('internal_server_error'),
-                    'debug' => [
-                        'info' => 'Update Error',
-                        'query' => $error->getMessage()
-                    ]
+                        'code' => HTTP_INTERNAL_SERVER_ERROR,
+                        'api_code_result' => 'INTERNAL_SERVER_ERROR',
+                        'msg' => $this->lang->line('internal_server_error'),
+                        'debug' => [
+                            'info' => 'Update Error',
+                            'query' => $error->getMessage()
+                        ]
                     ]
                 );
             }
@@ -614,17 +710,17 @@ class InspirationController extends BaseController
             $this->db->rollback();
             $this->response(
                 [
-                'code' => HTTP_INTERNAL_SERVER_ERROR,
-                'api_code_result' => 'INTERNAL_SERVER_ERROR',
-                'msg' => $this->lang->line('internal_server_error')
+                    'code' => HTTP_INTERNAL_SERVER_ERROR,
+                    'api_code_result' => 'INTERNAL_SERVER_ERROR',
+                    'msg' => $this->lang->line('internal_server_error')
                 ]
             );
         }
     }
 
     /**
-     * @SWG\Delete(path="/company/inspiration",
-     *   tags={"Company"},
+     * @SWG\Delete(path="inspirations",
+     *   tags={"Inspirations"},
      *   summary="Delete inspiration",
      *   description="Delete inspiration",
      *   operationId="inspiration_delete",
@@ -663,12 +759,12 @@ class InspirationController extends BaseController
             if ($check['error']) {
                 $this->response(
                     [
-                    'code' => HTTP_UNPROCESSABLE_ENTITY,
-                    'api_code_result' => 'UNPROCESSABLE_ENTITY',
-                    'msg' => $this->lang->line('missing_parameter'),
-                    'extra_info' => [
-                        "missing_parameter" => $check['parameter']
-                    ]
+                        'code' => HTTP_UNPROCESSABLE_ENTITY,
+                        'api_code_result' => 'UNPROCESSABLE_ENTITY',
+                        'msg' => $this->lang->line('missing_parameter'),
+                        'extra_info' => [
+                            "missing_parameter" => $check['parameter']
+                        ]
                     ]
                 );
             }
@@ -682,12 +778,12 @@ class InspirationController extends BaseController
                 ]
             );
 
-            if (! $inspirationData) {
+            if (!$inspirationData) {
                 $this->response(
                     [
-                    "code" => NO_DATA_FOUND,
-                    "api_code_result" => "NO_DATA_FOUND",
-                    "msg" => $this->lang->line("no_records_found")
+                        "code" => NO_DATA_FOUND,
+                        "api_code_result" => "NO_DATA_FOUND",
+                        "msg" => $this->lang->line("no_records_found")
                     ]
                 );
             }
@@ -696,9 +792,9 @@ class InspirationController extends BaseController
             if ((int)$inspirationData['company_id'] !== (int)$userData['company_id']) {
                 $this->response(
                     [
-                    "code" => HTTP_FORBIDDEN,
-                    "api_code_result" => "FORBIDDEN",
-                    "msg" => $this->lang->line("cannot_delete_inspiration")
+                        "code" => HTTP_FORBIDDEN,
+                        "api_code_result" => "FORBIDDEN",
+                        "msg" => $this->lang->line("cannot_delete_inspiration")
                     ],
                     HTTP_FORBIDDEN
                 );
@@ -717,33 +813,33 @@ class InspirationController extends BaseController
                 },
                 $media
             );
-        
+
             $this->db->trans_begin();
 
             $this->Inspiration->delete($where);
-            
+
             $this->db->trans_commit();
 
             $this->load->helper(['url']);
             //
             $http_client = new GuzzleClient(
                 [
-                'base_uri' => base_url("api/")
+                    'base_uri' => base_url("api/")
                 ]
             );
-            
+
             $response = $http_client->request(
                 'POST',
                 'UtilityController/delete_media',
                 [
-                'auth' => [ AUTH_USER, AUTH_PASS ],
-                'form_params' => [
-                    'media' => $media_to_delete,
-                    'single_traverse' => true
-                ]
+                    'auth' => [AUTH_USER, AUTH_PASS],
+                    'form_params' => [
+                        'media' => $media_to_delete,
+                        'single_traverse' => true
+                    ]
                 ]
             );
-            
+
             if ($response->getStatusCode() == 200) {
                 $body = $response->getBody();
                 $content = $body->getContents();
@@ -752,34 +848,34 @@ class InspirationController extends BaseController
             }
             $this->response(
                 [
-                'code' => HTTP_OK,
-                'api_code_result' => 'OK',
-                'msg' => $this->lang->line("inspiration_removed")
+                    'code' => HTTP_OK,
+                    'api_code_result' => 'OK',
+                    'msg' => $this->lang->line("inspiration_removed")
                 ]
             );
         } catch (DeleteException $error) {
             $this->db->trans_rollback();
             $this->response(
                 [
-                'code' => HTTP_INTERNAL_SERVER_ERROR,
-                'api_code_result' => 'INTERNAL_SERVER_ERROR',
-                'msg' => $this->lang->line('internal_server_error'),
-                'debug' => [
-                    'info' => 'Delete Error',
-                    'query' => $error->getMessage()
-                ]
+                    'code' => HTTP_INTERNAL_SERVER_ERROR,
+                    'api_code_result' => 'INTERNAL_SERVER_ERROR',
+                    'msg' => $this->lang->line('internal_server_error'),
+                    'debug' => [
+                        'info' => 'Delete Error',
+                        'query' => $error->getMessage()
+                    ]
                 ]
             );
         } catch (\Exception $error) {
             $this->db->trans_rollback();
             $this->response(
                 [
-                'code' => HTTP_INTERNAL_SERVER_ERROR,
-                'api_code_result' => 'INTERNAL_SERVER_ERROR',
-                'msg' => $this->lang->line('internal_server_error'),
-                'debug' => [
-                    'info' => $error->getMessage()
-                ]
+                    'code' => HTTP_INTERNAL_SERVER_ERROR,
+                    'api_code_result' => 'INTERNAL_SERVER_ERROR',
+                    'msg' => $this->lang->line('internal_server_error'),
+                    'debug' => [
+                        'info' => $error->getMessage()
+                    ]
                 ]
             );
         }

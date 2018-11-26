@@ -54,6 +54,9 @@ class Company_model extends CI_Model
         if (isset($params['search']) && !empty($params['search'])) {
             $this->db->like('c.company_name', $params['search']);
         }
+        if (isset($params['company_type']) && in_array((int)$params['company_type'], [INSTALLER, WHOLESALER, ARCHITECT, ELECTRICAL_PLANNER], true)) {
+            $this->db->where('c.owner_type', $params['company_type']);
+        }
         $query = $this->db->get();
     //    echo $this->db->last_query();die;
         $resArr = [];

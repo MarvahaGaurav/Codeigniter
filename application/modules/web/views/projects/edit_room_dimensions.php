@@ -99,13 +99,11 @@
                     <div class="form-group">
                         <label class="labelTxt">Working Plane Height</label>
                         <div class="form-group-field form-dimention">
-                            <input class="dialux-suggestions-fields" class="is_number"  type="text" placeholder=""  name="room_plane_height" id="room_plane_height" value="<?php echo isset($cookie_data['room_plane_height'])?$cookie_data['room_plane_height']:$room['working_plane_height'] ?>">
+                            <input class="dialux-suggestions-fields" class="is_number"  type="text" placeholder=""  name="room_plane_height" id="room_plane_height" value="<?php echo isset($cookie_data['room_plane_height'])?$cookie_data['room_plane_height']:$room['working_plane_height']*100 ?>">
                             <label for="room_plane_height" id="room_plane_height-error" class="error"><?php echo form_error('room_plane_height') ?></label>
                             <label class="field-type">
                                 <select class="select-filed-name"  name="room_plane_height_unit" id="room_plane_height_unit">
-                                    <?php foreach ($units as $unit) : ?>
-                                    <option value="<?php echo strtolower($unit) ?>" <?php echo isset($cookie_data['room_plane_height_unit']) && $cookie_data['room_plane_height_unit'] === strtolower($unit)?"selected":"" ?>><?php echo $unit ?></option>
-                                    <?php endforeach ?>
+                                    <option value="cms">Cms</option>
                                 </select>
                                 <span class="customArrow"></span>
                             </label>
@@ -197,8 +195,14 @@
                 <?php } ?>
             </div>
         </div>
-        <div class="section-title clearfix clickable" id="advanced-option-div" data-toggle="collapse" data-target="#advanced-options-div">
-            <h3>Advanced Options&nbsp;&nbsp;<span class="caret clickable"></span></h3>
+        <div class="section-title clearfix clickable">
+            <h3 class="pull-left">Advanced Options</h3>
+            <div class="pull-right">
+                <label class="toggle-switch">
+                    <input type="checkbox" id="display-advanced-options">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
         </div>
         <hr>
         <div class="form-wrapper collapse" id="advanced-options-div" style="<?php echo !empty(array_intersect($validation_error_keys, ["rho_wall", "rho_ceiling", "rho_floor", "rho_floor", "lux_values"]))?"display:block":"" ?>">

@@ -15,6 +15,51 @@ class Inspiration extends BaseModel {
 
     }
 
+    public function inspirations($params)
+    {
+        $this->db->select('SQL_CALC_FOUND_ROWS id as inspiration_id, title, description, inspirations.status,
+        inspirations.address, inspirations.lat, inspirations.lng, company_name, first_name as user_name,
+        inspirations.created_at, inspirations.updated_at,
+        inspirations.created_at_timestamp, inspirations.updated_at_timestamp', false)
+            ->from('inspirations')
+            ->join('ai_user as users', 'users.user_id=inspirations.user_id')
+            ->join("company_master as company", "company.company_id=inspirations.company_id")
+            ->order_by('id', "DESC");
+        
+        if (isset($params['limit']) && is_numeric($params['limit']) && (int)$params['limit'] > 0) {
+            $this->db->limit((int)$params['limit']);
+        }
+
+        if (isset($params['offset']) && is_numeric($params['offset']) && (int)$params['offset'] > 0) {
+            $this->db->offset((int)$params['offset']);
+        }
+
+        if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
+            foreach ($params['where'] as $tableColumn => $searchValue) {
+                $this->db->where($tableColumn, $searchValue);
+            }
+        }
+
+        $query = $this->db->get();
+
+        $data['data'] = $query->result_array();
+        $data['count'] = $this->db->query('SELECT FOUND_ROWS() as count')->row()->count;
+
+        if (!empty($data['data'])) {
+            $this->load->helper('db');
+            $this->load->model(['InspirationProduct', 'InspirationMedia']);
+            $inspirationIds = array_column($data['data'], 'inspiration_id');
+            $products = $this->InspirationProduct->get($inspirationIds);
+            $media = $this->InspirationMedia->get($inspirationIds);
+
+            $data['data'] = getDataWith($data['data'], $media, 'inspiration_id', 'inspiration_id', 'media');
+            $data['data'] = getDataWith($data['data'], $products, 'inspiration_id', 'inspiration_id', 'products');
+        }
+
+        
+        return $data;
+    }
+
 
 
     public function get($options)
@@ -40,7 +85,7 @@ class Inspiration extends BaseModel {
         $this->db->from($this->tableName . " as i")
             ->where('i.status', 1)
             ->where('i.is_deleted', 0)
-            ->join("company_master as company", "company.company_id=i.company_id")
+            ->join("company_master as company", "company.company_id=i.company_id", 'left')
             ->join('ai_user as user', 'user.company_id=company.company_id' . $user_additional_join, "left")
             ->join('city_list as cl', 'cl.id=user.city_id', 'left')
             ->join('country_list as country', 'country.country_code1=user.country_id', 'left')
@@ -48,14 +93,14 @@ class Inspiration extends BaseModel {
             ->group_by("i.id");
 
         if (isset($options['inspiration_id']) && ! empty($options['inspiration_id'])) {
-            $this->db->select("i.id as inspiration_id, company.company_name, cl.id as city_id, cl.name as city_name," .
+            $this->db->select("i.id as inspiration_id, IFNULL(company.company_name, '') as company_name, cl.id as city_id, cl.name as city_name," .
                 "country.country_code1 as country_code, country.name as country_name," .
-                "i.company_id, i.title, i.description" . $media . $poster_details . $products);
+                "IFNULL(i.company_id, '') as company_id, i.title, i.description" . $media . $poster_details . $products);
         }
         else {
             $this->db->select("SQL_CALC_FOUND_ROWS i.id as inspiration_id, cl.id as city_id, cl.name as city_name," .
                 "country.country_code1 as country_code, country.name as country_name," .
-                "company.company_name, i.company_id, i.title, i.description, i.created_at, i.updated_at" . $media . $poster_details . $products, false);
+                "IFNULL(company.company_name, '') as company_name, IFNULL(i.company_id, '') as company_id, i.title, i.description, i.created_at, i.updated_at" . $media . $poster_details . $products, false);
         }
 
         if (isset($options['company_id']) && ! empty($options['company_id'])) {
@@ -86,7 +131,7 @@ class Inspiration extends BaseModel {
         }
 
         $query = $this->db->get();
-        // pd($this->db->last_query());
+        
         if ( ! $query) {
             throw new SelectException($this->db->last_query());
         }

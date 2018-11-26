@@ -60,14 +60,14 @@
                             <div class="input-group plus-minus-input">
                                 <input class="input-group-field input-square-space" type="number" name="quantity" value="<?php echo count($room['products']) ?>">
                                 <div class="input-group-button btn-square">
-                                    <button type="button" class="button hollow square" data-quantity="oplus" data-field="quantity">
+                                    <button type="button" class="button hollow square redirectable" data-redirect-to="<?php echo base_url('home/projects/' . $projectId . '/levels/' . $level . '/rooms/' . encryptDecrypt($room['room_id']) . '/project-rooms/' . encryptDecrypt($room['project_room_id']) . '/accessory-products') ?>" data-quantity="oplus" data-field="quantity">
                                         <i class="fa fa-plus" aria-hidden="true"></i>
                                     </button>
                                 </div>
                             </div>
                         </td>
                         <td class="op-semibold">
-                            <a href="<?php echo base_url('home/projects/' . $projectId . '/levels/' . $level . '/rooms/' . encryptDecrypt($room['room_id']) . '/project-rooms/' . encryptDecrypt($room['project_room_id']) . '/accessory-products') ?>" class="tb-view-list" title="View List">View List</a>
+                            <a href="javascript:void(0)" class="tb-view-list" title="View List">View List</a>
                         </td>
                         <td class="op-semibold text-center">
                             <a href="<?php echo base_url("/home/projects/view-result/" . encryptDecrypt($room['project_room_id'])) ?>" class="tb-view-list" title="View Results">View Results</a>
@@ -77,12 +77,12 @@
                             (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && empty($quotationRequest)) ||
                             (!in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true))
                         ) { ?>
-                            <a href="<?php echo base_url("/home/projects/{$projectId}/levels/{$level}/rooms/" . encryptDecrypt($room['project_room_id']) . "/edit") ?>" class="tb-view-list" title="Edit"><i class="fa fa-pencil"></i></a>
+                            <a href="<?php echo base_url("/home/projects/{$projectId}/levels/{$level}/rooms/" . encryptDecrypt($room['project_room_id']) . "/edit") ?>" class="project-action" title="Edit"><i class="fa fa-pencil"></i></a>
                         <?php } else { ?>
                             <div class="text-center">--</div>
                         <?php } ?>
                         <?php if (in_array((int)$userInfo['user_type'], [INSTALLER], true)) { ?>
-                            <a href="javascript:void(0)" id="add-price-<?php echo $key ?>" data-target-value="<?php echo $key ?>" data-room-price='<?php echo $room['price_data'] ?>'' class="tb-view-list installer-add-price" title="<?php echo $this->lang->line('add_price') ?>" data-project-room-id="<?php echo encryptDecrypt($room['project_room_id']) ?>"><i class="fa fa-money"></i></a>
+                            <a href="javascript:void(0)" id="add-price-<?php echo $key ?>" data-target-value="<?php echo $key ?>" data-room-price='<?php echo $room['price_data'] ?>'' class="project-action installer-add-price" title="<?php echo $this->lang->line('add_price') ?>" data-project-room-id="<?php echo encryptDecrypt($room['project_room_id']) ?>"><i class="fa fa-money"></i></a>
                         <?php }?>
                         </td>
                     </tr>
@@ -141,6 +141,18 @@
                 <div class="row form-inline-wrapper">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="form-group">
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">Main Product Price</div>
+                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">0.00</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="form-group">
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">Accessory Product Price</div>
+                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">0.00</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="form-group">
                             <label class="labelTxt"><?php echo $this->lang->line('price_per_luminaries') ?></label>
                             <div class="form-group-field">
                                 <input name="price_per_luminaries" id="price-per-luminaries" type="number" placeholder="10.00" maxlength="12">
@@ -163,6 +175,18 @@
                             <div class="form-group-field">
                                 <input type="number" name="discount_price" id="discount-price" placeholder="10.00" maxlength="12">
                             </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="form-group">
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">Subtotal</div>
+                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8" id="subtotal"></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="form-group">
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">Total</div>
+                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8" id="total"></div>
                         </div>
                     </div>
                     <input type="hidden" name="project_room_id" id="project-room-id" value="">;

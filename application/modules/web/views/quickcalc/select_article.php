@@ -1,12 +1,7 @@
 <div class="container">
-    <ul class="breadcrumb">
-        <li><a href="javascript:void(0)">Home</a></li>
-        <li><a href="<?php echo base_url('home/projects') ?>">Projects</a></li>
-        <li><a href="<?php echo base_url('home/projects/' . $project_id) ?>">Details</a></li>
-        <li><a href="<?php echo base_url('home/projects/' . $project_id . '/levels') ?>">Levels</a></li>
-        <li><a href="<?php echo base_url('home/projects/' . $project_id . '/levels/' . $level .'/rooms') ?>">Rooms</a></li>
-        <li><a href="<?php echo base_url('home/projects/' . $project_id . '/levels/' . $level .'/rooms/'. $room_id . '/project-rooms/' . $project_room_id . '/accessory-products') ?>">Selected Products</a></li>
-        <li class="active">Accessory Product Details</li>
+    <ul class="breadcrumb"> 
+    <li><a href="javascript:void(0)">Home</a></li>
+            <li class="active">Details</li>
     </ul>
     <div class="">
         <h1 class="heading-red"><?php echo $product_name = $product['title']; ?></h1>
@@ -101,7 +96,8 @@ if (count($images)) {
                 <tr class="">
 
                     <td class="image"><a>
-                    <img  style="width:200px" data-redirect-to="<?php echo base_url('home/projects/' . $project_id . '/levels/' . $level .'/rooms/'. $room_id . '/project-rooms/' . $project_room_id . '/accessory-products/' . encryptDecrypt($product_id) . '/articles/' . $specification['articlecode']) ?>" src="<?php echo $specification['image']; ?>" title="<?php echo $specification['articlecode']; ?>" class="img-responsive redirectable clickable"></a></td>
+                        <img data-redirect-to="<?php ?>" style="width:100%" src="<?php echo $specification['image']; ?>" title="<?php echo $specification['articlecode']; ?>" class="img-responsive redirectable clickable"></a>
+                    </td>
                     <td data-title="Article" class="light-technic">
                         <a name="<?php echo $specification['articlecode']; ?>"></a>
                         <span id="5046905201" class="articlecode"><strong><?php echo $specification['articlecode']; ?></strong></span>
@@ -119,14 +115,8 @@ if (count($images)) {
                     <td class="download text-right">
                         <div>
                             <div class="btn-group">
-                                <?php if (in_array($specification['articlecode'], $selected_articles)) { ?>
-                                    <button disabled="disabled" type="button" class="inverse-outline-btn">Selected</button>
-                                <?php } else {?>
-                                    <button title="Select Product" data-selected="<?php echo $this->lang->line('selected') ?>" data-accessory='<?php echo $specification['accessory_data'] ?>'  class="outline-btn select-project-accessory" onclick="">Select</button>
-                                <?php } ?>
-                                <!--                                <button title="More info"  class="outline-btn">
-                                                                    Info
-                                                                </button>-->
+                                <button title="Select Product"  class="outline-btn" onclick="select_product( '<?php echo $specification['articlecode']; ?>', '<?php echo $specification['product_id']; ?>', <?php echo $mounting ?>)">Select</button>
+                                <!-- <button title="More info"  class="outline-btn redirectable">Info</button> -->
 
                             </div>
                         </div>
@@ -159,12 +149,9 @@ if (count($images)) {
         ?>
 
     </div>
-    <input type="hidden" name="level" id="level" value="<?php echo $level; ?>">
-    <input type="hidden" name="project_id" id="project_id" value="<?php echo $project_id; ?>">
     <input type="hidden" name="application_id" id="application_id" value="<?php echo isset($application_id)?$application_id:''; ?>">
     <input type="hidden" name="room_id" id="room_id" value="<?php echo isset($room_id)?$room_id:''; ?>">
     <input type="hidden" name="product_name" id="product_name" value="<?php echo isset($product_name)?$product_name:''; ?>">
-    <input type="hidden" name="project_room_id" id="project_room_id" value="<?php echo isset($project_room_id)?$project_room_id:''; ?>">
 </div>
 <!--Related Products close-->
 
@@ -274,8 +261,6 @@ if (count($images)) {
         color:#363636;
     }
 
-
-
     .warrenty-img {
         width: 235px;
         padding-left: 15px;
@@ -291,7 +276,7 @@ if (count($images)) {
         border-left-width: 0.4rem;
         border-left-color: #e00016;
         border-bottom: 0 solid transparent;
-        margin: 0 0 17px 12px;
+        margin: 0 0 17px 0px;
     }
 
 
@@ -304,18 +289,6 @@ if (count($images)) {
     .outline-btn:hover{
         color: #fff;
         background-color: #ad0011;
-        border-color: transparent;
-    }
-
-    .inverse-outline-btn{
-        background-color: #e00016;
-        border: 1px solid #e00016;
-        color: #fff;
-        padding: 5px 20px;
-    }
-    .inverse-outline-btn:hover{
-        color: #ad0011;
-        background-color: #fff;
         border-color: transparent;
     }
 </style>

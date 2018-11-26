@@ -272,8 +272,6 @@ if (count($images)) {
         color:#363636;
     }
 
-
-
     .warrenty-img {
         width: 235px;
         padding-left: 15px;

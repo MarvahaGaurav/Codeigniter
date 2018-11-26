@@ -39,13 +39,13 @@ requirejs(
           levelCloneDestination = JSON.parse($self.attr("data-destination-levels")),
           optionSelect = $levelCloneBtn.attr('data-text');
         
-      var option = "<option>"+ optionSelect +"</option>";
+      // var option = "<option>"+ optionSelect +"</option>";
       
       var cloneSourceHTML = "<option value='"+ levelCloneSource +"'>"+ levelCloneSource +"</option>";
 
       var destinationSourceHTML = levelCloneDestination.reduce(function(acc, current) {
         return acc + "<option value='"+ current +"'>"+ current +"</option>";
-      }, option);
+      }, '');
 
       $cloneSource.html(cloneSourceHTML);
       $cloneDestination.html(destinationSourceHTML);

@@ -43,6 +43,14 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    <div class="form-group">
+                        <label class="labelTxt">Project Level</label>
+                        <div class="form-group-field">
+                            <input type="text" class="disallow-cursor" value="<?php echo $projectData['levels'] ?>" readonly>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="clearfix"></div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -66,7 +74,7 @@
                             <select name="installers" id="isntallers">
                                 <option value="others">Select</option>
                                 <?php foreach ($employees as $employee) : ?>
-                                <option value="<?php echo encryptDecrypt($employee['user_id']) ?>"><?php echo $employee['first_name'] ?></option>
+                                <option value="<?php echo $employee['user_id'] ?>" <?php echo $employee['user_id'] === $projectData['installer_id']?"selected":"" ?>><?php echo $employee['first_name'] ?></option>
                                 <?php endforeach ?>
                             </select>
                             <span class="customArrow"></span>

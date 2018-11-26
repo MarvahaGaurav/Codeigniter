@@ -15,14 +15,14 @@ class InspirationMedia extends BaseModel {
 
     public function get($inspiration_id) 
     {
-        $this->db->select("*")
+        $this->db->select("inspiration_id, media_type, media, video_thumbnail")
         ->from($this->tableName);
         if ( is_array($inspiration_id) ) {
             $this->db->where_in("inspiration_id", $inspiration_id);
         } else {
             $this->db->where("inspiration_id", $inspiration_id);
         }
-
+        
         $query = $this->db->get();
 
         $result = $query->result_array();

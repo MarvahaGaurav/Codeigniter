@@ -107,4 +107,27 @@ class ProjectLevel extends BaseModel
 
         return $data;
     }
+
+    /**
+     * Used to check if rooms for all levels have been added
+     * 
+     * @param $projectId project ID for which the check need to be done
+     *
+     * @return array
+     */
+    public function levelRoomCheck($projectId)
+    {
+        $this->db->select("pl.level, pl.id, pr.id as project_room_id")
+         ->from("project_levels as pl")
+         ->join("project_rooms as pr", 'pr.project_id=pl.project_id', 'left')
+         ->where('pl.project_id', $projectId)
+         ->group_by('pl.level');
+
+        $query = $this->db->get();
+
+        $result = $query->result_array();
+
+        return $result;
+    }
+    
 }

@@ -42,8 +42,6 @@ class QuickCalController extends BaseController
     public function quickCalcSuggestion()
     {
         try {
-            error_reporting(-1);
-            ini_set('display_errors', 1);
             $this->requestData = $this->input->post();
 
             if (isset($this->requestData['room_id'])) {
@@ -88,7 +86,7 @@ class QuickCalController extends BaseController
                 "illuminance" => floatval($this->requestData['lux_values']),
                 "maintenanceFactor" => floatval($this->requestData['maintainance_factor']),
                 "roomType" => $roomData['title'],
-                "workingPlaneHeight" => isset($this->requestData['room_plane_height'])?floatval($this->requestData['room_plane_height']):floatval($roomData['reference_height']),
+                "workingPlaneHeight" => isset($this->requestData['room_plane_height'])?floatval($this->requestData['room_plane_height'])/100:floatval($roomData['reference_height']),
                 "suspension" => isset($this->requestData['pendant_length'])?floatval($this->requestData['pendant_length']):0.00,
                 "rhoCeiling" => isset($this->requestData['rho_ceiling'])?floatval($this->requestData['rho_ceiling']):100 * floatval($roomData['reflection_values_ceiling']),
                 "rhoWall" => isset($this->requestData['rho_wall'])?floatval($this->requestData['rho_wall']):100 * floatval($roomData['reflection_values_wall']),

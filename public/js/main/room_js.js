@@ -68,6 +68,18 @@ requirejs(
             });
         }
 
+        var $advancedOptionsDiv = $("#advanced-options-div");
+        $("#display-advanced-options").on("change", function () {
+            var self = this,
+                $self = $(self);
+            
+            if (self.checked) {
+                $advancedOptionsDiv.slideDown();
+            } else {
+                $advancedOptionsDiv.slideUp();
+            }
+        });
+
         $(".dialux-suggestions-fields").on("blur", function () {
             var self = this,
                 $self = $(self),

@@ -25,21 +25,21 @@
         <div class="project-list-wrapper clearfix">
             <h2 class="project-listtxt">Recommended Products</h2>
             <div class="button-wrapper-two button-wrapper-right">
-                <button type="button" id="filter-btn" class="custom-btn btn-width save">
+                <!-- <button type="button" id="filter-btn" class="custom-btn btn-width save">
                     <i class="fa fa-filter fa-common"></i> Filter
-                </button>
+                </button> -->
                 <!-- filter section -->
                 <div id="filter-section" class="filter-section section-arrow">
                     <!-- form wrapper -->
                     <div class="form-wrapper">
 
                         <!-- Caption before section -->
-                        <div class="section-title clearfix">
+                        <!-- <div class="section-title clearfix">
                             <h3>Filter</h3>
-                        </div>
+                        </div> -->
                         <!-- Caption before section -->
 
-                        <div class="row form-inline-wrapper">
+                        <!-- <div class="row form-inline-wrapper">
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                 <div class="form-group">
                                     <label class="labelTxt">Find your Product</label>
@@ -82,15 +82,15 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
                         <!-- Caption before section -->
-                        <div class="section-title clearfix">
+                        <!-- <div class="section-title clearfix">
                             <div class="button-wrapper text-right">
                                 <input type="submit" value="Apply" class="custom-btn btn-width save">
                                 <button type="button" id="close-filter" class="custom-btn btn-width cancel">Cancel</button>
                             </div>
-                        </div>
+                        </div> -->
                         <!-- Caption before section -->
                     </div>
                     <!-- //form wrapper -->

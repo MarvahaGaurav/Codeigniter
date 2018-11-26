@@ -47,7 +47,9 @@ requirejs(
       $installationCharges = $("#installation-charges"),
       $discountPrice = $("#discount-price"),
       $projectRoomIdField = $("#project-room-id"),
-      $targetHandler = $("#target-handler");
+      $targetHandler = $("#target-handler"),
+      $subTotal = $("#subtotal"),
+      $total = $("#total");
 
     $(".installer-add-price").on("click", function () {
       var self = this,
@@ -69,10 +71,14 @@ requirejs(
           $pricePerLuminaries.val(priceData.price_per_luminaries);
           $installationCharges.val(priceData.installation_charges);
           $discountPrice.val(priceData.discount_price);
+          $subTotal.html(priceData.subtotal);
+          $total.html(priceData.total);
         } else {
           $pricePerLuminaries.val('');
           $installationCharges.val('');
           $discountPrice.val('');
+          $subTotal.html('');
+          $total.html('');
         }
       }
 

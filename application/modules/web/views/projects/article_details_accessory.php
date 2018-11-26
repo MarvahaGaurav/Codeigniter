@@ -8,7 +8,7 @@
             <li><a href="<?php echo base_url('home/projects/' . $projectId) ?>">Details</a></li>
             <li><a href="<?php echo base_url('home/projects/' . $projectId . '/levels') ?>">Levels</a></li>
             <li><a href="<?php echo base_url('home/projects/' . $projectId . '/levels/' . $level .'/rooms') ?>">Rooms</a></li>
-            <li><a href="<?php echo base_url('home/projects/' . $projectId . '/levels/' . $level .'/rooms/'. $roomId . '/project-rooms/' . $projectRoomId . '/accessory-products') ?>">Selected Products</a></li>
+            <li><a href="<?php echo base_url('home/projects/' . $projectId . '/levels/' . $level .'/rooms/'. $roomId . '/project-rooms/' . $projectRoomId . '/accessory-products') ?>">Accessory Products</a></li>
             <li><a href="<?php echo base_url('home/projects/' . $projectId . '/levels/' . $level .'/rooms/'. $roomId . '/project-rooms/' . $projectRoomId . '/accessory-products/' . $productId) ?>">Details</a></li>
             <li class="active">Accessory Product Details</li>
         </ul>

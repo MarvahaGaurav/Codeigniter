@@ -35,8 +35,8 @@
                         <th>Project Name</th>
                         <th>Project Number</th>
                         <th class="text-center">Project Level</th>
-<!--                        <th class="text-center">Project Version</th>
-                        <th class="text-center">Received Quotes</th>-->
+                        <th class="text-center">Project Version</th>
+<!--                <th class="text-center">Received Quotes</th>-->
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -48,18 +48,19 @@
                             <td class="op-semibold"><?php echo $project['name']; ?></td>
                             <td class="op-semibold"><?php echo $project['number']; ?></td>
                             <td class="text-center"><?php echo $project['levels']; ?></td>
+                            <td class="text-center"><?php echo sprintf('%.2f', $project['version']); ?></td>
 <!--                            <td class="text-center">v1.1</td>
                             <td class="text-center">20</td>-->
                             <td class="op-semibold">
-                                <a href="<?php echo base_url("home/projects/" . encryptDecrypt($project['project_id'])) ?>" class="tb-view-list project-action" title="<?php echo $this->lang->line('view') ?>">
+                                <a href="<?php echo base_url("home/projects/" . encryptDecrypt($project['project_id'])) ?>" class="project-action" title="<?php echo $this->lang->line('view') ?>">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                 </a>
                                 <?php if (empty($project['requests'])) { ?>
-                                <a href="<?php echo base_url('home/projects/' . encryptDecrypt($project['project_id']) . '/edit') ?>" class="tb-view-list project-action" title="<?php echo $this->lang->line("edit") ?>">
-                                    <i class="fa fa-pencil"></i>
+                                <a href="<?php echo base_url('home/projects/' . encryptDecrypt($project['project_id']) . '/edit') ?>" class="project-action" title="<?php echo $this->lang->line("edit") ?>">
+                                    <i class="fa fa-pencil" aria-hidden="true"></i>
                                 </a>
                                 <?php }?>
-                                <a href="javascript:void(0)" class="tb-view-list confirmation-action-xhttp project-action" title="<?php echo $this->lang->line('clone') ?>" data-url="<?php echo base_url("xhttp/projects/clone") ?>" data-target="#project-<?php echo $key ?>" data-json='<?php echo $project['clone_data'] ?>' data-action="clone" data-redirect="<?php echo base_url(uri_string()) ?>" data-title="<?php echo $this->lang->line('clone_project_tilte') ?>" data-message="<?php echo $this->lang->line('clone_project_confirmation') ?>">
+                                <a href="javascript:void(0)" class="confirmation-action-xhttp project-action" title="<?php echo $this->lang->line('clone') ?>" data-url="<?php echo base_url("xhttp/projects/clone") ?>" data-target="#project-<?php echo $key ?>" data-json='<?php echo $project['clone_data'] ?>' data-action="clone" data-redirect="<?php echo base_url(uri_string()) ?>" data-title="<?php echo $this->lang->line('clone_project_tilte') ?>" data-message="<?php echo $this->lang->line('clone_project_confirmation') ?>">
                                     <i class="fa fa-clone"></i>
                                 </a>
                             </td>

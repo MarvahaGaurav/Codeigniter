@@ -294,9 +294,6 @@ class ProductArticlesController extends BaseController
 
             $this->data['js'] = "accessory_article";
 
-
-
-
             website_view('projects/article_details_accessory', $this->data);
         } catch (\Exception $error) {
             show404($this->lang->line('internal_server_error'), base_url('home/applications'));

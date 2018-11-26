@@ -1,5 +1,4 @@
 <?php
-
 defined("BASEPATH") or exit("No direct script access allowed");
 
 require_once 'BaseModel.php';
@@ -58,8 +57,9 @@ class ProjectRooms extends BaseModel
     public function get($params)
     {
         $this->db->select("id as project_room_id, room_id, level, project_id, name, length, width, height,
-            maintainance_factor, shape, working_plane_height, rho_wall, rho_ceiling, rho_floor, suspension_height,
-            lux_value, luminaries_count_x, luminaries_count_y, fast_calc_response, created_at", false)
+            maintainance_factor, shape, working_plane_height, rho_wall, rho_ceiling, reference_name, reference_number,
+            rho_floor, suspension_height, lux_value, luminaries_count_x, luminaries_count_y,
+            created_at", false)
             ->from($this->tableName);
         
         if (isset($params['limit']) && is_numeric($params['limit']) && (int)$params['limit'] > 0) {
@@ -110,6 +110,32 @@ class ProjectRooms extends BaseModel
         $data = $query->result_array();
 
         return $data;
+    }
+
+    /**
+     * Project and room data
+     *
+     * @param array $params
+     * @param string $fields
+     * @return void
+     */
+    public function projectAndRoomData($params)
+    {
+        $this->db->select("pr.id as project_room_id, pr.project_id, projects.user_id, projects.company_id")
+            ->from("project_rooms as pr")
+            ->join("projects", "projects.id=pr.project_id");
+
+        if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
+            foreach ($params['where'] as $tableColumn => $searchValue) {
+                $this->db->where($tableColumn, $searchValue);
+            }
+        }
+
+        $query = $this->db->get();
+        
+        $result = $query->row_array();
+
+        return $result;
     }
 
     /**
@@ -203,6 +229,27 @@ class ProjectRooms extends BaseModel
         } else {
             return true;
         }
+    }
+
+
+    /**
+     * Project check for project
+     *
+     * @param integer $projectId
+     * @return array
+     */
+    public function projectPriceCheck($projectId)
+    {
+        $this->db->select("pr.id, prq.id as project_room_quotation")
+            ->from("project_rooms as pr")
+            ->join("project_room_quotations as prq", "pr.id=prq.project_room_id", "left")
+            ->where("pr.project_id", $projectId);
+        
+        $query = $this->db->get();
+        
+        $result = $query->result_array();
+
+        return $result;
     }
 
     /**

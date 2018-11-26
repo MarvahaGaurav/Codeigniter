@@ -8,7 +8,7 @@
             <li><a href="<?php echo base_url('home/projects/' . $projectId) ?>">Details</a></li>
             <li><a href="<?php echo base_url('home/projects/' . $projectId . '/levels') ?>">Levels</a></li>
             <li><a href="<?php echo base_url('home/projects/' . $projectId . '/levels/' . $level .'/rooms') ?>">Rooms</a></li>
-            <li class="active">Accessory Products</li>
+            <li class="active">Selected Products</li>
         </ul>
         <!-- //breadcrumb -->
 
@@ -28,7 +28,7 @@
             </div>
         </div>
         <!-- Title Section and Search end -->
-
+    
         <!-- thumb wrapper section -->
         <div class="thumb-wrapper">
             <div class="row">

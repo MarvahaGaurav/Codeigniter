@@ -101,8 +101,6 @@ class ProjectLevelController extends BaseController
      */
     public function levelClone()
     {
-        error_reporting(-1);
-        ini_set('display_errors', 1);
         try {
             $this->activeSessionGuard();
 

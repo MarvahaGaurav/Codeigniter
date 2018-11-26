@@ -209,11 +209,22 @@ class ProjectController extends BaseController
 
         if ((int)$this->userInfo['user_type'] === INSTALLER && (int)$this->userInfo['is_owner'] === ROLE_OWNER) {
             $this->load->model('Employee');
-            $this->data['employees'] = $this->Employee->employees([
+            $employees = $this->Employee->employees([
                 'where' => ['company_id' => $this->userInfo['company_id'], 'is_owner' => ROLE_EMPLOYEE]
             ]);
+
+            $employees = array_map(function ($employee) {
+                $employee['user_id'] = encryptDecrypt($employee['user_id']);
+                return $employee;
+            }, $employees);
+
+            $this->data['employees'] = $employees;
         }
 
+        if (in_array((int)$this->userInfo['user_type'], [INSTALLER], true) && !empty($projectData['installer_id'])) {
+            $projectData['installer_id'] = encryptDecrypt($projectData['installer_id']);
+        }
+        
         $this->data['projectData'] = $projectData;
 
         try {
@@ -233,9 +244,6 @@ class ProjectController extends BaseController
                         "updated_at"    => $this->datetime,
                         'updated_at_timestamp' => $this->timestamp,
                     ];
-
-                    $levelsCount = (int)trim($post['levels']);
-                    $levelsData = [];
 
                     if ((int)$this->userInfo['user_type'] === INSTALLER &&
                      (int)$this->userInfo['is_owner'] === ROLE_OWNER
@@ -771,6 +779,22 @@ class ProjectController extends BaseController
                 $this->data['userInfo'] = $this->userInfo;
             }
             $id = encryptDecrypt($project_room_id, "decrypt");
+
+            $this->load->model(['ProjectRooms']);
+
+            $projectAndRoomData = $this->ProjectRooms->projectAndRoomData([
+                'where' => ['pr.id' => $id]
+            ]);
+
+            if (empty($projectAndRoomData)) {
+                show404($this->lang->line('room_data_not_found'), base_url());
+            }
+
+            if ((in_array((int)$this->userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) &&
+                (int)$this->userInfo['user_id'] !== (int)$projectAndRoomData['user_id']) || (in_array((int)$this->userInfo['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], true) &&
+                (int)$this->userInfo['company_id'] !== (int)$projectAndRoomData['company_id'])) {
+                show404($this->lang->line('forbidden_action'), base_url(''));
+            }
 
             $this->load->model(["UtilModel", "ProjectRoomProducts", "ProductSpecification"]);
             $this->data['room_data'] = $this->UtilModel->selectQuery("*", "project_rooms", ["single_row" => true, "where" => ["id" => $id]]);

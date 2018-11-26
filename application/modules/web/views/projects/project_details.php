@@ -28,7 +28,9 @@
                         <th class="th-first">Project Number</th>
                         <th>Name</th>
                         <th class="text-center">Project Level</th>
+                        <?php if (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true)) { ?>
                         <th class="text-center">Quotes Status</th>
+                        <?php } ?>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -37,9 +39,13 @@
                         <td class="op-semibold"><?php echo $project['number']; ?></td>
                         <td class="op-semibold"><?php echo $project['name']; ?></td>
                         <td class="op-semibold text-center"><?php echo $project['levels']; ?></td>
+                        <?php if (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true)) { ?>
                         <td class="op-semibold text-center">0 Quotes</td>
+                        <?php } ?>
                         <td class="op-semibold">
+                            <?php if (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true)) { ?>
                             <a href="javascript:void(0)" class="tb-view-list">View Quotes</a>
+                            <?php } ?>
                         </td>
                     </tr>
                 </tbody>
@@ -80,20 +86,9 @@
                             </td>
                             <td><?php echo $room['length'] . " M x " . $room['width'] . " M x " . $room['height'] . "M"; ?></td>
                             <td class="text-center"><?php echo count($room['products']); ?></td>
-                            <?php
-                            if ('' == $room['fast_calc_response']) {
-                                ?>
-                                <td class="op-semibold">--</td>
-                                <?php
-                            }
-                            else {
-                                ?>
-                                <td class="op-semibold">
-                                    <a href="<?php echo base_url("home/projects/view-result/" . encryptdecrypt($room['project_room_id'])); ?>" class="tb-view-list" title="View <?php echo $room['name']; ?> Result">View Result</a>
-                                </td>
-                                <?php
-                            }
-                            ?>
+                            <td class="op-semibold">
+                                <a href="<?php echo base_url("home/projects/view-result/" . encryptdecrypt($room['project_room_id'])); ?>" class="tb-view-list" title="View <?php echo $room['name']; ?> Result">View Result</a>
+                            </td>
                         </tr>
                         <?php
                     }

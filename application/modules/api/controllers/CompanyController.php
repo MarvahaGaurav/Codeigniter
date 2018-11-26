@@ -107,6 +107,9 @@ class CompanyController extends BaseController
             $result = $result['result'];
         } else {
             $offsetFlag = true;
+            if (isset($getData['user_type'])) {
+                $params['user_type'] = '';
+            }
             if (isset($getData['company_id']) && !empty((int)$getData['company_id'])) {
                 $params['company_id'] = $getData['company_id'];
                 $params['offset'] = 0;
@@ -118,6 +121,10 @@ class CompanyController extends BaseController
                 $params['limit'] = 0;
             } else {
                 $params['paginate'] = $paginate;
+            }
+
+            if(isset($getData['company_type'])&&in_array((int)$getData['company_type'], [INSTALLER, WHOLESALER, ARCHITECT, ELECTRICAL_PLANNER], true)) {
+                $params['company_id'] = (int)$getData['company_type'];
             }
 
             $this->load->model("Company_model");

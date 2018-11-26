@@ -69,6 +69,18 @@ requirejs(
 
         });
 
+        var $advancedOptionsDiv = $("#advanced-options-div");
+        $("#display-advanced-options").on("change", function () {
+            var self = this,
+                $self = $(self);
+            
+            if (self.checked) {
+                $advancedOptionsDiv.slideDown();
+            } else {
+                $advancedOptionsDiv.slideUp();
+            }
+        });
+
         var $projectRoomId = $("#project_room_id");
         var projectRoomId = $projectRoomId.val();
 
