@@ -2,10 +2,12 @@
 defined("BASEPATH") or exit("No direct script access allowed");
 
 require_once "BaseController.php";
+require_once APPPATH . "/libraries/Traits/ProjectRequestCheck.php";
+require_once APPPATH . "/libraries/Traits/TechnicianChargesCheck.php";
 
 class ProductArticlesController extends BaseController
 {
-
+    use ProjectRequestCheck, TechnicianChargesCheck;
     /**
      * Post Request Data
      *
@@ -243,6 +245,14 @@ class ProductArticlesController extends BaseController
                 (int)$this->userInfo['user_id'] !== (int)$projectData['user_id']) || (in_array((int)$this->userInfo['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], true) &&
                 (int)$this->userInfo['company_id'] !== (int)$projectData['company_id'])) {
                 show404($this->lang->line('forbidden_action'), base_url(''));
+            }
+
+            if (in_array((int)$this->userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true)) {
+                $this->handleRequestCheck($projectId, 'web');
+            }
+
+            if (in_array((int)$this->userInfo['user_type'], [INSTALLER], true)) {
+                $this->handleTechnicianChargesCheck($projectId, 'web');
             }
 
             $productData = $this->Product->details([

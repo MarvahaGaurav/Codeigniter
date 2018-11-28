@@ -2,9 +2,15 @@
 defined("BASEPATH") or exit("No direct script access allowed");
 
 require_once "BaseController.php";
+require_once APPPATH . "/libraries/Traits/LevelRoomCheck.php";
+require_once APPPATH . "/libraries/Traits/TotalProjectPrice.php";
+require_once APPPATH . "/libraries/Traits/TechnicianChargesCheck.php";
+require_once APPPATH . "/libraries/Traits/InstallerPriceCheck.php";
 
 class ProjectLevelsController extends BaseController
 {
+
+    use LevelRoomCheck, InstallerPriceCheck, TotalProjectPrice, TechnicianChargesCheck;
 
     public function __construct()
     {
@@ -110,6 +116,16 @@ class ProjectLevelsController extends BaseController
             ]);
 
             $this->data['all_levels_done'] = is_bool(array_search(0, array_column($projectLevels, 'status')));
+
+            $this->data['hasAddedAllPrice'] = false;
+            $this->data['projectRoomPrice'] = [];
+            $this->data['hasAddedFinalPrice'] = false;
+            if (in_array((int)$this->userInfo['user_type'], [INSTALLER], true)) {
+                $this->load->helper(['utility']);
+                $this->data['hasAddedAllPrice'] = $this->projectCheckPrice($projectId);
+                $this->data['projectRoomPrice'] = (array)$this->quotationTotalPrice((int)$this->userInfo['user_type'], $projectId);
+                $this->data['hasAddedFinalPrice'] = $this->hasTechnicianAddedFinalPrice($projectId);
+            }
 
             website_view('projects/levels-listing', $this->data);
         } catch (\Exception $error) {

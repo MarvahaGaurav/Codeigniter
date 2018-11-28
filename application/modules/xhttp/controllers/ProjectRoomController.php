@@ -13,6 +13,160 @@ class ProjectRoomController extends BaseController
     }
 
     /**
+     * Increments room count
+     *
+     * @return void
+     */
+    public function incrementRoomCount()
+    {
+        try {
+            $this->activeSessionGuard();
+
+            $this->requestData = $this->input->post();
+
+            if (isset($this->requestData['project_room_id'])) {
+                $this->requestData['project_room_id'] = encryptDecrypt($this->requestData['project_room_id'], 'decrypt');
+            }
+
+            $this->validateRoomCount();
+
+            $this->load->model(['ProjectRooms']);
+
+            $params['where']['pr.id'] = $this->requestData['project_room_id'];
+            $projectData = $this->ProjectRooms->projectAndRoomData($params);
+
+            if (empty($projectData)) {
+                json_dump([
+                    'success' => false,
+                    'error' => $this->lang->line('no_data_found')
+                ]);
+            }
+
+            if ((in_array((int)$this->userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) &&
+                (int)$this->userInfo['user_id'] !== (int)$projectData['user_id']) || (in_array((int)$this->userInfo['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], true) &&
+                (int)$this->userInfo['company_id'] !== (int)$projectData['company_id'])) {
+                json_dump(
+                    [
+                        "success" => false,
+                        "error" => $this->lang->line('forbidden_action')
+                    ]
+                );
+            }
+
+            $updatedCount = $projectData['count'] + 1;
+            $this->UtilModel->updateTableData([
+                'count' => $updatedCount
+            ], 'project_rooms', [
+                'id' => $this->requestData['project_room_id']
+            ]);
+
+            json_dump([
+                'success' => true,
+                'count' => $updatedCount
+            ]);
+        } catch (\Exception $error) {
+            json_dump([
+                'success' => false,
+                'msg' => $this->lang->line('internal_server_error')
+            ]);
+        }
+    }
+
+    /**
+     * decrement room count
+     *
+     * @return void
+     */
+    public function decrementRoomCount()
+    {
+        try {
+            $this->activeSessionGuard();
+
+            $this->requestData = $this->input->post();
+
+            if (isset($this->requestData['project_room_id'])) {
+                $this->requestData['project_room_id'] = encryptDecrypt($this->requestData['project_room_id'], 'decrypt');
+            }
+
+            $this->validateRoomCount();
+
+            $this->load->model(['ProjectRooms']);
+
+            $params['where']['pr.id'] = $this->requestData['project_room_id'];
+            $projectData = $this->ProjectRooms->projectAndRoomData($params);
+
+            if (empty($projectData)) {
+                json_dump([
+                    'success' => false,
+                    'error' => $this->lang->line('no_data_found')
+                ]);
+            }
+
+            if ((in_array((int)$this->userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) &&
+                (int)$this->userInfo['user_id'] !== (int)$projectData['user_id']) || (in_array((int)$this->userInfo['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], true) &&
+                (int)$this->userInfo['company_id'] !== (int)$projectData['company_id'])) {
+                json_dump(
+                    [
+                        "success" => false,
+                        "error" => $this->lang->line('forbidden_action')
+                    ]
+                );
+            }
+
+            if ((int)$projectData['count'] === 1) {
+                json_dump([
+                    'success' => true,
+                    'count' => (int)$projectData['count']
+                ]);
+            }
+
+            $updatedCount = $projectData['count'] - 1;
+            $this->UtilModel->updateTableData([
+                'count' => $updatedCount
+            ], 'project_rooms', [
+                'id' => $this->requestData['project_room_id']
+            ]);
+
+            json_dump([
+                'success' => true,
+                'count' => $updatedCount
+            ]);
+        } catch (\Exception $error) {
+            json_dump([
+                'success' => false,
+                'msg' => $this->lang->line('internal_server_error')
+            ]);
+        }
+    }
+
+
+    private function validateRoomCount()
+    {
+        $this->load->library('form_validation');
+
+        $this->form_validation->set_data($this->requestData);
+
+        $this->form_validation->set_rules([
+            [
+                'field' => 'project_room_id',
+                'label' => 'Project Room',
+                'rules' => 'trim|required|is_natural_no_zero'
+            ]
+        ]);
+
+        $status = $this->form_validation->run();
+
+        if (!(bool)$status) {
+            $errorMessage = $this->form_validation->error_array();
+            json_dump([
+                'success' => false,
+                'error' => $this->lang->line('bad_request')
+            ]);
+        }
+
+    }
+
+    /**
      * Add price
      *
      * @return void
@@ -37,7 +191,7 @@ class ProjectRoomController extends BaseController
             if (empty($projectRoomData)) {
                 json_dump([
                     'success' => false,
-                    'msg' => $this->lang->line('no_data_found')
+                    'error' => $this->lang->line('no_data_found')
                 ]);
             }
 
@@ -48,7 +202,7 @@ class ProjectRoomController extends BaseController
             if (empty($projectData)) {
                 json_dump([
                     'success' => false,
-                    'msg' => $this->lang->line('no_data_found')
+                    'error' => $this->lang->line('no_data_found')
                 ]);
             }
 
@@ -110,7 +264,7 @@ class ProjectRoomController extends BaseController
         } catch (\Exception $error) {
             json_dump([
                 'success' => false,
-                'msg' => $this->lang->line('internal_server_error')
+                'error' => $this->lang->line('internal_server_error')
             ]);
         }
     }

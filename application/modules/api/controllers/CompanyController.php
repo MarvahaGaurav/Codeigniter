@@ -124,14 +124,14 @@ class CompanyController extends BaseController
             }
 
             if(isset($getData['company_type'])&&in_array((int)$getData['company_type'], [INSTALLER, WHOLESALER, ARCHITECT, ELECTRICAL_PLANNER], true)) {
-                $params['company_id'] = (int)$getData['company_type'];
+                $params['company_type'] = (int)$getData['company_type'];
             }
 
             $this->load->model("Company_model");
             $result = $this->Company_model->getCompanyList($params);
             $lang = "company_records_found";
 
-            if ($offsetFlag) {
+            if ($offsetFlag && isset($result['count'])) {
                 $offset = $offset + RECORDS_PER_PAGE;
                 if ((int)$result['count'] <= $offset) {
                     $offset = -1;

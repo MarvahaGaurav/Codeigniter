@@ -3,10 +3,13 @@ defined("BASEPATH") or exit("No direct script access allowed");
 
 require_once "BaseController.php";
 require_once APPPATH . "/libraries/Traits/ProjectRequestCheck.php";
+require_once APPPATH . "/libraries/Traits/TotalProjectPrice.php";
+require_once APPPATH . "/libraries/Traits/TechnicianChargesCheck.php";
+require_once APPPATH . "/libraries/Traits/InstallerPriceCheck.php";
 
 class ProjectRoomsController extends BaseController
 {
-    use ProjectRequestCheck;
+    use ProjectRequestCheck, InstallerPriceCheck, TotalProjectPrice, TechnicianChargesCheck;
 
     /**
      * Post Request Data
@@ -29,6 +32,152 @@ class ProjectRoomsController extends BaseController
      * @return void
      */
     public function projectCreateRoomListing($projectId, $level)
+    {
+        try {
+            $this->activeSessionGuard();
+            $this->data['userInfo'] = $this->userInfo;
+            $this->load->config('css_config');
+            $this->data['css'] = $this->config->item('project-level-room-listing');
+            $this->data['js'] = 'project-level-room-listing';
+
+            $languageCode = "en";
+            $projectId = encryptDecrypt($projectId, "decrypt");
+
+            $this->validationData = ['project_id' => $projectId, 'level' => $level];
+
+            $this->validateRoomsListing();
+
+            $status = $this->validationRun();
+
+            if (!$status) {
+                show404($this->lang->line('bad_request'), base_url(''));
+            }
+
+            $this->userTypeHandling([INSTALLER, PRIVATE_USER, BUSINESS_USER, WHOLESALER, ELECTRICAL_PLANNER], base_url('home/applications'));
+
+            $permissions = $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['project_view'], base_url('home/applications'));
+            $this->load->model(['UtilModel', 'ProjectRooms', 'ProjectRoomProducts']);
+            $projectData = $this->UtilModel->selectQuery('*', 'projects', [
+                'where' => ['id' => $projectId, 'language_code' => $languageCode], 'single_row' => true
+            ]);
+
+            $levelCheck = $this->UtilModel->selectQuery('id, status', 'project_levels', [
+                'where' => ['project_id' => $projectId, 'level' => $level], 'single_row' => true
+            ]);
+
+            if (empty($projectData)) {
+                show404($this->lang->line('project_not_found'), base_url(''));
+            }
+
+            if (empty($levelCheck)) {
+                show404($this->lang->line('bad_request'), base_url(''));
+            }
+
+            if ((in_array((int)$this->userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) &&
+                (int)$this->userInfo['user_id'] !== (int)$projectData['user_id']) || (in_array((int)$this->userInfo['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], true) &&
+                (int)$this->userInfo['company_id'] !== (int)$projectData['company_id'])) {
+                show404($this->lang->line('forbidden_action'), base_url(''));
+            }
+
+            $page = $this->input->get('page');
+
+            $params['limit'] = WEB_PAGE_LIMIT;
+            $params['offset'] = 0;
+            if (is_numeric($page) && (int)$page > 0) {
+                $params['offset'] = ($page - 1) * WEB_PAGE_LIMIT;
+            }
+            $params['where']['project_id'] = $projectId;
+            $params['where']['language_code'] = $languageCode;
+            $params['where']['level'] = $level;
+
+            $roomData = $this->ProjectRooms->get($params);
+            $this->load->helper(['db', 'utility']);
+
+            if (!empty($roomData['data'])) {
+                $roomIds = array_column($roomData['data'], 'project_room_id');
+                $roomProducts = $this->UtilModel->selectQuery('project_room_id', 'project_room_products', [
+                    'where_in' => ['project_room_id' => $roomIds]
+                ]);
+
+                $roomData['data'] = getDataWith($roomData['data'], $roomProducts, 'project_room_id', 'project_room_id', 'products');
+            }
+
+            $roomData['data'] = array_map(function ($room) {
+                $room['room_count_data'] = json_encode([
+                    $this->data["csrfName"] = $this->security->get_csrf_token_name() =>
+                        $this->data["csrfToken"] = $this->security->get_csrf_hash(),
+                    'project_room_id' => encryptDecrypt($room['project_room_id'])
+                ]);
+                return $room;
+            }, $roomData['data']);
+
+            if (in_array((int)$this->userInfo['user_type'], [INSTALLER], true) && !empty($roomData['data'])) {
+                $this->load->model('ProjectRoomQuotation');
+                $roomPrice = $this->UtilModel->selectQuery(
+                    'project_room_id, price_per_luminaries, installation_charges, discount_price',
+                    'project_room_quotations',
+                    [
+                        'where_in' => ['project_room_id' => $roomIds]
+                    ]
+                );
+
+                $roomData['data'] = getDataWith($roomData['data'], $roomPrice, 'project_room_id', 'project_room_id', 'price');
+
+                $roomData['data'] = array_map(function ($room) {
+                    $room['price'] = isset($room['price'][0]) ? $room['price'][0] : [];
+                    if (!empty($room['price']) && isset($room['price']['price_per_luminaries'], $room['price']['installation_charges'], $room['price']['discount_price'])) {
+                        $room['price']['subtotal'] = sprintf("%.2f", $room['price']['price_per_luminaries'] + $room['price']['installation_charges']);
+                        $room['price']['total'] = sprintf("%.2f", get_percentage($room['price']['price_per_luminaries'] + $room['price']['installation_charges'], $room['price']['discount_price']));
+                    }
+                    $room['price_data'] = is_array($room['price']) && count($room['price']) > 0 ? $room['price'] : (object)[];
+                    $room['price_data'] = json_encode($room['price_data']);
+                    return $room;
+                }, $roomData['data']);
+            }
+
+            $this->data['levelCheck'] = $levelCheck;
+            $this->data['rooms'] = $roomData['data'];
+            $this->data['projectId'] = encryptDecrypt($projectData['id']);
+            $this->data['level'] = $level;
+            $this->data['levelData'] = json_encode([
+                $this->data["csrfName"] = $this->security->get_csrf_token_name() =>
+                    $this->data["csrfToken"] = $this->security->get_csrf_hash(),
+                'project_id' => $this->data['projectId'],
+                'level' => $level
+            ]);
+
+            $this->data['csrf'] = json_encode([
+                $this->data["csrfName"] = $this->security->get_csrf_token_name() =>
+                    $this->data["csrfToken"] = $this->security->get_csrf_hash()
+            ]);
+
+            $this->data['quotationRequest'] = $this->UtilModel->selectQuery('id', 'project_requests', [
+                'where' => ['project_id' => $projectId]
+            ]);
+
+            $this->load->library('Commonfn');
+            $this->data['links'] = $this->commonfn->pagination(uri_string(), (int)$roomData['count'], $params['limit']);
+
+            $this->data['hasAddedFinalPrice'] = false;
+            if (in_array((int)$this->userInfo['user_type'], [INSTALLER], true)) {
+                $this->load->helper(['utility']);
+                $this->data['hasAddedFinalPrice'] = $this->hasTechnicianAddedFinalPrice($projectId);
+            }
+
+            website_view('projects/levels_room_list', $this->data);
+        } catch (\Exception $error) {
+            show404($this->lang->line('internal_server_error'), base_url('/home/applications'));
+        }
+    }
+
+    /**
+     * Project Room Results results
+     *
+     * @param string $projectId
+     * @param string $level
+     * @return void
+     */
+    public function projectResultRoomListing($projectId, $level)
     {
         try {
             $this->activeSessionGuard();
@@ -146,7 +295,15 @@ class ProjectRoomsController extends BaseController
             $this->load->library('Commonfn');
             $this->data['links'] = $this->commonfn->pagination(uri_string(), (int)$roomData['count'], $params['limit']);
 
-            website_view('projects/levels_room_list', $this->data);
+            $this->data['hasAddedFinalPrice'] = false;
+            $this->data['projectRoomPrice'] = [];
+            if (in_array((int)$this->userInfo['user_type'], [INSTALLER], true)) {
+                $this->load->helper(['utility']);
+                $this->data['projectRoomPrice'] = (array)$this->quotationTotalPrice((int)$this->userInfo['user_type'], $projectId, $level);
+                $this->data['hasAddedFinalPrice'] = $this->hasTechnicianAddedFinalPrice($projectId);
+            }
+            
+            website_view('projects/result_room_list', $this->data);
         } catch (\Exception $error) {
             show404($this->lang->line('internal_server_error'), base_url('/home/applications'));
         }
@@ -377,6 +534,10 @@ class ProjectRoomsController extends BaseController
                 $this->handleRequestCheck($projectId, 'web');
             }
 
+            if (in_array((int)$this->userInfo['user_type'], [INSTALLER], true)) {
+                $this->handleTechnicianChargesCheck($projectId, 'web');
+            }
+
             $this->postRequest = $this->input->post();
 
             $this->data['validation_errors'] = [];
@@ -473,6 +634,10 @@ class ProjectRoomsController extends BaseController
 
             if (in_array((int)$this->userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true)) {
                 $this->handleRequestCheck($projectId, 'web');
+            }
+
+            if (in_array((int)$this->userInfo['user_type'], [INSTALLER], true)) {
+                $this->handleTechnicianChargesCheck($projectId, 'web');
             }
 
             $this->postRequest = $this->input->post();

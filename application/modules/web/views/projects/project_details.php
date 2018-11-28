@@ -58,7 +58,7 @@
             <h3 class="pull-left">Room List</h3>
             <div class="button-wrapper-two pull-right">
                 <a href="<?php echo base_url("home/projects/" . encryptDecrypt($project['project_id']) . "/levels"); ?>" class="custom-btn btn-width save">
-                    <i class="fa fa-eye fa-p-circle"></i>View Room Details
+                    View Room Details
                 </a>
             </div>
         </div>

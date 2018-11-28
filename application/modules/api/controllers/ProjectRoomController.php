@@ -342,7 +342,7 @@ class ProjectRoomController extends BaseController
             }
 
             if (in_array((int)$user_data['user_type'], [PRIVATE_USER, BUSINESS_USER], true)) {
-                $this->handleRequestCheck($projectId, 'api');
+                $this->handleRequestCheck($roomData['project_id'], 'api');
             }
 
             $this->requestData = trim_input_parameters($this->requestData, false);

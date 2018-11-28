@@ -39,23 +39,22 @@ if ($(window).width() < 992) {
 function encodeQueryData(data) {
     const ret = [];
     for (let d in data)
-      ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
+        ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
     return ret.join('&');
- }
+}
 
-function getFormData($form){
+function getFormData($form) {
     var unindexed_array = $form.serializeArray();
     var indexed_array = {};
 
-    $.map(unindexed_array, function(n, i){
+    $.map(unindexed_array, function (n, i) {
         indexed_array[n['name']] = n['value'];
     });
 
     return indexed_array;
 }
 
-function displayErrorMessage(message)
-{
+function displayErrorMessage(message) {
     var $flashCardInfo = $("#flash-card-info"),
         $cardMessageStrong = $flashCardInfo.find(".card-message-strong"),
         $cardMessage = $flashCardInfo.find(".card-message");
@@ -66,13 +65,12 @@ function displayErrorMessage(message)
     $flashCardInfo.css({
         display: 'block'
     });
-    setTimeout(function(){
+    setTimeout(function () {
         $flashCardInfo.fadeOut(450);
     }, 2500);
 }
 
-function displaySuccessMessage(message)
-{
+function displaySuccessMessage(message) {
     var $flashCardInfo = $("#flash-card-info"),
         $cardMessageStrong = $flashCardInfo.find(".card-message-strong"),
         $cardMessage = $flashCardInfo.find(".card-message");
@@ -83,7 +81,7 @@ function displaySuccessMessage(message)
     $flashCardInfo.css({
         display: 'block'
     });
-    setTimeout(function(){
+    setTimeout(function () {
         $flashCardInfo.fadeOut(450);
     }, 2500);
 }
@@ -214,7 +212,7 @@ $(document).ready(function () {
         var self = this,
             $self = $(self),
             redirectTo = $self.attr("data-redirect-to");
-            
+
         window.location.href = redirectTo;
     });
 
@@ -288,6 +286,11 @@ $(document).ready(function () {
                             // $flashCard.addClass("alert alert-success");
                             // displayFlashCard(response.message);
                             window.location.href = dataRedirect;
+                        } else if (dataAction == 'remove-element') {
+                            $(dataTarget).remove();
+                            $self.removeAttr("disabled");
+                            $confirmationModal.modal("hide");
+                            displaySuccessMessage(response.message);
                         }
                     }
                 }
@@ -322,7 +325,7 @@ $(document).ready(function () {
 function CheckforNum(e) {
     //console.log(String.fromCharCode(e.keyCode));
     // Allow: backspace, delete, tab, escape, enter and  +
-    if ($.inArray(e.keyCode, [46, 8, 9, 27, 13]) !== -1 || (e.which === 187) || (e.keyCode == 65 && e.ctrlKey === true) || (e.keyCode == 86 && e.ctrlKey === true) || (e.keyCode == 67 && e.ctrlKey === true) || (e.keyCode == 88 && e.ctrlKey === true) || (e.keyCode >= 35 && e.keyCode <= 39)) {
+    if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 || (e.which === 187) || (e.keyCode == 65 && e.ctrlKey === true) || (e.keyCode == 86 && e.ctrlKey === true) || (e.keyCode == 67 && e.ctrlKey === true) || (e.keyCode == 88 && e.ctrlKey === true) || (e.keyCode >= 35 && e.keyCode <= 39)) {
         // let it happen, don't do anything
         return;
     }
@@ -333,3 +336,21 @@ function CheckforNum(e) {
 }
 
 $(".number-only-field").on("keydown", CheckforNum);
+
+function restrictCharacters(e) {
+    var self = this,
+        $self = $(self),
+        restrictionNumber = parseInt($self.attr('data-restrict-to')) || 20;
+
+    if ($.inArray(e.keyCode, [46, 8, 9, 27, 13]) !== -1 || (e.which === 187) || (e.keyCode == 65 && e.ctrlKey === true) || (e.keyCode == 86 && e.ctrlKey === true) || (e.keyCode == 67 && e.ctrlKey === true) || (e.keyCode == 88 && e.ctrlKey === true) || (e.keyCode >= 35 && e.keyCode <= 39)) {
+        // let it happen, don't do anything
+        return;
+    }
+
+    if ($self.val().length >= restrictionNumber) {
+        e.preventDefault();
+    }
+
+}
+
+$(".restrict-characters").on('keydown', restrictCharacters);

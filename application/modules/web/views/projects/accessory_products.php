@@ -19,13 +19,13 @@
         <!-- Title Section and Search -->
         <div class="section-title clearfix">
             <h3 class="pull-left">Bathroom Products</h3>
-            <div class="search-wrapper search-wrapper-width-1 fawe-icon-position">
+            <!-- <div class="search-wrapper search-wrapper-width-1 fawe-icon-position">
                 <span class="fawe-icon fawe-icon-position-right close-ico">
                     <i class="fa fa-times"></i>
                 </span>
                 <input type="text" class="search-box" id="search-box" placeholder="Search Project">
                 <input type="submit" value="Search" class="search-btn" />
-            </div>
+            </div> -->
         </div>
         <!-- Title Section and Search end -->
 

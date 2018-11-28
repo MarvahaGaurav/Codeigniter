@@ -5,7 +5,7 @@
         <li><a href="<?php echo base_url('home/projects/' . $project_id) ?>">Details</a></li>
         <li><a href="<?php echo base_url('home/projects/' . $project_id . '/levels') ?>">Levels</a></li>
         <li><a href="<?php echo base_url('home/projects/' . $project_id . '/levels/' . $level .'/rooms') ?>">Rooms</a></li>
-        <li><a href="<?php echo base_url('home/projects/' . $project_id . '/levels/' . $level .'/rooms/'. $room_id . '/project-rooms/' . $project_room_id . '/accessory-products') ?>">Selected Products</a></li>
+        <li><a href="<?php echo base_url('home/projects/' . $project_id . '/levels/' . $level .'/rooms/'. $room_id . '/project-rooms/' . $project_room_id . '/accessory-products') ?>">Accessory Products</a></li>
         <li class="active">Accessory Product Details</li>
     </ul>
     <div class="">

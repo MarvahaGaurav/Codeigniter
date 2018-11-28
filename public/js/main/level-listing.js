@@ -27,24 +27,50 @@ requirejs(
       }
     });
 
+    $("#final-price-submit").on("click", function () {
+      var self = this,
+        $self = $(this),
+        $installerSubmitPrice = $("#installer-submit-price");
+
+      var formData = getFormData($installerSubmitPrice);
+      var text = $self.text();
+      $.ajax({
+        url: window.location.protocol + "//" + window.location.host + "/xhttp/projects/installer/price",
+        method: "POST",
+        dataType: "json",
+        data: formData,
+        beforeSend: function () {
+          $self.html("<i class='fa fa-circle-o-notch fa-spin'></i>");
+        },
+        success: function(response) {
+          if (response.success) {
+              window.location.reload();
+          }
+        },
+        error: function (error) {
+          $self.html(text);
+        }
+      })
+    });
+
     var $cloneSource = $("#clone-source"),
-        $cloneDestination = $("#clone-destination"),
-        $levelCloneBtn = $("#level-clone-submit"),
-        $levelCloneModal = $("#level-clone-modal");
+      $cloneDestination = $("#clone-destination"),
+      $levelCloneBtn = $("#level-clone-submit"),
+      $levelCloneModal = $("#level-clone-modal");
 
     $(".level-clone-btn").on('click', function () {
       var self = this,
-          $self = $(self),
-          levelCloneSource = $self.attr("data-source-levels"),
-          levelCloneDestination = JSON.parse($self.attr("data-destination-levels")),
-          optionSelect = $levelCloneBtn.attr('data-text');
-        
-      // var option = "<option>"+ optionSelect +"</option>";
-      
-      var cloneSourceHTML = "<option value='"+ levelCloneSource +"'>"+ levelCloneSource +"</option>";
+        $self = $(self),
+        levelCloneSource = $self.attr("data-source-levels"),
+        levelCloneDestination = JSON.parse($self.attr("data-destination-levels")),
+        optionSelect = $levelCloneBtn.attr('data-text');
 
-      var destinationSourceHTML = levelCloneDestination.reduce(function(acc, current) {
-        return acc + "<option value='"+ current +"'>"+ current +"</option>";
+      // var option = "<option>"+ optionSelect +"</option>";
+
+      var cloneSourceHTML = "<option value='" + levelCloneSource + "'>" + levelCloneSource + "</option>";
+
+      var destinationSourceHTML = levelCloneDestination.reduce(function (acc, current) {
+        return acc + "<option value='" + current + "'>" + current + "</option>";
       }, '');
 
       $cloneSource.html(cloneSourceHTML);
@@ -53,10 +79,10 @@ requirejs(
       $levelCloneModal.modal('show');
     });
 
-    $("#level-clone-submit").on('click', function(){
+    $("#level-clone-submit").on('click', function () {
       var self = this,
-          $self = $(this),
-          data = JSON.parse($self.attr("data-csrf"));
+        $self = $(this),
+        data = JSON.parse($self.attr("data-csrf"));
 
       data.reference_level = $cloneSource.val();
       data.destination_levels = $cloneDestination.val();
@@ -118,7 +144,7 @@ requirejs(
             // $self.attr("disabled", "disabled");
           }
         },
-        error: function(error) {
+        error: function (error) {
           window.location.reload();
           $self.find(".fa").remove();
         }

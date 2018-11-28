@@ -22,9 +22,9 @@
                             <!-- Thumb Wrapper -->
                             <div class="thumb-view-wrapper thumb-view-contain thumb-view-p5 img-viewbdr-radius">
                                 <?php if (!empty($company->company_image)) {?>
-                                <img class="thumb-absolute" src="<?php echo $company->company_image ?>" alt="Company Logo" />
+                                <img class="thumb-absolute" src="<?php echo $company->company_image ?>" alt="<?php echo $company->company_name ?>" />
                                 <?php } else { ?>
-                                <div class="thumb-absolute image-blank"></div>
+                                <img class="thumb-absolute" src="<?php echo base_url('public/images/logo.png') ?>" alt="<?php echo $company->company_name ?>" />
                                 <?php } ?>
                             </div>
                             <!-- //Thumb Wrapper -->

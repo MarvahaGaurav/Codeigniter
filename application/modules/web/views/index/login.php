@@ -44,7 +44,7 @@
                 </div>
                 <div class="form-group form-btn-wrap">
                     <button id="loginsubmitbtn" class="form-btn save" type="submit">Login</button>
-                    <span class="continueasguest">Or continue as a <a href="<?php echo base_url(); ?>web/home">Guest</a></span>
+                    <span class="continueasguest">Or continue as a <a href="<?php echo base_url(); ?>">Guest</a></span>
                 </div>
                 <?php echo form_close(); ?>
             </div>

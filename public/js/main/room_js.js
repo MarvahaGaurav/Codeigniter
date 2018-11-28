@@ -57,13 +57,31 @@ requirejs(
                 method: "POST",
                 data: addFormData,
                 dataType: "json",
+                beforeSend: function () {
+                    $roomLuminariesX.attr("placeholder", "loading...");
+                    $roomLuminariesX.attr("disabled", "disabled");
+                    $roomLuminariesX.attr("value", "");
+                    $roomLuminariesY.attr("placeholder", "loading...");
+                    $roomLuminariesY.attr("disabled", "disabled");
+                    $roomLuminariesY.attr("value", "");
+                },
                 success: function (response) {
+                    $roomLuminariesX.attr("placeholder", "");
+                    $roomLuminariesX.removeAttr("disabled");
+                    $roomLuminariesY.attr("placeholder", "");
+                    $roomLuminariesY.removeAttr("disabled");
                     if (response.success) {
                         $roomLuminariesX.val(response.data.luminaireCountInX);
                         $roomLuminariesY.val(response.data.luminaireCountInY);
                         $xyTotal.val(response.data.luminaireCount);
                         $luxValues.val((response.data.illuminance));
                     }
+                },
+                error: function(error) {
+                    $roomLuminariesX.attr("placeholder", "");
+                    $roomLuminariesX.removeAttr("disabled");
+                    $roomLuminariesY.attr("placeholder", "");
+                    $roomLuminariesY.removeAttr("disabled");
                 }
             });
         }
@@ -100,13 +118,31 @@ requirejs(
                     method: "POST",
                     data: formData,
                     dataType: "json",
+                    beforeSend: function () {
+                        $roomLuminariesX.attr("value", "");
+                        $roomLuminariesX.attr("placeholder", "loading...");
+                        $roomLuminariesX.attr("disabled", "disabled");
+                        $roomLuminariesY.attr("value", "");
+                        $roomLuminariesY.attr("placeholder", "loading...");
+                        $roomLuminariesY.attr("disabled", "disabled");
+                    },
                     success: function (response) {
+                        $roomLuminariesX.attr("placeholder", "");
+                        $roomLuminariesX.removeAttr("disabled");
+                        $roomLuminariesY.attr("placeholder", "");
+                        $roomLuminariesY.removeAttr("disabled");
                         if (response.success) {
                             $roomLuminariesX.val(response.data.luminaireCountInX);
                             $roomLuminariesY.val(response.data.luminaireCountInY);
                             $xyTotal.val(response.data.luminaireCount);
                             $luxValues.val((response.data.illuminance));
                         }
+                    },
+                    error: function(error) {
+                        $roomLuminariesX.attr("placeholder", "");
+                        $roomLuminariesX.removeAttr("disabled");
+                        $roomLuminariesY.attr("placeholder", "");
+                        $roomLuminariesY.removeAttr("disabled");
                     }
                 });
             }

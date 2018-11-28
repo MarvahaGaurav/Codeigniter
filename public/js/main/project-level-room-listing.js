@@ -49,14 +49,19 @@ requirejs(
       $projectRoomIdField = $("#project-room-id"),
       $targetHandler = $("#target-handler"),
       $subTotal = $("#subtotal"),
-      $total = $("#total");
+      $total = $("#total"),
+      $modalPirceText = $(".modal-price-text");
 
     $(".installer-add-price").on("click", function () {
       var self = this,
         $self = $(self),
         priceData = $self.attr("data-room-price"),
         projectRoomId = $self.attr("data-project-room-id"),
-        targetKey = $self.attr("data-target-value");
+        targetKey = $self.attr("data-target-value"),
+        modalText = $self.attr('data-modal-text'),
+        action = $self.attr('data-action');
+
+      $modalPirceText.html(modalText);
 
       $projectRoomIdField.val(projectRoomId);
       $targetHandler.attr("data-target", "#add-price-" + targetKey);
@@ -107,6 +112,7 @@ requirejs(
             $self.find(".fa").remove();
             $self.removeAttr("disabled");
             if (response.success) {
+              window.location.reload();
               displaySuccessMessage(response.msg);
               $(target).attr("data-room-price", JSON.stringify(response.data));
               $("#add-price-modal").modal('hide');
@@ -121,10 +127,39 @@ requirejs(
           }
 
         });
-
-
       }
     });
+
+    $(".change-room-count").on('click', function () {
+      var self = this,
+        $self = $(self),
+        url = $self.attr("data-url")
+      data = JSON.parse($self.attr("data-json"));
+
+      var html = $self.html();
+      $.ajax({
+        url: url,
+        data: data,
+        dataType: 'json',
+        method: "POST",
+        beforeSend: function () {
+          $self.html("<i class='fa fa-circle-o-notch fa-spin' aria-hidden='true'></i>");
+        },
+        success: function (response) {
+          if (response.success) {
+            $self.html(html);
+            $("#room-count").val(response.count);
+          } else {
+            $self.html(html);
+            displayErrorMessage(response.error);
+          }
+        }, error: function (error) {
+          $self.html(html);
+          displayErrorMessage('error 500');
+        }
+      });
+    });
+
     $("#mark-as-done-btn").on("click", function () {
       var self = this,
         $self = $(self),

@@ -23,7 +23,8 @@
             <h3 class="pull-left">Room List</h3>
             <?php if (
                 (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && empty($quotationRequest)) ||
-                (!in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true))
+                (in_array((int)$userInfo['user_type'], [INSTALLER], true) && !(bool)$hasAddedFinalPrice) ||
+                (in_array((int)$userInfo['user_type'], [WHOLESALER, ELECTRICAL_PLANNER], true))
             ) { ?>
             <div class="button-wrapper-two pull-right">
                 <a href="<?php echo base_url("home/projects/" . $projectId . "/levels/{$level}/rooms/applications"); ?>" class="custom-btn btn-width save">
@@ -40,10 +41,10 @@
                 <thead>
                     <tr>
                         <th>Room Type</th>
-                        <th>Room Dimension</th>
+                        <th class="text-center">Room Dimension</th>
+                        <th class="text-center">No. of Rooms</th>
                         <th class="text-center">No. of Products</th>
                         <th class="text-center">Products</th>
-                        <th>Quick Calc</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -58,32 +59,61 @@
                         <td class="text-nowrap text-center">
                             <!-- Change the `data-field` of buttons and `name` of input field's for multiple plus minus buttons-->
                             <div class="input-group plus-minus-input">
-                                <input class="input-group-field input-square-space" type="number" name="quantity" value="<?php echo count($room['products']) ?>">
+                                <div class="input-group-button btn-circle">
+                                    <?php if (
+                                        (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && empty($quotationRequest)) ||
+                                        (in_array((int)$userInfo['user_type'], [INSTALLER], true) && !(bool)$hasAddedFinalPrice) ||
+                                        (in_array((int)$userInfo['user_type'], [WHOLESALER, ELECTRICAL_PLANNER], true))
+                                    ) { ?>
+                                    <button type="button" id="decrement-room-count" data-url="<?php echo base_url('xhttp/projects/rooms/decrement-count') ?>" data-json='<?php echo $room['room_count_data'] ?>' class="button change-room-count hollow circle" data-quantity="minus" data-field="quantity">
+                                        <i class="fa fa-minus" aria-hidden="true"></i>
+                                    </button>
+                                    <?php } ?>
+                                </div>
+                                <input class="input-group-field input-circle-space" id="room-count" type="number" name="quantity" value="<?php echo $room['count'] ?>" disabled>
+                                <div class="input-group-button btn-circle">
+                                    <?php if (
+                                        (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && empty($quotationRequest)) ||
+                                        (in_array((int)$userInfo['user_type'], [INSTALLER], true) && !(bool)$hasAddedFinalPrice) ||
+                                        (in_array((int)$userInfo['user_type'], [WHOLESALER, ELECTRICAL_PLANNER], true))
+                                    ) { ?>
+                                    <button type="button" id="increment-room-count" data-url="<?php echo base_url('xhttp/projects/rooms/increment-count') ?>" data-json='<?php echo $room['room_count_data'] ?>' class="button change-room-count hollow circle" data-quantity="plus" data-field="quantity">
+                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                    </button>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="text-nowrap text-center">
+                            <!-- Change the `data-field` of buttons and `name` of input field's for multiple plus minus buttons-->
+                            <div class="input-group plus-minus-input">
+                                <input class="input-group-field input-square-space" type="number" disabled="disabled" name="quantity" value="<?php echo count($room['products']) ?>">
+                                <?php if (
+                                    (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && empty($quotationRequest)) ||
+                                    (in_array((int)$userInfo['user_type'], [INSTALLER], true) && !(bool)$hasAddedFinalPrice) ||
+                                    (in_array((int)$userInfo['user_type'], [WHOLESALER, ELECTRICAL_PLANNER], true))
+                                ) { ?>
                                 <div class="input-group-button btn-square">
                                     <button type="button" class="button hollow square redirectable" data-redirect-to="<?php echo base_url('home/projects/' . $projectId . '/levels/' . $level . '/rooms/' . encryptDecrypt($room['room_id']) . '/project-rooms/' . encryptDecrypt($room['project_room_id']) . '/accessory-products') ?>" data-quantity="oplus" data-field="quantity">
                                         <i class="fa fa-plus" aria-hidden="true"></i>
                                     </button>
                                 </div>
+                                <?php } ?>
                             </div>
                         </td>
                         <td class="op-semibold">
-                            <a href="javascript:void(0)" class="tb-view-list" title="View List">View List</a>
-                        </td>
-                        <td class="op-semibold text-center">
-                            <a href="<?php echo base_url("/home/projects/view-result/" . encryptDecrypt($room['project_room_id'])) ?>" class="tb-view-list" title="View Results">View Results</a>
+                            <a href="<?php echo base_url('home/projects/' . $projectId . '/levels/' . $level . '/rooms/' . encryptDecrypt($room['room_id']) . '/project-rooms/' . encryptDecrypt($room['project_room_id']) . '/selected-products') ?>" class="tb-view-list" title="View List">View List</a>
                         </td>
                         <td class="op-semibold text-center">
                         <?php if (
                             (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && empty($quotationRequest)) ||
-                            (!in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true))
+                            (in_array((int)$userInfo['user_type'], [INSTALLER], true) && !(bool)$hasAddedFinalPrice) ||
+                            (in_array((int)$userInfo['user_type'], [WHOLESALER, ELECTRICAL_PLANNER], true))
                         ) { ?>
                             <a href="<?php echo base_url("/home/projects/{$projectId}/levels/{$level}/rooms/" . encryptDecrypt($room['project_room_id']) . "/edit") ?>" class="project-action" title="Edit"><i class="fa fa-pencil"></i></a>
                         <?php } else { ?>
                             <div class="text-center">--</div>
                         <?php } ?>
-                        <?php if (in_array((int)$userInfo['user_type'], [INSTALLER], true)) { ?>
-                            <a href="javascript:void(0)" id="add-price-<?php echo $key ?>" data-target-value="<?php echo $key ?>" data-room-price='<?php echo $room['price_data'] ?>'' class="project-action installer-add-price" title="<?php echo $this->lang->line('add_price') ?>" data-project-room-id="<?php echo encryptDecrypt($room['project_room_id']) ?>"><i class="fa fa-money"></i></a>
-                        <?php }?>
                         </td>
                     </tr>
                     <?php endforeach ?>
@@ -107,6 +137,11 @@
         <?php if (!empty($rooms)) { ?>
         <div class="section-title clearfix">
             <div class="button-wrapper">
+                <?php if (!empty($rooms)) {?>
+                <button type="button" title="<?php echo !empty($rooms)?$this->lang->line("Evaluate_btn_txt"):"" ?>" class="custom-btn btn-margin btn-width save redirectable" id="evaluate" data-redirect-to="<?php echo base_url('home/projects/' . $projectId . '/levels/'. $level .'/rooms/results') ?>" >
+                    <?php echo $this->lang->line("Evaluate_btn_txt") ?>
+                </button>
+                <?php } ?>
                 <button type="button" <?php echo empty($rooms)?"disabled":"" ?> title="<?php echo empty($rooms)?$this->lang->line("add_rooms_to_mark_as_done"):"" ?>" data-level-data='<?php echo $levelData ?>' data-redirect-to="<?php echo base_url('/home/projects/' . $projectId . '/levels') ?>" class="custom-btn btn-margin btn-width save" id="mark-as-done-btn">
                     Mark As Done
                 </button>

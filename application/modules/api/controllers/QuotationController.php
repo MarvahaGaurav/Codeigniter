@@ -606,7 +606,7 @@ class QuotationController extends BaseController
             $this->validationRun();
 
             $this->requestData = trim_input_parameters($this->requestData);
-
+            
             $roomQuotationData = $this->UtilModel->selectQuery('id', 'project_room_quotations', [
                 'where' => ['id' => $this->requestData['room_quotation_id']],
                 'single_row' => true

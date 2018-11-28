@@ -42,7 +42,7 @@ class Company_model extends CI_Model
         $this->db->join('city_list as cyl', 'cyl.id=c.city', 'LEFT');
         $this->db->join('ai_user as user', 'user.company_id=c.company_id AND is_owner=2', 'left');
         
-        $this->db->where(['owner_type !=' => '1', 'c.status' => '1']);
+        $this->db->where(['is_owner !=' => '1', 'c.status' => '1']);
         if (!empty($params['limit']) && !empty($params['offset'])) {
             $this->db->limit($params['limit'], $params['offset']);
         } elseif (isset($params['paginate']) && (bool)$params['paginate']) {
@@ -55,8 +55,9 @@ class Company_model extends CI_Model
             $this->db->like('c.company_name', $params['search']);
         }
         if (isset($params['company_type']) && in_array((int)$params['company_type'], [INSTALLER, WHOLESALER, ARCHITECT, ELECTRICAL_PLANNER], true)) {
-            $this->db->where('c.owner_type', $params['company_type']);
+            $this->db->where('user.user_type', $params['company_type']);
         }
+
         $query = $this->db->get();
     //    echo $this->db->last_query();die;
         $resArr = [];

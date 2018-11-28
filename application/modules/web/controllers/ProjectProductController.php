@@ -2,9 +2,12 @@
 defined("BASEPATH") or exit("No direct script access allowed");
 
 require_once "BaseController.php";
+require_once APPPATH . "/libraries/Traits/ProjectRequestCheck.php";
+require_once APPPATH . "/libraries/Traits/TechnicianChargesCheck.php";
 
 class ProjectProductController extends BaseController
 {
+    use ProjectRequestCheck, TechnicianChargesCheck;
     /**
      * Post Request Data
      *
@@ -259,19 +262,18 @@ class ProjectProductController extends BaseController
             if (empty($levelCheck)) {
                 show404($this->lang->line('bad_request'), base_url(''));
             }
-            
+
             $projectRoom = $this->UtilModel->selectQuery('id, room_id', 'project_rooms', [
                 'where' => ['id' => $projectRoomId], 'single_row' => true
             ]);
-                
+
             if (empty($projectRoom)) {
                 show404($this->lang->line('bad_request'), base_url(''));
             }
 
             if ((in_array((int)$this->userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) &&
                 (int)$this->userInfo['user_id'] !== (int)$projectData['user_id']) || (in_array((int)$this->userInfo['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], true) &&
-                (int)$this->userInfo['company_id'] !== (int)$projectData['company_id'])) 
-            {
+                (int)$this->userInfo['company_id'] !== (int)$projectData['company_id'])) {
                 show404($this->lang->line('forbidden_action'), base_url(''));
             }
 
@@ -338,7 +340,7 @@ class ProjectProductController extends BaseController
             $levelCheck = $this->UtilModel->selectQuery('id', 'project_levels', [
                 'where' => ['project_id' => $projectId, 'level' => $level], 'single_row' => true
             ]);
-            
+
             if (empty($projectData)) {
                 show404($this->lang->line('project_not_found'), base_url(''));
             }
@@ -350,7 +352,7 @@ class ProjectProductController extends BaseController
             $projectRoom = $this->UtilModel->selectQuery('id, room_id', 'project_rooms', [
                 'where' => ['id' => $projectRoomId], 'single_row' => true
             ]);
-                
+
             if (empty($projectRoom)) {
                 show404($this->lang->line('bad_request'), base_url(''));
             }
@@ -391,7 +393,7 @@ class ProjectProductController extends BaseController
             }
 
             $this->data['js'] = "article_edit";
-            
+
             $this->data['project_room_id'] = 1;
             $this->data['product'] = $productData;
             $this->data['product_id'] = $productId;
@@ -454,7 +456,7 @@ class ProjectProductController extends BaseController
             $levelCheck = $this->UtilModel->selectQuery('id', 'project_levels', [
                 'where' => ['project_id' => $projectId, 'level' => $level], 'single_row' => true
             ]);
-            
+
             if (empty($projectData)) {
                 show404($this->lang->line('project_not_found'), base_url(''));
             }
@@ -466,7 +468,7 @@ class ProjectProductController extends BaseController
             $projectRoom = $this->UtilModel->selectQuery('id, room_id', 'project_rooms', [
                 'where' => ['id' => $projectRoomId], 'single_row' => true
             ]);
-                
+
             if (empty($projectRoom)) {
                 show404($this->lang->line('bad_request'), base_url(''));
             }
@@ -477,8 +479,16 @@ class ProjectProductController extends BaseController
                 show404($this->lang->line('forbidden_action'), base_url(''));
             }
 
+            if (in_array((int)$this->userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true)) {
+                $this->handleRequestCheck($projectId, 'web');
+            }
+
+            if (in_array((int)$this->userInfo['user_type'], [INSTALLER], true)) {
+                $this->handleTechnicianChargesCheck($projectId, 'web');
+            }
+
             $params['room_id'] = $roomId;
-            
+
             $data = $this->Product->roomProducts($params);
 
             if (isset($projectRoomId) && !empty($projectRoomId)) {
@@ -555,7 +565,7 @@ class ProjectProductController extends BaseController
             $levelCheck = $this->UtilModel->selectQuery('id', 'project_levels', [
                 'where' => ['project_id' => $projectId, 'level' => $level], 'single_row' => true
             ]);
-            
+
             if (empty($projectData)) {
                 show404($this->lang->line('project_not_found'), base_url(''));
             }
@@ -567,7 +577,7 @@ class ProjectProductController extends BaseController
             $projectRoom = $this->UtilModel->selectQuery('id, room_id', 'project_rooms', [
                 'where' => ['id' => $projectRoomId], 'single_row' => true
             ]);
-                
+
             if (empty($projectRoom)) {
                 show404($this->lang->line('bad_request'), base_url(''));
             }
@@ -576,6 +586,14 @@ class ProjectProductController extends BaseController
                 (int)$this->userInfo['user_id'] !== (int)$projectData['user_id']) || (in_array((int)$this->userInfo['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], true) &&
                 (int)$this->userInfo['company_id'] !== (int)$projectData['company_id'])) {
                 show404($this->lang->line('forbidden_action'), base_url(''));
+            }
+
+            if (in_array((int)$this->userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true)) {
+                $this->handleRequestCheck($projectId, 'web');
+            }
+
+            if (in_array((int)$this->userInfo['user_type'], [INSTALLER], true)) {
+                $this->handleTechnicianChargesCheck($projectId, 'web');
             }
             
             //Loading Models
@@ -623,14 +641,15 @@ class ProjectProductController extends BaseController
                     array_push($classifiedProductArticles[$article['colour_temperature']], $article);
                 }
             }
+
             $projectRoomProducts = $this->UtilModel->selectQuery('*', 'project_room_products', [
-                'where' => ['project_room_id' => $projectRoomId, 'type' => PROJECT_ROOM_ACCESSORY_PRODUCT] 
+                'where' => ['project_room_id' => $projectRoomId, 'type' => PROJECT_ROOM_ACCESSORY_PRODUCT]
             ]);
 
             $selectedArticles = array_filter(array_column($projectRoomProducts, 'article_code'));
 
             $this->data['js'] = "accessory_article";
-            
+
             $this->data['product'] = $productData;
             $this->data['product_id'] = $productId;
             $this->data['room_id'] = encryptDecrypt($projectRoom['room_id']);
@@ -645,7 +664,7 @@ class ProjectProductController extends BaseController
             $this->data['articles'] = $classifiedProductArticles;
 
             $projectRoomProducts = $this->UtilModel->selectQuery('*', 'project_room_products', [
-                'where' => ['project_room_id' => $projectRoomId, 'type' => PROJECT_ROOM_ACCESSORY_PRODUCT] 
+                'where' => ['project_room_id' => $projectRoomId, 'type' => PROJECT_ROOM_ACCESSORY_PRODUCT]
             ]);
 
             $this->data['selected_articles'] = $selectedArticles;
@@ -688,7 +707,7 @@ class ProjectProductController extends BaseController
 
             $permissions = $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['project_view', 'project_edit', 'project_add'], base_url('home/applications'));
 
-            $this->load->model(['UtilModel', 'ProjectRooms', 'Product']);
+            $this->load->model(['UtilModel', 'ProjectRooms', 'ProjectRoomProducts']);
 
             $projectData = $this->UtilModel->selectQuery('*', 'projects', [
                 'where' => ['id' => $projectId, 'language_code' => $languageCode], 'single_row' => true
@@ -697,7 +716,7 @@ class ProjectProductController extends BaseController
             $levelCheck = $this->UtilModel->selectQuery('id', 'project_levels', [
                 'where' => ['project_id' => $projectId, 'level' => $level], 'single_row' => true
             ]);
-            
+
             if (empty($projectData)) {
                 show404($this->lang->line('project_not_found'), base_url(''));
             }
@@ -709,7 +728,7 @@ class ProjectProductController extends BaseController
             $projectRoom = $this->UtilModel->selectQuery('id, room_id', 'project_rooms', [
                 'where' => ['id' => $projectRoomId], 'single_row' => true
             ]);
-                
+
             if (empty($projectRoom)) {
                 show404($this->lang->line('bad_request'), base_url(''));
             }
@@ -720,14 +739,52 @@ class ProjectProductController extends BaseController
                 show404($this->lang->line('forbidden_action'), base_url(''));
             }
 
-            
-            $this->data['products'] = $data;
+            $get = $this->input->get();
+
+            $params['project_room_id'] = $projectRoomId;
+
+            $this->data['search'] = '';
+            if (isset($get['search']) && strlen(trim($get['search'])) > 0) {
+                $params['search'] = trim($get['search']);
+                $this->data['search'] = $params['search'];
+            }
+
+            $data = $this->ProjectRoomProducts->selectedProducts($params);
+
+            $params['room_id'] = $roomId;
+
             $this->data['projectId'] = encryptDecrypt($projectId);
             $this->data['roomId'] = encryptDecrypt($roomId);
             $this->data['projectRoomId'] = encryptDecrypt($projectRoomId);
             $this->data['level'] = $level;
 
-            website_view('projects/accessory_products', $this->data);
+            $data = array_map(function ($product) {
+                $product['remove_data'] = json_encode([
+                    'product_id' => encryptDecrypt($product['product_id']),
+                    'article_code' => $product['articlecode'],
+                    'project_room_id' => $this->data['projectRoomId'],
+                    $this->data["csrfName"] = $this->security->get_csrf_token_name() =>
+                        $this->data["csrfToken"] = $this->security->get_csrf_hash()
+                ]);
+                return $product;
+            }, $data);
+
+            $this->data['products'] = $data;
+
+            $this->data['quotationRequest'] = [];
+            $this->data['hasAddedFinalPrice'] = false;
+            if (in_array((int)$this->userInfo['user_type'], [INSTALLER], true)) {
+                $this->load->helper(['utility']);
+                $this->data['hasAddedFinalPrice'] = $this->hasTechnicianAddedFinalPrice($projectId);
+            }
+            
+            if (in_array((int)$this->userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true)) {
+                $this->data['quotationRequest'] = $this->UtilModel->selectQuery('id', 'project_requests', [
+                    'where' => ['project_id' => $projectId]
+                ]);
+            }
+
+            website_view('projects/project_selected_products', $this->data);
         } catch (\Exception $error) {
             show404($this->lang->line('internal_server_error'), base_url(''));
         }

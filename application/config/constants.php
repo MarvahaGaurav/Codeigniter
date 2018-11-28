@@ -270,6 +270,7 @@ defined("EMPLOYEE_REQUEST_REJECTED") or define("EMPLOYEE_REQUEST_REJECTED", 3);
 defined("EMPLOYEE_REQUEST_CANCELLED") or define("EMPLOYEE_REQUEST_CANCELLED", 4);
 defined("RECORDS_PER_PAGE") or define("RECORDS_PER_PAGE", 10);
 defined("API_RECORDS_PER_PAGE") or define("API_RECORDS_PER_PAGE", 10);
+defined("API_RECORDS_PER_PAGE_L") or define("API_RECORDS_PER_PAGE_L", 20);
 
 /*
 | Mounting Type constants

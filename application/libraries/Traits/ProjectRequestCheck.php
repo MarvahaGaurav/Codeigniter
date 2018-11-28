@@ -33,7 +33,7 @@ trait ProjectRequestCheck
             } elseif ($for === 'xhr') {
                 json_dump([
                     'success' => false,
-                    'msg' => $this->lang->line('forbidden_action')
+                    'error' => $this->lang->line('forbidden_action')
                 ]);
             }
         }

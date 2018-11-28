@@ -15,3 +15,7 @@ $route['xhttp/projects/clone'] = 'ProjectController/projectClone';
 $route['xhttp/projects/levels/clone'] = 'ProjectLevelController/levelClone';
 $route['xhttp/quick-calc/suggestions'] = 'QuickCalController/quickCalcSuggestion';
 $route['xhttp/projects/rooms/add-price'] = 'ProjectRoomController/addRoomQuotation';
+$route['xhttp/projects/article/remove'] = 'ProjectProductController/removeProductArticle';
+$route['xhttp/projects/installer/price'] = 'ProjectPriceController/installerFinalPrice';
+$route['xhttp/projects/rooms/decrement-count'] = 'ProjectRoomController/decrementRoomCount';
+$route['xhttp/projects/rooms/increment-count'] = 'ProjectRoomController/incrementRoomCount';

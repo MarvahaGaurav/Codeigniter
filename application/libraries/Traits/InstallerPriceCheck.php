@@ -14,6 +14,10 @@ trait InstallerPriceCheck
         $data = array_filter($results, function ($result) {
             return empty($result['project_room_quotation']) || is_null($result['project_room_quotation']);
         });
+
+        if (empty($results)) {
+            return false;
+        }
         
         if (!empty($data)) {
             return false;

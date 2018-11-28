@@ -12,6 +12,23 @@ trait TechnicianChargesCheck
     }
 
     /**
+     * Check whether technician has added final price for a given project
+     *
+     * @param int $projectId
+     * @return boolean
+     */
+    private function hasTechnicianAddedFinalPrice($projectId) 
+    {
+        $requestData = $this->technicianChargeCheck($projectId);
+
+        if (empty($requestData)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Handles project technician charges check for web and api
      *
      * @param integer $projectId
@@ -33,7 +50,7 @@ trait TechnicianChargesCheck
             } elseif ($for === 'xhr') {
                 json_dump([
                     'success' => false,
-                    'msg' => $this->lang->line('forbidden_action')
+                    'error' => $this->lang->line('forbidden_action')
                 ]);
             }
         }

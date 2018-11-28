@@ -56,7 +56,7 @@ class ProjectRooms extends BaseModel
      */
     public function get($params)
     {
-        $this->db->select("id as project_room_id, room_id, level, project_id, name, length, width, height,
+        $this->db->select("id as project_room_id, room_id, level, project_id, name, length, width, height, count,
             maintainance_factor, shape, working_plane_height, rho_wall, rho_ceiling, reference_name, reference_number,
             rho_floor, suspension_height, lux_value, luminaries_count_x, luminaries_count_y,
             created_at", false)
@@ -121,7 +121,7 @@ class ProjectRooms extends BaseModel
      */
     public function projectAndRoomData($params)
     {
-        $this->db->select("pr.id as project_room_id, pr.project_id, projects.user_id, projects.company_id")
+        $this->db->select("pr.id as project_room_id, pr.count, pr.project_id, projects.user_id, projects.company_id")
             ->from("project_rooms as pr")
             ->join("projects", "projects.id=pr.project_id");
 

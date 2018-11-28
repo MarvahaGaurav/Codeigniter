@@ -66,6 +66,31 @@ class ProjectRoomProducts extends BaseModel
     }
 
     /**
+     * Selected products
+     *
+     * @return array
+     */
+    public function selectedProducts($params)
+    {
+        $this->db->select('ps.image, ps.product_id, ps.articlecode, ps.title, uld,
+        ps.type, driver, length, width, height, products.title as product_name, prp.type as product_type')
+            ->from('project_room_products as prp')
+            ->join("products", "products.product_id=prp.product_id")
+            ->join('product_specifications as ps', 'ps.product_id=prp.product_id AND ps.articlecode=prp.article_code')
+            ->where('prp.project_room_id', $params['project_room_id']);
+
+        if (isset($params['search'])) {
+            $this->db->where("(products.title LIKE '%{$params['search']}%' OR ps.title LIKE '%{$params['search']}%')");
+        }
+
+        $query = $this->db->get();
+
+        $result = $query->result_array();
+
+        return $result;
+    }
+
+    /**
      * fetch all project rooms products
      *
      * @param array $params
@@ -169,6 +194,16 @@ class ProjectRoomProducts extends BaseModel
         $result = $query->result_array();
 
         return $result;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    public function mountingTypes()
+    {
+
     }
 
     /**

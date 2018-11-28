@@ -15,7 +15,7 @@
 
                 <!-- technician list search -->
                 <div class="project-list-wrapper technician-list clearfix">
-                    <h2 class="project-listtxt">Electrician Companies</h2>
+                    <h2 class="project-listtxt"></h2>
                     <div class="search-wrapper search-wrapper-width-2 search-wrp-992 fawe-icon-position">
                         <span class="fawe-icon fawe-icon-position-right close-ico">
                             <i class="fa fa-times"></i>
@@ -46,9 +46,9 @@
                                     <div class="thumb-like-dislike">
                                         <div class="thumb-view-wrapper thumb-view-contain thumb-view-p4 img-viewbdr-radius">
                                             <?php if (!empty($company->company_image)) {?>
-                                            <img class="thumb-absolute" src="<?php echo $company->company_image ?>" alt="Company Logo" />
+                                            <img class="thumb-absolute" src="<?php echo $company->company_image ?>" alt="<?php echo $company->company_name ?>" />
                                             <?php } else { ?>
-                                            <div class="thumb-absolute image-blank"></div>
+                                            <img class="thumb-absolute" src="<?php echo base_url('public/images/logo.png') ?>" alt="<?php echo $company->company_name ?>" />
                                             <?php } ?>
                                         </div>
                                         <?php if (isset($userInfo, $userInfo['user_id']) && (int)$userInfo['company_id'] !== (int)$company->company_id) { ?>
