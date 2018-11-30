@@ -34,6 +34,12 @@ class UserController extends BaseController
      *     type="string"
      *   ),
      * @SWG\Parameter(
+     *     name="company_discount",
+     *     in="formData",
+     *     description="Company discount",
+     *     type="string"
+     *   ),
+     * @SWG\Parameter(
      *     name="language",
      *     in="formData",
      *     description="valid languages as mentioned at the beginning of the docs",

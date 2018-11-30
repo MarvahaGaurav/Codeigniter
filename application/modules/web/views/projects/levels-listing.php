@@ -8,6 +8,11 @@
                 <li><a href="<?php echo base_url('home/projects/' . $projectId) ?>">Details</a></li>
                 <li class="active">Levels</li>
             </ul>
+
+            <div class="page-heading">
+                <h1 class="page-title">Levels</h1>
+                <p class="prj-description"></p>
+            </div>
             <!-- //breadcrumb -->
             <!-- <div class="request-quotation-btn-wrapper">
                 <button class="custom-btn btn-width save" type="button">Request Quotation</button>
@@ -27,10 +32,13 @@
                             <?php } else if ((int)$level['status'] === 1) {?>
                             <li class="level-done-li" title="<?php echo $this->lang->line('level_marked_done') ?>"><i class="fa fa-check-circle level-done-check"></i></li>
                             <?php } else if ((bool)$level['active']) { ?>
-                            <li class="level-done-li" title="<?php echo $this->lang->line('add_rooms') ?>"><i class="fa fa-chevron-circle-right level-done-check"></i></li>
+                            <li class="level-done-li" title="<?php echo $this->lang->line('add_rooms') ?>"><i class="fa fa-plus-circle level-done-check"></i></li>
                             <?php } ?>
-                            <?php if (((in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && empty($quotationRequest)) || in_array((int)$userInfo['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], true))
-                            &&((bool)$level['active'] && count($active_levels) > 1 && (int)$level['room_count'] > 0)) { ?>
+                            <?php if (((in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && empty($quotationRequest)) ||
+                                (in_array((int)$userInfo['user_type'], [INSTALLER], true) && !(bool)$hasAddedFinalPrice) ||
+                                in_array((int)$userInfo['user_type'], [WHOLESALER, ELECTRICAL_PLANNER], true)) &&
+                                ((bool)$level['active'] && count($active_levels) > 1 && (int)$level['room_count'] > 0)
+                            ) { ?>
                             <li><button type="button" data-source-levels="<?php echo $level['level'] ?>" data-destination-levels="<?php echo $level['cloneable_destinations'] ?>" class="level-btn level-clone-btn"><?php echo $this->lang->line('clone') ?></button></li>
                             <?php } ?>
                             <!-- <li> <button class="level-btn"> + Add </button></li> -->

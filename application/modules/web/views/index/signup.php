@@ -98,7 +98,7 @@
 
                     <div class="form-group-inline clearfix">
                         <div class="form-group">
-                            <input type="text" class="form-control" name="fullname" placeholder="Full Name" value="<?php echo set_value('fullname') ?>" autofocus="" />
+                            <input type="text" class="form-control alphanumspaces-only-field" name="fullname" placeholder="Full Name" value="<?php echo set_value('fullname') ?>" autofocus="" />
                             <?php echo form_error('fullname', '<label for="fullname" class="error">', "</label>"); ?>
                         </div>
                         <div class="form-group">
@@ -125,7 +125,7 @@
                                     <option value="<?php echo $country['calling_code'] ?>" <?php echo set_select('contact_number_code', $country['calling_code']) ?>><?php echo "+{$country['calling_code']}" ?></option>
                                 <?php } ?>
                             </select>
-                            <input type="number" maxlength="20" class="form-control contact-number-input" name="contact_number" value="<?php echo set_value('contact_number') ?>" placeholder="Contact Number" autofocus="" />
+                            <input type="text" maxlength="20" class="form-control contact-number-input number-only-field" name="contact_number" value="<?php echo set_value('contact_number') ?>" placeholder="Contact Number" autofocus="" />
                             <?php echo form_error('contact_number', '<label for="contact_number" class="error">', "</label>"); ?>
                         </div>
                         <div class="form-group">
@@ -134,7 +134,7 @@
                                     <option value="<?php echo $country['calling_code'] ?>" <?php echo set_select('alternate_contact_number_code', $country['calling_code']) ?>><?php echo "+{$country['calling_code']}" ?></option>
                                 <?php } ?>
                             </select>
-                            <input type="number" maxlength="20" class="form-control contact-number-input" name="alternate_contact_number" placeholder="Alternate Number" value="<?php echo set_value('alternate_contact_number') ?>"/>
+                            <input type="text" maxlength="20" class="form-control contact-number-input number-only-field" name="alternate_contact_number" placeholder="Alternate Number" value="<?php echo set_value('alternate_contact_number') ?>"/>
                             <?php echo form_error('alternate_contact_number', '<label for="alternate_contact_number" class="error">', "</label>"); ?>
                         </div>
                     </div>
@@ -163,7 +163,7 @@
                         </div>
                         <div class="form-group-inline clearfix">
                             <div class="form-group company-owner-wrapper <?php echo $isCompanyOwner ? "" : "concealable" ?>">
-                                <input type="text" value="<?php echo set_value('company_registration_number') ?>" id="company-registration-number" name="company_registration_number" class="form-control company-owner-field technician-fields" placeholder="Company Registration Number" <?php
+                                <input type="text" value="<?php echo set_value('company_registration_number') ?>" id="company-registration-number" name="company_registration_number" class="form-control alphanum-only-field company-owner-field technician-fields" placeholder="Company Registration Number" <?php
                                 echo $isCustomerUser || ! $isCompanyOwner ? "disabled" : ''
                                 ?>/>
                                        <?php
@@ -172,7 +172,7 @@
                             </div>
                             <div class="form-group" id="company-name-wrapper">
                                 <?php if ($isCompanyOwner) { ?>
-                                    <input type="text" value="<?php echo set_value('company_name') ?>" id="company-name" name="company_name" class="form-control technician-fields" placeholder="Company Name" <?php
+                                    <input type="text" value="<?php echo set_value('company_name') ?>" id="company-name" name="company_name" class="form-control alphanumspaces-only-field technician-fields" placeholder="Company Name" <?php
                                     echo $isCustomerUser ? "disabled" : ''
                                     ?>/>
                                            <?php echo form_error('company_name', '<label for="company_name" class="error">', "</label>"); ?>
@@ -195,7 +195,7 @@
                         </div>
                         <div class="form-group clearfix company-owner-wrapper <?php echo $isCompanyOwner ? "" : "concealable" ?>">
                             <div class="chooseFile">
-                                <input id="uploadfile" id="company-logo" name="company_logo" class="form-control company-owner-field technician-fields" placeholder="Choose File" <?php
+                                <input id="uploadfile" id="company-logo" name="company_logo" class="form-control company-owner-field technician-fields" placeholder="Choose Company Logo" <?php
                                 echo $isCustomerUser || ! $isCompanyOwner ? "disabled" : ''
                                 ?>/>
                                 <div class="uploadfile-wrap">
@@ -237,7 +237,7 @@
 
                     <div class="form-group-inline clearfix">
                         <div class="form-group no-margin">
-                            <input type="number" class="form-control" name="zipcode" placeholder="Zipcode" autofocus="" value="<?php echo set_value('zipcode') ?>"/>
+                            <input type="text" class="form-control number-only-field restrict-characters" data-restrict-to="10" name="zipcode" placeholder="Zipcode" autofocus="" value="<?php echo set_value('zipcode') ?>"/>
                             <?php echo form_error('zipcode', '<label for="zipcode" class="error">', "</label>"); ?>
                         </div>
                     </div>
@@ -274,10 +274,8 @@
                     <div class="modal-footer">
                         <div class="btn-group" >
                             <div class="btn-lists clearfix">
-                                <ul>
-                                    <li><button type="button" class="btn btn-default" id="crop_it" >Crop</button></li>
-                                    <li><button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button></li>
-                                </ul>
+                                <button type="button" class="btn btn-default" id="crop_it" >Crop</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                             </div>
                         </div>
                     </div>

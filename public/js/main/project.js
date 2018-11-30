@@ -42,15 +42,10 @@ requirejs(
     function ($) {
         var $otherProjectCount = $("#other-project-count");
 
-        $otherProjectCount.on('keypress', function () {
+        $otherProjectCount.on('keypress', function (e) {
             var self = this,
                 $self = $(this),
                 val = parseInt($self.val());
-
-            if (val < 12) {
-                $self.val('');
-                $self.val(11);
-            }
         });
 
         $("#increment-others").on("click", function () {

@@ -30,7 +30,7 @@
                             <div class="form-group">
                                 <label class="p-label">Inspiration Title</label>
                                 <div class="form-group-field">
-                                    <input type="text" name="title" maxlength="255" value="<?php echo set_value("title") ?>" placeholder="Tower Name">
+                                    <input type="text" name="title alphanumspaces-only-field" maxlength="255" value="<?php echo set_value("title") ?>" placeholder="Tower Name">
                                     <label class="error"><?php echo form_error("title") ?></label>
                                 </div>
                             </div>

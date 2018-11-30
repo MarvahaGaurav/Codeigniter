@@ -41,7 +41,7 @@
                 <thead>
                     <tr>
                         <th>Room Type</th>
-                        <th class="text-center">Room Dimension</th>
+                        <th class="">Room Dimension</th>
                         <th class="text-center">No. of Rooms</th>
                         <th class="text-center">No. of Products</th>
                         <th class="text-center">Products</th>
@@ -53,7 +53,7 @@
                     <tr>
                         <td class="td-thumb text-nowrap">
                             <img src="<?php echo base_url("public/images/placeholder/no-found-ico-2.svg")?>"  />
-                            <span class="td-room-type op-semibold"><?php echo $room['name'] ?></span>
+                            <span class="td-room-type op-semibold"><?php echo strlen($room['reference_name'])>0?$room['reference_name']:$room['name'] ?></span>
                         </td>
                         <td><?php echo "{$room['length']}M x {$room['width']}M x {$room['height']}M" ?></td>
                         <td class="text-nowrap text-center">
@@ -65,19 +65,19 @@
                                         (in_array((int)$userInfo['user_type'], [INSTALLER], true) && !(bool)$hasAddedFinalPrice) ||
                                         (in_array((int)$userInfo['user_type'], [WHOLESALER, ELECTRICAL_PLANNER], true))
                                     ) { ?>
-                                    <button type="button" id="decrement-room-count" data-url="<?php echo base_url('xhttp/projects/rooms/decrement-count') ?>" data-json='<?php echo $room['room_count_data'] ?>' class="button change-room-count hollow circle" data-quantity="minus" data-field="quantity">
+                                    <button type="button" id="decrement-room-count-<?php echo $key ?>" data-action="decrement" data-id="<?php echo $key ?>" data-url="<?php echo base_url('xhttp/projects/rooms/decrement-count') ?>" data-json='<?php echo $room['room_count_data'] ?>' class="button change-room-count hollow circle" data-quantity="minus" data-field="quantity">
                                         <i class="fa fa-minus" aria-hidden="true"></i>
                                     </button>
                                     <?php } ?>
                                 </div>
-                                <input class="input-group-field input-circle-space" id="room-count" type="number" name="quantity" value="<?php echo $room['count'] ?>" disabled>
+                                <input class="input-group-field input-circle-space" id="room-count-<?php echo $key ?>" data-id="<?php echo $key ?>" type="number" name="quantity" value="<?php echo $room['count'] ?>" disabled>
                                 <div class="input-group-button btn-circle">
                                     <?php if (
                                         (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && empty($quotationRequest)) ||
                                         (in_array((int)$userInfo['user_type'], [INSTALLER], true) && !(bool)$hasAddedFinalPrice) ||
                                         (in_array((int)$userInfo['user_type'], [WHOLESALER, ELECTRICAL_PLANNER], true))
                                     ) { ?>
-                                    <button type="button" id="increment-room-count" data-url="<?php echo base_url('xhttp/projects/rooms/increment-count') ?>" data-json='<?php echo $room['room_count_data'] ?>' class="button change-room-count hollow circle" data-quantity="plus" data-field="quantity">
+                                    <button type="button" id="increment-room-count-<?php echo $key ?>" data-action="increment" data-id="<?php echo $key ?>" data-url="<?php echo base_url('xhttp/projects/rooms/increment-count') ?>" data-json='<?php echo $room['room_count_data'] ?>' class="button change-room-count hollow circle" data-quantity="plus" data-field="quantity">
                                         <i class="fa fa-plus" aria-hidden="true"></i>
                                     </button>
                                     <?php } ?>
@@ -101,7 +101,7 @@
                                 <?php } ?>
                             </div>
                         </td>
-                        <td class="op-semibold">
+                        <td class="op-semibold text-center">
                             <a href="<?php echo base_url('home/projects/' . $projectId . '/levels/' . $level . '/rooms/' . encryptDecrypt($room['room_id']) . '/project-rooms/' . encryptDecrypt($room['project_room_id']) . '/selected-products') ?>" class="tb-view-list" title="View List">View List</a>
                         </td>
                         <td class="op-semibold text-center">
@@ -133,21 +133,21 @@
         <!-- //Project list table -->
 
         <!-- Caption before section -->
-        <?php if (is_numeric($levelCheck['status']) && (int)$levelCheck['status'] === 0 && empty($quotationRequest)) { ?>
         <?php if (!empty($rooms)) { ?>
-        <div class="section-title clearfix">
-            <div class="button-wrapper">
-                <?php if (!empty($rooms)) {?>
-                <button type="button" title="<?php echo !empty($rooms)?$this->lang->line("Evaluate_btn_txt"):"" ?>" class="custom-btn btn-margin btn-width save redirectable" id="evaluate" data-redirect-to="<?php echo base_url('home/projects/' . $projectId . '/levels/'. $level .'/rooms/results') ?>" >
-                    <?php echo $this->lang->line("Evaluate_btn_txt") ?>
-                </button>
+            <div class="section-title clearfix">
+                <div class="button-wrapper">
+                    <?php if (!empty($rooms)) {?>
+                        <button type="button" title="<?php echo !empty($rooms)?$this->lang->line("Evaluate_btn_txt"):"" ?>" class="custom-btn btn-margin btn-width save redirectable" id="evaluate" data-redirect-to="<?php echo base_url('home/projects/' . $projectId . '/levels/'. $level .'/rooms/results') ?>" >
+                        <?php echo $this->lang->line("Evaluate_btn_txt") ?>
+                    </button>
                 <?php } ?>
+                <?php if (is_numeric($levelCheck['status']) && (int)$levelCheck['status'] === 0) { ?>
                 <button type="button" <?php echo empty($rooms)?"disabled":"" ?> title="<?php echo empty($rooms)?$this->lang->line("add_rooms_to_mark_as_done"):"" ?>" data-level-data='<?php echo $levelData ?>' data-redirect-to="<?php echo base_url('/home/projects/' . $projectId . '/levels') ?>" class="custom-btn btn-margin btn-width save" id="mark-as-done-btn">
                     Mark As Done
                 </button>
+                <?php } ?>
             </div>
         </div>
-        <?php } ?>
         <?php } ?>
         <!-- Caption before section -->
 

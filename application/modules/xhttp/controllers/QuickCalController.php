@@ -15,10 +15,7 @@ class QuickCalController extends BaseController
     public function __construct($config = 'rest')
     {
         parent::__construct();
-
     }
-
-
 
     /**
      *
@@ -31,7 +28,6 @@ class QuickCalController extends BaseController
         } catch (Exception $ex) {
 
         }
-
     }
 
     /**
@@ -76,13 +72,17 @@ class QuickCalController extends BaseController
                 ]);
             }
 
-            $this->load->helper(['quick_calc']);
+            $this->load->helper(['quick_calc', 'utility']);
+
+            $length = convert_to_meter($this->requestData['length_unit'], $this->requestData['length']);
+            $width = convert_to_meter($this->requestData['width_unit'], $this->requestData['width']);
+            $height = convert_to_meter($this->requestData['height_unit'], $this->requestData['height']);
 
             $data = [
                 "authToken" => DIALUX_AUTH_TOKEN,
-                "roomLength" => floatval($this->requestData['length']),
-                "roomWidth" => floatval($this->requestData['width']),
-                "roomHeight" => floatval($this->requestData['height']),
+                "roomLength" => floatval($length),
+                "roomWidth" => floatval($width),
+                "roomHeight" => floatval($height),
                 "illuminance" => floatval($this->requestData['lux_values']),
                 "maintenanceFactor" => floatval($this->requestData['maintainance_factor']),
                 "roomType" => $roomData['title'],
@@ -148,6 +148,30 @@ class QuickCalController extends BaseController
                 'field' => 'product_id',
                 'label' => 'Product Id',
                 'rules' => 'trim|required|is_natural_no_zero'
+            ],
+            [
+                'field' => "height_unit",
+                'label' => "Height unit",
+                'rules' => 'trim|required|regex_match[/^(meter|yard|inch)$/]',
+                'errors' => [
+                    'regex_match' => $this->lang->line('invalid_measurement_unit')
+                ]
+            ],
+            [
+                'field' => "width_unit",
+                'label' => "Width unit",
+                'rules' => 'trim|required|regex_match[/^(meter|yard|inch)$/]',
+                'errors' => [
+                    'regex_match' => $this->lang->line('invalid_measurement_unit')
+                ]
+            ],
+            [
+                'field' => "length_unit",
+                'label' => "Length unit",
+                'rules' => 'trim|required|regex_match[/^(meter|yard|inch)$/]',
+                'errors' => [
+                    'regex_match' => $this->lang->line('invalid_measurement_unit')
+                ]
             ],
             [
                 'field' => 'length',

@@ -6,7 +6,7 @@
             <li><a href="javascript:void(0)">Home</a></li>
             <li><a href="<?php echo base_url("home/projects") ?>">Projects</a></li>
             <li><a href="<?php echo base_url("home/projects/{$project_id}") ?>">Details</a></li>
-            <li><a href="<?php echo base_url("home/projects/{$project_id}/levels/{$level}") ?>">Levels</a></li>
+            <li><a href="<?php echo base_url("home/projects/{$project_id}/levels") ?>">Levels</a></li>
             <li><a href="<?php echo base_url("home/projects/{$project_id}/levels/{$level}/rooms") ?>">Rooms</a></li>
             <li><a href="<?php echo base_url("home/projects/{$project_id}/levels/{$level}/rooms/{$project_room_id}/edit") ?>">Edit Room Dimensions</a></li>
             <li class="active">Products</li>
@@ -107,6 +107,7 @@
                     <option value="<?php echo MOUNTING_PENDANT ?>">PENDANT</option>
                     <option value="<?php echo MOUNTING_TRACKS ?>">TRACKS</option>
                 </select>
+                <span class="customArrow"></span>
                 <input type="hidden" name="room_id" id="room_id" value="<?php echo $room_id; ?>">
                 <input type="hidden" name="level" id="level" value="<?php echo $level; ?>">
                 <input type="hidden" name="project_id" id="project_id" value="<?php echo $project_id; ?>">

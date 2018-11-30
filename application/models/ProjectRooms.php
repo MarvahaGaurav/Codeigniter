@@ -22,9 +22,9 @@ class ProjectRooms extends BaseModel
 
     public function details($params)
     {
-        $this->db->select("id as project_room_id, room_id, level, project_id, name, length, width, height,
+        $this->db->select("id as project_room_id, room_id, level, project_id, name, length, width, height, reference_name,
             maintainance_factor, shape, working_plane_height, rho_wall, rho_ceiling, rho_floor, suspension_height,
-            lux_value, luminaries_count_x, luminaries_count_y, fast_calc_response, created_at", false)
+            lux_value, luminaries_count_x, luminaries_count_y, fast_calc_response, created_at, reference_number", false)
             ->from($this->tableName);
         
         if (isset($params['limit']) && is_numeric($params['limit']) && (int)$params['limit'] > 0) {
@@ -312,6 +312,8 @@ class ProjectRooms extends BaseModel
             ];
         }
 
+
+        
         $status = $this->db->insert_batch('project_rooms', $levelsData);
 
         if (!$status) {

@@ -39,7 +39,7 @@ class ProjectRoomController extends BaseController
     public function projectRooms_post()
     {
         try {
-            $user_data = $this->accessTokenCheck('u.user_type, is_owner, u.company_id');
+            $user_data = $this->accessTokenCheck('u.user_type, is_owner, u.company_id');_post
             $language_code = $this->langcode_validate();
 
             $this->user = $user_data;

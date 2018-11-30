@@ -31,7 +31,7 @@
                     <div class="form-group">
                         <label class="labelTxt">Project Number <span>(Optional)</span></label>
                         <div class="form-group-field">
-                            <input name="project_number" id="project_number" type="text" placeholder="242388">
+                            <input class="alphanum-only-field restrict-characters" data-restrict-to="20" name="project_number" id="project_number" type="text" placeholder="242388">
                         </div>
                     </div>
                 </div>
@@ -39,7 +39,7 @@
                     <div class="form-group">
                         <label class="labelTxt">Project Name</label>
                         <div class="form-group-field">
-                            <input type="text" name="project_name" id="project_name" placeholder="Johnson & Sons">
+                            <input class="alphanumspaces-only-field restrict-characters" data-restrict-to="100" type="text" name="project_name" id="project_name" placeholder="Johnson & Sons">
                         </div>
                     </div>
                 </div>
@@ -64,7 +64,7 @@
                         <label class="labelTxt" for="">Other Level Count</label>
                         <div class="form-group-field input-group" id="other-levels-wrapper">
                             <span class="input-group-addon clickable" id="decrement-others"><i class="fa fa-minus"></i></span>
-                            <input type="text" name="" id="other-project-count" value="11" class="number-only-field text-center">
+                            <input type="text" name="" id="other-project-count" value="11" class="number-only-field text-center restrict-characters" data-restrict-to="3">
                             <span class="input-group-addon clickable" id="increment-others"><i class="fa fa-plus"></i></span>
                         </div>
                     </div>

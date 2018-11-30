@@ -109,6 +109,7 @@
                     <option value="<?php echo MOUNTING_PENDANT ?>">PENDANT</option>
                     <option value="<?php echo MOUNTING_TRACKS ?>">TRACKS</option>
                 </select>
+                <span class="customArrow"></span>
                 <input type="hidden" name="room_id" id="room_id" value="<?php echo $room_id; ?>">
                 <input type="hidden" name="level" id="level" value="<?php echo $level; ?>">
                 <input type="hidden" name="project_id" id="project_id" value="<?php echo $project_id; ?>">

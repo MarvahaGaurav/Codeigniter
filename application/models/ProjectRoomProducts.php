@@ -15,7 +15,6 @@ class ProjectRoomProducts extends BaseModel
         $this->tableName = "project_room_products as prs";
     }
 
-
     /**
      * get project listing
      *

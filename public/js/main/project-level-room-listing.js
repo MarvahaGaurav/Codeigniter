@@ -133,8 +133,14 @@ requirejs(
     $(".change-room-count").on('click', function () {
       var self = this,
         $self = $(self),
-        url = $self.attr("data-url")
-      data = JSON.parse($self.attr("data-json"));
+        url = $self.attr("data-url"),
+        data = JSON.parse($self.attr("data-json")),
+        id = $self.attr("data-id"),
+        action = $self.attr("data-action");
+
+      if (action == "decrement" && $("#room-count-" + id).val() == 1) {
+        return 0;
+      }
 
       var html = $self.html();
       $.ajax({
@@ -148,7 +154,7 @@ requirejs(
         success: function (response) {
           if (response.success) {
             $self.html(html);
-            $("#room-count").val(response.count);
+            $("#room-count-" + id).val(response.count);
           } else {
             $self.html(html);
             displayErrorMessage(response.error);

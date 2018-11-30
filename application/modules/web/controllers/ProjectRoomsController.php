@@ -10,7 +10,7 @@ require_once APPPATH . "/libraries/Traits/InstallerPriceCheck.php";
 class ProjectRoomsController extends BaseController
 {
     use ProjectRequestCheck, InstallerPriceCheck, TotalProjectPrice, TechnicianChargesCheck;
-
+    
     /**
      * Post Request Data
      *
@@ -202,6 +202,7 @@ class ProjectRoomsController extends BaseController
             $this->userTypeHandling([INSTALLER, PRIVATE_USER, BUSINESS_USER, WHOLESALER, ELECTRICAL_PLANNER], base_url('home/applications'));
 
             $permissions = $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['project_view'], base_url('home/applications'));
+            
             $this->load->model(['UtilModel', 'ProjectRooms', 'ProjectRoomProducts']);
             $projectData = $this->UtilModel->selectQuery('*', 'projects', [
                 'where' => ['id' => $projectId, 'language_code' => $languageCode], 'single_row' => true
@@ -302,7 +303,7 @@ class ProjectRoomsController extends BaseController
                 $this->data['projectRoomPrice'] = (array)$this->quotationTotalPrice((int)$this->userInfo['user_type'], $projectId, $level);
                 $this->data['hasAddedFinalPrice'] = $this->hasTechnicianAddedFinalPrice($projectId);
             }
-            
+
             website_view('projects/result_room_list', $this->data);
         } catch (\Exception $error) {
             show404($this->lang->line('internal_server_error'), base_url('/home/applications'));
@@ -565,9 +566,22 @@ class ProjectRoomsController extends BaseController
 
             $selectedProduct = get_cookie('selectd_room');
 
+            $this->data['showSuspensionHeight'] = false;
             if (!empty($selectedProduct)) {
                 $this->data['selected_product'] = json_decode($selectedProduct, true);
+                if (isset($this->data['selected_product']['product_id'])) {
+                    $mountingTypes = $this->UtilModel->selectQuery('type', 'product_mounting_types', [
+                        'where' => ['product_id' => $this->data['selected_product']['product_id'], 'type !=' => 0]
+                    ]);
+                    $mountingTypes = array_column($mountingTypes, 'type');
+                    $suspendedFilter = array_filter($mountingTypes, function($type){
+                        return in_array((int)$type, [MOUNTING_SUSPENDED, MOUNTING_PENDANT], true);
+                    });
+                    $this->data['showSuspensionHeight'] = (bool)!empty($suspendedFilter);
+                }
             }
+
+            
 
             website_view('projects/add_room_dimensions', $this->data);
         } catch (\Exception $error) {
@@ -682,6 +696,8 @@ class ProjectRoomsController extends BaseController
                 $this->editRoomDimensionPostHandler($roomData, $projectRoomId, $this->data['projectId']);
             }
 
+            $productIdToCheck = isset($this->data['roomProducts']['product_id'])?$this->data['roomProducts']['product_id']:'';
+
             $this->data['cookie_data'] = $get_array;
 
             $this->data['selected_product'] = [];
@@ -690,7 +706,19 @@ class ProjectRoomsController extends BaseController
 
             if (!empty($selectedProduct)) {
                 $this->data['selected_product'] = json_decode($selectedProduct, true);
+                if (isset($this->data['selected_product']['product_id'])) {
+                    $productIdToCheck = $this->data['selected_product']['product_id'];
+                }
             }
+
+            $mountingTypes = $this->UtilModel->selectQuery('type', 'product_mounting_types', [
+                'where' => ['product_id' => $productIdToCheck, 'type !=' => 0]
+            ]);
+            $mountingTypes = array_column($mountingTypes, 'type');
+            $suspendedFilter = array_filter($mountingTypes, function($type){
+                return in_array((int)$type, [MOUNTING_SUSPENDED, MOUNTING_PENDANT], true);
+            });
+            $this->data['showSuspensionHeight'] = (bool)!empty($suspendedFilter);
 
             website_view('projects/edit_room_dimensions', $this->data);
         } catch (\Exception $error) {
@@ -750,9 +778,13 @@ class ProjectRoomsController extends BaseController
             $insert = [
                 "project_id" => $this->postRequest['project_id'],
                 // "application_id" => $this->postRequest['application_id'],
+                "reference_number" => $this->postRequest['reference_number'],
+                "reference_name" => $this->postRequest['reference_name'],
                 "room_id" => $this->postRequest['room_id'],
                 "name" => $this->postRequest['name'],
                 "level" => $this->postRequest['level'],
+                "reference_name" => $this->postRequest['reference_name'],
+                "reference_number" => $this->postRequest['reference_number'],
                 "length" => $length,
                 "width" => $width,
                 "height" => $height,
@@ -854,6 +886,8 @@ class ProjectRoomsController extends BaseController
                 "length" => $length,
                 "width" => $width,
                 "height" => $height,
+                "reference_number" => $this->postRequest['reference_number'],
+                "reference_name" => $this->postRequest['reference_name'],
                 "maintainance_factor" => isset($this->postRequest['maintainance_factor']) && !empty($this->postRequest['maintainance_factor']) ? $this->postRequest['maintainance_factor'] : $room['maintainance_factor'],
                 "suspension_height" => isset($this->postRequest['pendant_length']) ? convert_to_meter($this->postRequest['pendant_length_unit'], $this->postRequest['pendant_length']) : 0.00,
                 "shape" => isset($this->postRequest['room_shape']) ? $this->postRequest['room_shape'] : "Rectangular",
@@ -1035,6 +1069,16 @@ class ProjectRoomsController extends BaseController
                 'rules' => 'trim|required'
             ],
             [
+                'field' => "reference_name",
+                'label' => "Room Name",
+                'rules' => 'trim|alpha_numeric_spaces|max_length[50]'
+            ],
+            [
+                'field' => "reference_number",
+                'label' => "Room Number",
+                'rules' => 'trim|alpha_numeric|max_length[50]'
+            ],
+            [
                 'field' => "length",
                 'label' => "Length",
                 'rules' => 'trim|required|numeric'
@@ -1191,6 +1235,16 @@ class ProjectRoomsController extends BaseController
                 'field' => "length",
                 'label' => "Length",
                 'rules' => 'trim|required|numeric'
+            ],
+            [
+                'field' => "reference_name",
+                'label' => "Room Name",
+                'rules' => 'trim|alpha_numeric_spaces|max_length[50]'
+            ],
+            [
+                'field' => "reference_number",
+                'label' => "Room Number",
+                'rules' => 'trim|alpha_numeric|max_length[50]'
             ],
             [
                 'field' => "length_unit",

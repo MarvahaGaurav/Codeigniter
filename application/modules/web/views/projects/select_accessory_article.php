@@ -124,9 +124,7 @@ if (count($images)) {
                                 <?php } else {?>
                                     <button title="Select Product" data-selected="<?php echo $this->lang->line('selected') ?>" data-accessory='<?php echo $specification['accessory_data'] ?>'  class="outline-btn select-project-accessory" onclick="">Select</button>
                                 <?php } ?>
-                                <!--                                <button title="More info"  class="outline-btn">
-                                                                    Info
-                                                                </button>-->
+                                <button title="More info"  class="outline-btn redirectable" data-redirect-to="<?php echo base_url('home/projects/' . $project_id . '/levels/' . $level .'/rooms/'. $room_id . '/project-rooms/' . $project_room_id . '/accessory-products/' . encryptDecrypt($product_id) . '/articles/' . $specification['articlecode']) ?>">Info</button>
 
                             </div>
                         </div>

@@ -37,7 +37,7 @@
                         <?php if (in_array((int)$userInfo['user_type'], [INSTALLER], true)) { ?>
                         <th class="text-center">Installation Price</th>
                         <th class="text-center">Comparison</th>
-                        <?php }?>
+                        <?php } ?>
                         <th class="text-center">Actions</th>
                     </tr>
                 </thead>
@@ -46,7 +46,7 @@
                     <tr>
                         <td class="td-thumb text-nowrap">
                             <img src="<?php echo base_url("public/images/placeholder/no-found-ico-2.svg")?>"  />
-                            <span class="td-room-type op-semibold"><?php echo $room['name'] ?></span>
+                            <span class="td-room-type op-semibold"><?php echo strlen($room['reference_name'])>0?$room['reference_name']:$room['name'] ?></span>
                         </td>
                         <td><?php echo "{$room['length']}M x {$room['width']}M x {$room['height']}M" ?></td>
                         <td class="text-center"><?php echo $room['count'] ?> <?php echo (int)$room['count'] > 1?$this->lang->line('room_count_sets_txt'):$this->lang->line('room_count_set_txt') ?></td>

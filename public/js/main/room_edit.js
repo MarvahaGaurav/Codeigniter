@@ -9,7 +9,8 @@ requirejs.config({
         jqueryScrollbar: "plugin/jquery.scrollbar.min",
         jqueryValidator: 'jquery.validate.min',
         autocomplete: 'jquery.autocomplete.min',
-        location: 'lib/location'
+        location: 'lib/location',
+        roomForm: 'web/helpers/room-form'
     },
     shim: {
         //dependencies
@@ -19,12 +20,13 @@ requirejs.config({
         jqueryScrollbar: ['jquery'],
         jqueryValidator: ['jquery'],
         autocomplete: ['jquery'],
-        location: ['autocomplete']
+        location: ['autocomplete'],
+        roomForm: ['jquery']
     }
 });
 
 requirejs(
-    ["jquery", "bootstrap", "common", "jqueryScrollbar", "jqueryValidator", "autocomplete", "location", "selectPicker"],
+    ["jquery", "bootstrap", "common", "jqueryScrollbar", "jqueryValidator", "autocomplete", "location", "selectPicker", "roomForm"],
     function ($) {
         var normalizer = function (value) {
             return $.trim(value);
@@ -34,9 +36,10 @@ requirejs(
             $roomLuminariesX = $("#room_luminaries_x"),
             $roomLuminariesY = $("#room_luminaries_y"),
             $xyTotal = $("#xy_total"),
-            $luxValues = $("input[name='lux_values']");
+            $luxValues = $("input[name='lux_values']")
+            $finalRoomSubmission = $("#final-room-submission");
 
-        $(".dialux-suggestions-fields").on("blur", function () {
+        $(".dialux-suggestions-fields").on("change", function () {
             var self = this,
                 $self = $(self),
                 formData = getFormData($editForm);
@@ -63,12 +66,14 @@ requirejs(
                         $roomLuminariesY.attr("value", "");
                         $roomLuminariesY.attr("placeholder", "loading...");
                         $roomLuminariesY.attr("disabled", "disabled");
+                        $finalRoomSubmission.attr("disabled", "disabled");
                     },
                     success: function (response) {
                         $roomLuminariesX.attr("placeholder", "");
                         $roomLuminariesX.removeAttr("disabled");
                         $roomLuminariesY.attr("placeholder", "");
                         $roomLuminariesY.removeAttr("disabled");
+                        $finalRoomSubmission.removeAttr("disabled");
                         if (response.success) {
                             $roomLuminariesX.val(response.data.luminaireCountInX);
                             $roomLuminariesY.val(response.data.luminaireCountInY);
@@ -81,6 +86,7 @@ requirejs(
                         $roomLuminariesX.removeAttr("disabled");
                         $roomLuminariesY.attr("placeholder", "");
                         $roomLuminariesY.removeAttr("disabled");
+                        $finalRoomSubmission.removeAttr("disabled");
                     }
                 });
             }

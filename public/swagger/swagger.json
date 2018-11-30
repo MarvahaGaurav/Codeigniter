@@ -3264,6 +3264,12 @@
                         "type": "string"
                     },
                     {
+                        "name": "company_discount",
+                        "in": "formData",
+                        "description": "Company discount",
+                        "type": "string"
+                    },
+                    {
                         "name": "language",
                         "in": "formData",
                         "description": "valid languages as mentioned at the beginning of the docs",

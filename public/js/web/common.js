@@ -335,7 +335,50 @@ function CheckforNum(e) {
     }
 }
 
+function alphaNumericOnly(e) {
+    //console.log(String.fromCharCode(e.keyCode));
+    // Allow: backspace, delete, tab, escape, enter and  +
+    if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+        (e.which === 187) || (e.keyCode == 65 && e.ctrlKey === true) ||
+        (e.keyCode == 86 && e.ctrlKey === true) ||
+        (e.keyCode == 67 && e.ctrlKey === true) ||
+        (e.keyCode == 88 && e.ctrlKey === true) ||
+        (e.keyCode >= 35 && e.keyCode <= 39) ||
+        (e.keyCode >= 96 && e.keyCode <= 105) || //a - z
+        (e.keyCode >= 65 && e.keyCode <= 90)
+    ) {
+        // let it happen, don't do anything
+        return;
+    }
+    // Ensure that it is a number and stop the keypress
+    if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+        e.preventDefault();
+    }
+}
+function alphaNumericSpacesOnly(e) {
+    //console.log(String.fromCharCode(e.keyCode));
+    // Allow: backspace, delete, tab, escape, enter and  +
+    if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190, 32]) !== -1 ||
+        (e.which === 187) || (e.keyCode == 65 && e.ctrlKey === true) ||
+        (e.keyCode == 86 && e.ctrlKey === true) ||
+        (e.keyCode == 67 && e.ctrlKey === true) ||
+        (e.keyCode == 88 && e.ctrlKey === true) ||
+        (e.keyCode >= 35 && e.keyCode <= 39) ||
+        (e.keyCode >= 96 && e.keyCode <= 105) || //a - z
+        (e.keyCode >= 65 && e.keyCode <= 90)
+    ) {
+        // let it happen, don't do anything
+        return;
+    }
+    // Ensure that it is a number and stop the keypress
+    if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+        e.preventDefault();
+    }
+}
+
 $(".number-only-field").on("keydown", CheckforNum);
+$(".alphanum-only-field").on("keydown", alphaNumericOnly);
+$(".alphanumspaces-only-field").on("keydown", alphaNumericSpacesOnly);
 
 function restrictCharacters(e) {
     var self = this,
@@ -354,3 +397,5 @@ function restrictCharacters(e) {
 }
 
 $(".restrict-characters").on('keydown', restrictCharacters);
+
+
