@@ -55,7 +55,7 @@ class ProjectController extends BaseController
                     'where_in' => ['project_id' => $projectIds]
                 ]);
             }
-
+            echo $this->db->last_query(); die;
             $projects = getDataWith($projects, $projectRequest, 'project_id', 'project_id', 'requests', 'project_id');
 
             $this->data['projects'] = $projects;
@@ -133,7 +133,7 @@ class ProjectController extends BaseController
                     $this->load->model("Project");
                     $this->db->trans_begin();
                     $projectId = $this->Project->save_project($insert);
-
+                    
                     foreach (range(1, $levelsCount) as $key => $level) {
                         $levelsData[$key] = [
                             'project_id' => $projectId,
