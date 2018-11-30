@@ -13,7 +13,7 @@ class BaseController extends MY_Controller
 
     protected $data;
     protected $userInfo;
-    private $user_query_fields;
+    private   $user_query_fields;
     protected $session_data;
     protected $employeePermission;
     protected $datetime;
@@ -23,8 +23,8 @@ class BaseController extends MY_Controller
 
     public function __construct()
     {
-        // error_reporting(-1);
-        // ini_set('display_errors', 1);
+        error_reporting(-1);
+        ini_set('display_errors', 1);
         parent::__construct();
         $this->load->helper(['url', 'form', 'custom_cookie', 'common', 'debuging']);
         $this->load->model('Common_model');

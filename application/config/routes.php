@@ -126,6 +126,9 @@ $route['home/applications/(:any)/rooms']                        = 'web/QuickCalc
 $route['home/applications/(:any)/rooms/(:any)/fast-calc']       = 'web/QuickCalcController/quickcalc/$1/$2';
 $route['home/applications/(:any)/rooms/(:any)/select-porduct']  = 'web/QuickCalcController/select_product/$1/$2';
 $route['home/applications/(:any)/rooms/(:any)/mounting/(:num)/articles/(:any)'] = 'web/QuickCalcController/articles/$1/$2/$3/$4';
+
+$route['home/application-detail/(:any)/rooms/(:any)/mounting/(:num)/articles/(:any)/code/(:num)'] = 'web/QuickCalcController/articleDetail/$1/$2/$3/$4/$5';
+
 $route['home/applications/quick_cal']                           = "web/QuickCalcController/quick_cal";
 $route['home/applications/view-result/(:any)']                  = "web/QuickCalcController/view_result/$1";
 

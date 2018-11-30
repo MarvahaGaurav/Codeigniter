@@ -8,7 +8,6 @@
     "require": {
         "aws/aws-sdk-php": "3.52",
         "guzzlehttp/guzzle": "^6.3",
-        "jbzoo/utils": "^2.2",
         "php-ffmpeg/php-ffmpeg": "^0.13.0"
     },
     "require-dev": {

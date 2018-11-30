@@ -25,7 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 
-$config['base_url'] = 'http://'.$_SERVER['HTTP_HOST'];
+$config['base_url'] = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].'';
 
 /*
 |--------------------------------------------------------------------------

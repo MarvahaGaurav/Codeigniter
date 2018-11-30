@@ -14,6 +14,7 @@ class QuickCalcController extends BaseController
      * @var array
      */
     private $postRequest;
+    private $getRequest;
 
     public function __construct()
     {
@@ -88,8 +89,8 @@ class QuickCalcController extends BaseController
             $params['where']['rooms.application_id'] = $applicationId;
             $rooms                                   = $this->Room->get($params);
             $rooms['result']                         = array_map(function ($data) {
-                $data['encrypted_room_id'] = encryptDecrypt($data['room_id']);
-                return $data;
+			$data['encrypted_room_id'] = encryptDecrypt($data['room_id']);
+			return $data;
             }, $rooms['result']);
             $rooms['result'] = array_chunk($rooms['result'], 4);
 
@@ -484,6 +485,8 @@ class QuickCalcController extends BaseController
     function articles($applicationId = '', $roomId = '', $mounting = 1, $product_id = '')
     {
         try {
+            $queryString = $applicationId.'/rooms/'.$roomId.'/mounting/'.$mounting.'/articles/'.$product_id;
+            
             $this->neutralGuard();
             if (isset($this->userInfo, $this->userInfo['user_id']) && ! empty($this->userInfo['user_id'])) {
                 $this->data['userInfo'] = $this->userInfo;
@@ -535,6 +538,7 @@ class QuickCalcController extends BaseController
             $this->data['technical_data']   = $productTechnicalData;
             $this->data['articles']   = $classifiedProductArticles;
             $this->data['related_products'] = $relatedProducts;
+            $this->data['urlString'] = $queryString;
 
             website_view('quickcalc/select_article', $this->data);
         } catch (Exception $ex) {
@@ -770,5 +774,119 @@ class QuickCalcController extends BaseController
         $response = hitCulrQuickCal($request_data);
 
         return $response;
+    }
+    
+    /**
+     * Article Detail
+     * 
+     * This method is used to display the details of the article product details.
+     * 
+     * @param type $applicationId
+     * @param type $roomId
+     * @param type $mounting
+     * @param type $product_id
+     * @param type $articleCode
+     */
+    function articleDetail($applicationId = '', $roomId = '', $mounting = 1, $productId = '',$articleCode=''){
+	
+        try {
+            
+            $this->activeSessionGuard();
+            $this->load->helper('utility');
+            $this->load->config('css_config');
+            $this->data['css'] = $this->config->item('basic-with-font-awesome');
+            
+            $languageCode = "en";
+            $productId = encryptDecrypt($productId, "decrypt");
+            $roomId = encryptDecrypt($roomId, "decrypt");
+            
+            $this->validationData = ['room_id' => $roomId, 'product_id' => $productId, 'article_code' => $articleCode];
+            
+            $this->validateAccessoryArticleDetail();
+
+            $status = $this->validationRun();
+            
+            if (!$status) {
+                show404($this->lang->line('bad_request'), base_url(''));
+            }
+            // Load models
+            $this->load->model(['ProductTechnicalData','ProductSpecification','Product']);
+            
+            
+            $productData = $this->Product->details([
+                'product_id' => $productId
+            ]);
+            
+            if (empty($productData)) {
+                show404($this->lang->line('no_data_found'), base_url(''));
+            }
+
+            $articleData = $this->ProductSpecification->getch([
+                'product_id' => $productId,
+                'single_row' => true,
+                'where' => ['articlecode' => $articleCode]
+            ]);
+            
+            if (empty($articleCode)) {
+                show404($this->lang->line('no_data_found'), base_url(''));
+            }
+
+            $technicalData = $this->ProductTechnicalData->get(['product_id' => $productId]);
+
+            $articleData['accessory_data'] = json_encode([
+                $this->data["csrfName"] = $this->security->get_csrf_token_name() =>
+                        $this->data["csrfToken"] = $this->security->get_csrf_hash(),
+                'article_code' => $articleData['articlecode'],
+                'product_id' => encryptDecrypt($productId),
+            ]);
+
+            $selectedProduct = $this->UtilModel->selectQuery('id', 'project_room_products', [
+                'where' => [
+                    'product_id' => $productId, 'article_code' => $articleCode
+                ]
+            ]);
+
+            $this->data['isSelected']  = (bool)!empty($selectedProduct);
+            
+            $this->data['technicalData'] = $technicalData;
+            $this->data['productData'] = $productData;
+            $this->data['articleData'] = $articleData;
+            $this->data['applicationId'] = $applicationId;
+            $this->data['productId'] = encryptDecrypt($productId);
+            $this->data['roomId'] = encryptDecrypt($roomId);
+            $this->data['articleCode'] = $articleCode;
+            $this->data['mounting'] = $mounting;
+
+            $this->data['js'] = "article_quick_cal";
+
+            website_view('quickcalc/article_details_accessory', $this->data);
+        } catch (\Exception $error) {
+            show404($this->lang->line('internal_server_error'), base_url('home/applications'));
+        }
+    }
+    
+    
+    private function validateAccessoryArticleDetail()
+    {
+        $this->form_validation->set_data($this->validationData);
+
+        $this->form_validation->set_rules([
+            
+            [
+                'field' => 'product_id',
+                'label' => 'Product id',
+                'rules' => 'trim|required|is_natural_no_zero'
+            ],
+            [
+                'field' => 'room_id',
+                'label' => 'Room id',
+                'rules' => 'trim|required|is_natural_no_zero'
+            ],
+            [
+                'field' => 'article_code',
+                'label' => 'Article code',
+                'rules' => 'trim|required|is_natural_no_zero'
+            ],
+        ]);
     }
 }

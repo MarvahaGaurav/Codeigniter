@@ -116,7 +116,12 @@ if (count($images)) {
                         <div>
                             <div class="btn-group">
                                 <button title="Select Product"  class="outline-btn" onclick="select_product( '<?php echo $specification['articlecode']; ?>', '<?php echo $specification['product_id']; ?>', <?php echo $mounting ?>)">Select</button>
-                                <!-- <button title="More info"  class="outline-btn redirectable">Info</button> -->
+                               
+                            </div>
+                            
+                            <div class="btn-group">
+                               
+                                <button data-redirect-to="<?php echo "home/application-detail/".$urlString.'/code/'.$specification['articlecode']; ?>" title="Info"  class="outline-btn redirectable">View</button>
 
                             </div>
                         </div>

@@ -261,13 +261,13 @@ class ProjectRooms extends BaseModel
      */
     public function roomCountByLevel($projectId)
     {
-        $this->db->select('id, COUNT(id) as room_count, level')
+        $this->db->select('id, COUNT(id) as room_count, level',false)
             ->from('project_rooms')
             ->where('project_id', $projectId)
             ->group_by('level');
 
         $query = $this->db->get();
-
+		
         $result = $query->result_array();
 
         return $result;
