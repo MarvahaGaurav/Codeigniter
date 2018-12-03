@@ -1,4 +1,4 @@
-requirejs.config( {
+requirejs.config({
     baseUrl: "public/js",
     waitSeconds: 60,
     paths: {
@@ -14,33 +14,43 @@ requirejs.config( {
         location: 'lib/location',
         helper: 'web/helpers/signup',
         cropper_JS: 'cropperAssets/cropper',
-        appinventivCropper: 'cropperAssets/appinventivCropper'
+        appinventivCropper: 'cropperAssets/appinventivCropper',
+        mapsAPI: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAGhlvsdgd8ZPkLJDhkWblTEbvxPU_WAko&libraries=places',
+        mapsRender: 'web/helpers/maps-render',
+        mapsMarker: 'web/helpers/maps-marker',
+        mapsPlaces: 'web/helpers/maps-places',
     },
     shim: {
         //dependencies
-        bootstrap: [ 'jquery' ],
-        selectPicker: [ 'bootstrap' ],
-        common: [ 'bootstrap' ],
-        jqueryScrollbar: [ 'jquery' ],
-        jqueryValidator: [ 'jquery' ],
-        cropper_JS: [ 'jquery' ],
-        appinventivCropper: [ 'cropper_JS' ],
-        helper: [ 'jqueryValidator' ],
-        autocomplete: [ 'jquery' ],
-        location: [ 'autocomplete' ]
+        bootstrap: ['jquery'],
+        selectPicker: ['bootstrap'],
+        common: ['bootstrap'],
+        jqueryScrollbar: ['jquery'],
+        jqueryValidator: ['jquery'],
+        cropper_JS: ['jquery'],
+        appinventivCropper: ['cropper_JS'],
+        helper: ['jqueryValidator'],
+        autocomplete: ['jquery'],
+        location: ['autocomplete'],
+        mapsAPI: ['jquery'],
+        mapsRender: ['mapsAPI'],
+        mapsPlaces: ['mapsMarker'],
+        mapsMarker: ['mapsRender']
     }
-} );
+});
 
 requirejs(
-        [ "jquery", "bootstrap", "common", "jqueryScrollbar", "jqueryValidator", "helper", "autocomplete", "location", "selectPicker", "cropper_JS", "appinventivCropper", ],
-        function ( $ ) {
-            fetchLocation( '/xhttp/cities' );
+    ["jquery", "bootstrap", "common", "jqueryScrollbar", "jqueryValidator", "helper", "autocomplete",
+        "location", "selectPicker", "cropper_JS", "appinventivCropper", "mapsAPI", "mapsRender",
+        "mapsPlaces", "mapsMarker"],
+    function ($) {
+        fetchLocation('/xhttp/cities');
 
-            $( "#select-user-types" ).selectpicker();
-            $( ".contact-number" ).selectpicker();
-            $( "select[name='country']" ).selectpicker();
-        },
-        function () {
+        $("#select-user-types").selectpicker();
+        $(".contact-number").selectpicker();
+        $("select[name='country']").selectpicker();
+    },
+    function () {
 
-        }
+    }
 );

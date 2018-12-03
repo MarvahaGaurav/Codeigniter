@@ -25,7 +25,7 @@ class ProjectProductController extends BaseController
     {
         try {
             $this->activeSessionGuard();
-            
+
             $this->requestData = $this->input->post();
 
             $this->decryptProductArticle();
@@ -56,6 +56,11 @@ class ProjectProductController extends BaseController
                 );
             }
 
+            $articleCode = $this->requestData['article_code'];
+            $productId = $this->requestData['product_id'];
+            $projectRoomId = $this->requestData['project_room_id'];
+            $projectId = $this->requestData['project_id'];
+
             if (in_array((int)$this->userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true)) {
                 $this->handleRequestCheck($projectId, 'xhr');
             }
@@ -63,11 +68,6 @@ class ProjectProductController extends BaseController
             if (in_array((int)$this->userInfo['user_type'], [INSTALLER], true)) {
                 $this->handleTechnicianChargesCheck($projectId, 'xhr');
             }
-
-            $articleCode = $this->requestData['article_code'];
-            $productId = $this->requestData['product_id'];
-            $projectRoomId = $this->requestData['project_room_id'];
-            $projectId = $this->requestData['project_id'];
 
             $specificationData = $this->UtilModel->selectQuery('id', 'product_specifications', [
                 'where' => ['product_id' => $productId, 'articlecode' => $articleCode], 'single_row' => true
@@ -193,6 +193,98 @@ class ProjectProductController extends BaseController
     }
 
     /**
+     * Search Product articles for a given room
+     *
+     * @return void
+     */
+    public function searchProductArticlesByRoom()
+    {
+        try {
+            $this->requestData = $this->input->get();
+
+            if (isset($this->requestData['room_id'])) {
+                $this->requestData['room_id'] = encryptDecrypt($this->requestData['room_id'], 'decrypt');
+            }
+
+            $this->validateArticlesByRoom();
+
+            $this->load->model(['ProductSpecification']);
+
+            $search = isset($this->requestData['search'])&&is_string($this->requestData['search'])&&strlen(trim($this->requestData['search'])) > 0?
+                            trim($this->requestData['search']):'';
+
+            $params = [];
+
+            if (strlen($search) > 0) {
+                $params = [
+                    'where' => ["(ps.title LIKE '%{$search}%' OR p.title LIKE '%{$search}%')" => null]
+                ];
+            }
+
+            $articleData = $this->ProductSpecification->articlesByRooms($this->requestData['room_id'], $params);
+
+            if (empty($articleData)) {
+                json_dump([
+                    'code' => HTTP_NOT_FOUND,
+                    'success' => false,
+                    'message' => $this->lang->line('no_data_found')
+                ]);
+            }   
+
+            $articleData = array_map(function($product) {
+                $product['product_id'] = encryptDecrypt($product['product_id']);
+                return $product;
+            }, $articleData);
+
+            json_dump([
+                'code' => HTTP_OK,
+                'success' => true,
+                'data' => $articleData,
+                'message' => $this->lang->line('product_found')
+            ]);
+        } catch (\Exception $error) {
+            json_dump(
+                [
+                    "code" => HTTP_INTERNAL_SERVER_ERROR,
+                    "success" => false,
+                    "error" => "Internal Server Error",
+                ]
+            );
+        }
+    }
+
+    /**
+     * Validate articles by room
+     *
+     * @return void
+     */
+    private function validateArticlesByRoom()
+    {
+        $this->load->library('form_validation');
+
+        $this->form_validation->set_data($this->requestData);
+
+        $this->form_validation->set_rules([
+            [
+                'field' => 'room_id',
+                'label' => 'Room id',
+                'rules' => 'trim|required|is_natural_no_zero'
+            ]
+        ]);
+
+        $status = $this->form_validation->run();
+
+        if (!$status) {
+            json_dump(
+                [
+                    "success" => false,
+                    "error" => $this->lang->line('bad_request'),
+                ]
+            );
+        }
+    }
+
+    /**
      * Decrypt the values
      *
      * @return void
@@ -210,7 +302,7 @@ class ProjectProductController extends BaseController
         }
     }
 
-      /**
+    /**
      * Decrypts remove products params
      *
      * @return void
@@ -271,7 +363,7 @@ class ProjectProductController extends BaseController
         }
     }
 
-     /**
+    /**
      * Validates remvoe products params
      *
      * @return void

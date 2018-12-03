@@ -75,7 +75,6 @@ class ProjectRequest extends BaseModel
             ->where('projects.language_code', $params['language_code'])
             ->order_by('pr.id', 'DESC');
 
-
         if (isset($params['user_id']) && is_numeric($params['user_id'])) {
             $this->db->where('projects.user_id', $params['user_id']);
         }
@@ -230,6 +229,112 @@ class ProjectRequest extends BaseModel
             pr.approved_at, pr.approved_at_timestamp,
             pr.created_at_timestamp as request_created_at_timestamp,
             pq.created_at as quotation_created_at,
+            pq.created_at_timestamp as quotation_created_at_timestamp';
+
+        $this->db->select($fields, false)
+        ->from('project_quotations as pq')
+        ->join('project_requests as pr', 'pr.id=pq.request_id')
+        ->join('projects', 'projects.id=pr.project_id')
+        ->join('ai_user as user', 'user.user_id=projects.user_id')
+        ->where('pq.status', QUOTATION_STATUS_APPROVED)
+        ->where('pq.company_id', $params['company_id'])
+        ->where('pq.language_code', $params['language_code'])
+        ->order_by("pr.id", "DESC");
+        
+        if (isset($params['user_id']) && is_numeric($params['user_id'])) {
+            $this->db->where('projects.user_id', $params['user_id']);
+        }
+
+        if (isset($params['limit']) && is_numeric($params['limit']) && (int)$params['limit'] > 0) {
+            $this->db->limit((int)$params['limit']);
+        }
+        
+        if (isset($params['offset']) && is_numeric($params['offset']) && (int)$params['offset'] > 0) {
+            $this->db->offset((int)$params['offset']);
+        }
+
+        if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
+            foreach ($params['where'] as $tableColumn => $searchValue) {
+                $this->db->where($tableColumn, $searchValue);
+            }
+        }
+
+        $query = $this->db->get();
+
+        $result['data'] = $query->result_array();
+        $result['count'] = $this->db->query('SELECT FOUND_ROWS() as count')->row()->count;
+
+        return $result;
+    }
+
+    /**
+     * Get list of request which have been quoted
+     *
+     * @param array $params
+     * @return array
+     */
+    public function submittedRequestList($params)
+    {
+        $fields = 'SQL_CALC_FOUND_ROWS pr.id as request_id, projects.name as project_name, user.first_name as customer_name,
+            projects.address as project_address, projects.id as project_id, projects.lat as project_lat,
+            projects.lng as project_lng, pr.created_at as request_created_at, projects.levels,
+            pr.created_at_timestamp as request_created_at_timestamp, pq.status as quotation_status,
+            pq.additional_product_charges, pq.discount,
+            pq.created_at as quotation_created_at,
+            pq.created_at_timestamp as quotation_created_at_timestamp';
+
+        $this->db->join(
+            "project_quotations as pq",
+            "pq.request_id=pr.id"
+        );
+        $this->db->where('pq.company_id', $params['company_id']);
+        $this->db->where("(pq.status=" . QUOTATION_STATUS_QUOTED ." or pq.status=". QUOTATION_STATUS_REJECTED .")", null);
+        $this->db->select($fields, false)
+            ->from('project_requests as pr')
+            ->join('projects', 'projects.id=pr.project_id')
+            ->join('ai_user as user', 'user.user_id=projects.user_id')
+            ->where('pr.language_code', $params['language_code'])
+            ->order_by("pr.id", "DESC");
+        
+        if (isset($params['user_id']) && is_numeric($params['user_id'])) {
+            $this->db->where('projects.user_id', $params['user_id']);
+        }
+
+        if (isset($params['limit']) && is_numeric($params['limit']) && (int)$params['limit'] > 0) {
+            $this->db->limit((int)$params['limit']);
+        }
+        
+        if (isset($params['offset']) && is_numeric($params['offset']) && (int)$params['offset'] > 0) {
+            $this->db->offset((int)$params['offset']);
+        }
+
+        if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
+            foreach ($params['where'] as $tableColumn => $searchValue) {
+                $this->db->where($tableColumn, $searchValue);
+            }
+        }
+
+        $query = $this->db->get();
+
+        $result['data'] = $query->result_array();
+        $result['count'] = $this->db->query('SELECT FOUND_ROWS() as count')->row()->count;
+
+        return $result;
+    }
+
+    /**
+     * Accepted Request List
+     *
+     * @param array $params
+     * @return array
+     */
+    public function approvedRequests($params)
+    {
+        $fields = 'SQL_CALC_FOUND_ROWS pr.id as request_id, projects.name as project_name, 
+            user.first_name as customer_name, projects.address as project_address, projects.id as project_id,
+            projects.lat as project_lat, projects.lng as project_lng, pr.created_at as request_created_at,
+            projects.levels, pq.additional_product_charges, pq.discount, pr.approved_at, pr.approved_at_timestamp,
+            pr.created_at_timestamp as request_created_at_timestamp, pq.created_at as quotation_created_at,
             pq.created_at_timestamp as quotation_created_at_timestamp';
 
         $this->db->select($fields, false)

@@ -113,6 +113,9 @@ $route['home/projects/(:any)/levels/(:num)/rooms/applications/(:any)/rooms/(:any
 
 
 $route['home/quotes']               = 'web/QuotesController';
+$route['home/quotes/awaiting']      = 'web/QuotesController/awaiting';
+$route['home/quotes/submitted']     = 'web/QuotesController/submitted';
+$route['home/quotes/approved']      = 'web/QuotesController/approved';
 $route['home/technicians']          = 'web/TechnicianController';
 $route['home/technicians/requests'] = 'web/TechnicianController/request_list';
 $route['home/technicians/(.+)']     = 'web/TechnicianController/details/$1';

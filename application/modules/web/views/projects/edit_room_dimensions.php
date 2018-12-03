@@ -190,9 +190,7 @@
                         </div>
                     </div>
                 </div>
-                <?php if ((isset($selected_product['type']) && in_array((int)$selected_product['type'], [MOUNTING_PENDANT], true)) ||
-                    (isset($roomProducts['mounting_type']) && in_array((int)$roomProducts['mounting_type'], [MOUNTING_PENDANT], true))
-                ) { ?>
+                <?php if ((bool)$showSuspensionHeight) { ?>
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                     <div class="form-group">
                         <label class="labelTxt">Pendant Length</label>

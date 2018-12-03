@@ -13,6 +13,18 @@ $config = [
         base_url("public/css/web/signup.css"),
         base_url("public/css/autocomplete.css"),
         base_url("public/js/cropperAssets/cropper.min.css"),
+        base_url("public/css/web/maps.css")
+    ],
+    'inspiration-add' => [
+        base_url("public/css/bootstrap.min.css"),
+        base_url("public/css/easy-autocomplete.min.css"),
+        base_url("public/css/plugin/font-awesome.min.css"),
+        base_url("public/css/select2.min.css"),
+        base_url("public/css/image.video.uploader.css"),
+        base_url("public/css/web/common.css"),
+        base_url("public/css/web/style.css"),
+        base_url("public/css/web/sgmedia.css"),
+        base_url("public/css/web/maps.css")
     ],
     'standard'          => [
     ],

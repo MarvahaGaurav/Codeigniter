@@ -81,6 +81,9 @@ class ProjectProductController extends BaseController
             }
 
             $this->load->model("Room");
+            $this->data['searchData'] = json_encode([
+                'room_id' => encryptDecrypt($roomId)
+            ]);
             $option = ["room_id" => $roomId, "where" => ["application_id" => $applicationId]];
             $this->data['room_id'] = encryptDecrypt($roomId);
             $this->data['project_id'] = encryptDecrypt($projectId);
@@ -276,6 +279,10 @@ class ProjectProductController extends BaseController
                 (int)$this->userInfo['company_id'] !== (int)$projectData['company_id'])) {
                 show404($this->lang->line('forbidden_action'), base_url(''));
             }
+ 
+            $this->data['searchData'] = json_encode([
+                'room_id' => encryptDecrypt($projectRoom['room_id'])
+            ]);
 
             $this->load->model("Room");
             $option = ["room_id" => $projectRoom['room_id']];

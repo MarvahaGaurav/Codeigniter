@@ -28,6 +28,7 @@
                         <th class="th-first">Project Number</th>
                         <th>Name</th>
                         <th class="text-center">Project Level</th>
+                        <th class="">Location</th>
                         <?php if (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true)) { ?>
                         <th class="text-center">Quotes Status</th>
                         <?php } ?>
@@ -39,6 +40,7 @@
                         <td class="op-semibold"><?php echo $project['number']; ?></td>
                         <td class="op-semibold"><?php echo $project['name']; ?></td>
                         <td class="op-semibold text-center"><?php echo $project['levels']; ?></td>
+                        <td class=""><?php echo strlen($project['address'])>70?substr($project['address'],0 , 70) . '...':$project['address'] ?></td>
                         <?php if (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true)) { ?>
                         <td class="op-semibold text-center">0 Quotes</td>
                         <?php } ?>

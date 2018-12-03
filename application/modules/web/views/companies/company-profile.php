@@ -101,6 +101,7 @@
         <!-- //technician list search -->
 
         <!-- Technician list table -->
+        <?php if (!empty($inspirations)) { ?>
         <div class="table-responsive table-wrapper inspiration-table scrollbar-inner" id="scrollbar-inner">
             <table cellspacing="0" class="table-custom">
                 <thead>
@@ -163,14 +164,17 @@
                         </td>
                     </tr>
                     <?php } ?>
-                    <?php if (empty($inspirations)) { ?>
-                        <tr>
-                            <td class="text-center" colspan="10">No results found</td>
-                        </tr>
-                    <?php } ?>
+                   
                 </tbody>
             </table>
         </div>   	
+        <?php } ?>
+        <?php if (empty($inspirations)) { ?>
+            <div class="no-record text-center">
+                <img src="<?php echo base_url("public/images/svg/inspiration_list_missing.svg"); ?>" alt="Note Paper">
+                <p><?php echo $this->lang->line('no_inspiration_found') ?></p>
+            </div>
+        <?php } ?>
         <div class="pagination-wrap">
             <?php echo $links ?>
         </div>

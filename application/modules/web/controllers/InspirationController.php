@@ -53,11 +53,13 @@ class InspirationController extends BaseController
                 $row['description'] = strlen($row['description']) > 50 ? substr($row['description'], 0, 50) . "...": $row['description'];
                 $row['products'] = json_decode("[{$row['products']}]", true);
                 $row['media'] = json_decode("[{$row['media']}]", true);
-                $row['media'] = !empty($row['media'])?$row['media']:base_url("public/images/logo.png");
+                $row['media'] = !empty($row['media'])?$row['media']:[];
                 if (isset($this->userInfo['user_type'])
-                    && in_array($this->userInfo['user_type'], [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER])
+                    && (in_array($this->userInfo['user_type'], [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER])
                     && (ROLE_OWNER === (int)$this->userInfo['is_owner'] || (isset($this->employeePermission['insp_edit']) && (int)$this->employeePermission['insp_edit'] === 1))
-                    && ( (int)$this->userInfo['company_id'] === (int)$row['company_id'] )
+                    && ( (int)$this->userInfo['company_id'] === (int)$row['company_id'] )) || 
+                        (in_array($this->userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER]) && 
+                        (int)$this->userInfo['user_id'] === (int)$row['user_id'])
                 ) {
                     $row['edit_inspiration'] = true;
                 } else {
@@ -120,6 +122,8 @@ class InspirationController extends BaseController
 
             $this->load->helper(['products']);
             $products = products('en');
+            $this->load->config('css_config');
+            $this->data['css'] = $this->config->item('inspiration-add');
             $this->data['products'] = $products;
             $post = $this->input->post();
             if (!empty($post)) {
@@ -157,10 +161,12 @@ class InspirationController extends BaseController
                     }
                 }
 
-                if ($this->form_validation->run() && !($validateImage xor $validImage)) {
+                $status = $this->form_validation->run();
+
+                if ((bool)$status && !($validateImage xor $validImage)) {
                     $this->load->helper("input_data");
                     $post = $this->input->post();
-                    $post = trim_input_parameters($post);
+                    $post = trim_input_parameters($post, false);
                     $this->Inspiration->title = $post['title'];
                     $this->Inspiration->description = $post['description'];
                     $this->Inspiration->user_id = $this->userInfo['user_id'];
@@ -170,6 +176,9 @@ class InspirationController extends BaseController
                         $this->Inspiration->company_id = null;
                     }
 
+                    $this->Inspiration->address = $post['address'];
+                    $this->Inspiration->lat = $post['address_lat'];
+                    $this->Inspiration->lng = $post['address_lng'];
                     $this->Inspiration->created_at = $this->datetime;
                     $this->Inspiration->created_at_timestamp = $this->timestamp;
                     $this->Inspiration->updated_at = $this->datetime;
@@ -214,13 +223,12 @@ class InspirationController extends BaseController
             $this->data['js'] = 'inspiration-add';
             $this->data['custom_select'] = true;
             $this->data['image_video_uploader'] = true;
-            load_website_views("inspirations/add", $this->data);
+            website_view("inspirations/add", $this->data);
         } catch (\Exception $error) {
             $this->db->trans_rollback();
-            pd($error->getMessage());
             $this->session->set_flashdata("flash-message", $this->lang->line("something_went_Worng"));
             $this->session->set_flashdata("flash-type", "danger");
-            load_website_views("inspirations/add", $this->data);
+            website_view("inspirations/add", $this->data);
         }
     }
     
@@ -242,7 +250,8 @@ class InspirationController extends BaseController
             error404("", base_url());
             exit;
         }
-
+        $this->load->config('css_config');
+        $this->data['css'] = $this->config->item('inspiration-add');
         $options['poster_details'] = true;
         $options['media'] = true;
         $options['products'] = true;
@@ -314,7 +323,11 @@ class InspirationController extends BaseController
                 $post = trim_input_parameters($post);
                 $this->Inspiration->title = $post['title'];
                 $this->Inspiration->description = $post['description'];
+                $this->Inspiration->address = $post['address'];
+                $this->Inspiration->lat = $post['address_lat'];
+                $this->Inspiration->lng = $post['address_lng'];
                 $this->Inspiration->updated_at = $this->datetime;
+                $this->Inspiration->updated_at_timestamp = $this->timestamp;
                 $inspirationProducts = $this->input->post('products');
                 if (!is_null($inspirationProducts) && is_array($inspirationProducts)) {
                     foreach ($inspirationProducts as $key => $product) {
@@ -374,7 +387,7 @@ class InspirationController extends BaseController
         $this->data['custom_select'] = true;
         $this->data['image_video_uploader'] = true;
 
-        load_website_views("inspirations/edit", $this->data);
+        website_view("inspirations/edit", $this->data);
     }
 
     private function addInspirationValidation()
@@ -394,6 +407,21 @@ class InspirationController extends BaseController
                     'field' => 'products[]',
                     'label' => 'Products', 
                     'rules' => 'trim|required'
+                ],
+                [
+                    'field' => 'address',
+                    'label' => 'Address',
+                    'rules' => 'trim|required|max_length[255]'
+                ],
+                [
+                    'field' => 'address_lat',
+                    'label' => 'Address',
+                    'rules' => 'trim|required|numeric'
+                ],
+                [
+                    'field' => 'address_lng',
+                    'label' => 'Address',
+                    'rules' => 'trim|required|numeric'
                 ]
         ];
         return $rules;

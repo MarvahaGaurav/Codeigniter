@@ -19,7 +19,7 @@
             <div class="form-wrapper">
                 <h1 class="form-caption">Congratulations!</h1>
                 <p class="succeed"><span><img src="public/images/checked.svg" alt="check"/></span>Password Reset Sucessfully</p>
-                <p class="form-desciption">Your new password has been reset successfully in <span class="create-account">SMART GUIDES</span> app</p> 
+                <p class="form-desciption">Your new password has been reset successfully, Please click <span class="create-account">OK</span> to continue</p> 
                 <div class="form-group form-btn-wrap">
                     <button class="form-btn save" type="button" onclick="window.location.href='<?php echo base_url(); ?>login';">OK</button>
                 </div>                

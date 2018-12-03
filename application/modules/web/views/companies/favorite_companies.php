@@ -6,7 +6,6 @@
             <li><a href="javascript:void(0)">Home</a></li>
             <li class="active">Favorite Companies</li>
         </ul>
-        <!-- //breadcrumb -->
 
         <div class="page-heading">
             <h1 class="page-title">Favorite Companies</h1>
@@ -30,6 +29,7 @@
         <!-- //technician list search -->
 
         <!-- Technician list table -->
+        <?php if (!empty($companies)) { ?>
         <div class="table-responsive table-wrapper" id="scrollbar-inner">
             <table cellspacing="0" class="table-custom">
                 <thead>
@@ -67,14 +67,18 @@
                         </td>
                     </tr>
                     <?php } ?>
-                    <?php if (empty($companies)) { ?>
-                        <tr>
-                            <td colspan="10">No result found</td>
-                        </tr>
-                    <?php  } ?>
+                    
                 </tbody>
             </table>
-        </div>      
+        </div>
+        <?php } ?>
+        <?php if (empty($companies)) { ?>
+            <div class="no-record text-center">
+                <img src="<?php echo base_url("public/images/svg/company.svg"); ?>" alt="Note Paper">
+                <p><?php echo $this->lang->line('no_favorite_company_found') ?></p>
+                <p>Select a company <a href="<?php echo base_url("home/companies"); ?>" class="page-link">here</a></p>
+            </div>
+        <?php  } ?>      
         <div class="pagination-wrap">
             <?php echo $links ?>
         </div>

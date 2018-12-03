@@ -138,23 +138,23 @@
                             <?php echo form_error('alternate_contact_number', '<label for="alternate_contact_number" class="error">', "</label>"); ?>
                         </div>
                     </div>
-                    <?php $isCustomerUser = in_array(set_value('user_type'), [PRIVATE_USER, BUSINESS_USER]) || empty(set_value('user_type')) ?>
-                    <?php $isCompanyOwner = (int) set_value('is_company_owner') === 1 || empty(set_value('user_type')) ?>
+                    <?php $isCustomerUser = in_array(set_value('user_type'), [PRIVATE_USER]) || empty(set_value('user_type')) ?>
+                    <?php $isCompanyOwner = ((int) set_value('is_company_owner') === 1 || empty(set_value('user_type')) || set_value('user_type') == BUSINESS_USER) ?>
                     <?php ?>
                     <!-- wholesaler -->
                     <div class="<?php echo $isCustomerUser ? "wholesaler-field" : "" ?>" id="technician-div">
-                        <div class="clearfix">
+                        <div class="clearfix owner-prompt">
                             <label>Are you the owner of this company?</label>
                             <div class="clearfix"></div>
                             <div class="custom-radio-wrapper">
                                 <label class="custom-radio">Yes
-                                    <input type="radio" value="1" class="technician-fields" name="is_company_owner" <?php echo set_radio('is_company_owner', '1', true) ?> <?php
+                                    <input type="radio" value="1" class="technician-fields" id="company_owner_yes" name="is_company_owner" <?php echo set_radio('is_company_owner', '1', true) ?> <?php
                                     echo $isCustomerUser ? "disabled" : ''
                                     ?>>
                                     <span class="checkmark"></span>
                                 </label>
                                 <label class="custom-radio">No
-                                    <input type="radio" value="0" class="technician-fields" name="is_company_owner" <?php echo set_radio('is_company_owner', '0') ?> <?php
+                                    <input type="radio" value="0" class="technician-fields" id="company_owner_no" name="is_company_owner" <?php echo set_radio('is_company_owner', '0') ?> <?php
                                     echo $isCustomerUser ? "disabled" : ''
                                     ?>>
                                     <span class="checkmark"></span>
@@ -203,6 +203,16 @@
                                     <span>Browse</span>
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-group clearfix <?php echo strlen(set_Value('user_type'))>0&&set_value('user_type') == INSTALLER&&$isCompanyOwner?'': 'concealable'  ?>" id="address-box-wrapper">
+                            <label class="labelTxt">Address</label>
+                            <div class="form-group-field">
+                                <textarea name="address" id="address" placeholder="Click map marker icon to pick location"><?php echo set_value('address') ?></textarea>
+                                <span data-toggle="modal" data-target="#maps-modal" title="Pick Location from Map" id="address-map-icon" class="clickable"><i class="fa fa-map-marker"></i></span>
+                            </div>
+                            <div id="address-map-error"><?php echo strlen(form_error('address'))>0||strlen(form_error('address'))>0||strlen(form_error('address'))>0?form_error('address'):'' ?></div>
+                            <input type="hidden" name="address_lat" id="address-lat" value="<?php echo set_value('address_lat') ?>">
+                            <input type="hidden" name="address_lng" id="address-lng" value="<?php echo set_value('address_lng') ?>">
                         </div>
                     </div>
                     <!-- wholesaler end -->
@@ -286,3 +296,25 @@
     <!-- ============== Login Section End ============== -->
 
 </body>
+<div id="maps-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Pick your Location</h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <input type="text" name="" id="maps-places">
+                </div>
+                <div id="maps-box">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Done</button>
+            </div>
+        </div>
+
+    </div>
+</div>

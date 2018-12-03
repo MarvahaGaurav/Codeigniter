@@ -1,4 +1,16 @@
 (function ($, window) {
+    $("#address-lat").on("change", function () {
+        var self = this,
+            $self = $(self),
+            value = $self.val();
+
+        console.log(value, 'here');
+        
+        // if (value.trim().length > 0) {
+        //     $("#address-map-error").html('');
+        // }
+    });
+
     map = new google.maps.Map(document.getElementById('maps-box'), {
         center: { lat: 28.53551610, lng: 77.39102650 },
         zoom: 10

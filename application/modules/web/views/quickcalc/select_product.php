@@ -3,14 +3,11 @@
 
         <!-- breadcrumb -->
         <ul class="breadcrumb">
-            <li><a href="javascript:void(0)">Home</a></li>
-            <li><a href="javascript:void(0)">Project</a></li>
-            <li><a href="javascript:void(0)">Create New Project</a></li>
-            <li><a href="javascript:void(0)">Select Application</a></li>
-            <li><a href="javascript:void(0)">Rooms</a></li>
-            <li><a href="javascript:void(0)">Room Type</a></li>
-            <li><a href="javascript:void(0)">Room Dimensions</a></li>
-            <li class="active">Products</li>
+        <li><a href="javascript:void(0)">Home</a></li>
+            <li><a href="<?php echo base_url('home/applications/' . $application_id) ?>">Applications</a></li>
+            <li><a href="<?php echo base_url('home/applications/' . $application_id . '/rooms') ?>">Rooms</a></li>
+            <li><a href="<?php echo base_url('home/applications/' . $application_id . '/rooms/' . $room_id . '/fast-calc/') ?>">Fast Calc</a></li>
+            <li class="active">Select Product</li>
         </ul>
         <!-- //breadcrumb -->
 
@@ -110,6 +107,7 @@
                     <option value="<?php echo MOUNTING_PENDANT ?>">PENDANT</option>
                     <option value="<?php echo MOUNTING_TRACKS ?>">TRACKS</option>
                 </select>
+                <span class="customArrow"></span>
                 <input type="hidden" name="room_id" id="room_id" value="<?php echo $room_id; ?>">
                 <input type="hidden" name="token" id ="token" value="<?php echo $csrfToken; ?>">
                 <input type="hidden" name="token_nme" id ="token_nme" value="<?php echo $csrfName; ?>">
@@ -125,6 +123,37 @@
             <div class="row" id="product_div">
 
             </div>
+        </div>
+
+        <div class="no-record text-center no-product-found-container">
+            <img src="<?php echo base_url('public/images/svg/sg_logo_placeholder.svg') ?>" alt="Note Paper">
+            <p><?php echo $this->lang->line('no_product_found') ?></p>
+            <p><?php echo $this->lang->line('select_mounting_type') ?></p>
+        </div>
+
+        <hr>
+        <div class="project-list-wrapper clearfix">
+            <h2 class="project-listtxt">Search Products</h2>
+            <div class="search-wrapper search-wrapper-width-2 fawe-icon-position">
+                <span class="fawe-icon fawe-icon-position-right close-ico">
+                    <i class="fa fa-times"></i>
+                </span>
+                <form id="search-form" method="GET" action="">
+                    <input type="text" data-search-data='<?php echo $searchData ?>' name="search" class="search-product-box search-box" value="" id="product-search"  placeholder="Search Products...">
+                </form>
+            </div>
+        </div>
+
+        <div class="thumb-wrapper">
+            <div class="row" id="search_product_div">
+                <!-- no record found -->
+                <!-- no record found -->
+            </div>
+        </div>
+        <div class="no-record text-center no-article-found-container">
+            <img src="<?php echo base_url('public/images/svg/sg_logo_placeholder.svg') ?>" alt="Note Paper">
+            <p><?php echo $this->lang->line('no_product_found') ?></p>
+            <p><?php echo $this->lang->line('search_products_prompt') ?></p>
         </div>
 
     </div>

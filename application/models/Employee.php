@@ -46,6 +46,7 @@ class Employee extends BaseModel
     public function employees($params)
     {
         $this->db->select('first_name, email, user_id')
+            ->join('employee_request_master as erm', 'erm.requested_to=users.user_id')
             ->from('ai_user as users');
 
         if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {

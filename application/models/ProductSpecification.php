@@ -33,7 +33,7 @@ class ProductSpecification extends BaseModel
             ->from($this->tableName)
             ->where('product_id', $params['product_id'])
             ->group_by('articlecode');
-        
+
         if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
             foreach ($params['where'] as $tableColumn => $searchValue) {
                 $this->db->where($tableColumn, $searchValue);
@@ -47,6 +47,35 @@ class ProductSpecification extends BaseModel
         } else {
             $data = $query->result_array();
         }
+
+        return $data;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    public function articlesByRooms($roomId, $params)
+    {
+        $this->db->select('ps.image, ps.product_id, ps.articlecode, ps.title, ps.uld,
+        ps.type, ps.driver, ps.length, ps.width, ps.height')
+            ->from('product_specifications as ps')
+            ->join('products as p', 'p.product_id=ps.product_id')
+            ->join('room_products as rp', 'rp.product_id=p.product_id');
+
+        $this->db->where('rp.room_id', $roomId);
+        $this->db->where('CHAR_LENGTH(uld) >', "0");
+
+        if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
+            foreach ($params['where'] as $tableColumn => $searchValue) {
+                $this->db->where($tableColumn, $searchValue);
+            }
+        }
+
+        $query = $this->db->get();
+
+        $data = $query->result_array();
 
         return $data;
     }
@@ -66,17 +95,17 @@ class ProductSpecification extends BaseModel
         if (isset($params['limit']) && is_numeric($params['limit']) && (int)$params['limit'] > 0) {
             $this->db->limit((int)$params['limit']);
         }
-            
+
         if (isset($params['offset']) && is_numeric($params['offset']) && (int)$params['offset'] > 0) {
             $this->db->offset((int)$params['offset']);
         }
-    
+
         if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
             foreach ($params['where'] as $tableColumn => $searchValue) {
                 $this->db->where($tableColumn, $searchValue);
             }
         }
-        
+
         $query = $this->db->get();
 
         $data['data'] = $query->result_array();

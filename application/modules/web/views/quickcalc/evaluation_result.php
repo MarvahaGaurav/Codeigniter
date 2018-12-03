@@ -24,31 +24,27 @@
 
             <!-- thumb-footer-detail -->
             <div class="row thumb-footer-detail">
-                <!--                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                    <h3 class="thumb-footer-title">Technical Data</h3>
-                                    <div class="row">
-                                        <div class="col-xs-12">
-                                            <p class="rd-property">Lux</p>
-                                            <p class="rd-value">520</p>
-                                        </div>
-                                        <div class="col-xs-12">
-                                            <p class="rd-property">Article Number:</p>
-                                            <p class="rd-value">11713</p>
-                                        </div>
-                                        <div class="col-xs-12">
-                                            <p class="rd-property">Kelvin:</p>
-                                            <p class="rd-value"><?php echo $specifications['colour_temperature']; ?></p>
-                                        </div>
-                                        <div class="col-xs-12">
-                                            <p class="rd-property">Energy Class:</p>
-                                            <p class="rd-value"><?php echo $specifications['energy_class']; ?></p>
-                                        </div>
-                                        <div class="col-xs-12">
-                                            <p class="rd-property">UGR</p>
-                                            <p class="rd-value">30lK</p>
-                                        </div>
-                                    </div>
-                                </div>-->
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <h3 class="thumb-footer-title">Technican Data</h3>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <p class="rd-property">Article Code</p>
+                            <p class="rd-value"><?php echo $specifications['articlecode']; ?></p>
+                        </div>
+                        <div class="col-xs-12">
+                            <p class="rd-property">Color Temprature</p>
+                            <p class="rd-value"><?php echo $specifications['colour_temperature']; ?></p>
+                        </div>
+                        <div class="col-xs-12">
+                            <p class="rd-property">Beam Angle</p>
+                            <p class="rd-value"><?php echo $specifications['beam_angle']; ?></p>
+                        </div>
+                        <div class="col-xs-12">
+                            <p class="rd-property">Colour Rendering</p>
+                            <p class="rd-value"><?php echo $specifications['colour_rendering']; ?></p>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <h3 class="thumb-footer-title">Recommended Data</h3>
                     <div class="row">
@@ -94,6 +90,50 @@
             </div>
         </div>
 
+        <div class="thumbview-tablecell thumbview-tablecell-two">
+            <!-- thumbnail list -->
+            <div class="thumb-view-listing-wrapper thumb-tab">
+                <ul>
+                    <li class="active">
+                        <a href="#thumb-tab1" data-toggle="tab">
+                            <div class="thumb-view-list clearfix">
+                                <figure>
+                                    <?php
+                                    echo $room_data['top_view'];
+                                    ?>
+                                </figure>
+                                <span class="thumbnail-sideview">Top View</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#thumb-tab2" data-toggle="tab">
+                            <div class="thumb-view-list clearfix">
+                                <figure>
+                                    <?php
+                                    echo $room_data['front_view'];
+                                    ?>
+                                </figure>
+                                <span class="thumbnail-sideview">Front View</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#thumb-tab3" data-toggle="tab">
+                            <div class="thumb-view-list clearfix">
+                                <figure>
+                                    <?php
+                                    echo $room_data['side_view'];
+                                    ?>
+                                </figure>
+                                <span class="thumbnail-sideview">Side View</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- //thumbnail list -->
+        </div>
         <!-- thumb view -->
         <div class="thumbview-table">
             <div class="thumbview-tablecell thumbview-tablecell-one">
@@ -118,50 +158,6 @@
                     </div>
                     <!-- //thumbnail -->
                 </div>
-            </div>
-            <div class="thumbview-tablecell thumbview-tablecell-two">
-                <!-- thumbnail list -->
-                <div class="thumb-view-listing-wrapper thumb-tab">
-                    <ul>
-                        <li class="active">
-                            <a href="#thumb-tab1" data-toggle="tab">
-                                <div class="thumb-view-list clearfix">
-                                    <figure>
-                                        <?php
-                                        echo $room_data['top_view'];
-                                        ?>
-                                    </figure>
-                                    <span class="thumbnail-sideview">Top View</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#thumb-tab2" data-toggle="tab">
-                                <div class="thumb-view-list clearfix">
-                                    <figure>
-                                        <?php
-                                        echo $room_data['front_view'];
-                                        ?>
-                                    </figure>
-                                    <span class="thumbnail-sideview">Front View</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#thumb-tab3" data-toggle="tab">
-                                <div class="thumb-view-list clearfix">
-                                    <figure>
-                                        <?php
-                                        echo $room_data['side_view'];
-                                        ?>
-                                    </figure>
-                                    <span class="thumbnail-sideview">Side View</span>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <!-- //thumbnail list -->
             </div>
         </div>
 

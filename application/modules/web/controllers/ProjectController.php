@@ -55,7 +55,6 @@ class ProjectController extends BaseController
                     'where_in' => ['project_id' => $projectIds]
                 ]);
             }
-            echo $this->db->last_query(); die;
             $projects = getDataWith($projects, $projectRequest, 'project_id', 'project_id', 'requests', 'project_id');
 
             $this->data['projects'] = $projects;
@@ -90,7 +89,9 @@ class ProjectController extends BaseController
         if ((int)$this->userInfo['user_type'] === INSTALLER && (int)$this->userInfo['is_owner'] === ROLE_OWNER) {
             $this->load->model('Employee');
             $this->data['employees'] = $this->Employee->employees([
-                'where' => ['company_id' => $this->userInfo['company_id'], 'is_owner' => ROLE_EMPLOYEE]
+                'where' => ['company_id' => $this->userInfo['company_id'], 
+                    'is_owner' => ROLE_EMPLOYEE
+                ]
             ]);
         }
 

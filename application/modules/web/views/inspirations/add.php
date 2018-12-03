@@ -30,7 +30,7 @@
                             <div class="form-group">
                                 <label class="p-label">Inspiration Title</label>
                                 <div class="form-group-field">
-                                    <input type="text" name="title alphanumspaces-only-field" maxlength="255" value="<?php echo set_value("title") ?>" placeholder="Tower Name">
+                                    <input type="text" name="title" class="alphanumspaces-only-field" maxlength="255" value="<?php echo set_value("title") ?>" placeholder="Tower Name">
                                     <label class="error"><?php echo form_error("title") ?></label>
                                 </div>
                             </div>
@@ -49,6 +49,22 @@
                                 </div>
                             </div>
                             <div class="error"><?php echo form_error("description") ?></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="user-detail-block3">
+                    <div class="row">
+                        <div class="col-lg-6 col-sm-6 col-xs-12">
+                            <div class="form-group" id="address-box-wrapper">
+                                <label class="labelTxt">Address</label>
+                                <div class="form-group-field">
+                                    <textarea name="address" id="address" placeholder="Click map marker icon to pick location"></textarea>
+                                    <span data-toggle="modal" data-target="#maps-modal" title="Pick Location from Map" id="address-map-icon" class="clickable"><i class="fa fa-map-marker"></i></span>
+                                </div>
+                                <div id="address-map-error"></div>
+                                <input type="hidden" name="address_lat" id="address-lat">
+                                <input type="hidden" name="address_lng" id="address-lng">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -101,6 +117,28 @@
         </div>
         </form>
         <!-- Button wrapper section -->
+
+    </div>
+</div>
+<div id="maps-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Pick your Location</h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <input type="text" name="" id="maps-places">
+                </div>
+                <div id="maps-box">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Done</button>
+            </div>
+        </div>
 
     </div>
 </div>

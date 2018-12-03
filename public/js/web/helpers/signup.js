@@ -1,5 +1,6 @@
 (function ($) {
     var $technicianDiv = $("#technician-div"),
+        $ownerPrompt = $(".owner-prompt"),
         technicianTypes = ["2", "3", "4", "5"],
         $technicianFields = $(".technician-fields"),
         $companyOwnerField = $('.company-owner-field'),
@@ -7,8 +8,10 @@
         $companyRegistrationNumber = $("#company-registration-number"),
         $companyName = $("#company-name"),
         $companyLogo = $("#company-logo"),
-        $isCompanyOwner = $("input[name='is_company_owner']");
-        $companyNameWrapper = $("#company-name-wrapper");
+        $isCompanyOwner = $("input[name='is_company_owner']"),
+        $companyNameWrapper = $("#company-name-wrapper"),
+        $addressBox = $("#address-box-wrapper"),
+        $address = $("#address");
 
     var normalizer = function (value) {
         return $.trim(value);
@@ -77,7 +80,15 @@
 
     $("#signup-form").validate({
         ignore: [],
-        rules: validationRules
+        rules: validationRules,
+        errorPlacement: function (error, $element) {
+            if ($element.attr('name') == 'address_lat' || $element.attr('name') == 'address_lng' || $element.attr('name') === 'address') {
+                $("#maps-modal").modal('show');
+                $("#address-map-error").html(error);
+            } else {
+                $element.after(error);
+            }
+        }
     });
 
     $("#select-user-types").on('change', function () {
@@ -85,9 +96,36 @@
             $self = $(self),
             currentUserType = $self.val();
 
+
         if (technicianTypes.indexOf(currentUserType) != -1) {
+            if ($("#company_owner_no").prop("checked")) {
+                companyNameView('employee');
+            } else if ($("#company_owner_yes").prop("checked")) {
+                companyNameView('owner');
+            }
+            $ownerPrompt.show();
             $technicianDiv.show();
-            $companyName.rules("add", {
+            if (currentUserType == 2 && $("#company_owner_yes").prop("checked")) {
+                $("#address-box-wrapper").show();
+                $addressBox.removeClass('concealable');
+                $address.rules('add', {
+                    required: true
+                });
+                $("#address-lat").rules('add', {
+                    required: true,
+                    number: true
+                });
+                $("#address-lng").rules('add', {
+                    required: true,
+                    number: true
+                });
+            } else {
+                $("#address-box-wrapper").hide();
+                $address.rules('remove');
+                $("#address-lat").rules('remove');
+                $("#address-lng").rules('remove');
+            }
+            $("#company-name").rules("add", {
                 required: true,
                 maxlength: 50,
                 normalizer: normalizer
@@ -103,11 +141,39 @@
                 required: true,
             });
             $technicianFields.removeAttr("disabled");
+        } else if (currentUserType == 6) {
+            companyNameView('owner');
+            $ownerPrompt.hide();
+            $technicianDiv.show();
+            $companyOwnerWrapper.show();
+            $companyRegistrationNumber.removeAttr("disabled");
+            $address.rules('remove');
+            $("#address-lat").rules('remove');
+            $("#address-lng").rules('remove');
+            $("#address-box-wrapper").hide();
+            $("#company_owner_yes").prop("checked", true);
+            $("#company-name").rules("add", {
+                required: true,
+                maxlength: 50,
+                normalizer: normalizer
+            });
+            $companyRegistrationNumber.rules("add", {
+                required: true,
+                maxlength: 25,
+                number: true
+            });
+            $companyLogo.rules("add", {
+                required: true,
+            });
         } else {
+            $("#address-box-wrapper").hide();
             $technicianDiv.hide();
             $companyRegistrationNumber.rules('remove');
             $companyLogo.rules('remove');
-            $companyName.rules("remove");
+            $address.rules('remove');
+            $("#address-lat").rules('remove');
+            $("#address-lng").rules('remove');
+            $("#company-name").rules("remove");
             $isCompanyOwner.rules("remove");
             $technicianFields.attr("disabled", "disabled");
         }
@@ -118,7 +184,33 @@
             $self = $(self),
             currentValue = $self.val();
 
-        if (currentValue == 1) {
+        if (currentValue == 1 && $("#select-user-types").val() == 2) {
+            companyNameView('owner');
+            $addressBox.show();
+            $isCompanyOwner.rules("add", {
+                required: true,
+            });
+            $companyRegistrationNumber.rules("add", {
+                required: true,
+                number: true
+            });
+            $address.rules('add', {
+                required: true,
+                maxlength: 100
+            });
+            $("#address-lat").rules('add', {
+                required: true,
+                number: true
+            });
+            $("#address-lng").rules('add', {
+                required: true,
+                number: true
+            });
+            $companyOwnerField.removeAttr("disabled");
+            $companyOwnerWrapper.show();
+
+        } else if (currentValue == 1) {
+            $addressBox.hide();
             companyNameView('owner');
             $isCompanyOwner.rules("add", {
                 required: true,
@@ -127,12 +219,19 @@
                 required: true,
                 number: true
             });
+            $address.rules('remove');
+            $("#address-lat").rules('remove');
+            $("#address-lng").rules('remove');
             $companyOwnerField.removeAttr("disabled");
             $companyOwnerWrapper.show();
         } else if (currentValue == 0) {
-            $companyRegistrationNumber.rules('remove');
+            $addressBox.hide();
+            $address.rules('remove');
+            $("#address-lat").rules('remove');
+            $("#address-lng").rules('remove');
             $companyLogo.rules('remove');
             companyNameView('employee');
+            $companyRegistrationNumber.rules('remove');
             $companyOwnerField.attr("disabled", "disabled");
             $companyOwnerWrapper.hide();
         } else {
@@ -149,8 +248,8 @@
     function companyNameView(type) {
         if (type == 'owner') {
             $(".company-name-select").selectpicker('destroy');
-            $companyNameWrapper.html('<input type="text" id="company-name" name="company_name" class="form-control technician-fields" placeholder="Company Name"/>');
-        } else if(type == 'employee') {
+            $companyNameWrapper.html('<input type="text" id="company-name" name="company_name" class="form-control technician-fields alphanumspaces-only-field restrict-characters" data-restrict-to="100" placeholder="Company Name"/>');
+        } else if (type == 'employee') {
             var userType = $("#select-user-types").val(),
                 queryData = {
                     user_type: userType
@@ -165,13 +264,13 @@
                 success: function (response) {
                     var html = '<select name="company_name" class="company-name-select" data-style="btn-default custom-select-style">'
                         + '<option value="">Select a company</option>';
-                    for(company in response.data) {
+                    for (company in response.data) {
                         var companyObject = response.data[company];
                         html += '<option data-thumbnail="' +
-                                companyObject.company_image + '" value="' +
-                                companyObject.company_id + '">' +
-                                companyObject.company_name + '</option>';
-                    } 
+                            companyObject.company_image + '" value="' +
+                            companyObject.company_id + '">' +
+                            companyObject.company_name + '</option>';
+                    }
                     html += '</select>';
                     $companyNameWrapper.html(html);
                     $(".company-name-select").selectpicker({

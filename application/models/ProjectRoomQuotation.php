@@ -85,4 +85,26 @@ class ProjectRoomQuotation extends BaseModel
 
         return $data;
     }
+
+    /**
+     * Return quotaitons price based on company and projects ids
+     *
+     * @param int $companyId
+     * @param string $projectIds
+     * @return array
+     */
+    public function quotationPrice($companyId, $projectIds)
+    {
+        $this->db->select("project_id, price_per_luminaries,installation_charges, discount_price")
+            ->from("project_room_quotations as prq")
+            ->join("project_rooms as pr", 'pr.id=prq.project_room_id')
+            ->where('prq.company_id', $companyId)
+            ->where_in('pr.project_id', $projectIds);
+
+        $query = $this->db->get();
+
+        $result = $query->result_array();
+
+        return $result;
+    }
 }

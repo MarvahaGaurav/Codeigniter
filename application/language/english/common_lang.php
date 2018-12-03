@@ -213,3 +213,16 @@ $lang['room_count_sets_txt'] = "Sets";
 $lang['tco_txt'] = "TCO";
 $lang['add_price_txt'] = 'Add Price';
 $lang['edit_price_txt'] = 'Edit Price';
+
+$lang['no_project_found'] = 'No Project Found';
+$lang['no_inspiration_found'] = 'No Inspiration Found';
+$lang['no_product_found'] = 'No Product Found';
+$lang['no_quotation_found'] = 'No Quotation Found';
+$lang['no_room_found'] = 'No Room Found';
+$lang['no_company_found'] = 'No Company Found';
+$lang['no_favorite_company_found'] = 'No Favorite Company Found';
+$lang['no_technician_found'] = 'No Technician Found';
+
+$lang['select_mounting_type'] = 'Please select a mounting type to continue';
+$lang['search_products_prompt'] = 'Search to find products';
+$lang['location_required'] = 'Location required';

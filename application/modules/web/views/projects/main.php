@@ -28,6 +28,7 @@
         </div>
         <!-- //project list search -->
         <!-- Project list table -->
+        <?php if (!empty($projects)) { ?>
         <div class="table-responsive table-wrapper" id="scrollbar-inner">
             <table cellspacing="0" class="table-custom">
                 <thead>
@@ -66,14 +67,17 @@
                             </td>
                         </tr>
                         <?php } ?>
-                    <?php if (empty($projects)) { ?>
-                        <tr>
-                            <td colspan="10"><?php echo $this->lang->line("no_projects_found") ?></td>
-                        </tr>
-                    <?php }?>
                 </tbody>
             </table>
         </div>
+        <?php } ?>
+        <?php if (empty($projects)) { ?>
+            <div class="no-record text-center">
+                <img src="<?php echo base_url("public/images/placeholder/no-found-ico-1.svg"); ?>" alt="Note Paper">
+                <p>You have no projects.</p>
+                <p>Tap on <a href="<?php echo base_url("home/projects/create"); ?>" class="page-link">Add Project</a> button to add a project.</p>
+            </div>
+        <?php }?>
         <div class="pagination-wrap">
             <?php echo $links ?>
         </div>

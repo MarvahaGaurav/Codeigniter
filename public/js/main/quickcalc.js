@@ -1,4 +1,4 @@
-requirejs.config( {
+requirejs.config({
     baseUrl: "public/js",
     waitSeconds: 60,
     paths: {
@@ -10,30 +10,32 @@ requirejs.config( {
         jqueryValidator: 'jquery.validate.min',
         autocomplete: 'jquery.autocomplete.min',
         location: 'lib/location',
-        helper: 'web/helpers/quickcalc'
+        helper: 'web/helpers/quickcalc',
+        roomForm: 'web/helpers/room-form'
     },
     shim: {
         //dependencies
-        bootstrap: [ 'jquery' ],
-        selectPicker: [ 'bootstrap' ],
-        common: [ 'bootstrap' ],
-        jqueryScrollbar: [ 'jquery' ],
-        jqueryValidator: [ 'jquery' ],
-        helper: [ 'jqueryValidator' ],
-        autocomplete: [ 'jquery' ],
-        location: [ 'autocomplete' ]
+        bootstrap: ['jquery'],
+        selectPicker: ['bootstrap'],
+        common: ['bootstrap'],
+        jqueryScrollbar: ['jquery'],
+        jqueryValidator: ['jquery'],
+        helper: ['jqueryValidator'],
+        autocomplete: ['jquery'],
+        location: ['autocomplete'],
+        roomForm: ['jquery']
     }
-} );
+});
 
 requirejs(
-        [ "jquery", "bootstrap", "common", "jqueryScrollbar", "jqueryValidator", "helper", "autocomplete", "location", "selectPicker" ],
-        function ( $ ) {
-            var $addForm = $("#quick_cal_form"),
+    ["jquery", "bootstrap", "common", "jqueryScrollbar", "jqueryValidator", "helper", "autocomplete", "location", "selectPicker", "roomForm"],
+    function ($) {
+        var $addForm = $("#quick_cal_form"),
             $roomLuminariesX = $("#room_luminaries_x"),
             $roomLuminariesY = $("#room_luminaries_y"),
             $xyTotal = $("#xy_total"),
             $luxValues = $("input[name='lux_values']");
-        
+
         addFormData = getFormData($addForm);
 
         if (
@@ -66,7 +68,7 @@ requirejs(
         $("#display-advanced-options").on("change", function () {
             var self = this,
                 $self = $(self);
-            
+
             if (self.checked) {
                 $advancedOptionsDiv.slideDown();
             } else {
@@ -106,8 +108,8 @@ requirejs(
             }
 
         });
-        },
-        function () {
+    },
+    function () {
 
-        }
+    }
 );

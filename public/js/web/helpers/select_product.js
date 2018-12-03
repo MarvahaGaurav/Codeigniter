@@ -1,69 +1,119 @@
 
+var project_id = $("#project_id").val();
+var level = $("#level").val();
+var application_id = $("#application_id").val();
+var room_id = $("#room_id").val();
 /**
  *  Get Products According Mounting Type
  */
-$( "#mounting_type" ).change( function () {
+$("#mounting_type").change(function () {
 
     var data = {
-        mounting: $( this ).val(),
-        room_id: $( "#room_id" ).val(),
-        csrf_token: $( "#token" ).val()
+        mounting: $(this).val(),
+        room_id: $("#room_id").val(),
+        csrf_token: $("#token").val()
     };
-    setCookie( "mounting", $( this ).val(), 7 );
-    var project_id = $( "#project_id" ).val();
-    var level = $( "#level" ).val();
-    var application_id = $( "#application_id" ).val();
-    var room_id = $( "#room_id" ).val();
+    setCookie("mounting", $(this).val(), 7);
     var url = window.location.protocol + "//" + window.location.hostname + "/home/projects/get-porduct";
-    $.ajax( {
+    $.ajax({
         url: url,
         data: data,
         type: "post",
+        dataType: 'json',
         beforeSend: function () {
 
         },
-        success: function ( res ) {
-            var obj = JSON.parse( res );
-
+        success: function (response) {
             var html = "";
-            $( "#product_div" ).empty();
-            $( obj.data ).each( function ( i, v ) {
-                console.log( v );
-                var redirect_url = window.location.protocol + "//" + window.location.hostname + "/home/projects/" + project_id + "/levels/" + level + "/rooms/applications/" + application_id + "/rooms/" + room_id + "/dimensions/products/" + v.product_id + "/mounting/" + v.type;
-                html += '<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 col-for-thumb redirectable" data-redirect-to="' + redirect_url + '">';
-                html += '<div class="thumb-box">';
-                html += '<div class="thumb-view-wrapper thumb-view-contain thumb-view-contain-pd thumb-view-fullp img-viewbdr-radius4">';
-                html += '<div class="thumb-view thumb-viewfullheight-1" style="background:url(\'' + v.images[0] + '\')"></div>';
-                html += '</div>';
-                html += '<div class="thumb-caption clearfix">';
-                html += '<h3 class="thumb-light-name">' + v.title + '</h3>';
-                html += '<a href="javascript:void(0)" class="thumb-light-moreinfo">More info</a>';
-                html += '</div>';
-                html += '</div>';
-                html += '</div>';
-            } );
-            $( "#product_div" ).append( html );
+            if (response.data && response.data.length > 0) {
+                $(".no-product-found-container").addClass('concealable');
+                $("#product_div").empty();
+                $(response.data).each(function (i, v) {
+                    var redirect_url = window.location.protocol + "//" + window.location.hostname + "/home/projects/" + project_id + "/levels/" + level + "/rooms/applications/" + application_id + "/rooms/" + room_id + "/dimensions/products/" + v.product_id + "/mounting/" + v.type;
+                    html += '<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 col-for-thumb redirectable" data-redirect-to="' + redirect_url + '">';
+                    html += '<div class="thumb-box">';
+                    html += '<div class="thumb-view-wrapper thumb-view-contain thumb-view-contain-pd thumb-view-fullp img-viewbdr-radius4">';
+                    html += '<div class="thumb-view thumb-viewfullheight-1" style="background:url(\'' + v.images[0] + '\')"></div>';
+                    html += '</div>';
+                    html += '<div class="thumb-caption clearfix">';
+                    html += '<h3 class="thumb-light-name">' + v.title + '</h3>';
+                    html += '<a href="javascript:void(0)" class="thumb-light-moreinfo">More info</a>';
+                    html += '</div>';
+                    html += '</div>';
+                    html += '</div>';
+                });
+                $("#product_div").append(html);
+            } else {
+                $("#product_div").empty();
+                $(".no-product-found-container").removeClass('concealable');
+            }
         },
-        error: function ( err ) {
+        error: function (err) {
+            
+        }
+    });
+});
+
+$("#product-search").on('keydown', function () {
+    var self = this,
+        $self = $(self),
+        searchData = JSON.parse($self.attr("data-search-data")),
+        searchValue = $self.val();
+
+    searchData.search = searchValue.trim();
+
+    $.ajax({
+        url: window.location.protocol + "//" + window.location.host + "/xhttp/projects/rooms/products/articles",
+        method: "GET",
+        data: searchData,
+        dataType: 'json',
+        success: function (response) {
+            var html = "";
+            if (response.code == 200 && response.data.length > 0) {
+                $(".no-article-found-container").addClass('concealable');
+                html =  response.data.reduce(function (previousValue, currentValue) {
+                    var temp = '';
+                    var redirect_url = window.location.protocol + "//" + window.location.hostname + "/home/projects/" + project_id + "/levels/" + level + "/rooms/applications/" + application_id + "/rooms/" + room_id + "/dimensions/products/" + currentValue.product_id + "/mounting/" + 1 + "/articles/" + currentValue.articlecode;
+                    temp += '<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 col-for-thumb redirectable" data-redirect-to="'+ redirect_url + '">';
+                    temp += '<div class="thumb-box">';
+                    temp += '<div class="thumb-view-wrapper thumb-view-contain thumb-view-contain-pd thumb-view-fullp img-viewbdr-radius4">';
+                    temp += '<div class="thumb-view thumb-viewfullheight-1" style="background:url(\'' + currentValue.image + '\')"></div>';
+                    temp += '</div>';
+                    temp += '<div class="thumb-caption clearfix">';
+                    temp += '<h3 class="thumb-light-name">' + currentValue.title + '</h3>';
+                    temp += '<a href="javascript:void(0)" class="thumb-light-moreinfo">More info</a>';
+                    temp += '</div>';
+                    temp += '</div>';
+                    temp += '</div>';
+
+                    return previousValue + temp;
+                }, html);
+                $("#search_product_div").html(html);
+            } else {
+                $("#search_product_div").empty();
+                $(".no-article-found-container").removeClass('concealable');
+            }
+        },
+        error: function (error) {
 
         }
-    } );
-} );
+    })
+});
 
 /**
  *
  * @param {type} name
  * @returns {unresolved}
  */
-function getCookie( name ) {
+function getCookie(name) {
     var nameEQ = name + "=";
-    var ca = document.cookie.split( ';' );
-    for ( var i = 0; i < ca.length; i++ ) {
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
-        while ( c.charAt(0) == ' ' )
-            c = c.substring( 1, c.length );
-        if ( c.indexOf( nameEQ ) == 0 )
-            return c.substring( nameEQ.length, c.length );
+        while (c.charAt(0) == ' ')
+            c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0)
+            return c.substring(nameEQ.length, c.length);
     }
     return null;
 }
@@ -73,7 +123,7 @@ function getCookie( name ) {
  * @param {type} name
  * @returns {undefined}
  */
-function eraseCookie( name ) {
+function eraseCookie(name) {
     document.cookie = name + '=; Max-Age=-99999999;';
 }
 
@@ -84,11 +134,11 @@ function eraseCookie( name ) {
  * @param {type} days
  * @returns {undefined}
  */
-function setCookie( name, value, days ) {
+function setCookie(name, value, days) {
     var expires = "";
-    if ( days ) {
+    if (days) {
         var date = new Date();
-        date.setTime( date.getTime() + (days * 24 * 60 * 60 * 1000) );
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
         expires = "; expires=" + date.toUTCString();
     }
     document.cookie = name + "=" + (value || "") + expires + "; path=/";

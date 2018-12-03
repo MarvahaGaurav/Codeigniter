@@ -19,3 +19,4 @@ $route['xhttp/projects/article/remove'] = 'ProjectProductController/removeProduc
 $route['xhttp/projects/installer/price'] = 'ProjectPriceController/installerFinalPrice';
 $route['xhttp/projects/rooms/decrement-count'] = 'ProjectRoomController/decrementRoomCount';
 $route['xhttp/projects/rooms/increment-count'] = 'ProjectRoomController/incrementRoomCount';
+$route['xhttp/projects/rooms/products/articles'] =  'ProjectProductController/searchProductArticlesByRoom';

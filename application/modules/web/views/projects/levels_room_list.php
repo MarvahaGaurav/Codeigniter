@@ -36,6 +36,7 @@
         <!-- Caption before section -->
 
         <!-- Project list table -->
+        <?php if (!empty($rooms)) { ?>
         <div class="table-responsive table-wrapper" id="scrollbar-inner">
             <table cellspacing="0" class="table-custom">
                 <thead>
@@ -120,6 +121,7 @@
                 </tbody>
             </table>
         </div>
+        <?php } ?>
         <?php if (empty($rooms)) : ?>
         <div class="no-record text-center">
             <img src="<?php echo base_url("public/images/placeholder/no-found-ico-2.svg"); ?>" alt="Note Paper">

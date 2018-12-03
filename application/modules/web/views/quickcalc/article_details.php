@@ -54,11 +54,7 @@
                                 <a href="<?php echo $articleData['pdf'] ?>" target="_blank" class="custom-btn btn-width save">
                                     Download
                                 </a>
-                                <?php if ($isSelected) { ?>
-                                    <button type="button" class="custom-btn btn-width save" onclick="select_product('<?php echo $productId;?>','<?php echo $articleData['articlecode'];?>','<?php echo $mounting ?>')">Select</button>
-                                <?php } else {?>
-                                    <button data-selected="<?php echo $this->lang->line('selected') ?>" data-accessory='<?php echo $articleData['accessory_data'] ?>' type="button" class="custom-btn btn-width save select-project-accessory">Select Product</button>
-                                <?php }?>
+                                <button type="button" class="custom-btn btn-width save" onclick="select_product('<?php echo $articleData['articlecode'];?>', '<?php echo $articleData['product_id'];?>','<?php echo $mounting ?>')">Select</button>
                             </div>
                         </div>
                         <!-- button wrapper section -->

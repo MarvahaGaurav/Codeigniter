@@ -94,12 +94,12 @@ class Inspiration extends BaseModel {
 
         if (isset($options['inspiration_id']) && ! empty($options['inspiration_id'])) {
             $this->db->select("i.id as inspiration_id, IFNULL(company.company_name, '') as company_name, cl.id as city_id, cl.name as city_name," .
-                "country.country_code1 as country_code, country.name as country_name," .
+                "country.country_code1 as country_code, country.name as country_name, i.address, i.lat, i.lng," .
                 "IFNULL(i.company_id, '') as company_id, i.title, i.description" . $media . $poster_details . $products);
         }
         else {
             $this->db->select("SQL_CALC_FOUND_ROWS i.id as inspiration_id, cl.id as city_id, cl.name as city_name," .
-                "country.country_code1 as country_code, country.name as country_name," .
+                "country.country_code1 as country_code, country.name as country_name, i.address, i.user_id," .
                 "IFNULL(company.company_name, '') as company_name, IFNULL(i.company_id, '') as company_id, i.title, i.description, i.created_at, i.updated_at" . $media . $poster_details . $products, false);
         }
 

@@ -3,7 +3,8 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 require_once "BaseController.php";
 
-class Index extends BaseController {
+class Index extends BaseController
+{
 
     public function __construct()
     {
@@ -40,46 +41,50 @@ class Index extends BaseController {
 
             if ($this->form_validation->run() == false) {
                 load_outerweb_views('/index/login', $data);
-            }
-            else {
-                $email    = $postDataArr['email'];
+            } else {
+                $email = $postDataArr['email'];
                 $password = $postDataArr['password'];
                 //$pass = hash('sha256', $password);
-                $pass     = encrypt($postDataArr["password"]);
+                $pass = encrypt($postDataArr["password"]);
 
                 /*
                  * Matched the Credentials
                  */
                 try {
-                    $sg_userinfo = $this->Common_model->fetch_data('ai_user', array ('user_id', 'first_name', 'email', 'status'),
-                                                                   array ('where' => array ('email' => $email, 'password' => $pass, 'status' => 1)), true);
+                    $sg_userinfo = $this->Common_model->fetch_data(
+                        'ai_user',
+                        array('user_id', 'first_name', 'email', 'status'),
+                        array('where' => array('email' => $email, 'password' => $pass, 'status' => 1)),
+                        true
+                    );
                     //echo $this->db->last_query(); die;
-                }
-                catch (Exception $ex) {
+                } catch (Exception $ex) {
                     echo $ex->getMessage();
                 }
                 /*
                  * If credentials are matched set the session
                  */
-                if ( ! empty($sg_userinfo)) {
+                if (!empty($sg_userinfo)) {
                     //$sg_userinfo = array();
-                    $sg_userinfo = array (
-                        "user_id"    => $sg_userinfo['user_id'],
+                    $sg_userinfo = array(
+                        "user_id" => $sg_userinfo['user_id'],
                         "first_name" => $sg_userinfo['first_name'],
-                        "email"      => $sg_userinfo['email'],
-                        'status'     => $sg_userinfo['status']
+                        "email" => $sg_userinfo['email'],
+                        'status' => $sg_userinfo['status']
                     );
                     //pr($sg_userinfo);
                     //SETS COOKIE DATA
                     if (isset($postDataArr["remember_me"]) && $postDataArr["remember_me"] == "on") {
                         $this->load->helper(["cookie", "string"]);
                         $cookieData["cookie_validator"] = random_string('alnum', 12);
-                        $cookieData["cookie_selector"]  = hash("sha256", date("Y-m-d H:i:s") . $postDataArr["email"]);
+                        $cookieData["cookie_selector"] = hash("sha256", date("Y-m-d H:i:s") . $postDataArr["email"]);
 
                         $cookieExpiryTime = time() + COOKIE_EXPIRY_TIME;
 
                         set_cookie(
-                            "sg_user", "{$cookieData['cookie_selector']}:{$cookieData['cookie_validator']}", $cookieExpiryTime
+                            "sg_user",
+                            "{$cookieData['cookie_selector']}:{$cookieData['cookie_validator']}",
+                            $cookieExpiryTime
                         );
 
                         //$cookieData["cookie_validator"] = hash("sha256", $cookieData["cookie_validator"] . $sg_userinfo["create_date"]);
@@ -91,10 +96,9 @@ class Index extends BaseController {
                     $this->session->set_flashdata("flash-type", "success");
 
                     $this->session->set_userdata('sg_userinfo', $sg_userinfo);
-                    redirect(base_url("home/projects"));
-                }
-                else {
-                    $data['email']    = $email;
+                    redirect(base_url("home/applications"));
+                } else {
+                    $data['email'] = $email;
                     $data['password'] = $password;
                     //$data['error'] = $this->lang->line('invalid_email_password');
                     $this->session->set_flashdata("flash-message", $this->lang->line('invalid_email_password'));
@@ -119,7 +123,7 @@ class Index extends BaseController {
     public function forgot()
     {
         try {
-            $data                  = array ();
+            $data = array();
             $this->load->library("commonfn");
             $this->session->set_flashdata("flash-message", '');
             $this->session->set_flashdata("flash-type", "");
@@ -131,34 +135,33 @@ class Index extends BaseController {
 
                 if ($this->form_validation->run() == false) {
                     load_outerweb_views('/index/forgotpassword', $data);
-                }
-                else {
-                    $dataArr     = $this->input->post();
-                    $sg_userinfo = $this->Common_model->fetch_data('ai_user', '*', array ('where' => array ('email' => trim($dataArr['email']))), true);
+                } else {
+                    $dataArr = $this->input->post();
+                    $sg_userinfo = $this->Common_model->fetch_data('ai_user', '*', array('where' => array('email' => trim($dataArr['email']))), true);
                     //echo '<pre>'; echo $this->db->last_query(); //print_r($sg_userinfo); die;
-                    if ( ! empty($sg_userinfo) && is_array($sg_userinfo)) {
-                        $name  = $sg_userinfo['first_name'];
+                    if (!empty($sg_userinfo) && is_array($sg_userinfo)) {
+                        $name = $sg_userinfo['first_name'];
                         $email = $sg_userinfo['email'];
 
-                        $subject     = "RESET PASSWORD";
+                        $subject = "RESET PASSWORD";
                         $reset_token = hash('sha256', date("Y-m-d h:i:s"));
                         //$timeexpire = time() + (24 * 60 * 60);
-                        $timeexpire  = date("Y-m-d H:i:s", strtotime('+24 hour'));
+                        $timeexpire = date("Y-m-d H:i:s", strtotime('+24 hour'));
 
-                        $dataArr['name']             = $name;
-                        $insert['reset_token']       = $reset_token;
+                        $dataArr['name'] = $name;
+                        $insert['reset_token'] = $reset_token;
                         $insert['isreset_link_sent'] = 1;
-                        $insert['reset_link_time']   = $timeexpire;
-                        $condition                   = ['email' => $email];
-                        $where                       = array ("where" => array ('email' => $email));
+                        $insert['reset_link_time'] = $timeexpire;
+                        $condition = ['email' => $email];
+                        $where = array("where" => array('email' => $email));
                         //echo '<pre>'; print_r($insert); die;
-                        $update                      = $this->Common_model->update_single('ai_user', $insert, $where);
+                        $update = $this->Common_model->update_single('ai_user', $insert, $where);
 
-                        $mailinfoarr               = [];
-                        $mailinfoarr['link']       = base_url() . 'web/index/resetpassword?token=' . $reset_token;
-                        $mailinfoarr['email']      = $email;
-                        $mailinfoarr['subject']    = $subject;
-                        $mailinfoarr['name']       = $name;
+                        $mailinfoarr = [];
+                        $mailinfoarr['link'] = base_url() . 'web/index/resetpassword?token=' . $reset_token;
+                        $mailinfoarr['email'] = $email;
+                        $mailinfoarr['subject'] = $subject;
+                        $mailinfoarr['name'] = $name;
                         $mailinfoarr['mailerName'] = 'reset';
 
                         $isSuccess = $this->commonfn->sendEmailToUser($mailinfoarr);
@@ -171,24 +174,20 @@ class Index extends BaseController {
                             //$data['success'] = $this->lang->line('success_prefix') . $this->lang->line('reset_email') . $this->lang->line('success_suffix');
                             //redirect(base_url() . 'web/index/forgot');
                             redirect('/web/index/forgotsuccess');
-                        }
-                        else {
+                        } else {
                             load_outerweb_views('/index/forgotpassword', $data);
                         }
-                    }
-                    else {
+                    } else {
                         $this->session->set_flashdata("flash-message", $this->lang->line('invalid_email'));
                         $this->session->set_flashdata("flash-type", "danger");
                         //$data['error'] = $this->lang->line('invalid_email');
                         load_outerweb_views('/index/forgotpassword', $data);
                     }
                 }
-            }
-            else {
+            } else {
                 load_outerweb_views('/index/forgotpassword', $data);
             }
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             echo $e->getMessage();
         }
 
@@ -205,70 +204,84 @@ class Index extends BaseController {
     public function signup()
     {
         try {
-            $data                 = [];
+            $data = [];
             $this->load->helper(['location', 'form', 'data']);
             $this->lang->load(['sg', 'forms']);
             $this->load->config('css_config');
-            $data['countries']    = fetch_countries();
-            $data['css']          = $this->config->item('signup');
-            $data['js']           = 'signup';
+            $data['countries'] = fetch_countries();
+            $data['css'] = $this->config->item('signup');
+            $data['js'] = 'signup';
             $data['nonBundledJs'] = true;
             if ($this->input->post()) {
-                $this->form_validation->CI = & $this;
-                $userType                  = $this->input->post('user_type');
+                $this->form_validation->CI = &$this;
+                $userType = $this->input->post('user_type');
                 $this->form_validation->set_rules($this->signupValidationRules());
 
                 //If the user is of technician types add more relavent validation
-                if (in_array((int) $userType, [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER, WHOLESALER], true)) {
+                if (in_array((int)$userType, [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER, WHOLESALER], true)) {
                     $this->form_validation->set_rules($this->technicianEmployeeRules());
                     $isCompanyOwner = $this->input->post('is_company_owner');
 
                     //If the user is an owner add relavent validations
-                    if (is_numeric($isCompanyOwner) && (int) $isCompanyOwner === 1) {
+                    if (is_numeric($isCompanyOwner) && (int)$isCompanyOwner === 1) {
                         $this->form_validation->set_rules($this->compannyOwnerRules());
                     }
                 }
+                if ((int)$userType === BUSINESS_USER) {
+                    $this->form_validation->set_rules($this->businessUserRules());
+                }
+                if ((int)$userType === INSTALLER) {
+                    $this->form_validation->set_rules($this->installerAddressBoxValidation());
+                }
                 if ($this->form_validation->run()) {
                     $this->load->helper('input_data');
-                    $postData      = $this->input->post();
-                    $postData      = trim_input_parameters($postData);
-                    $userData      = [
-                        'user_type'            => $postData['user_type'],
-                        'first_name'           => $postData['fullname'],
-                        'email'                => $postData['email'],
-                        'password'             => encrypt($postData['password']),
+                    $postData = $this->input->post();
+                    $postData = trim_input_parameters($postData);
+                    $userData = [
+                        'user_type' => $postData['user_type'],
+                        'first_name' => $postData['fullname'],
+                        'email' => $postData['email'],
+                        'password' => encrypt($postData['password']),
                         'prm_user_countrycode' => $postData['contact_number_code'],
-                        'phone'                => $postData['contact_number'],
+                        'phone' => $postData['contact_number'],
                         'alt_user_countrycode' => $postData['alternate_contact_number_code'],
-                        'alt_userphone'        => $postData['alternate_contact_number'],
-                        'country_id'           => $postData['country'],
-                        'city_id'              => $postData['city'],
-                        'zipcode'              => $postData['zipcode'],
-                        'registered_date'      => $this->datetime,
-                        'image'                => $postData['user_image']
+                        'alt_userphone' => $postData['alternate_contact_number'],
+                        'country_id' => $postData['country'],
+                        'city_id' => $postData['city'],
+                        'zipcode' => $postData['zipcode'],
+                        'registered_date' => $this->datetime,
+                        'image' => $postData['user_image']
                     ];
                     $companyInsert = false;
-                    $isEmployee    = false;
-                    if (in_array((int) $userType, [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER, WHOLESALER], true)) {
-                        $userData['is_owner'] = (int) $postData['is_company_owner'] === 1 ? 2 : 1;
-                        if ((int) $postData['is_company_owner'] === 1) {
+                    $isEmployee = false;
+                    if (in_array((int)$userType, [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER, WHOLESALER, BUSINESS_USER], true)) {
+                        if ((int)$userType === BUSINESS_USER) {
+                            $userData['is_owner'] = ROLE_OWNER;
+                        } else {
+                            $userData['is_owner'] = (int)$postData['is_company_owner'] === 1 ? ROLE_OWNER : ROLE_EMPLOYEE;
+                        }
+                        if ((int)$postData['is_company_owner'] === 1 || (int)$userType === BUSINESS_USER) {
                             if (isset($_FILES['company_logo']) and '' != $_FILES['company_logo']['tmp_name']) {
                                 $this->load->helper("s3_helper");
                                 $path = s3_image_uploader($_FILES['company_logo'], date("YmdHis") . "." . substr(strrchr($_FILES['company_logo']['name'], '.'), 1), $_FILES['type'], "");
 
                                 $companyData['company_image'] = $path;
                             }
-                            $companyInsert                     = true;
-                            $companyData['company_name']       = $postData['company_name'];
+                            $companyInsert = true;
+                            $companyData['company_name'] = $postData['company_name'];
                             $companyData['company_reg_number'] = $postData['company_registration_number'];
-                            $companyData['insert_date']        = $this->datetime;
+                            $companyData['insert_date'] = $this->datetime;
                             $companyData['country'] = $postData['country'];
                             $companyData['city'] = $postData['city'];
                             $companyData['zipcode'] = $postData['zipcode'];
                             $companyData['owner_type'] = $postData['user_type'];
-                        }
-                        else {
-                            $isEmployee             = true;
+                            if ((int)$userType === INSTALLER) {
+                                $companyData['company_address'] = $postData['address'];
+                                $companyData['lat'] = $postData['address_lat'];
+                                $companyData['lng'] = $postData['address_lng'];
+                            }
+                        } else {
+                            $isEmployee = true;
                             $userData['company_id'] = $postData['company_name'];
                         }
                     }
@@ -278,7 +291,7 @@ class Index extends BaseController {
                         $companyId = $this->Common_model->insert_single('company_master', $companyData);
                         $this->Common_model->update_single('ai_user', [
                             'company_id' => $companyId
-                            ], [
+                        ], [
                             'where' => [
                                 'user_id' => $userId
                             ]
@@ -289,27 +302,27 @@ class Index extends BaseController {
                         $ownerData = $this->Common_model->fetch_data('ai_user', 'user_id', ['where' =>
                             ['is_owner' => 2, 'company_id' => $postData['company_name']]], true);
 
-                        $this->Common_model->insert_single('employee_request_master',
-                                                           [
-                            'requested_to' => $ownerData['user_id'],
-                            'requested_by' => $userId,
-                            'request_time' => $this->datetime,
-                            'company_id'   => $postData['company_name'],
-                        ]);
+                        $this->Common_model->insert_single(
+                            'employee_request_master',
+                            [
+                                'requested_to' => $ownerData['user_id'],
+                                'requested_by' => $userId,
+                                'request_time' => $this->datetime,
+                                'company_id' => $postData['company_name'],
+                            ]
+                        );
                     }
 
                     $this->session->set_flashdata("flash-message", 'You have registered successfully!, Please login to continue');
                     $this->session->set_flashdata("flash-type", "success");
                     redirect(base_url('login'));
                     // pd($this->input->post());
-                }
-                else {
+                } else {
                     // pd($this->form_validation->error_array());
                 }
             }
             website_noauth_view('/index/signup', $data);
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             echo $e->getMessage();
         }
 
@@ -325,12 +338,11 @@ class Index extends BaseController {
 
     public function verification()
     {
-        $data['id'] = $id         = $this->input->get('id');
+        $data['id'] = $id = $this->input->get('id');
         if (empty($id)) {
             error404();
-        }
-        else {
-            $data['useremail'] = $this->Common_model->fetch_data('ai_user', 'email', array ('where' => array ('user_id' => base64_decode($id))), true);
+        } else {
+            $data['useremail'] = $this->Common_model->fetch_data('ai_user', 'email', array('where' => array('user_id' => base64_decode($id))), true);
         }
         load_outerweb_views('/index/verification', $data);
 
@@ -346,8 +358,8 @@ class Index extends BaseController {
 
     public function resetsuccess()
     {
+        $data = [];
         load_outerweb_views('/index/resetsuccess', $data);
-
     }
 
 
@@ -360,6 +372,7 @@ class Index extends BaseController {
 
     public function forgotsuccess()
     {
+        $data = [];
         load_outerweb_views('/index/forgotsuccess', $data);
 
     }
@@ -376,83 +389,75 @@ class Index extends BaseController {
     public function resetpassword()
     {
         try {
-            $data          = array ();
+            $data = array();
             $this->load->library("commonfn");
             $this->session->set_flashdata("flash-message", '');
             $this->session->set_flashdata("flash-type", "");
-            $post          = $this->input->post();
-            $data['token'] = $token         = $this->input->get('token');
-            if ( ! isset($token) || empty($token)) {
+            $post = $this->input->post();
+            $data['token'] = $token = $this->input->get('token');
+            if (!isset($token) || empty($token)) {
                 error404();
                 exit;
             }
-            $result = $this->Common_model->fetch_data('ai_user', 'user_id,reset_link_time', array ('where' => array ('reset_token' => $token)), true);
+            $result = $this->Common_model->fetch_data('ai_user', 'user_id,reset_link_time', array('where' => array('reset_token' => $token)), true);
             if ($post) {
                 $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[8]|max_length[30]|alpha_numeric');
                 $this->form_validation->set_rules('cnfpassword', 'Confirm Password', 'trim|required|matches[password]|min_length[8]|max_length[30]|alpha_numeric');
                 if ($this->form_validation->run() == false) {
-                    $data["csrfName"]  = $this->security->get_csrf_token_name();
+                    $data["csrfName"] = $this->security->get_csrf_token_name();
                     $data["csrfToken"] = $this->security->get_csrf_hash();
                     load_outerweb_views('/index/resetpassword', $data);
-                }
-                else {
-                    $newPass        = trim($post['password']);
+                } else {
+                    $newPass = trim($post['password']);
                     $newCnfPassword = trim($post['cnfpassword']);
                     if ($newPass != $newCnfPassword) {
                         $this->session->set_flashdata("flash-message", 'New Password and Confirm password mismatched!');
                         $this->session->set_flashdata("flash-type", "danger");
-                        $data["csrfName"]  = $this->security->get_csrf_token_name();
+                        $data["csrfName"] = $this->security->get_csrf_token_name();
                         $data["csrfToken"] = $this->security->get_csrf_hash();
                         load_outerweb_views('/index/resetpassword', $data);
-                    }
-                    else {
+                    } else {
                         //echo $newPass.'==='.$newCnfPassword; die;
                         //$currenttime = time();
                         $currenttime = strtotime(date("Y-m-d H:i:s"));
-                        if ( ! empty($result)) {
+                        if (!empty($result)) {
                             $pass = encrypt($newPass);
                             if ($currenttime < strtotime($result['reset_link_time'])) {
                                 $whereArr['where'] = ['user_id' => $result['user_id']];
-                                $updateArr         = ['reset_token' => "", 'isreset_link_sent' => "0", 'password' => $pass];
+                                $updateArr = ['reset_token' => "", 'isreset_link_sent' => "0", 'password' => $pass];
                                 //echo '<pre>'; print_r($updateArr);print_r($whereArr); die;
-                                $update            = $this->Common_model->update_single('ai_user', $updateArr, $whereArr);
+                                $update = $this->Common_model->update_single('ai_user', $updateArr, $whereArr);
                                 if ($update) {
                                     redirect('/web/index/resetsuccess');
-                                }
-                                else {
+                                } else {
                                     $this->session->set_flashdata("flash-message", 'Something went wrong!');
                                     $this->session->set_flashdata("flash-type", "danger");
-                                    $data["csrfName"]  = $this->security->get_csrf_token_name();
+                                    $data["csrfName"] = $this->security->get_csrf_token_name();
                                     $data["csrfToken"] = $this->security->get_csrf_hash();
                                     load_outerweb_views('/index/resetpassword', $data);
                                 }
-                            }
-                            else {
+                            } else {
                                 $this->session->set_flashdata("flash-message", 'Token expired!');
                                 $this->session->set_flashdata("flash-type", "danger");
-                                $data["csrfName"]  = $this->security->get_csrf_token_name();
+                                $data["csrfName"] = $this->security->get_csrf_token_name();
                                 $data["csrfToken"] = $this->security->get_csrf_hash();
                                 load_outerweb_views('/index/resetpassword', $data);
                             }
-                        }
-                        else {
+                        } else {
                             error404("Invalid token");
                         }
                     }
                 }
-            }
-            else {
-                if ( ! empty($result)) {
-                    $data["csrfName"]  = $this->security->get_csrf_token_name();
+            } else {
+                if (!empty($result)) {
+                    $data["csrfName"] = $this->security->get_csrf_token_name();
                     $data["csrfToken"] = $this->security->get_csrf_hash();
                     load_outerweb_views('/index/resetpassword', $data);
-                }
-                else {
+                } else {
                     error404("Invalid token");
                 }
             }
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             //echo $e->getMessage(); die;
             $this->session->set_flashdata("flash-message", $e->getMessage());
             $this->session->set_flashdata("flash-type", "danger");
@@ -472,17 +477,16 @@ class Index extends BaseController {
     public function check_email_avalibility()
     {
 
-        if ( ! $this->input->is_ajax_request()) {
+        if (!$this->input->is_ajax_request()) {
             exit('No Direct Script allowed');
         }
         $postemail = $this->input->post('email');
         $csrftoken = $this->security->get_csrf_hash();
-        $respArr   = $this->Common_model->fetch_data('ai_user', '*', array ('where' => array ('email' => $postemail)), true);
+        $respArr = $this->Common_model->fetch_data('ai_user', '*', array('where' => array('email' => $postemail)), true);
         if ($respArr) {
-            $respArr = array ('code' => 201, 'msg' => 'Email Exist', "csrf_token" => $csrftoken);
-        }
-        else {
-            $respArr = array ('code' => 200, 'msg' => 'Email Doesnot Exist', "csrf_token" => $csrftoken);
+            $respArr = array('code' => 201, 'msg' => 'Email Exist', "csrf_token" => $csrftoken);
+        } else {
+            $respArr = array('code' => 200, 'msg' => 'Email Doesnot Exist', "csrf_token" => $csrftoken);
         }
         echo json_encode($respArr);
         die;
@@ -495,17 +499,15 @@ class Index extends BaseController {
     {
         if ($email) {
             if ($userid) {
-                $respArr = $this->Common_model->fetch_data('ai_user', '*', array ('where' => array ('email' => $email), 'where_not_in' => array ('user_id' => $userid)), true);
-            }
-            else {
-                $respArr = $this->Common_model->fetch_data('ai_user', '*', array ('where' => array ('email' => $email)), true);
+                $respArr = $this->Common_model->fetch_data('ai_user', '*', array('where' => array('email' => $email), 'where_not_in' => array('user_id' => $userid)), true);
+            } else {
+                $respArr = $this->Common_model->fetch_data('ai_user', '*', array('where' => array('email' => $email)), true);
             }
             if ($respArr) {
                 return false;
             }
             return true;
-        }
-        else {
+        } else {
             return false;
         }
 
@@ -517,7 +519,7 @@ class Index extends BaseController {
     {
 
         $this->load->helper('url');
-        $data        = [];
+        $data = [];
         $data['url'] = base_url() . 'request/welcomeMail?email=' . $mailData['email'] . '&name=' . urlencode($mailData['name']);
         sendGetRequest($data);
 
@@ -529,9 +531,9 @@ class Index extends BaseController {
     {
         return [
             [
-                'label'  => $this->lang->line('user_type'),
-                'field'  => 'user_type',
-                'rules'  => 'trim|required|regex_match[/^(1|2|3|4|5|6)$/]',
+                'label' => $this->lang->line('user_type'),
+                'field' => 'user_type',
+                'rules' => 'trim|required|regex_match[/^(1|2|3|4|5|6)$/]',
                 'errors' => [
                     'regex_match' => $this->lang->line('something_went_wrong')
                 ]
@@ -542,9 +544,9 @@ class Index extends BaseController {
                 'rules' => 'trim|required'
             ],
             [
-                'label'  => $this->lang->line('email'),
-                'field'  => 'email',
-                'rules'  => 'trim|required|valid_email|callback_validate_unique_email',
+                'label' => $this->lang->line('email'),
+                'field' => 'email',
+                'rules' => 'trim|required|valid_email|callback_validate_unique_email',
                 'errors' => [
                     'validate_unique_email' => $this->lang->line('email_taken')
                 ]
@@ -565,9 +567,9 @@ class Index extends BaseController {
                 'rules' => 'trim|required'
             ],
             [
-                'label'  => $this->lang->line('contact_number'),
-                'field'  => 'contact_number',
-                'rules'  => 'trim|required|numeric|callback_validate_phone[' . $this->input->post('contact_number_code') . ']',
+                'label' => $this->lang->line('contact_number'),
+                'field' => 'contact_number',
+                'rules' => 'trim|required|numeric|callback_validate_phone[' . $this->input->post('contact_number_code') . ']',
                 'errors' => [
                     'validate_phone' => $this->lang->line('phone_should_be_unique')
                 ]
@@ -578,9 +580,9 @@ class Index extends BaseController {
                 'rules' => 'trim|required'
             ],
             [
-                'label'  => $this->lang->line('alternate_contact_number'),
-                'field'  => 'alternate_contact_number',
-                'rules'  => 'trim|required|numeric|callback_validate_alternate_phone[' . $this->input->post('alternate_contact_number_code') . ']',
+                'label' => $this->lang->line('alternate_contact_number'),
+                'field' => 'alternate_contact_number',
+                'rules' => 'trim|required|numeric|callback_validate_alternate_phone[' . $this->input->post('alternate_contact_number_code') . ']',
                 'errors' => [
                     'validate_alternate_phone' => $this->lang->line('phone_should_be_unique')
                 ]
@@ -628,8 +630,6 @@ class Index extends BaseController {
 
     }
 
-
-
     /**
      * Technicain Company Owner rules
      *
@@ -645,6 +645,43 @@ class Index extends BaseController {
             ]
         ];
 
+    }
+
+    private function businessUserRules()
+    {
+        return [
+            [
+                'label' => $this->lang->line('company_registration_number'),
+                'field' => 'company_registration_number',
+                'rules' => 'trim|required'
+            ],
+            [
+                'label' => $this->lang->line('company_name'),
+                'field' => 'company_name',
+                'rules' => 'trim|required'
+            ]
+        ];
+    }
+
+    private function installerAddressBoxValidation()
+    {
+        return [
+            [
+                'label' => $this->lang->line('location_required'),
+                'field' => 'address_lng',
+                'rules' => 'trim|required'
+            ],
+            [
+                'label' => $this->lang->line('location_required'),
+                'field' => 'address_lat',
+                'rules' => 'trim|required'
+            ],
+            [
+                'label' => $this->lang->line('location_required'),
+                'field' => 'address',
+                'rules' => 'trim|required'
+            ]
+        ];
     }
 
 
@@ -663,14 +700,13 @@ class Index extends BaseController {
         }
 
         $data = $this->Common_model->fetch_data('ai_user', 'user_id', ['where' => [
-                'prm_user_countrycode' => $country_code,
-                'phone'                => $phone
-            ]], true);
+            'prm_user_countrycode' => $country_code,
+            'phone' => $phone
+        ]], true);
 
         if (empty($data)) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
 
@@ -692,14 +728,13 @@ class Index extends BaseController {
         }
 
         $data = $this->Common_model->fetch_data('ai_user', 'user_id', ['where' => [
-                'alt_user_countrycode' => $country_code,
-                'alt_userphone'        => $phone
-            ]], true);
+            'alt_user_countrycode' => $country_code,
+            'alt_userphone' => $phone
+        ]], true);
 
         if (empty($data)) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
 
@@ -710,8 +745,8 @@ class Index extends BaseController {
     public function validate_unique_email($email)
     {
         $data = $this->Common_model->fetch_data('ai_user', 'user_id', ['where' => [
-                'email' => $email,
-            ]], true);
+            'email' => $email,
+        ]], true);
 
         if (empty($data)) {
             return true;

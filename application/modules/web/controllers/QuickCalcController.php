@@ -22,7 +22,7 @@ class QuickCalcController extends BaseController
         $this->neutralGuard();
         $this->load->library('form_validation');
         $this->load->model("UtilModel");
-        if (isset($this->userInfo, $this->userInfo['user_id']) && ! empty($this->userInfo['user_id'])) {
+        if (isset($this->userInfo, $this->userInfo['user_id']) && !empty($this->userInfo['user_id'])) {
             $this->data['userInfo'] = $this->userInfo;
         }
     }
@@ -47,14 +47,13 @@ class QuickCalcController extends BaseController
             $params['where']['(EXISTS(SELECT id FROM rooms WHERE application_id=app.application_id))'] = null;
 
             if (is_numeric($applicationType) &&
-                in_array((int) $applicationType, [APPLICATION_PROFESSIONAL, APPLICATION_RESIDENTIAL], true)
-            ) {
-                $params['type'] = (int) $applicationType;
+                in_array((int)$applicationType, [APPLICATION_PROFESSIONAL, APPLICATION_RESIDENTIAL], true)) {
+                $params['type'] = (int)$applicationType;
             }
 
-            $applications                    = $this->Application->get($params);
+            $applications = $this->Application->get($params);
             $this->data['applicationChunks'] = array_chunk($applications, 4);
-            $this->data['type']              = $params['type'];
+            $this->data['type'] = $params['type'];
 
             website_view('quickcalc/application', $this->data);
         } catch (\Exception $error) {
@@ -80,22 +79,22 @@ class QuickCalcController extends BaseController
             }
 
             $params['application_id'] = $applicationId;
-            $application              = $this->Application->details($params);
+            $application = $this->Application->details($params);
             if (empty($application)) {
                 show404('Data Not Found', base_url('home/applications'));
             }
 
-            $this->data['encrypted_application_id']  = encryptDecrypt($application['application_id']);
+            $this->data['encrypted_application_id'] = encryptDecrypt($application['application_id']);
             $params['where']['rooms.application_id'] = $applicationId;
-            $rooms                                   = $this->Room->get($params);
-            $rooms['result']                         = array_map(function ($data) {
-			$data['encrypted_room_id'] = encryptDecrypt($data['room_id']);
-			return $data;
+            $rooms = $this->Room->get($params);
+            $rooms['result'] = array_map(function ($data) {
+                $data['encrypted_room_id'] = encryptDecrypt($data['room_id']);
+                return $data;
             }, $rooms['result']);
             $rooms['result'] = array_chunk($rooms['result'], 4);
 
             $this->data['application'] = $application;
-            $this->data['roomChunks']  = $rooms['result'];
+            $this->data['roomChunks'] = $rooms['result'];
 
             website_view('quickcalc/rooms', $this->data);
         } catch (\Exception $error) {
@@ -114,14 +113,14 @@ class QuickCalcController extends BaseController
         try {
             $this->data['js'] = 'quickcalc';
 
-            $this->data['applicationId']  = $applicationId;
-            $this->data['roomId']         = $roomId;
-            $this->data['room_id']        = $roomId;
+            $this->data['applicationId'] = $applicationId;
+            $this->data['roomId'] = $roomId;
+            $this->data['room_id'] = $roomId;
             $this->data['application_id'] = $applicationId;
 
 
             $applicationId = encryptDecrypt($applicationId, 'decrypt');
-            $roomId        = encryptDecrypt($roomId, 'decrypt');
+            $roomId = encryptDecrypt($roomId, 'decrypt');
 
             if (empty($applicationId) || empty($roomId)) {
                 show404('Invalid Request', base_url('home/applications'));
@@ -135,8 +134,8 @@ class QuickCalcController extends BaseController
             if (empty($application)) {
                 show404('Data Not Found', base_url('home/applications'));
             }
-            $params['room_id']  = $roomId;
-            $room               = $this->Room->get($params);
+            $params['room_id'] = $roomId;
+            $room = $this->Room->get($params);
             $this->data['room'] = $room;
             $this->data['validation_errors'] = [];
             $this->data['validation_error_keys'] = [];
@@ -145,23 +144,35 @@ class QuickCalcController extends BaseController
                 $this->quickCalcFormHandler($room);
             }
 
-            $get_array           = [];
+            $get_array = [];
             $this->data['units'] = ["Meter", "Inch", "Yard"];
             $this->load->helper('cookie');
-            $cookie_data         = get_cookie("quick_cal_form_data");
+            $cookie_data = get_cookie("quick_cal_form_data");
             parse_str($cookie_data, $get_array);
-            if (! count($get_array)) {
+            if (!count($get_array)) {
                 $get_array = $this->setBlankArray();
             }
             $this->data['mounting_type'] = $this->mountingType();
-            $this->data['selected_product']  = $this->setSelectedRoomrray();
-            $this->data['cookie_data']   = $get_array;
+            $this->data['selected_product'] = $this->setSelectedRoomrray();
+            $this->data['cookie_data'] = $get_array;
+            
+            $this->data['showSuspensionHeight'] = false;
+            if (isset($this->data['selected_product']['product_id'])) {
+                $mountingTypes = $this->UtilModel->selectQuery('type', 'product_mounting_types', [
+                    'where' => ['product_id' => $this->data['selected_product']['product_id'], 'type !=' => 0]
+                ]);
+                $mountingTypes = array_column($mountingTypes, 'type');
+                $suspendedFilter = array_filter($mountingTypes, function ($type) {
+                    return in_array((int)$type, [MOUNTING_SUSPENDED, MOUNTING_PENDANT], true);
+                });
+                $this->data['showSuspensionHeight'] = (bool)!empty($suspendedFilter);
+            }
 
             website_view('quickcalc/quickcalc', $this->data);
         } catch (\Exception $error) {
         }
     }
-    
+
 
     /**
      * Room dimesnin post handler
@@ -404,19 +415,19 @@ class QuickCalcController extends BaseController
     private function setBlankArray()
     {
         return [
-            "room_refrence"            => "",
-            "room_lenght"              => "",
-            "room_lenght_unit"         => "",
-            "room_breadth"             => "",
-            "room_breadth_unit"        => "",
-            "room_height"              => "",
-            "room_height_unit"         => "",
-            "room_plane_height"        => "",
-            "room_plane_height_unit"   => "",
-            "room_luminaries_x"        => "",
-            "room_luminaries_y"        => "",
-            "room_shape"               => "",
-            "room_pendant_length"      => "",
+            "room_refrence" => "",
+            "room_lenght" => "",
+            "room_lenght_unit" => "",
+            "room_breadth" => "",
+            "room_breadth_unit" => "",
+            "room_height" => "",
+            "room_height_unit" => "",
+            "room_plane_height" => "",
+            "room_plane_height_unit" => "",
+            "room_luminaries_x" => "",
+            "room_luminaries_y" => "",
+            "room_shape" => "",
+            "room_pendant_length" => "",
             "room_pendant_length_unit" => ""
         ];
     }
@@ -459,19 +470,21 @@ class QuickCalcController extends BaseController
     {
         try {
             $this->neutralGuard();
-            if (isset($this->userInfo, $this->userInfo['user_id']) && ! empty($this->userInfo['user_id'])) {
+            if (isset($this->userInfo, $this->userInfo['user_id']) && !empty($this->userInfo['user_id'])) {
                 $this->data['userInfo'] = $this->userInfo;
             }
-            $this->data['js']             = 'select_product_quick';
+            $this->data['js'] = 'select_product_quick';
             $this->load->model("Room");
-            $option                       = ["where" => ["room_id" => encryptDecrypt($roomId, 'decrypt'), "application_id" => encryptDecrypt($applicationId, 'decrypt')]];
-            $this->data['room_id']        = $roomId;
+            $option = ["where" => ["room_id" => encryptDecrypt($roomId, 'decrypt'), "application_id" => encryptDecrypt($applicationId, 'decrypt')]];
+            $this->data['room_id'] = $roomId;
             $this->data['application_id'] = $applicationId;
-            $this->data['room']           = $this->Room->get($option, true);
+            $this->data['room'] = $this->Room->get($option, true);
             // pd($this->data['room']);
-
-            $this->data["csrfName"]       = $this->security->get_csrf_token_name();
-            $this->data["csrfToken"]      = $this->security->get_csrf_hash();
+            $this->data['searchData'] = json_encode([
+                'room_id' => $roomId
+            ]);
+            $this->data["csrfName"] = $this->security->get_csrf_token_name();
+            $this->data["csrfToken"] = $this->security->get_csrf_hash();
             website_view('quickcalc/select_product', $this->data);
         } catch (Exception $ex) {
         }
@@ -485,10 +498,10 @@ class QuickCalcController extends BaseController
     function articles($applicationId = '', $roomId = '', $mounting = 1, $product_id = '')
     {
         try {
-            $queryString = $applicationId.'/rooms/'.$roomId.'/mounting/'.$mounting.'/articles/'.$product_id;
-            
+            $queryString = $applicationId . '/rooms/' . $roomId . '/mounting/' . $mounting . '/articles/' . $product_id;
+
             $this->neutralGuard();
-            if (isset($this->userInfo, $this->userInfo['user_id']) && ! empty($this->userInfo['user_id'])) {
+            if (isset($this->userInfo, $this->userInfo['user_id']) && !empty($this->userInfo['user_id'])) {
                 $this->data['userInfo'] = $this->userInfo;
             }
             $this->load->helper('utility');
@@ -499,18 +512,18 @@ class QuickCalcController extends BaseController
             $this->load->model('ProductSpecification');
             $this->load->model('ProductRelated');
             $this->load->model('ProductGallery');
-            $params                        = [
+            $params = [
                 'product_id' => $product_id
             ];
-            $productData                   = $this->Product->details($params);
-            $productTechnicalData          = $this->ProductTechnicalData->get($params);
-            $productSpecifications         = $this->ProductSpecification->get($params);
-            $relatedProducts               = $this->ProductRelated->get($params);
+            $productData = $this->Product->details($params);
+            $productTechnicalData = $this->ProductTechnicalData->get($params);
+            $productSpecifications = $this->ProductSpecification->get($params);
+            $relatedProducts = $this->ProductRelated->get($params);
             // $productSpecifications         = array_strip_tags($productSpecifications, ['title']);
             // $productTechnicalData          = array_strip_tags($productTechnicalData, ['title', 'info']);
-            $productData['body']           = trim(strip_tags($productData['body']));
+            $productData['body'] = trim(strip_tags($productData['body']));
             $productData['how_to_specity'] = trim(strip_tags($productData['how_to_specity']));
-            $this->data['images']          = $this->ProductGallery->get($product_id);
+            $this->data['images'] = $this->ProductGallery->get($product_id);
 
             $classifiedProductArticles = [];
 
@@ -530,13 +543,13 @@ class QuickCalcController extends BaseController
             }, $productSpecifications);
 
             $this->data['mounting'] = $mounting;
-            $this->data['js']               = "article_quick";
-            $this->data['product']          = $productData;
-            $this->data['product_id']       = $product_id;
-            $this->data['application_id']   = $applicationId;
-            $this->data['room_id']          = $roomId;
-            $this->data['technical_data']   = $productTechnicalData;
-            $this->data['articles']   = $classifiedProductArticles;
+            $this->data['js'] = "article_quick";
+            $this->data['product'] = $productData;
+            $this->data['product_id'] = $product_id;
+            $this->data['application_id'] = $applicationId;
+            $this->data['room_id'] = $roomId;
+            $this->data['technical_data'] = $productTechnicalData;
+            $this->data['articles'] = $classifiedProductArticles;
             $this->data['related_products'] = $relatedProducts;
             $this->data['urlString'] = $queryString;
 
@@ -552,37 +565,37 @@ class QuickCalcController extends BaseController
     {
         try {
             $this->load->model("Room");
-            $post               = $this->input->post();
+            $post = $this->input->post();
             $post['project_id'] = $this->session->userdata('project_id');
-            $option             = ["where" => ["room_id" => encryptDecrypt($post['room_id'], 'decrypt'), "application_id" => encryptDecrypt($post['application_id'], 'decrypt')]];
-            $room               = $this->Room->get($option, true);
-            $lenght             = $this->calc($post['room_lenght'], $post['room_lenght_unit']);
-            $width              = $this->calc($post['room_breadth'], $post['room_breadth_unit']);
-            $height             = $this->calc($post['room_height'], $post['room_height_unit']);
-            $post['room']       = $room;
+            $option = ["where" => ["room_id" => encryptDecrypt($post['room_id'], 'decrypt'), "application_id" => encryptDecrypt($post['application_id'], 'decrypt')]];
+            $room = $this->Room->get($option, true);
+            $lenght = $this->calc($post['room_lenght'], $post['room_lenght_unit']);
+            $width = $this->calc($post['room_breadth'], $post['room_breadth_unit']);
+            $height = $this->calc($post['room_height'], $post['room_height_unit']);
+            $post['room'] = $room;
 
             $insert = [
-                "project_id"           => 0,
-                "room_id"              => $room['room_id'],
-                "name"                 => $room['title'],
-                "count"                => 1,
-                "length"               => $lenght,
-                "width"                => $width,
-                "height"               => $height,
-                "maintainance_factor"  => $room['maintainance_factor'],
-                "shape"                => $post['room_shape'],
+                "project_id" => 0,
+                "room_id" => $room['room_id'],
+                "name" => $room['title'],
+                "count" => 1,
+                "length" => $lenght,
+                "width" => $width,
+                "height" => $height,
+                "maintainance_factor" => $room['maintainance_factor'],
+                "shape" => $post['room_shape'],
                 "working_plane_height" => $post['room_plane_height'], //need to confirm
-                "rho_wall"             => $room['reflection_values_wall'],
-                "rho_ceiling"          => $room['reflection_values_ceiling'],
-                "rho_floor"            => $room['reflection_values_floor'],
-                "lux_value"            => $room['lux_values'],
-                "luminaries_count_x"   => $post['room_luminaries_x'],
-                "luminaries_count_y"   => $post['room_luminaries_y'],
-                "fast_calc_response"   => "",
-                "created_at"           => date('Y-m-d H:i:s'),
-                "article_code"         => $post['article_code'],
-                "product_id"           => $post['product_id'],
-                "type"                 => $post['type']
+                "rho_wall" => $room['reflection_values_wall'],
+                "rho_ceiling" => $room['reflection_values_ceiling'],
+                "rho_floor" => $room['reflection_values_floor'],
+                "lux_value" => $room['lux_values'],
+                "luminaries_count_x" => $post['room_luminaries_x'],
+                "luminaries_count_y" => $post['room_luminaries_y'],
+                "fast_calc_response" => "",
+                "created_at" => date('Y-m-d H:i:s'),
+                "article_code" => $post['article_code'],
+                "product_id" => $post['product_id'],
+                "type" => $post['type']
             ];
 
 
@@ -609,32 +622,32 @@ class QuickCalcController extends BaseController
         try {
             $this->load->model("UtilModel");
             $option = ["single_row" => true, "where" => ["articlecode" => $temp['article_code'], "product_id" => $temp['product_id']]];
-            $uld    = $this->UtilModel->selectQuery("uld", "product_specifications", $option);
+            $uld = $this->UtilModel->selectQuery("uld", "product_specifications", $option);
 
 
             if (isset($uld['uld']) and '' != $uld['uld']) {
                 $request_data = [
-                    "authToken"          => "28c129e0aca88efb6f29d926ac4bab4d",
-                    "roomLength"         => floatval($temp['length']),
-                    "roomWidth"          => floatval($temp['width']),
-                    "roomHeight"         => floatval($temp['height']),
-                    "roomType"           => $temp['name'],
+                    "authToken" => "28c129e0aca88efb6f29d926ac4bab4d",
+                    "roomLength" => floatval($temp['length']),
+                    "roomWidth" => floatval($temp['width']),
+                    "roomHeight" => floatval($temp['height']),
+                    "roomType" => $temp['name'],
                     "workingPlaneHeight" => floatval($temp['working_plane_height']),
-                    "suspension"         => 0.5,
-                    "illuminance"        => 500,
-                    "luminaireCountInX"  => floatval($temp['luminaries_count_x']),
-                    "luminaireCountInY"  => floatval($temp['luminaries_count_y']),
-                    "rhoCeiling"         => floatval($temp['rho_ceiling']),
-                    "rhoWall"            => floatval($temp['rho_wall']),
-                    "rhoFloor"           => floatval($temp['rho_floor']),
-                    "maintenanceFactor"  => floatval($temp['maintainance_factor']),
-                    "uldUri"             => $uld['uld']
+                    "suspension" => 0.5,
+                    "illuminance" => 500,
+                    "luminaireCountInX" => floatval($temp['luminaries_count_x']),
+                    "luminaireCountInY" => floatval($temp['luminaries_count_y']),
+                    "rhoCeiling" => floatval($temp['rho_ceiling']),
+                    "rhoWall" => floatval($temp['rho_wall']),
+                    "rhoFloor" => floatval($temp['rho_floor']),
+                    "maintenanceFactor" => floatval($temp['maintainance_factor']),
+                    "uldUri" => $uld['uld']
                 ];
             }
 
-            $res                           = $this->hitCulrQuickCal($request_data);
+            $res = $this->hitCulrQuickCal($request_data);
             $options['fast_calc_response'] = $res;
-            $options['id']                 = $temp['id'];
+            $options['id'] = $temp['id'];
             return $this->updateQuickCalData($options, $room_id);
         } catch (Exception $ex) {
         }
@@ -649,9 +662,9 @@ class QuickCalcController extends BaseController
     {
         $temp = json_decode($data['fast_calc_response'], true);
 
-        $update                       = [
-            "side_view"  => $temp['projectionSide'],
-            "top_view"   => $temp['projectionTop'],
+        $update = [
+            "side_view" => $temp['projectionSide'],
+            "top_view" => $temp['projectionTop'],
             "front_view" => $temp['projectionFront'],
         ];
         unset($temp['projectionSide']);
@@ -670,23 +683,23 @@ class QuickCalcController extends BaseController
     function hitCulrQuickCal($data)
     {
         $request_data = json_encode($data);
-        $curl         = curl_init();
+        $curl = curl_init();
         curl_setopt_array(
             $curl,
             [
-            CURLOPT_URL            => "https://www.dialux-plugins.com/FastCalc/api/arrangement",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING       => "",
-            CURLOPT_MAXREDIRS      => 10,
-            CURLOPT_TIMEOUT        => 30,
-            CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST  => "POST",
-            CURLOPT_POSTFIELDS     => "$request_data",
-            CURLOPT_HTTPHEADER     => ["Content-Type: application/json", "cache-control: no-cache"],
-                          ]
+                CURLOPT_URL => "https://www.dialux-plugins.com/FastCalc/api/arrangement",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_POSTFIELDS => "$request_data",
+                CURLOPT_HTTPHEADER => ["Content-Type: application/json", "cache-control: no-cache"],
+            ]
         );
-        $response     = curl_exec($curl);
-        $err          = curl_error($curl);
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
 
         curl_close($curl);
 
@@ -738,9 +751,9 @@ class QuickCalcController extends BaseController
                 ["single_row" => true, "where" => ["articlecode" => $room_data['article_code'], "product_id" => $room_data['product_id']]]
             );
 //            echo $this->db->last_query();
-            $this->data['room_data']      = $room_data;
-            $this->data["csrfName"]       = $this->security->get_csrf_token_name();
-            $this->data["csrfToken"]      = $this->security->get_csrf_hash();
+            $this->data['room_data'] = $room_data;
+            $this->data["csrfName"] = $this->security->get_csrf_token_name();
+            $this->data["csrfToken"] = $this->security->get_csrf_hash();
             website_view('quickcalc/evaluation_result', $this->data);
         } catch (Exception $ex) {
         }
@@ -775,7 +788,7 @@ class QuickCalcController extends BaseController
 
         return $response;
     }
-    
+
     /**
      * Article Detail
      * 
@@ -787,36 +800,35 @@ class QuickCalcController extends BaseController
      * @param type $product_id
      * @param type $articleCode
      */
-    function articleDetail($applicationId = '', $roomId = '', $mounting = 1, $productId = '',$articleCode=''){
-	
+    function articleDetail($applicationId = '', $roomId = '', $mounting = 1, $productId = '', $articleCode = '')
+    {
+
         try {
-            
-            $this->activeSessionGuard();
             $this->load->helper('utility');
             $this->load->config('css_config');
             $this->data['css'] = $this->config->item('basic-with-font-awesome');
-            
+
             $languageCode = "en";
             $productId = encryptDecrypt($productId, "decrypt");
             $roomId = encryptDecrypt($roomId, "decrypt");
-            
+
             $this->validationData = ['room_id' => $roomId, 'product_id' => $productId, 'article_code' => $articleCode];
-            
+
             $this->validateAccessoryArticleDetail();
 
             $status = $this->validationRun();
-            
+
             if (!$status) {
                 show404($this->lang->line('bad_request'), base_url(''));
             }
             // Load models
-            $this->load->model(['ProductTechnicalData','ProductSpecification','Product']);
-            
-            
+            $this->load->model(['ProductTechnicalData', 'ProductSpecification', 'Product']);
+
+
             $productData = $this->Product->details([
                 'product_id' => $productId
             ]);
-            
+
             if (empty($productData)) {
                 show404($this->lang->line('no_data_found'), base_url(''));
             }
@@ -826,7 +838,7 @@ class QuickCalcController extends BaseController
                 'single_row' => true,
                 'where' => ['articlecode' => $articleCode]
             ]);
-            
+
             if (empty($articleCode)) {
                 show404($this->lang->line('no_data_found'), base_url(''));
             }
@@ -835,7 +847,7 @@ class QuickCalcController extends BaseController
 
             $articleData['accessory_data'] = json_encode([
                 $this->data["csrfName"] = $this->security->get_csrf_token_name() =>
-                        $this->data["csrfToken"] = $this->security->get_csrf_hash(),
+                    $this->data["csrfToken"] = $this->security->get_csrf_hash(),
                 'article_code' => $articleData['articlecode'],
                 'product_id' => encryptDecrypt($productId),
             ]);
@@ -846,8 +858,8 @@ class QuickCalcController extends BaseController
                 ]
             ]);
 
-            $this->data['isSelected']  = (bool)!empty($selectedProduct);
-            
+            $this->data['isSelected'] = (bool)!empty($selectedProduct);
+
             $this->data['technicalData'] = $technicalData;
             $this->data['productData'] = $productData;
             $this->data['articleData'] = $articleData;
@@ -859,19 +871,19 @@ class QuickCalcController extends BaseController
 
             $this->data['js'] = "article_quick_cal";
 
-            website_view('quickcalc/article_details_accessory', $this->data);
+            website_view('quickcalc/article_details', $this->data);
         } catch (\Exception $error) {
             show404($this->lang->line('internal_server_error'), base_url('home/applications'));
         }
     }
-    
-    
+
+
     private function validateAccessoryArticleDetail()
     {
         $this->form_validation->set_data($this->validationData);
 
         $this->form_validation->set_rules([
-            
+
             [
                 'field' => 'product_id',
                 'label' => 'Product id',

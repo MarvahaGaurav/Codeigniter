@@ -34,6 +34,7 @@
         <!-- //technician list search -->
 
         <!-- Technician list table -->
+        <?php if (!empty($inspirations) ) { ?>
         <div class="table-responsive table-wrapper inspiration-table scrollbar-inner" id="scrollbar-inner">
             <table cellspacing="0" class="table-custom">
                 <thead>
@@ -49,10 +50,11 @@
                     <?php foreach($inspirations as $key => $inspiration) { ?>
                     <tr>
                         <td class="td-thumb-carousel text-nowrap">
+                            <?php if (!empty($inspiration['media'])) { ?>
                             <div class="thumb-carousel">
                                 <!-- td carousel -->
                                 <div class="owl-carousel inspiration_carousel">
-                                <?php if (is_array($inspiration['media'])) {?>
+                                <?php if (is_array($inspiration['media']) && !empty($inspiration['media'])) {?>
                                     <?php foreach($inspiration['media'] as $media) {?>
                                     <?php if (CONTENT_TYPE_IMAGE === (int)$media['media_type'] ) {?>
                                     <div class="item">
@@ -69,13 +71,17 @@
                                     <?php } ?>
                                     <?php } ?>
                                 <?php } ?>
-
-                                    <!-- td carousel end -->
-                                    <!--<span class="fa fa-heart faa-like heart-position1" aria-hidden="true"></span>-->
                                 </div>
-                                
                                 <!-- td carousel end -->
                             </div>
+                            <?php } ?>
+                            <?php if (empty($inspiration['media'])) { ?>
+                                <div class="item">
+                                    <div class="thumb-view-wrapper thumb-view-fullp img-viewbdr-radius4">
+                                        <div class="thumb-view thumb-viewfullheight-1" style="background:url('<?php echo base_url('public/images/svg/sg_logo_placeholder.svg')  ?>')"></div>
+                                    </div>
+                                </div>
+                            <?php } ?>  
                         </td>
                         <td class="inspiration-description">
                             <h3 class="op-semibold"><?php echo ucwords($inspiration['title']) ?></h3>
@@ -107,14 +113,18 @@
                         </td>
                     </tr>
                     <?php  } ?>
-                    <?php if (empty($inspirations) ) { ?>
-                        <tr>
-                            <td colspan="5">No result found</td>
-                        </tr>
-                    <?php } ?>
+                   
                 </tbody>
             </table>
-        </div>
+        </div> 
+        <?php } ?>
+        <?php if (empty($inspirations) ) { ?>
+            <div class="no-record text-center">
+                <img src="<?php echo base_url("public/images/svg/inspiration_list_missing.svg"); ?>" alt="Note Paper">
+                <p><?php echo $this->lang->line('no_inspiration_found') ?></p>
+                <p>Tap on <a href="<?php echo base_url("home/inspirations/add"); ?>" class="page-link">Add Inspiration</a> button to add a inspiration.</p>
+            </div>
+        <?php } ?>
         <div class="pagination-wrap">
             <?php echo $links ?>
         </div>

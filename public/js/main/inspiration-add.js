@@ -8,7 +8,11 @@ requirejs.config({
     jqueryValidator: 'jquery.validate.min',
     jqueryScrollbar: 'plugin/jquery.scrollbar.min',
     imageVideoUploader: 'image.video.uploader',
-    select2: 'select2.min'
+    select2: 'select2.min',
+    mapsAPI: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAGhlvsdgd8ZPkLJDhkWblTEbvxPU_WAko&libraries=places',
+    mapsRender: 'web/helpers/maps-render',
+    mapsMarker: 'web/helpers/maps-marker',
+    mapsPlaces: 'web/helpers/maps-places',
   },
   shim: {
     //dependencies
@@ -17,7 +21,11 @@ requirejs.config({
     jqueryValidator: ['jquery'],
     jqueryScrollbar: ['jquery'],
     select2: ['common'],
-    imageVideoUploader: ['select2']
+    imageVideoUploader: ['select2'],
+    mapsAPI: ['jquery'],
+    mapsRender: ['mapsAPI'],
+    mapsPlaces: ['mapsMarker'],
+    mapsMarker: ['mapsRender'],
   }
 });
 
@@ -29,7 +37,11 @@ requirejs(
     'jqueryValidator',
     'jqueryScrollbar',
     'imageVideoUploader',
-    'select2'
+    'select2',
+    "mapsAPI",
+    "mapsRender",
+    "mapsPlaces",
+    "mapsMarker"
   ],
   function ($) {
     $('#multiple-checked').select2();
@@ -47,6 +59,15 @@ requirejs(
           required: true,
           maxlength: 255
         },
+        address: {
+          required: true
+        },
+        address_lat: {
+          required: true
+        },
+        address_lng: {
+          required: true
+        },
         'products[]': {
           required: true
         }
@@ -54,6 +75,9 @@ requirejs(
       errorPlacement: function (error, $element) {
         if ($element.attr('name') == 'products[]') {
           $("#multicheck-products").after(error);
+        } else if ($element.attr('name') == 'address_lat' || $element.attr('name') == 'address_lng' || $element.attr('name') === 'address') {
+          $("#maps-modal").modal('show');
+          $("#address-map-error").html(error);
         } else {
           $element.after(error);
         }

@@ -37,6 +37,7 @@ class BaseController extends MY_Controller
         $this->user_query_fields           = 'status,user_id,first_name,image,email, user_type, is_owner, company_id';
         $this->session_data                = $this->session->userdata('sg_userinfo');
         $this->languageCode = "en";
+        $this->employeePermission = [];
         // $this->employeePermission          = retrieveEmployeePermission($this->session->userdata('sg_userinfo')['user_id']);
         // $this->data['employee_permission'] = $this->employeePermission;
     }
@@ -58,6 +59,11 @@ class BaseController extends MY_Controller
             }
             $this->userInfo = $this->Common_model->fetch_data('ai_user', $this->user_query_fields, array ('where' => array ('user_id' => $sg_userinfo['user_id'], 'status' => 1)), true);
             $this->data['userInfo'] = $this->userInfo;
+            $this->data['employeePermission'] = [];
+            if ((int)$this->userInfo['is_owner'] === ROLE_EMPLOYEE) {
+                $this->employeePermission = retrieveEmployeePermission($this->userInfo['user_id']);
+                $this->data['employeePermission'] = $this->employeePermission;
+            }
         } else {
             redirect(base_url("login"));
         }
@@ -90,6 +96,11 @@ class BaseController extends MY_Controller
             $sg_userinfo    = $this->session_data;
             $this->userInfo = $this->Common_model->fetch_data('ai_user', $this->user_query_fields, array ('where' => array ('user_id' => $sg_userinfo['user_id'], 'status' => 1)), true);
             $this->data['userInfo'] = $this->userInfo;
+            $this->data['employeePermission'] = [];
+            if ((int)$this->userInfo['is_owner'] === ROLE_EMPLOYEE) {
+                $this->employeePermission = retrieveEmployeePermission($this->userInfo['user_id']);
+                $this->data['employeePermission'] = $this->employeePermission;
+            }
         }
     }
 
@@ -107,7 +118,6 @@ class BaseController extends MY_Controller
      */
     protected function handleEmployeePermission($userTypesToCheck, $permissionsToCheck, $redirectUrl)
     {
-        $permissions = [];
         if (!is_array($userTypesToCheck) || !is_array($permissionsToCheck)) {
             show404($this->lang->line('internal_server_error'), $redirectUrl);
         }
@@ -115,25 +125,24 @@ class BaseController extends MY_Controller
         (int)$this->userInfo['is_owner'] === ROLE_EMPLOYEE
         ) {
             $this->load->helper('common');
-            $permissions = retrieveEmployeePermission($this->userInfo['user_id']);
-            $this->data['permissions'] = $permissions;
-            if (empty($permissions)) {
+            $this->data['permissions'] = $this->employeePermission;
+            if (empty($this->employeePermission)) {
                 show404($this->lang->line('adequate_permission_required'), $redirectUrl);
             }
 
-            $permissionKeys = array_keys($permissions);
+            $permissionKeys = array_keys($this->employeePermission);
             foreach ($permissionsToCheck as $permissionToCheck) {
                 if (!in_array($permissionToCheck, $permissionKeys)) {
                     show404($this->lang->line('adequate_permission_required'), $redirectUrl);
                 }
                     
-                if (!(bool)$permissions[$permissionToCheck]) {
+                if (!(bool)$this->employeePermission[$permissionToCheck]) {
                     show404($this->lang->line('adequate_permission_required'), $redirectUrl);
                 }
             }
         }
 
-        return $permissions;
+        return $this->employeePermission;
     }
 
     /**

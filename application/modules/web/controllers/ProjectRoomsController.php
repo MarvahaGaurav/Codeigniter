@@ -703,7 +703,6 @@ class ProjectRoomsController extends BaseController
             $this->data['selected_product'] = [];
 
             $selectedProduct = get_cookie('project_selected_product_' . $projectRoomId);
-
             if (!empty($selectedProduct)) {
                 $this->data['selected_product'] = json_decode($selectedProduct, true);
                 if (isset($this->data['selected_product']['product_id'])) {
