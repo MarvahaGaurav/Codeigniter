@@ -87,5 +87,4 @@ $config = [
         base_url("public/css/web/style.css"),
         base_url("public/css/web/sgmedia.css"),
     ],
-    
 ];
