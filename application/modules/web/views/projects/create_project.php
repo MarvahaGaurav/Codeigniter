@@ -72,10 +72,9 @@
                 <div class="clearfix"></div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <div class="form-group" id="address-box-wrapper">
-                        <label class="labelTxt">Address</label>
+                        <label class="labelTxt">Address <i class="fa fa-map-marker"></i></label>
                         <div class="form-group-field">
-                            <textarea name="address" id="address" placeholder="Click map marker icon to pick location"></textarea>
-                            <span data-toggle="modal" data-target="#maps-modal" title="Pick Location from Map" id="address-map-icon" class="clickable"><i class="fa fa-map-marker"></i></span>
+                            <textarea readonly name="address" id="address" data-toggle="modal" data-target="#maps-modal" title="Pick Location from Map" placeholder="Click map marker icon to pick location"></textarea>                            
                         </div>
                         <div id="address-map-error"></div>
                         <input type="hidden" name="address_lat" id="address-lat">

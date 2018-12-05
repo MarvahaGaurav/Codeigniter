@@ -205,10 +205,9 @@
                             </div>
                         </div>
                         <div class="form-group clearfix <?php echo strlen(set_Value('user_type'))>0&&set_value('user_type') == INSTALLER&&$isCompanyOwner?'': 'concealable'  ?>" id="address-box-wrapper">
-                            <label class="labelTxt">Address</label>
+                            <label class="labelTxt">Address <i class="fa fa-map-marker"></i></label>
                             <div class="form-group-field">
-                                <textarea name="address" id="address" placeholder="Click map marker icon to pick location"><?php echo set_value('address') ?></textarea>
-                                <span data-toggle="modal" data-target="#maps-modal" title="Pick Location from Map" id="address-map-icon" class="clickable"><i class="fa fa-map-marker"></i></span>
+                                <textarea readonly name="address" data-toggle="modal" data-target="#maps-modal" id="address" placeholder="Click map marker icon to pick location"><?php echo set_value('address') ?></textarea>                                
                             </div>
                             <div id="address-map-error"><?php echo strlen(form_error('address'))>0||strlen(form_error('address'))>0||strlen(form_error('address'))>0?form_error('address'):'' ?></div>
                             <input type="hidden" name="address_lat" id="address-lat" value="<?php echo set_value('address_lat') ?>">

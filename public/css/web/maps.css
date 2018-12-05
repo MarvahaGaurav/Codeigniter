@@ -14,7 +14,13 @@
 }
 
 #address-map-icon {
-    position: absolute !important;
-    bottom: 13px !important;
-    right: 11px !important;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    display: block;
+}
+
+#address-map-icon .fa{    
+    font-size: 28px;
 }
