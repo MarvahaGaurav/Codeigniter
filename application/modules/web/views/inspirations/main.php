@@ -78,7 +78,7 @@
                             <?php if (empty($inspiration['media'])) { ?>
                                 <div class="item">
                                     <div class="thumb-view-wrapper thumb-view-fullp img-viewbdr-radius4">
-                                        <div class="thumb-view thumb-viewfullheight-1" style="background:url('<?php echo base_url('public/images/svg/sg_logo_placeholder.svg')  ?>')"></div>
+                                        <div class="thumb-view thumb-viewfullheight-1" style="background:#c4c4c4 url('<?php echo base_url('public/images/svg/sg_logo_placeholder.svg')  ?>')"></div>
                                     </div>
                                 </div>
                             <?php } ?>  

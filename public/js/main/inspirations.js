@@ -12,7 +12,7 @@ requirejs.config({
 	//dependencies
 	bootstrap: ['jquery'],
   common: ['bootstrap'],
-  owl: ['common'],
+  owl: ['bootstrap'],
 	jqueryScrollbar: ['jquery']
   }
 });
@@ -24,8 +24,9 @@ requirejs(
         items:1,
         loop:true,
         margin:30,
-        autoplay:false,
-        dots: true
+        autoplay:true,
+        drag: true
+        // dots: true,
     });
   },
   function() {
