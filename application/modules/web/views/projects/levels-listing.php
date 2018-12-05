@@ -18,7 +18,63 @@
                 <button class="custom-btn btn-width save" type="button">Request Quotation</button>
             </div> -->
             <div class="clearfix"></div>
-            <?php foreach ($projectLevels as $level) : ?>
+            <div class="table-wrapper table-responsive sticky-table">
+                <table class="table table-striped table-custom">
+                    <thead>
+                        <tr class="sticky-header">
+                            <th class="text-center">Levels</th>
+                            <th class="text-center">Room Count</th>
+                            <th class="text-center">Actions</th>
+                        </tr>                        
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td align="center" class="text-center">1</td>
+                            <td align="center" class="text-center">4</td>
+                            <td align="center" class="action text-center">
+                                <a href="javascript:void(0)"><i class="fa fa-eye"></i></a>                   <a href="javascript:void(0)"><i class="fa fa-plus"></i></a>
+                                <a href="javascript:void(0)"><i class="fa fa fa-clone"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" class="text-center">1</td>
+                            <td align="center" class="text-center">4</td>
+                            <td align="center" class="action text-center">
+                                <a href="javascript:void(0)"><i class="fa fa-eye"></i></a>                   <a href="javascript:void(0)"><i class="fa fa-plus"></i></a>
+                                <a href="javascript:void(0)"><i class="fa fa fa-clone"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" class="text-center">1</td>
+                            <td align="center" class="text-center">4</td>
+                            <td align="center" class="action text-center">
+                                <a href="javascript:void(0)"><i class="fa fa-eye"></i></a>                   <a href="javascript:void(0)"><i class="fa fa-plus"></i></a>
+                                <a href="javascript:void(0)"><i class="fa fa fa-clone"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" class="text-center">1</td>
+                            <td align="center" class="text-center">4</td>
+                            <td align="center" class="action text-center">
+                                <a href="javascript:void(0)"><i class="fa fa-eye"></i></a>                   <a href="javascript:void(0)"><i class="fa fa-plus"></i></a>
+                                <a href="javascript:void(0)"><i class="fa fa fa-clone"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" class="text-center">1</td>
+                            <td align="center" class="text-center">4</td>
+                            <td align="center" class="action text-center">
+                                <a href="javascript:void(0)"><i class="fa fa-eye"></i></a>                   <a href="javascript:void(0)"><i class="fa fa-plus"></i></a>
+                                <a href="javascript:void(0)"><i class="fa fa fa-clone"></i></a>
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+            <!-- table-wrapper End -->
+            
+            <?php foreach ($projectLevels as $level) : ?>            
             <div class="white-card-wrapper levels-listing-wrapper clickable <?php echo !(bool)$level['active']?"disabled-level":"" ?>" data-redirect-to="<?php echo base_url("/home/projects/{$projectId}/levels/{$level['level']}/rooms") ?>">
                 <div class="col-left">
                     <span class="level-heading">Level <?php echo $level['level'] ?></span>
@@ -246,42 +302,45 @@
             <div class="modal-body">
                 <?php echo form_open('', ['id' => 'installer-submit-price', 'class' => 'form-horizontal', 'role' => 'form']) ?>
                 <input type="hidden" name="project_id" value="<?php echo $projectId ?>">
+                <div class="projectPric">
                 <div class="form-group">
-                    <label for="total_price_per_luminary" class="col-lg-4 col-md-4 col-sm-4 col-xs-12">Total Luminary Price</label>
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 pull-right">
+                    <label for="total_price_per_luminary" class="priceTxt">Total Luminary Price</label>
+                    <div class="inputField">
                         <input type="text" disabled="disabled" class="modal-price-fields" id="total_price_per_luminary" value="<?php echo isset($projectRoomPrice['price_per_luminaries'])?$projectRoomPrice['price_per_luminaries']:'' ?>">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="total_installation_charges" class="col-lg-4 col-md-4 col-sm-4 col-xs-12">Total Installation Charges</label>
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 pull-right">
+                    <label for="total_installation_charges" class="priceTxt">Total Installation Charges</label>
+                    <div class="inputField">
                         <input type="text" disabled="disabled" class="modal-price-fields" id="total_installation_charges" value="<?php echo isset($projectRoomPrice['installation_charges'])?$projectRoomPrice['installation_charges']:'' ?>">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="additional_product_charges" class="col-lg-4 col-md-4 col-sm-4 col-xs-12">Additional Product Charges</label>
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 pull-right">
+                    <label for="additional_product_charges" class="priceTxt">Additional Product Charges</label>
+                    <div class="inputField">
                         <input type="text" <?php echo (bool)$hasAddedFinalPrice?'disabled="disabled"':'name="additional_product_charges"' ?> class="modal-price-fields restrict-characters number-only-field" data-restrict-to="15" id="additional_product_charges" value="<?php echo isset($projectRoomPrice['additional_product_charges'])?$projectRoomPrice['additional_product_charges']:'' ?>">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="discount" class="col-lg-4 col-md-4 col-sm-4 col-xs-12">Discount&nbsp;(%)</label>
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 pull-right">
+                    <label for="discount" class="priceTxt">Discount&nbsp;(%)</label>
+                    <div class="inputField">
                         <input type="text" <?php echo (bool)$hasAddedFinalPrice?'disabled="disabled"':'name="discount"' ?> class="modal-price-fields restrict-characters number-only-field" id="discount" data-restrict-to="15" value="<?php echo isset($projectRoomPrice['discount'])?$projectRoomPrice['discount']:'' ?>">
                     </div>
                 </div>
                 <hr>
                 <div class="form-group">
-                    <label for="discount" class="col-lg-4 col-md-4 col-sm-4 col-xs-12">Subtotal</label>
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 pull-right">
-                        <?php echo isset($projectRoomPrice['subtotal'])?$projectRoomPrice['subtotal']:0.00 ?>
+                    <label for="discount" class="priceTxt">Subtotal</label>
+                    <div class="inputField">
+                        <span class="total"><?php echo isset($projectRoomPrice['subtotal'])?$projectRoomPrice['subtotal']:0.00 ?></span>
                     </div>
                 </div>
+                <hr>
                 <div class="form-group">
-                    <label for="discount" class="col-lg-4 col-md-4 col-sm-4 col-xs-12">Total</label>
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 pull-right">
-                        <?php echo isset($projectRoomPrice['total'])?$projectRoomPrice['total']:0.00 ?>
+                    <label for="discount" class="priceTxt">Total</label>
+                    <div class="inputField">
+                        <span class="total"><?php echo isset($projectRoomPrice['total'])?$projectRoomPrice['total']:0.00 ?></span>
                     </div>
+                </div>                
                 </div>
                 <?php echo form_close() ?>
             </div>

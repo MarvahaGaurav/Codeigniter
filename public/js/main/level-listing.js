@@ -5,19 +5,23 @@ requirejs.config({
     jquery: "jquery.min",
     bootstrap: "bootstrap.min",
     common: "web/common",
-    jqueryScrollbar: "plugin/jquery.scrollbar.min"
+    jqueryScrollbar: "plugin/jquery.scrollbar.min",
+    jqueryStickyTable: "jquery.stickytable.min"  
   },
   shim: {
     //dependencies
     bootstrap: ['jquery'],
     common: ['bootstrap'],
-    jqueryScrollbar: ['jquery']
+    jqueryScrollbar: ['jquery'],
+    jqueryStickyTable: ['bootstrap']      
   }
 });
 
 requirejs(
-  ["jquery", "bootstrap", "common", "jqueryScrollbar"],
+  ["jquery", "bootstrap", "common", "jqueryScrollbar", "jqueryStickyTable"],
   function ($) {
+    //jquery table here  
+      
     $(".levels-listing-wrapper").on('click', function (event) {
       var targetEvent = $(event.target);
       if (targetEvent.hasClass('level-btn')) {

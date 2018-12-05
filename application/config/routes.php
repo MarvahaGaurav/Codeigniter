@@ -61,6 +61,7 @@ if (isset($_SERVER["REQUEST_URI"]) && preg_match('/.*\/(api)\/.*/', $_SERVER["RE
 $route['default_controller']   = 'web/QuickCalcController/applications';
 $route['translate_uri_dashes'] = false;
 
+$route['home/search'] = 'web/SearchController/index';
 $route['home/profile/(.+)/edit']      = 'web/UserController/edit_profile/$1';
 $route['home/profile/(.+)']           = 'web/UserController/profile/$1';
 $route['home/settings/(.+)']          = 'web/UserController/settings/$1';

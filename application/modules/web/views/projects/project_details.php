@@ -83,8 +83,10 @@
                         ?>
                         <tr>
                             <td class="td-thumb text-nowrap">
-                                <img src="http://smartguide-staging.applaurels.com/public/images/placeholder/no-found-ico-2.svg" />
+                                <div class="d-flex">
+                                    <img src="http://smartguide-staging.applaurels.com/public/images/placeholder/no-found-ico-2.svg" />
                                 <span class="td-room-type op-semibold"><?php echo $room['name']; ?></span>
+                                </div>
                             </td>
                             <td><?php echo $room['length'] . " M x " . $room['width'] . " M x " . $room['height'] . "M"; ?></td>
                             <td class="text-center"><?php echo count($room['products']); ?></td>

@@ -1,0 +1,37 @@
+.searchBar{
+    margin-bottom: 20px;
+}
+
+.searchWrapper a{
+    display: block;
+    -webkit-transition: all 0.3s ease-in;
+    -o-transition: all 0.3s ease-in;
+    transition: all 0.3s ease-in;
+}
+
+.searchWrapper a:hover{
+    display: block;
+    -webkit-box-shadow: -4px 1px 10px rgba(0, 0, 0, 0.06), 2px 6px 10px rgba(0, 0, 0, 0.09);
+    box-shadow: -4px 1px 10px rgba(0, 0, 0, 0.06), 2px 6px 10px rgba(0, 0, 0, 0.09);
+}
+
+.searchWrapper .thumbnail{
+    min-height: 395px;
+}
+
+.searchWrapper .caption h3 {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 22px;
+    margin-bottom: 10px;
+}
+
+.searchWrapper .caption p strong {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.searchWrapper .caption p {
+    font-size: 14px;
+    line-height: 22px;
+}

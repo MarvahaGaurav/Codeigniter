@@ -81,7 +81,7 @@ if (count($images)) {
             <thead>
                 <tr>
                     <th class="image"></th>
-                    <th class="light-technic" style="width:35%"><b>Article</b></th>
+                    <th class="light-technic" style="width:250px"><b>Article</b></th>
                     <th class="protection">Protection</th>
                     <th class="driver">Control gear</th>
                     <th class="connection">Mounting/Connection</th>
@@ -104,7 +104,7 @@ if (count($images)) {
                 <tr class="">
 
                     <td class="image"><a>
-                        <img data-redirect-to="<?php echo base_url("home/projects/{$project_id}/levels/{$level}/rooms/applications/{$application_id}/rooms/{$room_id}/dimensions/products/" . encryptDecrypt($product_id) . "/mounting/{$mounting}/articles/{$specification['articlecode']}") ?>" style="width:100%" src="<?php echo $specification['image']; ?>" title="<?php echo $specification['articlecode']; ?>" class="img-responsive redirectable clickable"></a>
+                        <img data-redirect-to="<?php echo base_url("home/projects/{$project_id}/levels/{$level}/rooms/applications/{$application_id}/rooms/{$room_id}/dimensions/products/" . encryptDecrypt($product_id) . "/mounting/{$mounting}/articles/{$specification['articlecode']}") ?>" style="width:200px" src="<?php echo $specification['image']; ?>" title="<?php echo $specification['articlecode']; ?>" class="img-responsive redirectable clickable"></a>
                     </td>
                     <td data-title="Article" class="light-technic">
                         <a name="<?php echo $specification['articlecode']; ?>"></a>
@@ -301,4 +301,12 @@ if (count($images)) {
         background-color: #ad0011;
         border-color: transparent;
     }
+    
+/* article no text bold */
+    .articlecode strong{
+        font-weight: bold;
+        color: #000;
+        line-height: 20px;
+    }
+    /* article no text bold css end */
 </style>

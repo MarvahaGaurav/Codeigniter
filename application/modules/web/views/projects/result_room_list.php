@@ -45,8 +45,10 @@
                     <?php foreach($rooms as $key => $room) : ?>
                     <tr>
                         <td class="td-thumb text-nowrap">
-                            <img src="<?php echo base_url("public/images/placeholder/no-found-ico-2.svg")?>"  />
-                            <span class="td-room-type op-semibold"><?php echo strlen($room['reference_name'])>0?$room['reference_name']:$room['name'] ?></span>
+                            <div class="d-flex">
+                              <img src="<?php echo base_url("public/images/placeholder/no-found-ico-2.svg")?>"  />
+                                <span class="td-room-type op-semibold"><?php echo strlen($room['reference_name'])>0?$room['reference_name']:$room['name'] ?></span>
+                            </div>
                         </td>
                         <td><?php echo "{$room['length']}M x {$room['width']}M x {$room['height']}M" ?></td>
                         <td class="text-center"><?php echo $room['count'] ?> <?php echo (int)$room['count'] > 1?$this->lang->line('room_count_sets_txt'):$this->lang->line('room_count_set_txt') ?></td>
@@ -72,35 +74,38 @@
                     </tr>
                     <?php endforeach ?>
                 </tbody>
-            </table>
-            <div class="price-container col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="price-wrapper col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="price-group col-lg-2 col-md-2 col-sm-2 col-xs-6">
-                        <label for="" class="price-label"><?php echo $this->lang->line('price_per_luminaries') ?></label>
+                <tfoot>
+                    <tr>
+                        <td colspan="7">
+                            <div class="priceContainer">
+                <div class="price-wrapper">
+                    <label for="" class="price-label"><?php echo $this->lang->line('price_per_luminaries') ?></label>
                         <input type="text" class="price-fields"value="<?php echo isset($projectRoomPrice['price_per_luminaries'])?$projectRoomPrice['price_per_luminaries']:'' ?>" disabled>
-                    </div>
-                    <div class="price-group col-lg-1 col-md-1 col-sm-1 col-xs-6">
-                        <label for="" class="price-label"></label>
-                        <label for="" class="price-label">+</label>
-                    </div>
-                    <div class="price-group col-lg-2 col-md-2 col-sm-2 col-xs-6">
-                        <label for="" class="price-label"><?php echo $this->lang->line('installation_charges') ?></label>
+                </div>
+                <div class="plus-min-icon">&#43;</div>
+                <div class="price-wrapper">
+                <label for="" class="price-label"><?php echo $this->lang->line('installation_charges') ?></label>
                         <input type="text" class="price-fields"value="<?php echo isset($projectRoomPrice['installation_charges'])?$projectRoomPrice['installation_charges']:'' ?>" disabled>
-                    </div>
-                    <div class="price-group col-lg-1 col-md-1 col-sm-1 col-xs-6">
-                        <label for="" class="price-label"></label>
-                        <label for="" class="price-label">-</label>
-                    </div>
-                    <div class="price-group col-lg-2 col-md-2 col-sm-2 col-xs-6">
-                        <label for="" class="price-label"><?php echo $this->lang->line('discount_price') ?>(%)</label>
-                        <input type="text" class="price-fields"value="<?php echo isset($projectRoomPrice['discount_price'])?$projectRoomPrice['discount_price']:'' ?>" disabled>
-                    </div>
-                    <div class="price-group col-lg-2 col-md-2 col-sm-3 col-xs-6 pull-right">
-                        <label for="" class="price-label">Total</label>
-                        <label for="" class="price-label"><?php  echo isset($projectRoomPrice['total'])?$projectRoomPrice['total']:'' ?></label>
-                    </div>
+                </div>
+                <div class="plus-min-icon">&#45;</div>
+                <div class="price-wrapper">
+                    <label for="" class="price-label"><?php echo $this->lang->line('discount_price') ?>(%)</label>
+                    <input type="text" class="price-fields"value="<?php echo isset($projectRoomPrice['discount_price'])?$projectRoomPrice['discount_price']:'' ?>" disabled>
+                </div>
+                <div class="plus-min-icon">&#61;</div>
+                <div class="priceWrapper text-center">
+                    <label for="" class="price-label">Total</label>
+                        <div class="totalPrice"><?php  echo isset($projectRoomPrice['total'])?$projectRoomPrice['total']:'' ?></div>
                 </div>
             </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+            
+            
+            
+            
         </div>
         <?php if (empty($rooms)) : ?>
         <div class="no-record text-center">
@@ -139,58 +144,64 @@
             </div>
             <div class="modal-body">
                 <?php echo form_open(base_url(uri_string()), ['id' => 'add-price-form']) ?>
-                <div class="row form-inline-wrapper">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="form-group">
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">Main Product Price</div>
-                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">0.00</div>
-                        </div>
+                <div class="">
+                  <div class="row">
+                   <div class="col-md-12">
+                       <div class="priceDetails">
+                           <div class="colLeft">Main Product Price</div>
+                           <div class="colRight">0.00</div>
+                       </div>
+                       <div class="priceDetails">
+                           <div class="colLeft">Accessory Product Price</div>
+                           <div class="colRight">0.00</div>
+                       </div>
+                       
+                       
+                   </div>
+                   <!-- col-md-12 close -->
                     </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="form-group">
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">Accessory Product Price</div>
-                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">0.00</div>
-                        </div>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <!-- row close -->
+                   
+              
+                    <div class="row">
+                       <div class="col-md-12">
                         <div class="form-group">
                             <label class="labelTxt"><?php echo $this->lang->line('price_per_luminaries') ?></label>
                             <div class="form-group-field">
                                 <input name="price_per_luminaries" id="price-per-luminaries" type="number" placeholder="10.00" maxlength="12">
                             </div>
                         </div>
-                    </div>
-                    <div class="clearfix"></div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <!-- form-group -->
+                        
                         <div class="form-group">
                             <label class="labelTxt"><?php echo $this->lang->line('installation_charges') ?></label>
                             <div class="form-group-field">
                                 <input type="number" name="installation_charges" id="installation-charges" placeholder="10.00" maxlength="12">
                             </div>
                         </div>
-                    </div>
-                    <div class="clearfix"></div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <!-- form-group -->
                         <div class="form-group">
                             <label class="labelTxt"><?php echo $this->lang->line('discount_price') ?></label>
                             <div class="form-group-field">
                                 <input type="number" name="discount_price" id="discount-price" placeholder="10.00" maxlength="12">
                             </div>
                         </div>
+                        <!-- form-group -->
+                        
+                        <div class="priceDetails">
+                           <div class="colLeft">Subtotal</div>
+                           <div class="colRight">0</div>
+                       </div>
+                       
+                        <div class="priceDetails">
+                           <div class="colLeft">Total</div>
+                           <div class="colRight">0</div>
+                       </div>
+                      </div>
+                      <!-- col-md-12 close -->
                     </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="form-group">
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">Subtotal</div>
-                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8" id="subtotal"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="form-group">
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">Total</div>
-                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8" id="total"></div>
-                        </div>
-                    </div>
-                    <input type="hidden" name="project_room_id" id="project-room-id" value="">;
+                    <!-- row close -->                                    
+                    <input type="hidden" name="project_room_id" id="project-room-id" value="">
                     <span id="target-handler" data-target=""></span>
                 </div>
                 <?php echo form_close() ?>
