@@ -218,6 +218,7 @@ class Index extends BaseController
                 $this->form_validation->set_rules($this->signupValidationRules());
 
                 //If the user is of technician types add more relavent validation
+                $isCompanyOwner = $this->input->post('is_company_owner');
                 if (in_array((int)$userType, [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER, WHOLESALER], true)) {
                     $this->form_validation->set_rules($this->technicianEmployeeRules());
                     $isCompanyOwner = $this->input->post('is_company_owner');
@@ -230,7 +231,7 @@ class Index extends BaseController
                 if ((int)$userType === BUSINESS_USER) {
                     $this->form_validation->set_rules($this->businessUserRules());
                 }
-                if ((int)$userType === INSTALLER) {
+                if ((int)$userType === INSTALLER && is_numeric($isCompanyOwner) && (int)$isCompanyOwner === 1) {
                     $this->form_validation->set_rules($this->installerAddressBoxValidation());
                 }
                 if ($this->form_validation->run()) {

@@ -15,7 +15,7 @@ requirejs.config({
         helper: 'web/helpers/signup',
         cropper_JS: 'cropperAssets/cropper',
         appinventivCropper: 'cropperAssets/appinventivCropper',
-        mapsAPI: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAGhlvsdgd8ZPkLJDhkWblTEbvxPU_WAko&libraries=places',
+        mapsAPI: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDhP9xXJsFempHkFwsNn0AuDd89WtTlmI0&libraries=places',
         mapsRender: 'web/helpers/maps-render',
         mapsMarker: 'web/helpers/maps-marker',
         mapsPlaces: 'web/helpers/maps-places',
