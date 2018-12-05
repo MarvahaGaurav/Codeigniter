@@ -480,3 +480,37 @@ ERROR - 2018-12-05 14:00:04 --> Severity: Warning --> mysqli::real_connect(): (H
 ERROR - 2018-12-05 14:00:04 --> Unable to connect to the database
 ERROR - 2018-12-05 14:00:04 --> Severity: error --> Exception: Call to a member function real_escape_string() on boolean /var/www/html/smartguide/system/database/drivers/mysqli/mysqli_driver.php 391
 >>>>>>> d4823c62df1a3cc5609a68e8a641ee94d76677e2
+ERROR - 2018-12-05 14:32:36 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 14:32:37 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 14:32:43 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 14:32:43 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 14:32:45 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 14:32:47 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 14:32:47 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 14:34:45 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 14:35:39 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 14:35:39 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 14:35:41 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 14:35:41 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 14:35:42 --> 404 Page Not Found: /index
+ERROR - 2018-12-05 14:35:42 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 14:35:45 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 14:35:57 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 14:35:58 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 14:35:59 --> 404 Page Not Found: /index
+ERROR - 2018-12-05 14:36:09 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 14:36:12 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 14:39:11 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 14:39:19 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 14:39:38 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 14:39:45 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 14:41:04 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 14:41:09 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 14:41:29 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 14:42:38 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 14:43:08 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 14:43:26 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 14:47:13 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 14:47:19 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 14:47:19 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 14:47:22 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
