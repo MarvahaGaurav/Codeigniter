@@ -1,5 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 
+<<<<<<< HEAD
 ERROR - 2018-12-05 05:42:19 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
 ERROR - 2018-12-05 05:42:19 --> Unable to connect to the database
 ERROR - 2018-12-05 05:42:19 --> Severity: Warning --> mysqli::real_connect(): (HY000/1045): Access denied for user 'root'@'localhost' (using password: YES) C:\xampp\htdocs\smartguide\system\database\drivers\mysqli\mysqli_driver.php 201
@@ -459,3 +460,23 @@ ERROR - 2018-12-05 14:07:58 --> Could not find the specified $config['composer_a
 ERROR - 2018-12-05 14:11:22 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
 ERROR - 2018-12-05 14:11:40 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
 ERROR - 2018-12-05 14:12:09 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+=======
+ERROR - 2018-12-05 13:59:55 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 13:59:55 --> Unable to connect to the database
+ERROR - 2018-12-05 13:59:55 --> Severity: Warning --> mysqli::real_connect(): (HY000/1049): Unknown database 'smart_guide' /var/www/html/smartguide/system/database/drivers/mysqli/mysqli_driver.php 201
+ERROR - 2018-12-05 13:59:55 --> Unable to connect to the database
+ERROR - 2018-12-05 13:59:55 --> Severity: Warning --> mysqli::real_connect(): (HY000/1049): Unknown database 'smart_guide' /var/www/html/smartguide/system/database/drivers/mysqli/mysqli_driver.php 201
+ERROR - 2018-12-05 13:59:55 --> Unable to connect to the database
+ERROR - 2018-12-05 13:59:55 --> Severity: Warning --> mysqli::real_connect(): (HY000/1049): Unknown database 'smart_guide' /var/www/html/smartguide/system/database/drivers/mysqli/mysqli_driver.php 201
+ERROR - 2018-12-05 13:59:55 --> Unable to connect to the database
+ERROR - 2018-12-05 13:59:55 --> Severity: error --> Exception: Call to a member function real_escape_string() on boolean /var/www/html/smartguide/system/database/drivers/mysqli/mysqli_driver.php 391
+ERROR - 2018-12-05 14:00:04 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-05 14:00:04 --> Unable to connect to the database
+ERROR - 2018-12-05 14:00:04 --> Severity: Warning --> mysqli::real_connect(): (HY000/1049): Unknown database 'smart_guide' /var/www/html/smartguide/system/database/drivers/mysqli/mysqli_driver.php 201
+ERROR - 2018-12-05 14:00:04 --> Unable to connect to the database
+ERROR - 2018-12-05 14:00:04 --> Severity: Warning --> mysqli::real_connect(): (HY000/1049): Unknown database 'smart_guide' /var/www/html/smartguide/system/database/drivers/mysqli/mysqli_driver.php 201
+ERROR - 2018-12-05 14:00:04 --> Unable to connect to the database
+ERROR - 2018-12-05 14:00:04 --> Severity: Warning --> mysqli::real_connect(): (HY000/1049): Unknown database 'smart_guide' /var/www/html/smartguide/system/database/drivers/mysqli/mysqli_driver.php 201
+ERROR - 2018-12-05 14:00:04 --> Unable to connect to the database
+ERROR - 2018-12-05 14:00:04 --> Severity: error --> Exception: Call to a member function real_escape_string() on boolean /var/www/html/smartguide/system/database/drivers/mysqli/mysqli_driver.php 391
+>>>>>>> d4823c62df1a3cc5609a68e8a641ee94d76677e2

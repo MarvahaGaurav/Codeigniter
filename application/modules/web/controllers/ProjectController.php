@@ -89,7 +89,8 @@ class ProjectController extends BaseController
         if ((int)$this->userInfo['user_type'] === INSTALLER && (int)$this->userInfo['is_owner'] === ROLE_OWNER) {
             $this->load->model('Employee');
             $this->data['employees'] = $this->Employee->employees([
-                'where' => ['company_id' => $this->userInfo['company_id'], 
+                'where' => [
+                    'users.company_id' => $this->userInfo['company_id'], 
                     'is_owner' => ROLE_EMPLOYEE
                 ]
             ]);

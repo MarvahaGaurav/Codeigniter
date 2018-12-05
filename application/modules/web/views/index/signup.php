@@ -69,12 +69,12 @@
                 <!-- thumb upload -->
                 <div class="image-wrapper">
                     <div class="image-view-box img-view130p img-viewbdr-radius">
-                        <div id="cropped_image_preview" class="image-view img-view130" style="background-image:url(../images/user.png);"></div>
+                        <div id="cropped_image_preview" class="image-view img-view130" style="background-image:url(<?php echo base_url('public/images/user-placeholder.png') ?>);"></div>
                     </div>
                     <div class="upload-btn">
                         <!--<input type="file" id="upload">-->
                         <input type="file" class="" id="image-selector" name="image" accept="image/*">
-                        <img src="public/images/camera.svg" />
+                        <i class="fa fa-camera signup-camera-holder"></i>
                     </div>
                 </div>
                 <input id="user_image" name="user_image" type="hidden">
@@ -238,7 +238,7 @@
                         <div class="form-group">
                             <div class="input-wrapper city-wrapper">
                                 <span class="fa fa-spin fa-circle-o-notch city-loader concealable"></span>
-                                <input type="text" placeholder="Please start typing your city..." id="select-city" name="city_name" data-country="<?php echo set_value('country') ?>" value="<?php echo set_value('city_name') ?>">
+                                <input class="alphanumspaces-only-field restrict-characters" data-restrict-to="100" type="text" placeholder="Please start typing your city..." id="select-city" name="city_name" data-country="<?php echo set_value('country') ?>" value="<?php echo set_value('city_name') ?>">
                                 <?php echo form_error('city', '<label for="city" class="error">', "</label>"); ?>
                             </div>
                             <input type="hidden" name="city" id="city-id" value="<?php echo set_value('city') ?>">

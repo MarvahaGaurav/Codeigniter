@@ -29,3 +29,10 @@
 .concealable{
     display:none;
 }
+
+.signup-camera-holder {
+    position: absolute;
+    top: 11px;
+    left: 10px;
+    color: white;
+}

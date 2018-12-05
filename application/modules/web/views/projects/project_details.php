@@ -67,6 +67,7 @@
         <!-- Caption before section -->
         <!-- <div class="clearfix"></div> -->
         <!-- Project list table -->
+        <?php if (!empty($rooms)) { ?>
         <div class="table-responsive table-wrapper" id="scrollbar-inner2">
             <table cellspacing="0" class="table-custom">
                 <thead>
@@ -100,16 +101,17 @@
                 </tbody>
             </table>
         </div>
+        <?php } ?>
         <!-- //Project list table -->
 
-
-        <!-- no record found -->
-        <!-- <div class="no-record text-center">
-            <img src="../../images/no-found-note.png" alt="Note Paper">
-            <p>You have no project.</p>
-            <p>You have to <a href="login.html" class="login">Login</a> first to add a project!</p>
-        </div> -->
-        <!-- no record found -->
+        <?php if (empty($rooms)) { ?>
+        <div class="no-record text-center">
+            <img src="<?php echo base_url("public/images/placeholder/no-found-ico-2.svg"); ?>" alt="Note Paper">
+            <p><?php echo $this->lang->line('no_rooms_in_this_project') ?></p>
+            <p>Tap on <a href="<?php echo base_url("home/projects/" . encryptDecrypt($project['project_id']) . "/levels"); ?>" class="page-link">View Room Details</a> button to add a room.</p>
+            <!--<p>You have to <a href="login.html" class="login">Login</a> first to add a project!</p>-->
+        </div>
+        <?php } ?>
 
     </div>
 </div>

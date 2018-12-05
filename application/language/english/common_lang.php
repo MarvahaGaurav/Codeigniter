@@ -226,3 +226,4 @@ $lang['no_technician_found'] = 'No Technician Found';
 $lang['select_mounting_type'] = 'Please select a mounting type to continue';
 $lang['search_products_prompt'] = 'Search to find products';
 $lang['location_required'] = 'Location required';
+$lang['no_rooms_in_this_project'] = 'You have no rooms in this Project';
