@@ -16,8 +16,16 @@
         <!-- //breadcrumb -->
 
         <div class="page-heading">
-            <h1 class="page-title"><?php echo $room['title']; ?> Products</h1>
-            <p>Lots of possibilities for bathroom lighting</p>
+            <h1 class="page-title"><?php echo $room['title']; ?>: Products</h1>
+            <div class="search-wrapper search-wrapper-width-2 fawe-icon-position">
+                <span class="fawe-icon fawe-icon-position-right close-ico">
+                    <i class="fa fa-times"></i>
+                </span>
+                <form id="search-form" method="GET" action="">
+                    <input type="text" data-search-data='<?php echo $searchData ?>' name="search" class="search-product-box search-box" value="" id="product-search"  placeholder="Search Products...">
+                </form>
+            </div>
+            <!-- <p>Lots of possibilities for bathroom lighting</p> -->
             <p class="prj-description">This room requires different forms of lighting. When we go to the bathroom at night, we want as little light as possible, whereas when we’re doing our makeup, etc., we want
                 very good lighting. The tiles are key when it comes to bathroom lighting. For example, if dark floor tiles are used, the lighting must take this into account.</p>
         </div>
@@ -71,14 +79,6 @@
         <hr>
         <div class="project-list-wrapper clearfix">
             <h2 class="project-listtxt">Search Products</h2>
-            <div class="search-wrapper search-wrapper-width-2 fawe-icon-position">
-                <span class="fawe-icon fawe-icon-position-right close-ico">
-                    <i class="fa fa-times"></i>
-                </span>
-                <form id="search-form" method="GET" action="">
-                    <input type="text" data-search-data='<?php echo $searchData ?>' name="search" class="search-product-box search-box" value="" id="product-search"  placeholder="Search Products...">
-                </form>
-            </div>
         </div>
 
         <div class="thumb-wrapper">

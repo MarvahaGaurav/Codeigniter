@@ -40,11 +40,12 @@
                         <td class="op-semibold"><?php echo $project['number']; ?></td>
                         <td class="op-semibold"><?php echo $project['name']; ?></td>
                         <td class="op-semibold text-center"><?php echo $project['levels']; ?></td>
-                        <td class=""><?php echo strlen($project['address'])>70?substr($project['address'],0 , 70) . '...':$project['address'] ?></td>
+                        <td class=""><?php echo $project['address'] ?></td>
                         <?php if (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true)) { ?>
                         <td class="op-semibold text-center">0 Quotes</td>
                         <?php } ?>
                         <td class="op-semibold">
+                            <a href="<?php echo base_url('home/projects/' . encryptDecrypt($project['project_id']) . '/edit') ?>"><i class="fa fa-pencil"></i></a>
                             <?php if (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true)) { ?>
                             <a href="javascript:void(0)" class="tb-view-list">View Quotes</a>
                             <?php } ?>
@@ -59,9 +60,7 @@
         <div class="section-title clearfix">
             <h3 class="pull-left">Room List</h3>
             <div class="button-wrapper-two pull-right">
-                <a href="<?php echo base_url("home/projects/" . encryptDecrypt($project['project_id']) . "/levels"); ?>" class="custom-btn btn-width save">
-                    View Room Details
-                </a>
+                <a href="<?php echo base_url("home/projects/" . encryptDecrypt($project['project_id']) . "/levels"); ?>" class="custom-btn btn-width save">Levels</a>
             </div>
         </div>
         <!-- Caption before section -->
@@ -108,7 +107,7 @@
         <div class="no-record text-center">
             <img src="<?php echo base_url("public/images/placeholder/no-found-ico-2.svg"); ?>" alt="Note Paper">
             <p><?php echo $this->lang->line('no_rooms_in_this_project') ?></p>
-            <p>Tap on <a href="<?php echo base_url("home/projects/" . encryptDecrypt($project['project_id']) . "/levels"); ?>" class="page-link">View Room Details</a> button to add a room.</p>
+            <p>Tap on <a href="<?php echo base_url("home/projects/" . encryptDecrypt($project['project_id']) . "/levels"); ?>" class="page-link">Levels</a> button to view levels and add rooms.</p>
             <!--<p>You have to <a href="login.html" class="login">Login</a> first to add a project!</p>-->
         </div>
         <?php } ?>

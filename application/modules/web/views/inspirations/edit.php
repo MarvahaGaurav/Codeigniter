@@ -57,9 +57,9 @@
                     <div class="row">
                         <div class="col-lg-6 col-sm-6 col-xs-12">
                             <div class="form-group" id="address-box-wrapper">
-                                <label class="labelTxt">Address <i class="fa fa-map-marker"></i></label>
+                                <label class="labelTxt">Address</label>
                                 <div class="form-group-field">
-                                    <textarea readonly name="address" id="address" data-toggle="modal" data-target="#maps-modal" placeholder="Click map marker icon to pick location"><?php echo $inspiration['address'] ?></textarea>
+                                    <textarea readonly name="address" id="address" data-toggle="modal" data-target="#maps-modal" placeholder="Click to pick location"><?php echo $inspiration['address'] ?></textarea>
                                 </div>
                                 <div id="address-map-error"></div>
                                 <input type="hidden" value="<?php echo $inspiration['lat'] ?>" name="address_lat" id="address-lat">

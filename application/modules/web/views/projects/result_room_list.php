@@ -74,33 +74,35 @@
                     </tr>
                     <?php endforeach ?>
                 </tbody>
+                <?php if (in_array((int)$userInfo['user_type'], [INSTALLER], true)) { ?>
                 <tfoot>
                     <tr>
-                        <td colspan="7">
-                            <div class="priceContainer">
-                <div class="price-wrapper">
-                    <label for="" class="price-label"><?php echo $this->lang->line('price_per_luminaries') ?></label>
-                        <input type="text" class="price-fields"value="<?php echo isset($projectRoomPrice['price_per_luminaries'])?$projectRoomPrice['price_per_luminaries']:'' ?>" disabled>
+                    <td colspan="7">
+                                <div class="priceContainer">
+                    <div class="price-wrapper">
+                        <label for="" class="price-label"><?php echo $this->lang->line('price_per_luminaries') ?></label>
+                            <input type="text" class="price-fields"value="<?php echo isset($projectRoomPrice['price_per_luminaries'])?$projectRoomPrice['price_per_luminaries']:'' ?>" disabled>
+                    </div>
+                    <div class="plus-min-icon">&#43;</div>
+                    <div class="price-wrapper">
+                    <label for="" class="price-label"><?php echo $this->lang->line('installation_charges') ?></label>
+                            <input type="text" class="price-fields"value="<?php echo isset($projectRoomPrice['installation_charges'])?$projectRoomPrice['installation_charges']:'' ?>" disabled>
+                    </div>
+                    <div class="plus-min-icon">&#45;</div>
+                    <div class="price-wrapper">
+                        <label for="" class="price-label"><?php echo $this->lang->line('discount_price') ?>(%)</label>
+                        <input type="text" class="price-fields"value="<?php echo isset($projectRoomPrice['discount_price'])?$projectRoomPrice['discount_price']:'' ?>" disabled>
+                    </div>
+                    <div class="plus-min-icon">&#61;</div>
+                    <div class="priceWrapper text-center">
+                        <label for="" class="price-label">Total</label>
+                            <div class="totalPrice"><?php  echo isset($projectRoomPrice['total'])?$projectRoomPrice['total']:'' ?></div>
+                    </div>
                 </div>
-                <div class="plus-min-icon">&#43;</div>
-                <div class="price-wrapper">
-                <label for="" class="price-label"><?php echo $this->lang->line('installation_charges') ?></label>
-                        <input type="text" class="price-fields"value="<?php echo isset($projectRoomPrice['installation_charges'])?$projectRoomPrice['installation_charges']:'' ?>" disabled>
-                </div>
-                <div class="plus-min-icon">&#45;</div>
-                <div class="price-wrapper">
-                    <label for="" class="price-label"><?php echo $this->lang->line('discount_price') ?>(%)</label>
-                    <input type="text" class="price-fields"value="<?php echo isset($projectRoomPrice['discount_price'])?$projectRoomPrice['discount_price']:'' ?>" disabled>
-                </div>
-                <div class="plus-min-icon">&#61;</div>
-                <div class="priceWrapper text-center">
-                    <label for="" class="price-label">Total</label>
-                        <div class="totalPrice"><?php  echo isset($projectRoomPrice['total'])?$projectRoomPrice['total']:'' ?></div>
-                </div>
-            </div>
                         </td>
                     </tr>
                 </tfoot>
+                <?php } ?>
             </table>
             
             
@@ -190,12 +192,12 @@
                         
                         <div class="priceDetails">
                            <div class="colLeft">Subtotal</div>
-                           <div class="colRight">0</div>
+                           <div class="colRight" id="subtotal">0</div>
                        </div>
                        
                         <div class="priceDetails">
                            <div class="colLeft">Total</div>
-                           <div class="colRight">0</div>
+                           <div class="colRight" id="total">0</div>
                        </div>
                       </div>
                       <!-- col-md-12 close -->

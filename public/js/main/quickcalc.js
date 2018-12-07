@@ -58,7 +58,7 @@ requirejs(
                         $roomLuminariesX.val(response.data.luminaireCountInX);
                         $roomLuminariesY.val(response.data.luminaireCountInY);
                         $xyTotal.val(response.data.luminaireCount);
-                        $luxValues.val((response.data.illuminance));
+                        // $luxValues.val((response.data.illuminance));
                     }
                 }
             });
@@ -76,7 +76,7 @@ requirejs(
             }
         });
 
-        $(".dialux-suggestions-fields").on("blur", function () {
+        $(".dialux-suggestions-fields").on("change keydown", function () {
             var self = this,
                 $self = $(self),
                 formData = getFormData($addForm);
@@ -101,7 +101,7 @@ requirejs(
                             $roomLuminariesX.val(response.data.luminaireCountInX);
                             $roomLuminariesY.val(response.data.luminaireCountInY);
                             $xyTotal.val(response.data.luminaireCount);
-                            $luxValues.val((response.data.illuminance));
+                            // $luxValues.val((response.data.illuminance));
                         }
                     }
                 });

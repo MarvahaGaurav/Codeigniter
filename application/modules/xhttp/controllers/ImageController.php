@@ -24,7 +24,7 @@ class ImageController extends BaseController {
         try {
 
             $this->load->helper("s3_helper");
-            $path = s3_image_uploader($_FILES['avatar'], date("YmdHis") . ".png", $_FILES['type'], "");
+            $path = s3_image_uploader($_FILES['avatar'], date("YmdHis") . ".png", $_FILES['avatar']['type'], "");
             $data = ["url" => $path];
             echo json_encode($data);
         }

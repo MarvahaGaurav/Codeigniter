@@ -5,14 +5,14 @@
     * and open the template in the editor.
     */
 
-    var input = document.getElementById('image-selector');
-    var image = document.getElementById('image-to-crop');
-    var avatar = document.getElementById('cropped_image_preview');
+    var input = document.getElementById('company-image-selector');
+    var image = document.getElementById('company-image-to-crop');
+    var avatar = document.getElementById('company_cropped_image_preview');
     var formsubmitButton = document.getElementById('form-submit-button');
 
-    var previews = document.querySelectorAll('.cropped_image_preview');
+    var previews = document.querySelectorAll('.company_cropped_image_preview');
 
-    var $modal = $('#cropper-modal');
+    var $modal = $('#company-logo-modal');
     var $alert = $('.alert');
     var cropper = null;
     var canvas = null;
@@ -50,16 +50,15 @@
         }
     });
 
-
     // Cropper will initiate when the modal is fully shown
-    $('#cropper_modal').on('shown.bs.modal', function () {
+    $('#company-logo-modal').on('shown.bs.modal', function () {
 
         //Start Cropper
         startCropper();
 
     }).on('hidden.bs.modal', function () {
         $('.modal-backdrop').remove();
-        $(".cropped_image_preview").html("");
+        $(".company_cropped_image_preview").html("");
 
         cropper.destroy();
         cropper = null;
@@ -135,13 +134,13 @@
      * @returns {undefined}
      */
     var ShowModal = function () {
-        $('#cropper_modal').modal('show');
+        $('#company-logo-modal').modal('show');
         //    var show = document.createElement( "div" );
         //    show.className = ' modal-backdrop fade show ';
         //    document.body.appendChild( show );
         //
         //
-        //    $( '#cropper_modal' ).addClass( 'show' );
+        //    $( '#company-logo-modal' ).addClass( 'show' );
     };
 
 
@@ -159,7 +158,7 @@
     /**
      * Crop Button Functionality
      */
-    document.getElementById("crop_it").addEventListener('click', function () {
+    document.getElementById("company_crop_it").addEventListener('click', function () {
         if (cropper) {
 
             canvas = cropper.getCroppedCanvas({
@@ -171,10 +170,9 @@
             //        avatar.src = canvas.toDataURL();
             avatar.setAttribute('style', 'background: url(' + canvas.toDataURL() + ' ); background-size:cover; display: block; background-position: center;background-repeat: no-repeat;');
 
-            var $userCameraHolder = $("#user-camera-holder");
+            var $companyCameraHolder = $("#company-camera-holder");
 
-
-            $('#cropper_modal').modal('hide');
+            $('#company-logo-modal').modal('hide');
 
             canvas.toBlob(function (blob) {
                 var formData = new FormData({
@@ -193,26 +191,26 @@
                     processData: false,
                     contentType: false,
                     beforeSend: function () {
-                        $userCameraHolder.removeClass('fa-camera');
-                        $userCameraHolder.addClass('fa-circle-o-notch fa-spin');
+                        $companyCameraHolder.removeClass('fa-camera');
+                        $companyCameraHolder.addClass('fa-circle-o-notch fa-spin');
                         $(formsubmitButton).attr('disabled', 'disabled');
                     },
                     error: function (err) {
-                        $userCameraHolder.addClass('fa-camera');
-                        $userCameraHolder.removeClass('fa-circle-o-notch fa-spin');
+                        $companyCameraHolder.addClass('fa-camera');
+                        $companyCameraHolder.removeClass('fa-circle-o-notch fa-spin');
                         $(formsubmitButton).removeAttr('disabled');
                     },
                     success: function (res) {
                         var obj = JSON.parse(res);
-                        $("#user_image").val(obj.url);
-                        $userCameraHolder.addClass('fa-camera');
-                        $userCameraHolder.removeClass('fa-circle-o-notch fa-spin');
+                        $("#company_image").val(obj.url);
+                        $companyCameraHolder.addClass('fa-camera');
+                        $companyCameraHolder.removeClass('fa-circle-o-notch fa-spin');
                         $(formsubmitButton).removeAttr('disabled');
                     },
                     complete: function () {
                         console.log("Completed");
-                        $userCameraHolder.addClass('fa-camera');
-                        $userCameraHolder.removeClass('fa-circle-o-notch fa-spin');
+                        $companyCameraHolder.addClass('fa-camera');
+                        $companyCameraHolder.removeClass('fa-circle-o-notch fa-spin');
                         $(formsubmitButton).removeAttr('disabled'); 
                     }
 

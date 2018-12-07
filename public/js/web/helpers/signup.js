@@ -11,14 +11,24 @@
         $isCompanyOwner = $("input[name='is_company_owner']"),
         $companyNameWrapper = $("#company-name-wrapper"),
         $addressBox = $("#address-box-wrapper"),
-        $address = $("#address");
+        $address = $("#address")
+        $contactNumber1 = $("#contact-number-1"),
+        $contactNumber2 = $("#contact-number-2"),
+        $userCountry = $("#user-country");
 
     var normalizer = function (value) {
         return $.trim(value);
     };
 
+    $.validator.addMethod('filesize', function (value, element, param) {
+        return this.optional(element) || (element.files[0].size <= param)
+    }, 'File size must be less than {0}');
+
     var validationRules = {
         // ignore: ":hidden:not(.selectpicker)",
+        image: {
+            filesize: 2000
+        },
         user_type: {
             required: true,
             normalizer: normalizer
@@ -34,7 +44,7 @@
         },
         password: {
             required: true,
-            minlength: 6
+            minlength: 8
         },
         confirm_password: {
             equalTo: "#password"
@@ -83,12 +93,42 @@
         rules: validationRules,
         errorPlacement: function (error, $element) {
             if ($element.attr('name') == 'address_lat' || $element.attr('name') == 'address_lng' || $element.attr('name') === 'address') {
-                $("#maps-modal").modal('show');
                 $("#address-map-error").html(error);
             } else {
                 $element.after(error);
             }
+        },
+        submitHandler: function (form) {
+            $("#form-submit-button").attr("disabled", "disabled");
+            form.submit();
         }
+    });
+
+    $contactNumber1.on('change', function () {
+        var self = this,
+            $self = $(self),
+            value = $self.val(),
+            countryCode = $self.find(':selected').attr('data-country');
+
+        $("#contact-number-2 option").each(function (index, element) {
+            $(element).removeAttr("selected");
+        });
+        $("#user-country option").each(function (index, element) {
+            $(element).removeAttr("selected");
+        });
+
+        if ($("input[name='alternate_contact_number']").val().length == 0) {
+            $("#contact-number-2 option[value='"+ value +"']").attr('selected', "selected");
+            $contactNumber2.selectpicker('destroy');
+            $contactNumber2.selectpicker();
+        }
+        if ($("#select-city").val().length == 0) {
+            $("#user-country option[value='"+ countryCode +"']").attr('selected', 'selected');
+            $userCountry.trigger('change');
+            $userCountry.selectpicker('destroy');
+            $userCountry.selectpicker();
+        }
+
     });
 
     $("#select-user-types").on('change', function () {
@@ -135,7 +175,6 @@
             });
             $companyRegistrationNumber.rules("add", {
                 required: true,
-                number: true
             });
             $companyLogo.rules("add", {
                 required: true,
@@ -159,8 +198,7 @@
             });
             $companyRegistrationNumber.rules("add", {
                 required: true,
-                maxlength: 25,
-                number: true
+                maxlength: 25
             });
             $companyLogo.rules("add", {
                 required: true,
@@ -192,7 +230,6 @@
             });
             $companyRegistrationNumber.rules("add", {
                 required: true,
-                number: true
             });
             $address.rules('add', {
                 required: true,
@@ -217,7 +254,6 @@
             });
             $companyRegistrationNumber.rules("add", {
                 required: true,
-                number: true
             });
             $address.rules('remove');
             $("#address-lat").rules('remove');
@@ -241,7 +277,6 @@
 
     $("input[name='company_logo']").on('change', function (event) {
         var files = event.target.files;
-
         $("#uploadfile").val(files[0].name);
     })
 

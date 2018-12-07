@@ -11,7 +11,7 @@ requirejs.config({
         autocomplete: 'jquery.autocomplete.min',
         location: 'lib/location',
         helper: 'web/helpers/edit_project',
-        mapsAPI: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAGhlvsdgd8ZPkLJDhkWblTEbvxPU_WAko&libraries=places',
+        mapsAPI: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDhP9xXJsFempHkFwsNn0AuDd89WtTlmI0&libraries=places',
         mapsRender: 'web/helpers/maps-render',
         mapsMarker: 'web/helpers/maps-marker',
         mapsPlaces: 'web/helpers/maps-places',

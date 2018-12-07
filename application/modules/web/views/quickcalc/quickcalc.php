@@ -31,7 +31,7 @@
                     <div class="form-group">
                         <label class="labelTxt">Room Reference</label>
                         <div class="form-group-field">
-                            <input type="text" name="name" placeholder="Bathroom" value="<?php echo isset($cookie_data['name'])?$cookie_data['name']:$room['title'] ?>" readonly>
+                            <input type="text" name="name" placeholder="Bathroom" value="<?php echo $room['title'] ?>" readonly>
                             <label for="name" id="name-error" class="error"><?php echo form_error('name') ?></label>
                         </div>
                     </div>
@@ -284,7 +284,7 @@
         <!-- button wrapper section -->
         <div class="section-title clearfix">
             <div class="button-wrapper">
-                <input name="evaluate_btn" id="evaluate_btn" type="submit" value="Evaluate" class="custom-btn btn-margin btn-width save">
+                <input name="evaluate_btn" id="evaluate_btn" type="submit" value="Calculate" class="custom-btn btn-margin btn-width save">
                 <button type="button" class="custom-btn btn-margin btn-width cancel">Cancel</button>
             </div>
         </div>

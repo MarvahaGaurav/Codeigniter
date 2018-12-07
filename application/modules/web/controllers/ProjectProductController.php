@@ -36,6 +36,8 @@ class ProjectProductController extends BaseController
             $this->activeSessionGuard();
             $this->data['userInfo'] = $this->userInfo;
             $this->data['js'] = 'select_product';
+            $this->load->config('css_config');
+            $this->data['css'] = $this->config->item('search-page');
 
             $languageCode = "en";
             $projectId = encryptDecrypt($projectId, "decrypt");
@@ -115,6 +117,8 @@ class ProjectProductController extends BaseController
             $this->activeSessionGuard();
             $this->data['userInfo'] = $this->userInfo;
             $this->load->helper('utility');
+            $this->load->config('css_config');
+            $this->data['css'] = $this->config->item('product-detail');
 
             $languageCode = "en";
             $projectId = encryptDecrypt($projectId, "decrypt");
@@ -229,6 +233,8 @@ class ProjectProductController extends BaseController
             $this->activeSessionGuard();
             $this->data['userInfo'] = $this->userInfo;
             $this->data['js'] = 'select_product_edit';
+            $this->load->config('css_config');
+            $this->data['css'] = $this->config->item('search-page');
 
             $languageCode = "en";
             $projectId = encryptDecrypt($projectId, "decrypt");
@@ -316,6 +322,8 @@ class ProjectProductController extends BaseController
             $this->activeSessionGuard();
             $this->data['userInfo'] = $this->userInfo;
             $this->load->helper('utility');
+            $this->load->config('css_config');
+            $this->data['css'] = $this->config->item('product-detail');
 
             $languageCode = "en";
             $projectId = encryptDecrypt($projectId, "decrypt");
@@ -539,7 +547,7 @@ class ProjectProductController extends BaseController
             $this->activeSessionGuard();
             $this->load->helper('utility');
             $this->load->config('css_config');
-            $this->data['css'] = $this->config->item('basic-with-font-awesome');
+            $this->data['css'] = $this->config->item('product-detail');
 
             $projectId = encryptDecrypt($projectId, "decrypt");
             $roomId = encryptDecrypt($roomId, "decrypt");

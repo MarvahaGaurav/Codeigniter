@@ -77,16 +77,15 @@ if (count($images)) {
         <table class="articles table table-striped table-hover table-condensed">
             <thead>
                 <tr>
-                    <th class="image"></th>
-                    <th class="light-technic" style="width:35%"><b>Article</b></th>
+                    <th class="image" style="width:200px"></th>
+                    <th class="light-technic" style="width:250px"><b>Article</b></th>
                     <th class="protection">Protection</th>
                     <th class="driver">Control gear</th>
                     <th class="connection">Mounting/Connection</th>
-                    <th class="dimensions">Dimensions (mm)</th>
-                    <th class="download"></th>
+                    <th class="dimensions" style="width:110px">Dimensions (mm)</th>
+                    <th class="download" style="width:165px">Action</th>
                 </tr>
             </thead>
-
             <tbody>
                 <tr>
                     <!--<td colspan="7" class="group">2700K</td>-->
@@ -165,155 +164,3 @@ if (count($images)) {
     <input type="hidden" name="project_room_id" id="project_room_id" value="<?php echo isset($project_room_id)?$project_room_id:''; ?>">
 </div>
 <!--Related Products close-->
-
-
-<style>
-    .articles thead tr th {
-        position: -webkit-sticky;
-        position: sticky;
-        top: 0px;
-        background-color: #fff;
-        border-bottom: 2px solid #ddd;
-        font-weight: bold;
-    }
-    .articles {
-        font-size: .8em;
-    }
-    table {
-        border-collapse: collapse;
-        border-spacing: 0;
-    }
-
-
-    .application-type-view-item a img, .case-view-item a img, .inspiration-view-item a img, .page-view-item a img, .product-category-view-item a img, .product-view-item a img, .room-view-item a img, .view-item a img {
-        border: 2px solid #f1f1f1;
-    }
-
-
-    .application-type-view-item a .title, .case-view-item a .title, .inspiration-view-item a .title, .page-view-item a .title, .product-category-view-item a .title, .product-view-item a .title, .room-view-item a .title, .view-item a .title {
-        font-size: 18px;
-        margin: 10px 0 25px;
-    }
-
-    .Product_heading {
-        border-bottom: 2px solid #e00016;
-        font-size: 25px;
-        margin: 0 0 25px 0;
-        color: #000;
-    }
-
-
-    .image-slider {
-        overflow: hidden;
-        margin-bottom: 30px;
-    }
-
-    .image-slider .image-preview {
-        background-color: #fff;
-        border-right: 1px solid #e00016;
-        position: relative;
-    }
-
-    .image-slider .pagination-content .pagination {
-        list-style: none;
-        overflow: hidden;
-        margin-top: 0;
-    }
-
-    .pagination {
-        display: inline-block;
-        padding-left: 0;
-        margin: 20px 0;
-        border-radius: 0;
-    }
-    .image-slider .pagination-content .pagination li {
-        padding: 10px;
-    }
-    .pagination>li {
-        display: inline;
-    }
-    .image-slider .pagination-content .pagination img {
-        width: 100%;
-        cursor: pointer;
-        border: 1px solid #f1f1f1;
-    }
-
-    .image-slider .image-preview .image-preview-content {
-        position: relative;
-    }
-    .image-slider .image-preview .image-preview-content img {
-        position: relative;
-        background-color: #fff;
-    }
-
-    .center-block {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-
-    .image-slider .pagination-content .pagination li.active, .image-slider .pagination-content .pagination li:hover {
-        background-color: #f1f1f1;
-    }
-
-
-    .product-description {
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-pack: justify;
-        -ms-flex-pack: justify;
-        justify-content: space-between;
-    }
-    .product-description p {
-        padding-right: 25px;
-        margin: 0 0 10px 0;
-        color:#363636;
-    }
-
-
-
-    .warrenty-img {
-        width: 235px;
-        padding-left: 15px;
-    }
-    .page-title {
-        padding: 40px 15px 20px;
-    }
-    .heading-red {
-        color: #2e2e2e;
-        padding-left: 1rem;
-        padding-bottom: 0;
-        border-left-style: solid;
-        border-left-width: 0.4rem;
-        border-left-color: #e00016;
-        border-bottom: 0 solid transparent;
-        margin: 0 0 17px 12px;
-    }
-
-
-    .outline-btn{
-        background-color: #fff;
-        border: 1px solid #e00016;
-        color: #e00016;
-        padding: 5px 20px;
-    }
-    .outline-btn:hover{
-        color: #fff;
-        background-color: #ad0011;
-        border-color: transparent;
-    }
-
-    .inverse-outline-btn{
-        background-color: #e00016;
-        border: 1px solid #e00016;
-        color: #fff;
-        padding: 5px 20px;
-    }
-    .inverse-outline-btn:hover{
-        color: #ad0011;
-        background-color: #fff;
-        border-color: transparent;
-    }
-</style>

@@ -33,7 +33,7 @@
                     $("#city-id").val(suggestion.data)
                 },
                 transformResult: function (response) {
-                   return ( {
+                   return ({
                         suggestions: response.data.map(function(data) {
                             return {value: data.name, data: data.id}
                         })

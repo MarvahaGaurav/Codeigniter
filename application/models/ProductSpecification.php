@@ -59,7 +59,7 @@ class ProductSpecification extends BaseModel
     public function articlesByRooms($roomId, $params)
     {
         $this->db->select('ps.image, ps.product_id, ps.articlecode, ps.title, ps.uld,
-        ps.type, ps.driver, ps.length, ps.width, ps.height')
+        ps.type, ps.driver, ps.length, ps.width, ps.height, p.title as product_name')
             ->from('product_specifications as ps')
             ->join('products as p', 'p.product_id=ps.product_id')
             ->join('room_products as rp', 'rp.product_id=p.product_id');

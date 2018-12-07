@@ -17,92 +17,53 @@
             <!-- <div class="request-quotation-btn-wrapper">
                 <button class="custom-btn btn-width save" type="button">Request Quotation</button>
             </div> -->
+            <div class="row clearfix">
+                <ul class="list-inline pull-right list-info">
+                    <li><a href="javascript:void(0)"><i class="fa fa-eye"></i>&nbsp;View</a></li>
+                    <li><a href="javascript:void(0)"><i class="fa fa-check"></i>&nbsp;Level Complete (pending)</a></li>
+                    <li><a href="javascript:void(0)"><i class="fa fa-check-circle"></i>&nbsp;Level Complete (done)</a></li>
+                    <li><a href="javascript:void(0)"><i class="fa fa-clone"></i>&nbsp;Clone</a></li>
+                </ul>
+            </div>
             <div class="clearfix"></div>
             <div class="table-wrapper table-responsive sticky-table">
                 <table class="table table-striped table-custom">
                     <thead>
                         <tr class="sticky-header">
-                            <th class="text-center">Levels</th>
+                            <th class="">Levels</th>
                             <th class="text-center">Room Count</th>
                             <th class="text-center">Actions</th>
                         </tr>                        
                     </thead>
                     <tbody>
+                        <?php foreach ($projectLevels as $key => $level) : ?>
                         <tr>
-                            <td align="center" class="text-center">1</td>
-                            <td align="center" class="text-center">4</td>
-                            <td align="center" class="action text-center">
-                                <a href="javascript:void(0)"><i class="fa fa-eye"></i></a>                   <a href="javascript:void(0)"><i class="fa fa-plus"></i></a>
-                                <a href="javascript:void(0)"><i class="fa fa fa-clone"></i></a>
+                            <td align="left" class="">Level <?php echo $level['level'] ?></td>
+                            <td align="center" class="text-center"><?php echo (int)$level['room_count'] ?></td>
+                            <td class="text-center action">
+                                <?php if ((bool)$level['active']) { ?>
+                                <a href="<?php echo base_url("/home/projects/{$projectId}/levels/{$level['level']}/rooms") ?>" title="<?php echo $this->lang->line('view') ?>"><i class="fa fa-eye"></i></a>  
+                                <?php } ?>
+                                <?php if ((int)$level['status'] === 0 && (int)$level['room_count'] > 0) { ?>
+                                <a href="javascript:void(0)" class="confirmation-action-xhttp" data-json='<?php echo $level['data'] ?>' data-redirect="<?php echo base_url(uri_string()) ?>" data-url="<?php echo base_url('xhttp/projects/mark-as-done') ?>" data-action="clone" data-target="#level-<?php echo $key ?>" data-title="<?php echo $this->lang->line('mark_as_done') ?>" data-message="<?php echo sprintf($this->lang->line('level_mark_as_done_confirmation'), $level['level']) ?>" title="<?php echo $this->lang->line("click_to_mark_as_done") ?>"><i class="fa fa-check"></i></a>  
+                                <?php } else if ((int)$level['status'] === 1) {?>
+                                <a href="javascript:void(0)" title="<?php echo $this->lang->line('level_marked_done') ?>"><i class="fa fa-check-circle"></i></a>
+                                <?php } ?>
+                                <?php if (((in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && empty($quotationRequest)) ||
+                                    (in_array((int)$userInfo['user_type'], [INSTALLER], true) && !(bool)$hasAddedFinalPrice) ||
+                                    in_array((int)$userInfo['user_type'], [WHOLESALER, ELECTRICAL_PLANNER], true)) &&
+                                    ((bool)$level['active'] && count($active_levels) > 1 && (int)$level['room_count'] > 0)
+                                ) { ?>
+                                <a href="javascript:void(0)" class="level-clone-btn" data-source-levels="<?php echo $level['level'] ?>" data-destination-levels="<?php echo $level['cloneable_destinations'] ?>"><i class="fa fa fa-clone"></i></a>
+                                <?php } ?>
                             </td>
                         </tr>
-                        <tr>
-                            <td align="center" class="text-center">1</td>
-                            <td align="center" class="text-center">4</td>
-                            <td align="center" class="action text-center">
-                                <a href="javascript:void(0)"><i class="fa fa-eye"></i></a>                   <a href="javascript:void(0)"><i class="fa fa-plus"></i></a>
-                                <a href="javascript:void(0)"><i class="fa fa fa-clone"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align="center" class="text-center">1</td>
-                            <td align="center" class="text-center">4</td>
-                            <td align="center" class="action text-center">
-                                <a href="javascript:void(0)"><i class="fa fa-eye"></i></a>                   <a href="javascript:void(0)"><i class="fa fa-plus"></i></a>
-                                <a href="javascript:void(0)"><i class="fa fa fa-clone"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align="center" class="text-center">1</td>
-                            <td align="center" class="text-center">4</td>
-                            <td align="center" class="action text-center">
-                                <a href="javascript:void(0)"><i class="fa fa-eye"></i></a>                   <a href="javascript:void(0)"><i class="fa fa-plus"></i></a>
-                                <a href="javascript:void(0)"><i class="fa fa fa-clone"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align="center" class="text-center">1</td>
-                            <td align="center" class="text-center">4</td>
-                            <td align="center" class="action text-center">
-                                <a href="javascript:void(0)"><i class="fa fa-eye"></i></a>                   <a href="javascript:void(0)"><i class="fa fa-plus"></i></a>
-                                <a href="javascript:void(0)"><i class="fa fa fa-clone"></i></a>
-                            </td>
-                        </tr>
-                        
+                        <?php endforeach ?>
                     </tbody>
                 </table>
             </div>
             <!-- table-wrapper End -->
             
-            <?php foreach ($projectLevels as $level) : ?>            
-            <div class="white-card-wrapper levels-listing-wrapper clickable <?php echo !(bool)$level['active']?"disabled-level":"" ?>" data-redirect-to="<?php echo base_url("/home/projects/{$projectId}/levels/{$level['level']}/rooms") ?>">
-                <div class="col-left">
-                    <span class="level-heading">Level <?php echo $level['level'] ?></span>
-                    <!-- <span class="level-count">Level <?php echo $level['level'] ?></span> -->
-                </div>
-                <div class="col-right text-right">
-                    <div class="action-btn-wrapper">
-                        <ul>
-                            <?php if ((int)$level['status'] === 0 && (int)$level['room_count'] > 0) { ?>
-                            <li> <button class="level-btn mark-as-done" type="button" <?php echo (int)$level['room_count'] < 1?"disabled":"" ?> data-level-data='<?php echo $level['data'] ?>' title="<?php echo (int)$level['room_count'] < 1?$this->lang->line("add_rooms_to_mark_as_done"):"" ?>"> Mark as Done </button> </li>
-                            <?php } else if ((int)$level['status'] === 1) {?>
-                            <li class="level-done-li" title="<?php echo $this->lang->line('level_marked_done') ?>"><i class="fa fa-check-circle level-done-check"></i></li>
-                            <?php } else if ((bool)$level['active']) { ?>
-                            <li class="level-done-li" title="<?php echo $this->lang->line('add_rooms') ?>"><i class="fa fa-plus-circle level-done-check"></i></li>
-                            <?php } ?>
-                            <?php if (((in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && empty($quotationRequest)) ||
-                                (in_array((int)$userInfo['user_type'], [INSTALLER], true) && !(bool)$hasAddedFinalPrice) ||
-                                in_array((int)$userInfo['user_type'], [WHOLESALER, ELECTRICAL_PLANNER], true)) &&
-                                ((bool)$level['active'] && count($active_levels) > 1 && (int)$level['room_count'] > 0)
-                            ) { ?>
-                            <li><button type="button" data-source-levels="<?php echo $level['level'] ?>" data-destination-levels="<?php echo $level['cloneable_destinations'] ?>" class="level-btn level-clone-btn"><?php echo $this->lang->line('clone') ?></button></li>
-                            <?php } ?>
-                            <!-- <li> <button class="level-btn"> + Add </button></li> -->
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <?php endforeach ?>
             <div class="clearfix"></div>
             <?php if (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && empty($quotationRequest)) { ?>
             <?php if (!empty($projectLevels) && $all_levels_done) { ?>
@@ -123,134 +84,6 @@
         </div>
     </div>
 </div>
-<style>
-    .level-done-check {
-        font-size: 30px;
-        color: #e03014;
-    }
-
-    .white-card-wrapper {
-        display: flex;
-        background: #fff;
-        box-shadow: 0 0 6px #ccc;
-        padding: 23px 28px;
-        border-radius: 5px;
-        margin: 0 0 20px 0;
-    }
-
-    .col-left {
-        width: 50%;
-        padding: 0 10px;
-    }
-
-    .col-right {
-        width: 50%;
-        padding: 0 10px;
-    }
-
-    .level-heading {
-        font-size: 22px;
-        font-weight: 600;
-        margin: 0 11px 0 0;
-        display: inline-block;
-        max-width: 250px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-        vertical-align: middle;
-        color:black;
-    }
-
-    .level-count {
-        font-size: 14px;
-        color: #e4001b;
-        font-weight: 600;
-    }
-
-    .action-btn-wrapper ul li {
-        display: inline-block;
-        margin: 0 10px;
-    }
-    .action-btn-wrapper ul li.level-done-li {
-        display: inline-block;
-        margin: 0 10px;
-        vertical-align: -6px;
-    }
-
-
-    .action-btn-wrapper .level-btn {
-        width: 124px;
-        border: 1px solid #e4001b;
-        border-radius: 4px;
-        padding: 5px 0;
-        background: #e4001b;
-        color: #fff;
-        text-transform: uppercase;
-    }
-
-    .action-btn-wrapper .level-btn:hover {
-        background: #b7061b;
-        box-shadow: 0px 3px 6px #0000001f;
-    }
-
-.white-card-wrapper {
-    display: flex;
-    background: #fff;
-    box-shadow: 0 0 6px #ccc;
-    padding: 23px 28px;
-    border-radius: 5px;
-    margin: 0 0 20px 0;
-}
-
-.col-left {
-    width: 50%;
-    padding: 0 10px;
-}
-
-.col-right {
-    width: 50%;
-    padding: 0 10px;
-}
-
-.level-heading {
-    font-size: 22px;
-    font-weight: 600;
-    margin: 0 11px 0 0;
-    display: inline-block;
-    max-width: 250px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    vertical-align: middle;
-}
-
-.level-count {
-    font-size: 14px;
-    color: #e4001b;
-    font-weight: 600;
-}
-
-.action-btn-wrapper ul li {
-    display: inline-block;
-    margin: 0 10px;
-}
-
-
-.action-btn-wrapper .level-btn {
-    width: 124px;
-    border: 1px solid #e4001b;
-    border-radius: 4px;
-    padding: 5px 0;
-    background: #e4001b;
-    color: #fff;
-    text-transform: uppercase;
-}
-
-.action-btn-wrapper .level-btn:hover {
-    background: #b7061b;
-    box-shadow: 0px 3px 6px #0000001f;
-}
-</style>
 <div id="level-clone-modal" class="modal fade" role="dialog">
   <div class="modal-dialog modal-custom">
 

@@ -36,3 +36,8 @@
     left: 10px;
     color: white;
 }
+
+.signup-upload-circle {
+    bottom: 4px !important;
+    right: 4px !important;
+}

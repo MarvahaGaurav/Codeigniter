@@ -69,15 +69,15 @@
                 <!-- thumb upload -->
                 <div class="image-wrapper">
                     <div class="image-view-box img-view130p img-viewbdr-radius">
-                        <div id="cropped_image_preview" class="image-view img-view130" style="background-image:url(<?php echo base_url('public/images/user-placeholder.png') ?>);"></div>
+                        <div id="cropped_image_preview" class="image-view img-view130" style="background-image:url(<?php  echo strlen(set_value('user_image'))>0?set_value('user_image'):base_url('public/images/user-placeholder.png') ?>);"></div>
                     </div>
-                    <div class="upload-btn">
+                    <div class="upload-btn signup-upload-circle">
                         <!--<input type="file" id="upload">-->
                         <input type="file" class="" id="image-selector" name="image" accept="image/*">
-                        <i class="fa fa-camera signup-camera-holder"></i>
+                        <i class="fa fa-camera signup-camera-holder" id="user-camera-holder"></i>
                     </div>
                 </div>
-                <input id="user_image" name="user_image" type="hidden">
+                <input id="user_image" name="user_image" type="hidden" value="<?php echo set_value('user_image') ?>">
                 <!-- thumb upload -->
 
                 <!-- Business User -->
@@ -98,7 +98,7 @@
 
                     <div class="form-group-inline clearfix">
                         <div class="form-group">
-                            <input type="text" class="form-control alphanumspaces-only-field" name="fullname" placeholder="Full Name" value="<?php echo set_value('fullname') ?>" autofocus="" />
+                            <input type="text" class="form-control alphanumspaces-only-field restrict-characters" data-restrict-to="50" name="fullname" placeholder="Full Name" value="<?php echo set_value('fullname') ?>" autofocus="" />
                             <?php echo form_error('fullname', '<label for="fullname" class="error">', "</label>"); ?>
                         </div>
                         <div class="form-group">
@@ -109,29 +109,29 @@
 
                     <div class="form-group-inline clearfix">
                         <div class="form-group">
-                            <input type="password" class="form-control" name="password" id="password" placeholder="Password"/>
+                            <input type="password" class="form-control restrict-characters" data-restrict-to="32" name="password" id="password" placeholder="Password"/>
                             <?php echo form_error('password', '<label for="password" class="error">', "</label>"); ?>
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password"/>
+                            <input type="password" class="form-control restrict-characters" data-restrict-to="32" name="confirm_password" placeholder="Confirm Password"/>
                             <?php echo form_error('confirm_password', '<label for="confirm_password" class="error">', "</label>"); ?>
                         </div>
                     </div>
 
                     <div class="form-group-inline clearfix">
                         <div class="form-group">
-                            <select name="contact_number_code" class="contact-number" data-style="btn-default custom-select-style">
+                            <select name="contact_number_code" id="contact-number-1" data-type="country-code" class="contact-number" data-style="btn-default custom-select-style">
                                 <?php foreach ($countries as $country) { ?>
-                                    <option value="<?php echo $country['calling_code'] ?>" <?php echo set_select('contact_number_code', $country['calling_code']) ?>><?php echo "+{$country['calling_code']}" ?></option>
+                                    <option value="<?php echo $country['calling_code'] ?>" <?php echo set_select('contact_number_code', $country['calling_code']) ?> data-country="<?php echo $country['country_code1'] ?>"><?php echo "+{$country['calling_code']}" ?></option>
                                 <?php } ?>
                             </select>
                             <input type="text" maxlength="20" class="form-control contact-number-input number-only-field" name="contact_number" value="<?php echo set_value('contact_number') ?>" placeholder="Contact Number" autofocus="" />
                             <?php echo form_error('contact_number', '<label for="contact_number" class="error">', "</label>"); ?>
                         </div>
                         <div class="form-group">
-                            <select name="alternate_contact_number_code" class="contact-number" data-style="btn-default custom-select-style">
+                            <select name="alternate_contact_number_code" id="contact-number-2" data-type="country-code" class="contact-number" data-style="btn-default custom-select-style">
                                 <?php foreach ($countries as $country) { ?>
-                                    <option value="<?php echo $country['calling_code'] ?>" <?php echo set_select('alternate_contact_number_code', $country['calling_code']) ?>><?php echo "+{$country['calling_code']}" ?></option>
+                                    <option value="<?php echo $country['calling_code'] ?>" <?php echo set_select('alternate_contact_number_code', $country['calling_code']) ?> data-country="<?php echo $country['country_code1'] ?>"><?php echo "+{$country['calling_code']}" ?></option>
                                 <?php } ?>
                             </select>
                             <input type="text" maxlength="20" class="form-control contact-number-input number-only-field" name="alternate_contact_number" placeholder="Alternate Number" value="<?php echo set_value('alternate_contact_number') ?>"/>
@@ -143,7 +143,7 @@
                     <?php ?>
                     <!-- wholesaler -->
                     <div class="<?php echo $isCustomerUser ? "wholesaler-field" : "" ?>" id="technician-div">
-                        <div class="clearfix owner-prompt">
+                        <div class="clearfix owner-prompt <?php echo set_value('user_type') == BUSINESS_USER?'concealable':'' ?>">
                             <label>Are you the owner of this company?</label>
                             <div class="clearfix"></div>
                             <div class="custom-radio-wrapper">
@@ -194,20 +194,31 @@
                             </div>
                         </div>
                         <div class="form-group clearfix company-owner-wrapper <?php echo $isCompanyOwner ? "" : "concealable" ?>">
-                            <div class="chooseFile">
-                                <input id="uploadfile" id="company-logo" name="company_logo" class="form-control company-owner-field technician-fields" placeholder="Choose Company Logo" <?php
-                                echo $isCustomerUser || ! $isCompanyOwner ? "disabled" : ''
-                                ?>/>
-                                <div class="uploadfile-wrap">
-                                    <input type="file" name="company_logo" id="company_logo">
-                                    <span>Browse</span>
+                            <div class="image-wrapper">
+                                <div class="image-view-box img-view130p img-viewbdr-radius">
+                                    <div id="company_cropped_image_preview" class="image-view img-view130" style="background-image:url(<?php  echo strlen(set_value('company_image'))>0?set_value('company_image'):base_url('public/images/svg/sg_logo_placeholder.svg') ?>);"></div>
+                                </div>
+                                <div class="upload-btn signup-upload-circle">
+                                    <!--<input type="file" id="upload">-->
+                                    <input type="file" class="" id="company-image-selector" name="image" accept="image/*">
+                                    <i class="fa fa-camera signup-camera-holder" id="company-camera-holder"></i>
                                 </div>
                             </div>
+                            <input id="company_image" name="company_image" type="hidden" value="<?php echo set_value('company_image') ?>">
+                            <!-- <div class="chooseFile">
+                                <input id="uploadfile" id="company-logo" name="company_logo" class="form-control company-owner-field technician-fields" placeholder="Choose Company Logo" <?php
+                                echo $isCustomerUser || ! $isCompanyOwner ? "disabled" : ''
+                                ?> readonly/>
+                                <div class="uploadfile-wrap">
+                                    <input type="file" name="company_logo" id="company_logo" accept="image/*">
+                                    <span>Browse</span>
+                                </div>
+                            </div> -->
                         </div>
                         <div class="form-group clearfix <?php echo strlen(set_Value('user_type'))>0&&set_value('user_type') == INSTALLER&&$isCompanyOwner?'': 'concealable'  ?>" id="address-box-wrapper">
-                            <label class="labelTxt">Address <i class="fa fa-map-marker"></i></label>
+                            <label class="labelTxt">Address</i></label>
                             <div class="form-group-field">
-                                <textarea readonly name="address" data-toggle="modal" data-target="#maps-modal" id="address" placeholder="Click map marker icon to pick location"><?php echo set_value('address') ?></textarea>                                
+                                <textarea readonly name="address" data-toggle="modal" data-target="#maps-modal" id="address" placeholder="Click to pick location"><?php echo set_value('address') ?></textarea>                                
                             </div>
                             <div id="address-map-error"><?php echo strlen(form_error('address'))>0||strlen(form_error('address'))>0||strlen(form_error('address'))>0?form_error('address'):'' ?></div>
                             <input type="hidden" name="address_lat" id="address-lat" value="<?php echo set_value('address_lat') ?>">
@@ -226,10 +237,10 @@
 
                     <div class="form-group-inline clearfix">
                         <div class="form-group">
-                            <select class="country" name="country" data-style="btn-default custom-select-style">
+                            <select class="country" id="user-country" name="country" data-style="btn-default custom-select-style">
                                 <option value=""><?php echo $this->lang->line('select_a_country') ?></option>
                                 <?php foreach ($countries as $country) { ?>
-                                    <option value="<?php echo $country['country_code1'] ?>" <?php echo set_select('country', $country['country_code1']) ?>><?php echo "{$country['name']}" ?></option>
+                                    <option value="<?php echo $country['country_code1'] ?>" <?php echo set_select('country', $country['country_code1']) ?> data-country="<?php echo $country['calling_code'] ?>"><?php echo "{$country['name']}" ?></option>
                                 <?php } ?>
                             </select>
                             <?php echo form_error('country', '<label for="country" class="error">', "</label>"); ?>
@@ -253,7 +264,7 @@
                 </div>
 
                 <div class="form-group form-btn-wrap">
-                    <button class="form-btn save" type="submit">Signup</button>
+                    <button class="form-btn save" type="submit" id="form-submit-button">Signup</button>
                 </div>
                 </form>
             </div>
@@ -284,6 +295,38 @@
                         <div class="btn-group" >
                             <div class="btn-lists clearfix">
                                 <button type="button" class="btn btn-default" id="crop_it" >Crop</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="company-logo-modal" tabindex="-1" role="dialog" >
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalLabel">Cropper</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="col-md-6">
+                            <div class="img-container">
+                                <img id="company-image-to-crop" src=" " alt="Picture">
+                            </div>
+                        </div>
+                        <div class="">
+                            <div class="col-md-6 col col-6">
+                                <div class="company_cropped_image_preview"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="btn-group" >
+                            <div class="btn-lists clearfix">
+                                <button type="button" class="btn btn-default" id="company_crop_it" >Crop</button>
                                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                             </div>
                         </div>

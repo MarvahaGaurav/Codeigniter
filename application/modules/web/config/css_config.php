@@ -87,13 +87,14 @@ $config = [
         base_url("public/css/web/style.css"),
         base_url("public/css/web/sgmedia.css"),
     ],
-    'basic-with-font-awesome' => [
+    'product-detail' => [
         base_url("public/css/bootstrap.min.css"),
         base_url("public/css/jquery.scrollbar.css"),
         "https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css",
         base_url("public/css/web/common.css"),
         base_url("public/css/web/style.css"),
         base_url("public/css/web/sgmedia.css"),
+        base_url("public/css/web/product-detail.css")
     ],
     'search-page' => [
         base_url("public/css/bootstrap.min.css"),

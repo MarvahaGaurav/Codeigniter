@@ -5,6 +5,7 @@
         <ul class="breadcrumb">
             <li><a href="javascript:void(0)">Home</a></li>
             <li><a href="<?php echo base_url('home/projects') ?>">Projects</a></li>
+            <li><a href="<?php echo base_url('home/projects/' . $projectId) ?>">Details</a></li>
             <li class="active">Edit Project</li>
         </ul>
         <!-- //breadcrumb -->
@@ -57,8 +58,7 @@
                     <div class="form-group" id="address-box-wrapper">
                         <label class="labelTxt">Address</label>
                         <div class="form-group-field">
-                            <textarea name="address" id="address" placeholder="Click map marker icon to pick location"><?php echo $projectData['address'] ?></textarea>
-                            <span data-toggle="modal" data-target="#maps-modal" title="Pick Location from Map" id="address-map-icon" class="clickable"><i class="fa fa-map-marker"></i></span>
+                            <textarea name="address" readonly id="address" data-toggle="modal" data-target="#maps-modal" placeholder="Click map marker icon to pick location"><?php echo $projectData['address'] ?></textarea>
                         </div>
                         <div id="address-map-error"></div>
                         <input type="hidden" name="address_lat" value="<?php echo $projectData['lat'] ?>" id="address-lat">
