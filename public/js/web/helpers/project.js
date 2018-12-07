@@ -44,7 +44,6 @@
             } else if ($element.attr('name') == 'project_name' || $element.attr('name') == 'project_number') {
                 $element.after(error);
             } else if ($element.attr('name') == 'address_lat' || $element.attr('name') == 'address_lng' || $element.attr('name') === 'address') {
-                $("#maps-modal").modal('show');
                 $("#address-map-error").html(error);
             }
         }

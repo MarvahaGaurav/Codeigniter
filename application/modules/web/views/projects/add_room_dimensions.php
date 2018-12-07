@@ -15,7 +15,7 @@
         <!-- //breadcrumb -->
 
         <div class="page-heading">
-            <h1 class="page-title">Bathroom : Room Dimensions</h1>
+            <h1 class="page-title"><?php echo $room['title'] ?> : Room Dimensions</h1>
             <p class="prj-description">We are continously designing, prototyping and testing new products to enable us
                 to deliver products that are energy efficient and environmental friendly, in combination
                 with a creation of the ambiance that you need, always keeping in mind that luminaires have a great
@@ -38,7 +38,7 @@
                     <div class="form-group">
                         <label class="labelTxt">Room Reference</label>
                         <div class="form-group-field">
-                            <input type="text" name="name" placeholder="Bathroom" value="<?php echo isset($cookie_data['name'])?$cookie_data['name']:$room['title'] ?>" readonly>
+                            <input type="text" name="name" placeholder="Bathroom" value="<?php echo $room['title'] ?>" readonly>
                             <label for="name" id="name-error" class="error"><?php echo form_error('name') ?></label>
                         </div>
                     </div>
@@ -315,8 +315,8 @@
         <!-- button wrapper section -->
         <div class="section-title clearfix">
             <div class="button-wrapper">
-                <input <?php echo $disabled; ?> id="final-room-submission" type="submit" value="Done" class="custom-btn btn-margin btn-width save">
-                <!-- <button type="button" class="custom-btn btn-margin btn-width cancel">Cancel</button> -->
+                <input <?php echo $disabled; ?> id="final-room-submission" type="submit" value="Calculate" class="custom-btn btn-margin btn-width save">
+                <button type="button" class="custom-btn btn-margin btn-width cancel redirectable" data-restrict-to="<?php echo base_url('home/projects/' . $projectId . '/levels/' . $level . '/rooms') ?>">Cancel</button>
             </div>
         </div>
 

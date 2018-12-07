@@ -15,6 +15,7 @@ requirejs.config({
         helper: 'web/helpers/signup',
         cropper_JS: 'cropperAssets/cropper',
         appinventivCropper: 'cropperAssets/appinventivCropper',
+        signUpCropper: 'cropperAssets/SignupCropper',
         mapsAPI: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDhP9xXJsFempHkFwsNn0AuDd89WtTlmI0&libraries=places',
         mapsRender: 'web/helpers/maps-render',
         mapsMarker: 'web/helpers/maps-marker',
@@ -29,6 +30,7 @@ requirejs.config({
         jqueryValidator: ['jquery'],
         cropper_JS: ['jquery'],
         appinventivCropper: ['cropper_JS'],
+        signUpCropper: ['cropper_JS'],
         helper: ['jqueryValidator'],
         autocomplete: ['jquery'],
         location: ['autocomplete'],
@@ -41,7 +43,7 @@ requirejs.config({
 
 requirejs(
     ["jquery", "bootstrap", "common", "jqueryScrollbar", "jqueryValidator", "helper", "autocomplete",
-        "location", "selectPicker", "cropper_JS", "appinventivCropper", "mapsAPI", "mapsRender",
+        "location", "selectPicker", "cropper_JS", "appinventivCropper", "mapsAPI", "mapsRender", "signUpCropper",
         "mapsPlaces", "mapsMarker"],
     function ($) {
         fetchLocation('/xhttp/cities');

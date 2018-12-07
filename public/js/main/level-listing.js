@@ -44,7 +44,8 @@ requirejs(
         dataType: "json",
         data: formData,
         beforeSend: function () {
-          $self.html("<i class='fa fa-circle-o-notch fa-spin'></i>");
+          var html = $self.html().trim();
+          $self.html("<i class='fa fa-circle-o-notch fa-spin'></i> " + html);
         },
         success: function(response) {
           if (response.success) {
@@ -97,7 +98,7 @@ requirejs(
         dataType: "json",
         beforeSend: function () {
           var html = $self.html();
-          $self.html("<i class='fa fa-circle-o-notch fa-spin'></i>" + html);
+          $self.html("<i class='fa fa-circle-o-notch fa-spin'></i> " + html);
           $self.attr("disabled", "disabled");
         },
         success: function (response) {
@@ -129,7 +130,7 @@ requirejs(
         dataType: "json",
         beforeSend: function () {
           var html = $self.html().trim();
-          $self.html("<i class='fa fa-circle-o-notch fa-spin'></i>" + html);
+          $self.html("<i class='fa fa-circle-o-notch fa-spin'></i> "+html);
         },
         success: function (response) {
           if (response.success) {

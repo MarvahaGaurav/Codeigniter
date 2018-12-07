@@ -64,10 +64,11 @@
     });
 
     $( "#add_room_form" ).validate( {
-        rules: validationRules
-        // submitHandler: function ( form ) {
-        //     $( form ).submit();
-        // }
+        rules: validationRules,
+        submitHandler: function ( form ) {
+            $("#final-room-submission").attr("disabled", "disabled");
+            form.submit();
+        }
     } );
 
 

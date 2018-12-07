@@ -74,17 +74,18 @@ $("#product-search").on('keydown', function () {
                 html =  response.data.reduce(function (previousValue, currentValue) {
                     var temp = '';
                     var redirect_url = window.location.protocol + "//" + window.location.hostname + "/home/projects/" + project_id + "/levels/" + level + "/rooms/applications/" + application_id + "/rooms/" + room_id + "/dimensions/products/" + currentValue.product_id + "/mounting/" + 1 + "/articles/" + currentValue.articlecode;
-                    temp += '<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 col-for-thumb redirectable" data-redirect-to="'+ redirect_url + '">';
-                    temp += '<div class="thumb-box">';
-                    temp += '<div class="thumb-view-wrapper thumb-view-contain thumb-view-contain-pd thumb-view-fullp img-viewbdr-radius4">';
-                    temp += '<div class="thumb-view thumb-viewfullheight-1" style="background:url(\'' + currentValue.image + '\')"></div>';
-                    temp += '</div>';
-                    temp += '<div class="thumb-caption clearfix">';
-                    temp += '<h3 class="thumb-light-name">' + currentValue.title + '</h3>';
-                    temp += '<a href="javascript:void(0)" class="thumb-light-moreinfo">More info</a>';
-                    temp += '</div>';
-                    temp += '</div>';
-                    temp += '</div>';
+                    temp += '<div class="col-sm-6 col-md-4">' +
+                        '<a href="'+ redirect_url +'">' +
+                            '<div class="thumbnail">' +
+                                '<img src="'+ currentValue.image +'" alt="'+ currentValue.product_name +'">' +
+                                '<div class="caption">' +
+                                    '<h2>'+ currentValue.product_name +'</h2>' +
+                                    '<p><div class="article-code-div">'+ currentValue.articlecode +'</div></p>' +
+                                    '<p>' + currentValue.title + '</p>' +
+                                '</div>' +
+                            '</div>' +
+                        '</a>' +
+                    '</div>';
 
                     return previousValue + temp;
                 }, html);

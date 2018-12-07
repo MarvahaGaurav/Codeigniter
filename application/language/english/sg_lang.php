@@ -1,12 +1,12 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-$lang['private_user'] = 'Private User';
+$lang['private_user'] = 'Private';
 $lang['installer'] = 'Installer';
 $lang['architect'] = 'Architect';
 $lang['electrical_planner'] = 'Electrical Planner';
 $lang['wholesaler'] = 'Wholesaler';
-$lang['business_user'] = 'Business User';
+$lang['business_user'] = 'Business';
 
 $lang['mounting_suspended'] = 'Suspended';
 $lang['mounting_recessed'] = 'Recessed';

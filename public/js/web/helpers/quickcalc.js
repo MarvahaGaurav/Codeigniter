@@ -57,7 +57,11 @@
     };
 
     $( "#quick_cal_form" ).validate( {
-        rules: validationRules
+        rules: validationRules,
+        submitHandler: function ( form ) {
+            $("#evaluate_btn").attr("disabled", "disabled");
+            form.submit();
+        }
     } );
 
 

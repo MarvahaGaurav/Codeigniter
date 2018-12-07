@@ -262,12 +262,6 @@ class Index extends BaseController
                             $userData['is_owner'] = (int)$postData['is_company_owner'] === 1 ? ROLE_OWNER : ROLE_EMPLOYEE;
                         }
                         if ((int)$postData['is_company_owner'] === 1 || (int)$userType === BUSINESS_USER) {
-                            if (isset($_FILES['company_logo']) and '' != $_FILES['company_logo']['tmp_name']) {
-                                $this->load->helper("s3_helper");
-                                $path = s3_image_uploader($_FILES['company_logo'], date("YmdHis") . "." . substr(strrchr($_FILES['company_logo']['name'], '.'), 1), $_FILES['type'], "");
-
-                                $companyData['company_image'] = $path;
-                            }
                             $companyInsert = true;
                             $companyData['company_name'] = $postData['company_name'];
                             $companyData['company_reg_number'] = $postData['company_registration_number'];
@@ -276,6 +270,7 @@ class Index extends BaseController
                             $companyData['city'] = $postData['city'];
                             $companyData['zipcode'] = $postData['zipcode'];
                             $companyData['owner_type'] = $postData['user_type'];
+                            $companyData['company_image'] = $postData['company_image'];
                             if ((int)$userType === INSTALLER) {
                                 $companyData['company_address'] = $postData['address'];
                                 $companyData['lat'] = $postData['address_lat'];

@@ -172,7 +172,7 @@ class ProjectQuotation extends BaseModel
     {
         $this->db->select('sum(price_per_luminaries) as price_per_luminaries,
             sum(installation_charges) as installation_charges,
-            avg(discount_price) as discount_price, additional_product_charges, discount')
+            SUM(((installation_charges + price_per_luminaries) * ((100 - discount_price)/ 100))) as discounted_price, additional_product_charges, discount')
             ->from('project_quotations as pq')
             ->join('project_room_quotations as prq', 'prq.user_id=pq.user_id AND prq.company_id=pq.company_id')
             ->join('project_rooms as pr', 'pr.id=prq.project_room_id')

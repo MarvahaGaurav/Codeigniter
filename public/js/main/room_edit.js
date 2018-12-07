@@ -39,7 +39,7 @@ requirejs(
             $luxValues = $("input[name='lux_values']")
             $finalRoomSubmission = $("#final-room-submission");
 
-        $(".dialux-suggestions-fields").on("change", function () {
+        $(".dialux-suggestions-fields").on("change keydown", function () {
             var self = this,
                 $self = $(self),
                 formData = getFormData($editForm);
@@ -78,7 +78,7 @@ requirejs(
                             $roomLuminariesX.val(response.data.luminaireCountInX);
                             $roomLuminariesY.val(response.data.luminaireCountInY);
                             $xyTotal.val(response.data.luminaireCount);
-                            $luxValues.val((response.data.illuminance));
+                            // $luxValues.val((response.data.illuminance));
                         }
                     },
                     error: function(error) {
@@ -162,7 +162,11 @@ requirejs(
         };
 
         $("#edit_room_form").validate({
-            rules: validationRules
+            rules: validationRules,
+            submitHandler: function ( form ) {
+                $("#final-room-submission").attr("disabled", "disabled");
+                form.submit();
+            }
         });
 
         $("#advanced-option-div").on("click", function () {
