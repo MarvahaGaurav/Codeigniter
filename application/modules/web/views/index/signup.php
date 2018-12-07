@@ -216,7 +216,7 @@
                             </div> -->
                         </div>
                         <div class="form-group clearfix <?php echo strlen(set_Value('user_type'))>0&&set_value('user_type') == INSTALLER&&$isCompanyOwner?'': 'concealable'  ?>" id="address-box-wrapper">
-                            <label class="labelTxt">Address</i></label>
+                            <label class="labelTxt">Address <i class="fa fa-map-marker"></i></label>
                             <div class="form-group-field">
                                 <textarea readonly name="address" data-toggle="modal" data-target="#maps-modal" id="address" placeholder="Click to pick location"><?php echo set_value('address') ?></textarea>                                
                             </div>

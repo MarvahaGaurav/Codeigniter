@@ -44,6 +44,14 @@
             <div class="select-pricing-wrapper setting-section">
                 <div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    <div class="form-group">
+                        <div class="pricing">
+                        <button type="button" class="minus btn-danger"><span class="glyphicon glyphicon-minus"></span></button>
+                        <input type="text" class="count" name="qty" value="0" min="0" max="100">
+                        <button type="button" class="plus btn-success"><span class="glyphicon glyphicon-plus"></span></button>
+                        </div>
+                    </div>
+<!--
                         <div class="form-group">
                             <label class="labelTxt">Set Pricing</label>
                             <div class="form-group-field">
@@ -56,6 +64,7 @@
                                 <span class="customArrow"></span>
                             </div>
                         </div>
+-->
                     </div>
                 </div>
             </div>
