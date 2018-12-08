@@ -2,10 +2,12 @@
 defined("BASEPATH") or exit("No direct script access allowed");
 
 require 'BaseController.php';
+require  APPPATH . '/libraries/Traits/ProjectDelete.php';
 
 class ProjectController extends BaseController
 {
 
+    use ProjectDelete;
     /**
      * Request Data
      *
@@ -22,8 +24,6 @@ class ProjectController extends BaseController
 
     public function __construct()
     {
-        error_reporting(-1);
-        ini_set('display_errors', 1);
         parent::__construct();
         $this->load->library('form_validation');
     }
@@ -173,6 +173,56 @@ class ProjectController extends BaseController
                 'data' => [
                     'project_id' => $projectId
                 ]
+            ]);
+        } catch (\Exception $error) {
+            $this->db->trans_rollback();
+            $this->response([
+                'code' => HTTP_INTERNAL_SERVER_ERROR,
+                'api_code_result' => 'INTERNAL_SERVER_ERROR',
+                'msg' => $this->lang->line("internal_server_error")
+            ]);
+        }
+    }
+
+    /**
+     * Delete project
+     *
+     * @return void
+     */
+    public function index_delete()
+    {
+        try {
+            $user_data = $this->accessTokenCheck('u.user_type, is_owner, u.company_id');
+            $language_code = $this->langcode_validate();
+
+            $this->user = $user_data;
+
+            $this->userTypeHandling([INSTALLER, PRIVATE_USER, BUSINESS_USER, WHOLESALER, ELECTRICAL_PLANNER]);
+
+            $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['project_delete']);
+
+            $this->requestData = $this->delete();
+
+            $this->validateDeleteProject();
+            
+            $this->validationRun();
+
+            $this->projectId = $this->requestData['project_id'];
+
+            $project = $this->fetchProduct();
+
+            if (empty($project)) {
+                $this->response([
+                    'code' => HTTP_NOT_FOUND,
+                    'msg' => $this->lang->line('no_project_found')
+                ]);
+            }
+
+            $this->deleteProject();
+
+            $this->response([
+                'code' => HTTP_OK,
+                'msg' => $this->lang->line('project_deleted')
             ]);
         } catch (\Exception $error) {
             $this->db->trans_rollback();
@@ -981,6 +1031,24 @@ class ProjectController extends BaseController
                 'field' => 'level',
                 'rules' => 'trim|is_natural_no_zero'
             ],
+        ]);
+    }
+
+    /**
+     * Validate send project details
+     *
+     * @return void
+     */
+    private function validateDeleteProject()
+    {
+        $this->form_validation->set_data($this->requestData);
+
+        $this->form_validation->set_rules([
+            [
+                'label' => 'Project',
+                'field' => 'project_id',
+                'rules' => 'trim|required|is_natural_no_zero'
+            ]
         ]);
     }
 

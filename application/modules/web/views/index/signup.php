@@ -36,7 +36,7 @@
         .webcam_cropped_image_preview{
             overflow: hidden;
         }
-        .cropped_image_preview {
+        .cropped_image_preview ,.company_cropped_image_preview {
             overflow: hidden;
         }
         .modal-backdrop{
@@ -280,12 +280,12 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="col-md-6">
-                            <div class="img-container">
-                                <img id="image-to-crop" src=" " alt="Picture">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="img-container">
+                                    <img id="image-to-crop" src=" " alt="Picture">
+                                </div>
                             </div>
-                        </div>
-                        <div class="">
                             <div class="col-md-6 col col-6">
                                 <div class="cropped_image_preview"></div>
                             </div>
@@ -312,12 +312,12 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="col-md-6">
-                            <div class="img-container">
-                                <img id="company-image-to-crop" src=" " alt="Picture">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="img-container">
+                                    <img id="company-image-to-crop" src=" " alt="Picture">
+                                </div>
                             </div>
-                        </div>
-                        <div class="">
                             <div class="col-md-6 col col-6">
                                 <div class="company_cropped_image_preview"></div>
                             </div>

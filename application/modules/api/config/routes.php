@@ -42,6 +42,7 @@ $route['api/v1/requests/(:any)/projects/(:any)/levels'] =  'RequestLevelsControl
 $route['api/v1/requests/(:any)/projects/(:any)/levels/(:any)/rooms'] =  'RequestRoomsController/quotationRooms/request_id/$1/project_id/$2/levels/$3';
 $route['api/v1/products/(:any)'] = 'ProductController/details/product_id/$1';
 $route['api/v1/projects'] = 'ProjectController/index';
+$route['api/v1/projects/rooms/tco'] = 'ProjectTcoController/saveTco';
 $route['api/v1/projects/rooms'] = 'ProjectRoomController/projectRooms';
 $route['api/v1/projects/quotation-request'] = 'ProjectController/sendQuotationRequest';
 $route['api/v1/projects/rooms/quotations'] = 'QuotationController/roomsQuotation';

@@ -26,7 +26,7 @@ class RequestLevelsController extends BaseController
 
             $this->userTypeHandling([INSTALLER]);
 
-            $this->handleEmployeePermission([INSTALLER], ['quotation_view']);
+            $this->handleEmployeePermission([INSTALLER], ['quote_view']);
 
             $this->requestData = $this->get();
 
@@ -108,6 +108,7 @@ class RequestLevelsController extends BaseController
             
             $this->response($response);
         } catch (\Exception $error) {
+            pd($error->getMessage());
             $this->response([
                 'code' => HTTP_INTERNAL_SERVER_ERROR,
                 'api_code_result' => 'INTERNAL_SERVER_ERROR',

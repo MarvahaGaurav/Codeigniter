@@ -200,3 +200,5 @@ $lang['not_received_this_request'] = 'You have not received this request';
 $lang['invalid_project'] = 'Provided project is invalid';
 $lang['product_removed'] = 'Product Removed';
 $lang['add_rooms'] = 'Add rooms'; 
+$lang['tco_already_done'] = 'TCO already done for this room';
+$lang['project_deleted'] = 'Your project has been deleted';

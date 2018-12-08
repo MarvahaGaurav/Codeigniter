@@ -138,6 +138,15 @@ class Login extends REST_Controller
                         if ($this->db->trans_status() === true) {
                             $this->db->trans_commit();
                             $userInfo['accesstoken'] = $accessToken['public_key'] . '||' . $accessToken['private_key'];
+                            $userInfo['is_employee_approved'] = false;
+                            if ( ROLE_EMPLOYEE === (int)$userInfo['is_owner']) {
+                                $this->load->model(['UtilModel']);
+                                $employeeApprovalStatus = $this->UtilModel->selectQuery('er_id, status', 'employee_request_master', [
+                                    'where' => ['requested_by' => (int)$userInfo['user_id']], 'single_row' => true
+                                ]);
+                                $userInfo['is_employee_approved'] = (bool)(!empty($employeeApprovalStatus)&&
+                                                                (int)$employeeApprovalStatus['status'] === EMPLOYEE_REQUEST_ACCEPTED);
+                            }
                             $this->response(array('code' => SUCCESS_CODE, 'msg' => $this->lang->line('login_successful'), 'result' => $userInfo));
                         }
                     } else if ($userInfo['status'] == BLOCKED) {

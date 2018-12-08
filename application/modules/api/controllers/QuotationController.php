@@ -162,6 +162,82 @@ class QuotationController extends BaseController
         }
     }
 
+    public function index_delete()
+    {
+        try {
+            $user_data = $this->accessTokenCheck('u.user_type, is_owner, u.company_id');
+            $language_code = $this->langcode_validate();
+
+            $this->user = $user_data;
+
+            $this->userTypeHandling([INSTALLER]);
+
+            $this->handleEmployeePermission([INSTALLER], ['quote_delete']);
+
+            $this->requestData = $this->delete();
+
+            $this->validateQuoteDelete();
+
+            $this->validationRun();
+
+            $quotesData = $this->UtilModel->selectQuery('request_id, project_id, company_id', 'project_requests as pr', [
+                'join' => ['project_quotations as pq' => 'pr.id=pq.request_id'], 'single_row' => true,
+                'where' => ['pq.company_id' => $user_data['company_id'], 'pr.project_id' => $this->requestData['project_id']]
+            ]);
+
+            if (empty($quotesData)) {
+                $this->response([
+                    'code' => HTTP_NOT_FOUND,
+                    'msg' => $this->lang->line('no_quotation_found')
+                ]);
+            }
+
+            if ((int)$quotesData['company_id'] !== (int)$user_data['company_id']) {
+                $this->response([
+                    'code' => HTTP_FORBIDDEN,
+                    'msg' => $this->lang->line('forbidden_action')
+                ]);
+            }
+
+            $projectRooms = $this->UtilModel->selectQuery('id', 'project_rooms', [
+                'where' => ['project_id' => $this->requestData['project_id']]
+            ]);
+
+            if (empty($projectRooms)) {
+                $this->response([
+                    'code' => HTTP_NOT_FOUND,
+                    'msg' => $this->lang->line('no_data_found')
+                ]);
+            }
+
+            $projectRoomIds = array_column($projectRooms, 'id');
+
+            $this->db->trans_begin();
+
+            $this->UtilModel->deleteData('project_quotations', [
+                'where' => ['request_id' => $quotesData['request_id']]
+            ]);
+
+            $this->UtilModel->deleteData('project_room_quotations', [
+                'where_in' => ['project_room_id' => $projectRoomIds], 'where' => ['company_id' => $user_data['company_id']]
+            ]);
+
+            $this->db->trans_commit();
+
+            $this->response([
+                'code' => HTTP_OK,
+                'msg' => $this->lang->line('quotes_deleted') 
+            ]);
+        } catch (\Exception $error) {
+            $this->db->trans_rollback();
+            $this->response([
+                'code' => HTTP_INTERNAL_SERVER_ERROR,
+                'api_code_result' => 'INTERNAL_SERVER_ERROR',
+                'msg' => $this->lang->line("internal_server_error")
+            ]);
+        }
+    }
+
     /**
      * @SWG\Get(path="/quotations",
      *   tags={"Requests & Quotations"},
@@ -848,6 +924,19 @@ class QuotationController extends BaseController
                 'field' => 'discount_price',
                 'label' => 'Discount price',
                 'rules' => 'trim|numeric'
+            ]
+        ]);
+    }
+
+    private function validateQuoteDelete()
+    {
+        $this->form_validation->set_data($this->requestData);
+
+        $this->form_validaition->set_rules([
+            [
+                'field' => 'project_id',
+                'label' => 'Project',
+                'rules' => 'trim|required|is_natural_no_zero'
             ]
         ]);
     }

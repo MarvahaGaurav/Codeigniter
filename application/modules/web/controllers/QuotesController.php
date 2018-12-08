@@ -50,9 +50,19 @@ class QuotesController extends BaseController
         }
     }
 
-    public function customerList()
+    public function customerQuotesList($projectId)
     {
+        try {
+            $this->activeSessionGuard();
+            $this->userTypeHandling([PRIVATE_USER, BUSINESS_USER], base_url('home/applications'));
 
+            $this->load->modal(['ProjectQuotation']);
+
+
+
+        } catch (\Exception $error) {
+            show404($this->lang->line('internal_server_error'), base_url());
+        }
     }
 
     /**

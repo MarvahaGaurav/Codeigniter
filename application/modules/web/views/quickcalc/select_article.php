@@ -1,12 +1,11 @@
 <div class="container">
     <ul class="breadcrumb"> 
     <li><a href="javascript:void(0)">Home</a></li>
-            <li class="active">Details</li>
+        <li class="active">Details</li>
     </ul>
     <div class="">
         <h1 class="heading-red"><?php echo $product_name = $product['title']; ?></h1>
     </div>
-    
 </div>
 
 
@@ -72,13 +71,13 @@ if (count($images)) {
         <table class="articles table table-striped table-hover table-condensed">
             <thead>
                 <tr>
-                    <th class="image"></th>
-                    <th class="light-technic" style="width:35%"><b>Article</b></th>
+                    <th class="image" style="width:200px"></th>
+                    <th class="light-technic" style="width:250px"><b>Article</b></th>
                     <th class="protection">Protection</th>
                     <th class="driver">Control gear</th>
                     <th class="connection">Mounting/Connection</th>
-                    <th class="dimensions">Dimensions (mm)</th>
-                    <th class="download"></th>
+                    <th class="dimensions" style="width:110px">Dimensions (mm)</th>
+                    <th class="download" style="width:155px">Action</th>
                 </tr>
             </thead>
 
@@ -116,13 +115,8 @@ if (count($images)) {
                         <div>
                             <div class="btn-group">
                                 <button title="Select Product"  class="outline-btn" onclick="select_product( '<?php echo $specification['articlecode']; ?>', '<?php echo $specification['product_id']; ?>', <?php echo $mounting ?>)">Select</button>
-                               
-                            </div>
-                            
-                            <div class="btn-group">
-                               
                                 <button data-redirect-to="<?php echo "home/application-detail/".$urlString.'/code/'.$specification['articlecode']; ?>" title="Info"  class="outline-btn redirectable">View</button>
-
+                               
                             </div>
                         </div>
                     </td>

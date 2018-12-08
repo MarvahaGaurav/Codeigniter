@@ -852,13 +852,21 @@ class ProjectController extends BaseController
                     return $product;
                 }, $roomProducts);
                 $this->load->helper('db');
-                $rooms = getDataWith($rooms, $roomProducts, 'project_room_id', 'project_room_id', 'products');
+                $rooms = getDataWith($rooms, $roomProducts,'project_room_id', 'project_room_id', 'products');
             }
+
+            $projectRequest = $this->UtilModel->selectQuery('id as request_id', 'project_requests', [
+                'where' => ['project_id' => $projectId], 'single_row' => true
+            ]);
+
+            $this->data['isRequested'] = (bool)!empty($projectRequest);
+            $this->data['quoteCount'] = 0;
 
             $this->data['rooms']           = $rooms;
             $this->data['room_count']      = $roomCount;
             $this->data['has_more_rooms']  = $roomCount > 4;
             $this->data['page_room_count'] = $roomParams['limit'];
+            
             $this->load->model(['UtilModel']);
             $this->data['quotationRequest'] = $this->UtilModel->selectQuery('id', 'project_requests', [
                 'where' => ['project_id' => $this->data['project']['project_id']]

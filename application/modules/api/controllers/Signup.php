@@ -6,6 +6,13 @@ require APPPATH . '/libraries/REST_Controller.php';
 class Signup extends REST_Controller
 {
 
+    /**
+     * Datatime string
+     *
+     * @var string
+     */
+    private $datetime;
+
     function __construct()
     {
         parent::__construct();
@@ -13,6 +20,7 @@ class Signup extends REST_Controller
         $this->load->helper('security');
         $this->load->library('form_validation');
         $this->load->library('commonfn');
+        $this->datetime = date("Y-m-d H:i:s");
     }
 
     /**
@@ -509,20 +517,28 @@ class Signup extends REST_Controller
                         $mailData['name'] = $postDataArr['full_name'];
                         $mailData['email'] = $postDataArr['email'];
                         $this->sendWelcomeMail($mailData);
-                        $signupArr['quote_view'] = 0;
-                        $signupArr['quote_add'] = 0;
-                        $signupArr['quote_edit'] = 0;
-                        $signupArr['quote_delete'] = 0;
-                        $signupArr['insp_view'] = 0;
-                        $signupArr['insp_add'] = 0;
-                        $signupArr['insp_edit'] = 0;
-                        $signupArr['insp_delete'] = 0;
-                        $signupArr['project_view'] = 0;
-                        $signupArr['project_add'] = 0;
-                        $signupArr['project_edit'] = 0;
-                        $signupArr['project_delete'] = 0;
+                        $employeePermission = [];
+                        $employeePermission['quote_view'] = $signupArr['quote_view'] = 1;
+                        $employeePermission['quote_add'] = $signupArr['quote_add'] = 0;
+                        $employeePermission['quote_edit'] = $signupArr['quote_edit'] = 0;
+                        $employeePermission['quote_delete'] = $signupArr['quote_delete'] = 0;
+                        $employeePermission['insp_view'] = $signupArr['insp_view'] = 1;
+                        $employeePermission['insp_add'] = $signupArr['insp_add'] = 0;
+                        $employeePermission['insp_edit'] = $signupArr['insp_edit'] = 0;
+                        $employeePermission['insp_delete'] = $signupArr['insp_delete'] = 0;
+                        $employeePermission['project_view'] = $signupArr['project_view'] = 1;
+                        $employeePermission['project_add'] = $signupArr['project_add'] = 0;
+                        $employeePermission['project_edit'] = $signupArr['project_edit'] = 0;
+                        $employeePermission['project_delete'] = $signupArr['project_delete'] = 0;
+                        $signupArr['is_employee_approved'] = false;
 
                         if (ROLE_EMPLOYEE === (int)$signupArr["is_owner"]) {
+                            $employeePermission['employee_id'] = $userId;
+                            $employeePermission['user_id'] = $companyowner_info['user_id'];
+                            $employeePermission['insert_date'] = $this->datetime;
+                            $employeePermission['modify_date'] = $this->datetime;
+                            $employeePermission['status'] = 1;
+
                             $this->load->library("PushNotification");
                             $this->load->model("UtilModel");
                             
@@ -534,6 +550,7 @@ class Signup extends REST_Controller
                                     "join" => ["ai_session" => "ai_user.user_id=ai_session.user_id"]
                                 ]
                             );
+                            $this->UtilModel->insertTableData($employeePermission, 'user_employee_permission');
                             $ios_user_data = array_filter(
                                 $user_data,
                                 function ($data) {

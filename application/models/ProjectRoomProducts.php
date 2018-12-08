@@ -25,11 +25,12 @@ class ProjectRoomProducts extends BaseModel
     {
         $this->db->select("project_room_id, prs.product_id, prs.type, products.title, prs.mounting_type,
         IFNULL(articlecode, '') as articlecode, IFNULL(ps.image, '') as article_image,
-         IFNULL(price, 0.00) as  price, IFNULL(currency, 0.00) as  currency, IFNULL(uld, '') as  uld,", false)
+        wattage as wattage, lifetime_hours,
+         IFNULL(price, 0.00) as  price, IFNULL(currency, 0.00) as  currency, IFNULL(uld, '') as  uld", false)
             ->join('products', 'products.product_id=prs.product_id')
-            ->join('product_specifications as ps', 'ps.product_id=products.product_id AND prs.article_code=ps.articlecode', 'left')
+            ->join('product_specifications as ps', 'ps.product_id=products.product_id AND prs.article_code=ps.articlecode')
             ->from($this->tableName)
-            ->group_by('product_id, project_room_id');
+            ->group_by('articlecode, project_room_id');
         
         if (isset($params['limit']) && is_numeric($params['limit']) && (int)$params['limit'] > 0) {
             $this->db->limit((int)$params['limit']);

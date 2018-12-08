@@ -39,7 +39,7 @@ class ProjectRoomController extends BaseController
     public function projectRooms_post()
     {
         try {
-            $user_data = $this->accessTokenCheck('u.user_type, is_owner, u.company_id');_post
+            $user_data = $this->accessTokenCheck('u.user_type, is_owner, u.company_id');
             $language_code = $this->langcode_validate();
 
             $this->user = $user_data;
@@ -601,13 +601,15 @@ class ProjectRoomController extends BaseController
                 $rooms = getDataWith($rooms, $roomProducts, 'project_room_id', 'project_room_id', 'products');
 
                 if ((int)$user_data['user_type'] === INSTALLER) {
-                    $this->load->model(['ProjectRoomQuotation']);
+                    $this->load->model(['ProjectRoomQuotation', 'ProjectRoomTcoValue']);
                     $projectRoomIds = array_column($rooms, 'project_room_id');
                     $roomPrice = $this->ProjectRoomQuotation->quotationInfo([
                         'where_in' => ['project_room_id' => $projectRoomIds]
                     ]);
+                    $tcoData = $this->ProjectRoomTcoValue->get($projectRoomIds);
                     $this->load->helper('utility');
                     $rooms = getDataWith($rooms, $roomPrice, 'project_room_id', 'project_room_id', 'price');
+                    $rooms = getDataWith($rooms, $tcoData, 'project_room_id', 'project_room_id', 'tco');
                     $rooms = array_map(function ($room) {
                         if (empty($room['price'])) {
                             $room['has_price'] = false;
@@ -619,6 +621,11 @@ class ProjectRoomController extends BaseController
                                 $room['price']['price_per_luminaries'] + $room['price']['installation_charges'],
                                 $room['price']['discount_price']
                             );
+                        }
+                        if (empty($room['tco'])) {
+                            $room['tco'] = (object)[];
+                        } else {
+                            $room['tco'] = $room['tco'][0];
                         }
                         return $room;
                     }, $rooms);

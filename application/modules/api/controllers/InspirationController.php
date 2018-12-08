@@ -239,10 +239,14 @@ class InspirationController extends BaseController
     public function inspiration_get()
     {
         try {
-            $userData = $this->accessTokenCheck('company_id, user_type');
+            $userData = $this->accessTokenCheck('company_id, user_type, is_owner');
             $language_code = $this->langcode_validate();
             $this->requestData = $this->get();
 
+            $this->user = $userData;
+
+            $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['insp_view']);
+            
             $params = [];
             
             if (in_array((int)$userData['user_type'], [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER, WHOLESALER], true)) {

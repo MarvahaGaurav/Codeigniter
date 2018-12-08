@@ -26,7 +26,7 @@ class RequestRoomsController extends BaseController
 
             $this->userTypeHandling([INSTALLER]);
 
-            $this->handleEmployeePermission([INSTALLER], ['quotation_view']);
+            $this->handleEmployeePermission([INSTALLER], ['quote_view']);
 
             $this->requestData = $this->get();
 
