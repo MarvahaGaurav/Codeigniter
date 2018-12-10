@@ -831,9 +831,10 @@ class ProjectController extends BaseController
     {
         try {
             $this->activeSessionGuard();
-            $id                                = encryptDecrypt($project_id, "decrypt");
-            $this->load->model("Project");
-            $this->load->model("ProjectRooms");
+            $id = encryptDecrypt($project_id, "decrypt");
+            $this->load->model(["Project", "ProjectRooms", "UtilModel"]);
+            $this->load->config('css_config');
+            $this->data['css'] = $this->config->item('basic-with-font-awesome');
             $this->data['userInfo'] = $this->userInfo;
             $roomParams['where']['project_id'] = $id;
             $roomParams['limit']               = 5;
@@ -855,12 +856,24 @@ class ProjectController extends BaseController
                 $rooms = getDataWith($rooms, $roomProducts,'project_room_id', 'project_room_id', 'products');
             }
 
-            $projectRequest = $this->UtilModel->selectQuery('id as request_id', 'project_requests', [
-                'where' => ['project_id' => $projectId], 'single_row' => true
-            ]);
-
-            $this->data['isRequested'] = (bool)!empty($projectRequest);
+            $this->data['isRequested'] = false;
             $this->data['quoteCount'] = 0;
+            $this->data['projectId'] = encryptDecrypt($id);
+
+            if (in_array((int)$this->userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true)) {
+                $projectRequest = $this->UtilModel->selectQuery('id as request_id', 'project_requests', [
+                    'where' => ['project_id' => $id], 'single_row' => true
+                ]);
+
+                $this->data['isRequested'] = (bool)!empty($projectRequest);
+                if (!empty($projectRequest)) {
+                    $projectCount  = $this->UtilModel->selectQuery('COUNT(id) as count', 'project_quotations', [
+                        'where' => ['request_id' => $projectRequest['request_id']], 'single_row' => true
+                    ]);
+
+                    $this->data['quoteCount'] = $projectCount['count'];
+                }
+            }
 
             $this->data['rooms']           = $rooms;
             $this->data['room_count']      = $roomCount;

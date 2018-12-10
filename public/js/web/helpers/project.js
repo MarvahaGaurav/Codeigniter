@@ -46,6 +46,10 @@
             } else if ($element.attr('name') == 'address_lat' || $element.attr('name') == 'address_lng' || $element.attr('name') === 'address') {
                 $("#address-map-error").html(error);
             }
+        },
+        submitHandler: function (form) {
+            $("#form-submit-button").attr("disabled", "disabled");
+            form.submit();
         }
     });
 

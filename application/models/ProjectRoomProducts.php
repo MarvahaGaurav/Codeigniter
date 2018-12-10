@@ -31,7 +31,7 @@ class ProjectRoomProducts extends BaseModel
             ->join('product_specifications as ps', 'ps.product_id=products.product_id AND prs.article_code=ps.articlecode')
             ->from($this->tableName)
             ->group_by('articlecode, project_room_id');
-        
+
         if (isset($params['limit']) && is_numeric($params['limit']) && (int)$params['limit'] > 0) {
             $this->db->limit((int)$params['limit']);
         }
@@ -156,11 +156,11 @@ class ProjectRoomProducts extends BaseModel
 
     /**
      * Total project charges
-    *
+     *
      * @param array $params
      * @return array
      */
-    
+
     public function totalProductCharges($params)
     {
         $this->db->select('sum(price) as total_product_price, prp.type')
@@ -216,23 +216,23 @@ class ProjectRoomProducts extends BaseModel
     {
         $this->db->select('SQL_CALC_FOUND_ROWS image, ps.product_id, ps.articlecode, title, uld,
                         ps.type, driver, length, width, height', false)
-                    ->from("product_specifications as ps")
-                    ->where('ps.product_id', $params['product_id']);
+            ->from("product_specifications as ps")
+            ->where('ps.product_id', $params['product_id']);
 
         if (isset($params['limit']) && is_numeric($params['limit']) && (int)$params['limit'] > 0) {
             $this->db->limit((int)$params['limit']);
         }
-            
+
         if (isset($params['offset']) && is_numeric($params['offset']) && (int)$params['offset'] > 0) {
             $this->db->offset((int)$params['offset']);
         }
-    
+
         if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
             foreach ($params['where'] as $tableColumn => $searchValue) {
                 $this->db->where($tableColumn, $searchValue);
             }
         }
-        
+
         $query = $this->db->get();
 
         $data['data'] = $query->result_array();

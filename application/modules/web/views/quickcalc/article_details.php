@@ -5,11 +5,11 @@
         <ul class="breadcrumb">
             <li><a href="javascript:void(0)">Home</a></li>
             <li><a href="<?php echo base_url('home/applications') ?>">Application</a></li>
-            <li><a href="<?php echo base_url('home/applications/' . $applicationId) ?>">Rooms</a></li>
-            <li><a href="<?php echo base_url('home/applications/' . $applicationId . '/fast-calc') ?>">Quick Cal</a></li>
-            <li><a href="<?php echo base_url('home/applications/' . $applicationId . '/select-porduct') ?>">Select Product</a></li>
-            <li><a href="<?php echo base_url('home/applications/' . $applicationId . '/rooms/'.$roomId.'/mounting/'.$mounting.'/articles/'.$productId) ?>">Article</a></li>
-            <li class="active">Accessory Product Details</li>
+            <li><a href="<?php echo base_url('home/applications/' . $applicationId . '/rooms') ?>">Rooms</a></li>
+            <li><a href="<?php echo base_url('home/applications/' . $applicationId . '/rooms/' . $roomId . '/fast-calc/') ?>">Fast Calc</a></li>
+            <li><a href="<?php echo base_url('home/applications/' . $applicationId . '/rooms/' . $roomId . '/select-porduct') ?>">Products</a></li>
+            <li><a href="<?php echo base_url('home/applications/' . $applicationId . '/rooms/'.$roomId.'/mounting/'.$mounting.'/articles/'.$productId) ?>">Details</a></li>
+            <li class="active">Article Details</li>
         </ul>
         <!-- //breadcrumb -->
 
@@ -39,7 +39,7 @@
                         </div>
                         <div class="light-detail-info-box light-detail-info-box-1">
                             <div class="light-detail-info clearfix">
-                                <h4>Artical Code:</h4>
+                                <h4>Article Code:</h4>
                                 <p><?php echo $articleData['articlecode'] ?></p>
                             </div>
                             <div class="light-detail-info clearfix">

@@ -4,6 +4,7 @@ require_once "BaseController.php";
 
 class QuotesController extends BaseController
 {
+    private $validationData;
 
     function __construct()
     {
@@ -56,10 +57,39 @@ class QuotesController extends BaseController
             $this->activeSessionGuard();
             $this->userTypeHandling([PRIVATE_USER, BUSINESS_USER], base_url('home/applications'));
 
-            $this->load->modal(['ProjectQuotation']);
+            $this->load->model(['ProjectQuotation']);
 
+            $projectId = encryptDecrypt($projectId, 'decrypt');
+            $this->load->library(['form_validation']);
 
+            $this->validationData = ['project_id' => $projectId];
 
+            $this->valdiateCustomerQuote();
+
+            $this->validationRun();
+
+            $status = $this->validationRun();
+
+            if (!$status) {
+                show404($this->lang->line('bad_request'), base_url(''));
+            }
+
+            $params = [
+                'where' => ['pr.project_id' => $projectId]
+            ];
+            
+            $data = $this->ProjectQuotation->quotations($params);
+
+            $this->load->helper(['utility']);
+            $data['data'] = $this->parseQuotationData($data['data']);
+
+            $this->data['quotes'] = $data['data'];
+            $this->load->config('css_config');
+            $this->data['css'] = $this->config->item("basic-with-font-awesome");
+
+            $this->data['projectId'] = encryptDecrypt($projectId);
+
+            website_view('quotes/quotes', $this->data);
         } catch (\Exception $error) {
             show404($this->lang->line('internal_server_error'), base_url());
         }
@@ -230,4 +260,46 @@ class QuotesController extends BaseController
         return $priceData;
     }
 
+    private function valdiateCustomerQuote()
+    {
+        $this->form_validation->set_data($this->validationData);
+
+        $this->form_validation->set_rules([
+            [
+                'field' => 'project_id',
+                'label' => 'Project ID',
+                'rules' => 'trim|required|is_natural_no_zero'
+            ]
+        ]);
+    }
+
+    private function parseQuotationData($data)
+    {
+        $data = array_map(function ($quotation) {
+            $quotation['quotation_data'] = json_encode([
+                $this->data["csrfName"] = $this->security->get_csrf_token_name() =>
+                    $this->data["csrfToken"] = $this->security->get_csrf_hash(),
+                'quotation_id' => encryptDecrypt($quotation['quotation_id'])
+            ]);
+            $quotation['quotation_price'] = json_decode($quotation['quotation_price'], true);
+            $quotation['quotation_price']['additional_product_charges'] = (double)$quotation['additional_product_charges'];
+            $quotation['quotation_price']['discount'] = (double)$quotation['discount'];
+            $quotation['quotation_price']['main_product_charge'] = 0.00;
+            $quotation['quotation_price']['accessory_product_charge'] = 0.00;
+            $quotation['quotation_price']['total'] = 0.00;
+            $quotation['quotation_price']['total'] = $quotation['quotation_price']['main_product_charge'] +
+                                                $quotation['quotation_price']['accessory_product_charge'] +
+                                                get_percentage(
+                                                    $quotation['quotation_price']['price_per_luminaries'] +
+                                                    $quotation['quotation_price']['installation_charges'] +
+                                                    $quotation['quotation_price']['additional_product_charges'],
+                                                    $quotation['quotation_price']['discount']
+                                                );
+
+            unset($quotation['discount'], $quotation['additional_product_charges']);
+            return $quotation;
+        }, $data);
+
+        return $data;
+    }
 }

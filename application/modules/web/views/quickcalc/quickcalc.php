@@ -1,10 +1,9 @@
 <div class="inner-container">
     <div class="container">
-
         <!-- breadcrumb -->
         <ul class="breadcrumb">
             <li><a href="javascript:void(0)">Home</a></li>
-            <li><a href="<?php echo base_url('home/applications/' . $applicationId) ?>">Applications</a></li>
+            <li><a href="<?php echo base_url('home/applications') ?>">Applications</a></li>
             <li><a href="<?php echo base_url('home/applications/' . $applicationId . '/rooms') ?>">Rooms</a></li>
             <li class="active">Fast Calc</li>
         </ul>

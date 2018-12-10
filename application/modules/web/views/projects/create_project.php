@@ -102,8 +102,8 @@
         </div>
         <!-- button-wrapper section -->
         <div class="button-wrapper clearfix">
-            <input type="submit" value="Submit" class="custom-btn btn-margin btn-width save">
-            <button type="button" class="custom-btn btn-margin btn-width cancel">Cancel</button>
+            <input type="submit" value="Submit" id="form-submit-button" class="custom-btn btn-margin btn-width save">
+            <button type="button" class="custom-btn btn-margin btn-width cancel redirectable" data-redirect-to="<?php echo base_url('home/projects') ?>">Cancel</button>
         </div>
         <!-- button-wrapper section -->
         <?php echo form_close(); ?>

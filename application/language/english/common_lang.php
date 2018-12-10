@@ -230,3 +230,4 @@ $lang['no_rooms_in_this_project'] = 'You have no rooms in this Project';
 $lang['mark_as_done'] = 'Level Mark As Done';
 $lang['level_mark_as_done_confirmation'] = 'Are you sure you want to mark Level %d as done?';
 $lang['tco_value_successfully_updated'] = 'TCO value for this room has been saved';
+$lang['not_received_any_quotes'] = 'You have not received any quotes';

@@ -1,6 +1,10 @@
 <div class="container">
     <ul class="breadcrumb"> 
-    <li><a href="javascript:void(0)">Home</a></li>
+        <li><a href="javascript:void(0)">Home</a></li>
+        <li><a href="<?php echo base_url('home/applications') ?>">Applications</a></li>
+        <li><a href="<?php echo base_url('home/applications/' . $application_id . '/rooms') ?>">Rooms</a></li>
+        <li><a href="<?php echo base_url('home/applications/' . $application_id . '/rooms/' . $room_id . '/fast-calc/') ?>">Fast Calc</a></li>
+        <li><a href="<?php echo base_url('home/applications/' . $application_id . '/rooms/' . $room_id . '/select-porduct') ?>">Products</a></li>
         <li class="active">Details</li>
     </ul>
     <div class="">
@@ -95,11 +99,11 @@ if (count($images)) {
                 <tr class="">
 
                     <td class="image"><a>
-                        <img data-redirect-to="<?php ?>" style="width:100%" src="<?php echo $specification['image']; ?>" title="<?php echo $specification['articlecode']; ?>" class="img-responsive redirectable clickable"></a>
+                        <img data-redirect-to="<?php echo "home/application-detail/".$urlString.'/code/'.$specification['articlecode']; ?>" style="width:100%" src="<?php echo $specification['image']; ?>" title="<?php echo $specification['articlecode']; ?>" class="img-responsive redirectable clickable"></a>
                     </td>
                     <td data-title="Article" class="light-technic">
                         <a name="<?php echo $specification['articlecode']; ?>"></a>
-                        <span id="5046905201" class="articlecode"><strong><?php echo $specification['articlecode']; ?></strong></span>
+                        <span id="<?php echo $specification['articlecode']; ?>" class="articlecode"><strong><?php echo $specification['articlecode']; ?></strong></span>
                         <!----> <br>
                         <span>
                             <?php echo $specification['title']; ?>

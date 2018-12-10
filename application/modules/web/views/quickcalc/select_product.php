@@ -4,7 +4,7 @@
         <!-- breadcrumb -->
         <ul class="breadcrumb">
         <li><a href="javascript:void(0)">Home</a></li>
-            <li><a href="<?php echo base_url('home/applications/' . $application_id) ?>">Applications</a></li>
+            <li><a href="<?php echo base_url('home/applications') ?>">Applications</a></li>
             <li><a href="<?php echo base_url('home/applications/' . $application_id . '/rooms') ?>">Rooms</a></li>
             <li><a href="<?php echo base_url('home/applications/' . $application_id . '/rooms/' . $room_id . '/fast-calc/') ?>">Fast Calc</a></li>
             <li class="active">Select Product</li>
