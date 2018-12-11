@@ -1,6 +1,7 @@
 <?php
 
 require_once 'BaseController.php';
+require_once APPPATH . "/libraries/Traits/QuickCalc.php";
 
 /**
  * Comapany Controller
@@ -8,6 +9,7 @@ require_once 'BaseController.php';
 class QuickCalcController extends BaseController
 {
 
+    use QuickCalc;
     /**
      * Post Request data
      *
@@ -756,36 +758,6 @@ class QuickCalcController extends BaseController
             website_view('quickcalc/evaluation_result', $this->data);
         } catch (Exception $ex) {
         }
-    }
-
-    /**
-     * Fetch quick calc
-     *
-     * @return void
-     */
-    private function fetchQuickCalcData($data, $uld)
-    {
-        $request_data = [
-            "authToken" => "28c129e0aca88efb6f29d926ac4bab4d",
-            "roomLength" => floatval($data['length']),
-            "roomWidth" => floatval($data['width']),
-            "roomHeight" => floatval($data['height']),
-            "roomType" => $data['name'],
-            "workingPlaneHeight" => floatval($data['working_plane_height']),
-            "suspension" => isset($data['suspension_height']) ? floatval($data['suspension_height']) : 0,
-            "illuminance" => $data['lux_value'],
-            "luminaireCountInX" => floatval($data['luminaries_count_x']),
-            "luminaireCountInY" => floatval($data['luminaries_count_y']),
-            "rhoCeiling" => floatval($data['rho_ceiling']),
-            "rhoWall" => floatval($data['rho_wall']),
-            "rhoFloor" => floatval($data['rho_floor']),
-            "maintenanceFactor" => floatval($data['maintainance_factor']),
-            "uldUri" => $uld
-        ];
-
-        $response = hitCulrQuickCal($request_data);
-
-        return $response;
     }
 
     /**

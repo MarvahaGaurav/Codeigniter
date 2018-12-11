@@ -235,6 +235,7 @@ class SearchArticlesController extends BaseController
             $this->session->set_flashdata("flash-type", "success");
 
 
+
             redirect(
                 base_url('home/fast-calc/evaluation/' . encryptDecrypt($this->postRequest['product_id']) . '/' . encryptDecrypt($this->postRequest['article_code']))
             );
