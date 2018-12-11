@@ -28,7 +28,7 @@
 
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                     <div class="form-group">
-                        <label class="labelTxt">Room Type</label>
+                        <label class="labelTxt">Room Name</label>
                         <div class="form-group-field">
                             <input type="text" name="name" placeholder="Bathroom" value="Bathroom" readonly>
                             <label for="name" id="name-error" class="error"><?php echo form_error('name') ?></label>

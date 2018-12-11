@@ -139,6 +139,7 @@ class Login extends REST_Controller
                             $this->db->trans_commit();
                             $userInfo['accesstoken'] = $accessToken['public_key'] . '||' . $accessToken['private_key'];
                             $userInfo['is_employee_approved'] = false;
+                            $userInfo['is_employee_rejected'] = false;
                             if ( ROLE_EMPLOYEE === (int)$userInfo['is_owner']) {
                                 $this->load->model(['UtilModel']);
                                 $employeeApprovalStatus = $this->UtilModel->selectQuery('er_id, status', 'employee_request_master', [
@@ -146,6 +147,8 @@ class Login extends REST_Controller
                                 ]);
                                 $userInfo['is_employee_approved'] = (bool)(!empty($employeeApprovalStatus)&&
                                                                 (int)$employeeApprovalStatus['status'] === EMPLOYEE_REQUEST_ACCEPTED);
+                                $userInfo['is_employee_rejected'] = (bool)(!empty($employeeApprovalStatus)&&
+                                                                (int)$employeeApprovalStatus['status'] === EMPLOYEE_REQUEST_REJECTED);
                             }
                             $this->response(array('code' => SUCCESS_CODE, 'msg' => $this->lang->line('login_successful'), 'result' => $userInfo));
                         }

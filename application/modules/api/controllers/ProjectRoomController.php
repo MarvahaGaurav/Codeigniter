@@ -571,7 +571,13 @@ class ProjectRoomController extends BaseController
             $this->validateRoomFetch();
 
             $this->validationRun();
-            
+
+            $search = isset($this->requestData['search']) && is_string($this->requestData['search']) && strlen(trim($this->requestData['search'])) > 0?trim($this->requestData['search']):'';
+
+            if (strlen($search) > 0) {
+                $params['where']["(project_rooms.name LIKE '%{$search}%' OR project_rooms.reference_name LIKE '%{$search}%')"] = null;
+            }
+
             $params['offset'] =
                 isset($this->requestData['offset']) && is_numeric($this->requestData['offset']) && (int)$this->requestData['offset'] > 0 ? (int)$this->requestData['offset'] : 0;
 

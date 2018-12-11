@@ -4,12 +4,12 @@
         <!-- breadcrumb -->
         <ul class="breadcrumb">
             <li><a href="javascript:void(0)">Home</a></li>
-            <li class="active">Fast Calc</li>
+            <li class="active">Lux Values</li>
         </ul>
         <!-- //breadcrumb -->
 
         <div class="page-heading">
-            <h1 class="page-title"> Room Dimensions</h1>
+            <h1 class="page-title"><span id='room-title'></span> Room Dimensions</h1>
             <p class="prj-description">We are continously designing, prototyping and testing new products to enable us to deliver products that are energy efficient and environmental friendly, in combination
                 with a creation of the ambiance that you need, always keeping in mind that luminaires have a great impact on the environment, appearance and impression of the overall
                 surroundings.</p>
@@ -28,9 +28,9 @@
 
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                     <div class="form-group">
-                        <label class="labelTxt">Room Type</label>
+                        <label class="labelTxt">Room Name</label>
                         <div class="form-group-field">
-                            <input type="text" name="name" placeholder="Bathroom" value="Bathroom" readonly>
+                            <input type="text" name="name" id="room-name" placeholder="Bathroom" value="" readonly>
                             <label for="name" id="name-error" class="error"><?php echo form_error('name') ?></label>
                         </div>
                     </div>
@@ -219,8 +219,11 @@
                     <div class="form-group">
                         <label class="labelTxt">Select Product</label>
                         <div class="form-group-field">
-                            <input id="uploadfile" class="select-filed-name2 chooseFile" type="text" placeholder="Choose File" disabled="display" value="">
+                            <input id="uploadfile" class="select-filed-name2 chooseFile" type="text" placeholder="Choose File" disabled="display" value="<?php echo isset($selected_product['product_name'])?$selected_product['product_name']:''; ?>">
                             <label for="product_id" id="product_id-error" class="error"><?php echo form_error('product_id') ?></label>
+                            <label class="choosebtn">
+                                <button disabled type="button" name="choose_product" id="choose_product">Choose</button>
+                            </label>
                         </div>
                     </div>
                 </div>

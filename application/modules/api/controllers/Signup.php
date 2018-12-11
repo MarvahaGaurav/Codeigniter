@@ -531,6 +531,7 @@ class Signup extends REST_Controller
                         $employeePermission['project_edit'] = $signupArr['project_edit'] = 0;
                         $employeePermission['project_delete'] = $signupArr['project_delete'] = 0;
                         $signupArr['is_employee_approved'] = false;
+                        $signupArr['is_employee_rejected'] = false;
 
                         if (ROLE_EMPLOYEE === (int)$signupArr["is_owner"]) {
                             $employeePermission['employee_id'] = $userId;

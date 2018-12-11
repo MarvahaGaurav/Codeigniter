@@ -93,6 +93,7 @@ class RoomController extends BaseController
         $data = array_map(
             function ($room) {
                 $room['room_id'] = encryptDecrypt($room['room_id']);
+                $room['application_id'] = encryptDecrypt($room['application_id']);
                 return $room;
             },
             $data

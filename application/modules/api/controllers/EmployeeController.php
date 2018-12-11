@@ -45,6 +45,8 @@ class EmployeeController extends BaseController
         $getData = $this->get();
         $getData = trim_input_parameters($getData);
 
+        $search = isset($getData['search']) && is_string($getData['search']) && strlen(trim($getData['search'])) > 0?trim($getData['search']):'';
+
         if ($userData['status'] == 2 ) {
             $this->response(
                 [
@@ -69,7 +71,8 @@ class EmployeeController extends BaseController
 
         if (isset($getData['employee_id']) && !empty((int)$getData['employee_id']) ) {
             $whereArr['where'] = ['user_id'=>$getData['employee_id'],'is_owner'=>'1'];
-            $myEmployeeDetail =  $this->Common_model->fetch_data('ai_user', 'user_id,first_name as full_name,email,company_id,IF(image !="",CONCAT("' . IMAGE_PATH . '","",image),"") as image,IF(image_thumb !="",CONCAT("' . THUMB_IMAGE_PATH . '","",image_thumb),"") as image_thumb', $whereArr, true);             
+           
+            $myEmployeeDetail =  $this->Common_model->fetch_data('ai_user', 'user_id,first_name as full_name,email,company_id,IF(image !="",CONCAT("' . IMAGE_PATH . '","",image),"") as image,IF(image_thumb !="",CONCAT("' . THUMB_IMAGE_PATH . '","",image_thumb),"") as image_thumb', $whereArr, true);  
             if($userData['company_id'] > 0 && $userData['is_owner'] == '2' && $userData['company_id'] == $myEmployeeDetail['company_id']) {
                 $this->response(
                     [
@@ -83,7 +86,7 @@ class EmployeeController extends BaseController
                 $myEmployeeDetail = [];
                 $this->response(
                     [
-                    'code' => NO_DATA_FOUND,
+                    'code' => HTTP_NOT_FOUND,
                     'api_code_result' => "NO_DATA_FOUND",
                     'msg' => $this->lang->line('no_data_found')
                     ]
@@ -95,6 +98,9 @@ class EmployeeController extends BaseController
             $params['company_id'] = $userData['company_id'];
             $params['limit'] = RECORDS_PER_PAGE;
             $params['offset'] = $offset;
+            if (strlen($search) > 0) {
+                $params['where']["(u.first_name LIKE '%{$search}%' OR u.email LIKE '%{$search}%')"] = null;
+            }
             $myEmployeeList = $this->Employee->employeeList($params);
             $offset = $myEmployeeList['count'] + RECORDS_PER_PAGE;
             if ((int)$myEmployeeList['count'] <= (int) $offset ) {
@@ -103,7 +109,7 @@ class EmployeeController extends BaseController
             if(empty($myEmployeeList['data'])) {
                 $this->response(
                     [
-                    'code' => NO_DATA_FOUND,
+                    'code' => HTTP_NOT_FOUND,
                     'api_code_result' => 'NO_DATA_FOUND',
                     'msg' => $this->lang->line("no_data_found")
                     ]
