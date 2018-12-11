@@ -170,7 +170,7 @@
                         <div class="form-group">
                             <label class="labelTxt"><?php echo $this->lang->line('price_per_luminaries') ?></label>
                             <div class="form-group-field">
-                                <input name="price_per_luminaries" id="price-per-luminaries" type="number" placeholder="10.00" maxlength="12">
+                                <input name="price_per_luminaries" class="room-price-fields number-only-field restrict-characters" data-restrict-to='15' id="price-per-luminaries" type="text" placeholder="10.00" maxlength="15">
                             </div>
                         </div>
                         <!-- form-group -->
@@ -178,14 +178,14 @@
                         <div class="form-group">
                             <label class="labelTxt"><?php echo $this->lang->line('installation_charges') ?></label>
                             <div class="form-group-field">
-                                <input type="number" name="installation_charges" id="installation-charges" placeholder="10.00" maxlength="12">
+                                <input type="text" class="room-price-fields number-only-field restrict-characters" data-restrict-to='15' name="installation_charges" id="installation-charges" placeholder="10.00" maxlength="15">
                             </div>
                         </div>
                         <!-- form-group -->
                         <div class="form-group">
                             <label class="labelTxt"><?php echo $this->lang->line('discount_price') ?></label>
                             <div class="form-group-field">
-                                <input type="number" name="discount_price" id="discount-price" placeholder="10.00" maxlength="12">
+                                <input type="text" class="room-price-fields number-only-field restrict-characters" data-restrict-to='15' name="discount_price" id="discount-price" placeholder="10.00" maxlength="15">
                             </div>
                         </div>
                         <!-- form-group -->

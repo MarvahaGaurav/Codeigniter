@@ -296,7 +296,11 @@ class Index extends BaseController
 
                     if ($isEmployee) {
                         $ownerData = $this->Common_model->fetch_data('ai_user', 'user_id', ['where' =>
-                            ['is_owner' => 2, 'company_id' => $postData['company_name']]], true);
+                            ['is_owner' => ROLE_OWNER, 'company_id' => $postData['company_name']]], true);
+
+                        if (!empty($ownerData)) {
+                            $this->insertEmployeePermission($userId, $ownerData['user_id']);
+                        }
 
                         $this->Common_model->insert_single(
                             'employee_request_master',
@@ -753,5 +757,26 @@ class Index extends BaseController
     }
 
 
+    private function insertEmployeePermission($employeeId, $ownerId)
+    {
+        $employeePermission['quote_view'] = 1;
+        $employeePermission['quote_add'] = 0;
+        $employeePermission['quote_edit'] = 0;
+        $employeePermission['quote_delete'] = 0;
+        $employeePermission['insp_view'] = 1;
+        $employeePermission['insp_add'] = 0;
+        $employeePermission['insp_edit'] = 0;
+        $employeePermission['insp_delete'] = 0;
+        $employeePermission['project_view'] = 1;
+        $employeePermission['project_add'] = 0;
+        $employeePermission['project_edit'] = 0;
+        $employeePermission['project_delete'] = 0;
+        $employeePermission['employee_id'] = $employeeId;
+        $employeePermission['user_id'] = $ownerId;
+        $employeePermission['insert_date'] = $this->datetime;
+        $employeePermission['modify_date'] = $this->datetime;
+        $employeePermission['status'] = 1;
 
+        $this->UtilModel->insertTableData($employeePermission, 'user_employee_permission');
+    }
 }

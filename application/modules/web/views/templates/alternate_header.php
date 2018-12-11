@@ -64,7 +64,7 @@
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <a class="navbar-brand" href="<?php echo base_url(); ?>web/home">
+                            <a class="navbar-brand" href="<?php echo base_url(); ?>">
                                 <img src="public/images/logo.png" alt="logo" />
                             </a>
                         </div>
@@ -108,8 +108,8 @@
                                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Quick Calculations</a>
                                     <ul class="dropdown-menu">
                                         <li><a href="<?php echo base_url('home/applications') ?>">Application</a></li>
-                                        <!-- <li><a href="#">Lux Values</a></li> -->
-                                        <!-- <li><a href="#">Number Luminaires</a></li> -->
+                                        <li><a href="<?php echo base_url('home/fast-calc/lux') ?>">Lux Values</a></li>
+                                        <li><a href="#">Number Luminaires</a></li>
                                     </ul>
                                 </li>
                                 <?php if (
@@ -173,11 +173,13 @@
                         <ul class="nav navbar-nav navbar-right navbar-search-link">
                             <li>
                                 <span id="searchico-for-mob"><i class="fa fa-search"></i></span>
-                                <!--                                <form role="search" class="app-search">
-                                                                    <input type="text" placeholder="Search..." class="form-control" id="search-input-field">
-                                                                    <span class="fa fa-search search-ico-default" id="search-default"></span>
-                                                                    <span class="fa fa-times" id="search-ico-close"></span>
-                                                                </form>-->
+                                <form role="search" method="GET" action="/search" class="app-search">
+                                    
+                                    <input type="text" placeholder="Search..." class="form-control" id="search-input-field" name="search_text" value="<?php echo $this->input->get('search_text')?>" autocomplete="off">
+
+                                    <span class="fa fa-search search-ico-default" id="search-default"></span>
+                                    <span class="fa fa-times" id="search-ico-close"></span>
+                                </form>
                             </li>
                             <li>
                                 <button data-toggle="modal" data-target="#basketModal" class="btn-basket basket">

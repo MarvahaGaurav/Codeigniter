@@ -110,7 +110,7 @@ class User extends MY_Controller
         }
 
         $userInfo = $this->User_Model->userlist($params);
-        //        pr($userInfo);die;
+        
         /*
          * Export to Csv
          */

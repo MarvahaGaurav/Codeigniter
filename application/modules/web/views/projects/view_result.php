@@ -52,8 +52,7 @@
                         <div class="col-xs-12">
                             <p class="rd-property">Lux</p>
                             <p class="rd-value"><?php
-                                $temp = json_decode($room_data['fast_calc_response'], true);
-                                echo round($temp['illuminance'], 2);
+                                echo round($room_data['lux_value'], 2);
                                 ?></p>
                         </div>
                         <div class="col-xs-12">

@@ -20,7 +20,7 @@ class SearchController extends BaseController
             $this->load->config('css_config');
             $this->data['css'] = $this->config->item('search-page');
             
-            website_view('search/search', $this->data);
+            website_view('search/search-design', $this->data);
         } catch (\Exception $error) {
         }
     }

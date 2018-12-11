@@ -17,29 +17,26 @@ class Product extends BaseModel
 
     public function get($params)
     {
-        $query      = "*";
+        $query = "*";
         $single_row = false;
-        if (( (isset($params['product_id']) && ! empty($params['product_id'])) ||
-            (isset($params['product_listing']) && ! empty($params['product_listing'])) ) &&
-            ( ! isset($params['application_id']) && empty($params['application_id']))
-        ) {
+        if (((isset($params['product_id']) && !empty($params['product_id'])) || (isset($params['product_listing']) && !empty($params['product_listing']))) && (!isset($params['application_id']) && empty($params['application_id']))) {
             $this->db->from("products");
             if (isset($params['product_listing']) && !empty($params['product_listing'])) {
                 $query = "SQL_CALC_FOUND_ROWS product_id, products.title as product_title, products.image";
                 $this->db->where("products.language_code", $params['language_code']);
                 $search = true;
-                if (! isset($params['search']) || empty($params['search'])) {
+                if (!isset($params['search']) || empty($params['search'])) {
                     $search = false;
                     $this->db->limit(RECORDS_PER_PAGE);
                 } else {
                     $this->db->like('products.title', $params['search']);
                 }
-                if (isset($params['offset']) && ! empty((int) $params['offset']) && ! $search) {
-                    $this->db->offset((int) $params['offset']);
+                if (isset($params['offset']) && !empty((int)$params['offset']) && !$search) {
+                    $this->db->offset((int)$params['offset']);
                 }
             } else {
                 $query = "product_id, products.title as product_title, how_to_specity as description, products.image, productTechnicalData(products.id) as technical_data," .
-                "IFNULL(GROUP_CONCAT(gallery.image), '') as images";
+                    "IFNULL(GROUP_CONCAT(gallery.image), '') as images";
                 $single_row = true;
 
                 $this->db->where("products.id", $params['product_id'])
@@ -53,8 +50,8 @@ class Product extends BaseModel
                 ->from("product_applications as pa")
                 ->join("products", "products.id=pa.product_id")
                 ->where("pa.application_id", $params["application_id"]);
-            if (isset($params['offset']) && ! empty($params['offset'])) {
-                $this->db->offset((int) $params['offset']);
+            if (isset($params['offset']) && !empty($params['offset'])) {
+                $this->db->offset((int)$params['offset']);
             }
         }
 
@@ -62,8 +59,8 @@ class Product extends BaseModel
 
         $query = $this->db->get();
         if ($single_row) {
-            $result                   = $query->row_array();
-            $technical_data           = utf8_encode($result['technical_data']);
+            $result = $query->row_array();
+            $technical_data = utf8_encode($result['technical_data']);
             $result['technical_data'] = json_decode($result['technical_data'], true);
             if (json_last_error() > 0) {
                 $result['technical_data'] = $technical_data;
@@ -76,7 +73,7 @@ class Product extends BaseModel
             $result['images'] = explode(",", $result['images']);
         } else {
             $result["result"] = $query->result_array();
-            $result["count"]  = $this->db->query("SELECT FOUND_ROWS() as total_rows")->row()->total_rows;
+            $result["count"] = $this->db->query("SELECT FOUND_ROWS() as total_rows")->row()->total_rows;
         }
         return $result;
     }
@@ -94,23 +91,61 @@ class Product extends BaseModel
                 "GROUP BY product_applications.product_id) as distinct_products")
             ->join("products", "products.id=distinct_products.product_id")
             ->join("applications", "applications.id=distinct_products.application_id")
-            ->where("applications.type", isset($options['type']) ? (int) $options['type'] : APPLICATION_RESIDENTIAL)
+            ->where("applications.type", isset($options['type']) ? (int)$options['type'] : APPLICATION_RESIDENTIAL)
             ->where("products.language_code", isset($options['language_code']) ? $options['language_code'] : 'en')
-            ->limit(isset($options['limit']) ? (int) $options['limit'] : RECORDS_PER_PAGE)
-            ->offset(isset($options['offset']) ? (int) $options['offset'] : 0);
+            ->limit(isset($options['limit']) ? (int)$options['limit'] : RECORDS_PER_PAGE)
+            ->offset(isset($options['offset']) ? (int)$options['offset'] : 0);
 
-        if (! isset($options['search']) || empty($options['search'])) {
+        if (!isset($options['search']) || empty($options['search'])) {
             $this->db->where('products.title LIKE', "%{$options['search']}%");
         }
 
-        $query          = $this->db->get();
+        $query = $this->db->get();
         $data['result'] = $query->result_array();
-        $data['count']  = $this->db->query("SELECT FOUND_ROWS() as count")->row()->count;
+        $data['count'] = $this->db->query("SELECT FOUND_ROWS() as count")->row()->count;
 
         return $data;
     }
 
+    public function searchProduct($params)
+    {
+        // pr($params);
+        $query = $this->db->select('SQL_CALC_FOUND_ROWS pro.* , pro_sp.image as ps_image , pro_sp.title as ps_title , pro_sp.articlecode as ps_articlecode', false)
+            ->from('products as pro')
+            ->join('product_specifications as pro_sp', 'pro.product_id = pro_sp.product_id');
 
+        if (isset($params['like']) && !empty($params['like'])) {
+            foreach ($params['like'] as $field_name => $field_value) {
+                if (empty($field_value)) {
+                    $this->db->like($field_name, "''");
+                } else {
+                    $this->db->like($field_name, $field_value);
+                }
+            }
+        }
+
+
+        if (isset($params['offset']) && $params['offset'] >= NO) {
+            $this->db->offset($params['offset']);
+        }
+
+        if (isset($params['limit']) && !empty($params['limit'])) {
+            $this->db->limit($params['limit']);
+        }
+
+
+
+        if (isset($params['where']) && !empty($params['where'])) {
+            foreach ($params['where'] as $field_name => $field_value) {
+                $this->db->where($field_name, $field_value);
+            }
+        }
+
+        $query = $query->get();
+        $result['data'] = $query->result_array();
+        $result['count'] = $this->db->query('SELECT FOUND_ROWS() as count')->row()->count;
+        return $result;
+    }
 
     /**
      * Returns Product by mmounting type and room Id (if given)
@@ -125,7 +160,7 @@ class Product extends BaseModel
             ->join('products', 'products.product_id=rp.product_id')
             ->group_by('product_id');
 
-        if (isset($params['where']) && is_array($params['where']) && ! empty($params['where'])) {
+        if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
             foreach ($params['where'] as $tableColumn => $searchValue) {
                 $this->db->where($tableColumn, $searchValue);
             }
@@ -138,14 +173,14 @@ class Product extends BaseModel
         $result['data'] = $query->result_array();
         $this->load->helper(['db', 'debuging', 'utility']);
 
-        if (! empty($result['data'])) {
-            $productIds     = array_column($result['data'], 'product_id');
-            $images         = $this->ProductGallery->get($productIds);
+        if (!empty($result['data'])) {
+            $productIds = array_column($result['data'], 'product_id');
+            $images = $this->ProductGallery->get($productIds);
             $result['data'] = getDataWith($result['data'], $images, 'product_id', 'product_id', 'images', 'image');
-            $technicalData  = $this->ProductTechnicalData->get([
+            $technicalData = $this->ProductTechnicalData->get([
                 'product_id' => $productIds
             ]);
-            $technicalData  = array_strip_tags($technicalData, ['title', 'info']);
+            $technicalData = array_strip_tags($technicalData, ['title', 'info']);
             $result['data'] = getDataWith(
                 $result['data'],
                 $technicalData,
@@ -154,7 +189,7 @@ class Product extends BaseModel
                 'technical_data'
             );
         }
-        
+
         return $result;
     }
 
@@ -169,7 +204,7 @@ class Product extends BaseModel
             ->from('related_products_room')
             ->join('products', 'products.product_id=related_products_room.product_id')
             ->where('room_id', $params['room_id']);
-        
+
         $query = $this->db->get();
 
         $result = $query->result_array();
@@ -244,7 +279,7 @@ class Product extends BaseModel
 
         if (isset($params['limit']) && is_numeric($params['limit']) && (int)$params['limit'] > 0) {
             if (isset($params['uld']) && (bool)$params['uld']) {
-                $this->db->limit((int)$params['limit']+1);
+                $this->db->limit((int)$params['limit'] + 1);
             } else {
                 $this->db->limit((int)$params['limit']);
             }
@@ -276,10 +311,10 @@ class Product extends BaseModel
             $productIds = array_column($data['data'], 'product_id');
             $images = $this->ProductGallery->get($productIds);
             $data['data'] = getDataWith($data['data'], $images, 'product_id', 'product_id', 'images', 'image');
-            $technicalData  = $this->ProductTechnicalData->get([
+            $technicalData = $this->ProductTechnicalData->get([
                 'product_id' => $productIds
             ]);
-            $technicalData  = array_strip_tags($technicalData, ['title', 'info']);
+            $technicalData = array_strip_tags($technicalData, ['title', 'info']);
             $data['data'] = getDataWith(
                 $data['data'],
                 $technicalData,

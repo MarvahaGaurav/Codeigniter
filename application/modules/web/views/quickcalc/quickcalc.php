@@ -15,7 +15,6 @@
                 with a creation of the ambiance that you need, always keeping in mind that luminaires have a great impact on the environment, appearance and impression of the overall
                 surroundings.</p>
         </div>
-
         <!-- Caption before section -->
         <div class="section-title clearfix">
             <h3>Room Dimensions</h3>
@@ -43,7 +42,7 @@
                             <input class="dialux-suggestions-fields number-only-field restrict-characters" data-restrict-to="15" type="text" placeholder="10" name="length" value="<?php echo isset($cookie_data['length'])?$cookie_data['length']:"" ?>">
                             <label for="length" id="length-error" class="error"><?php echo form_error('length') ?></label>
                             <label class="field-type">
-                                <select class="select-filed-name room-dimension-units" name="length_unit">
+                                <select class="select-filed-name dialux-suggestions-fields room-dimension-units" name="length_unit">
                                     <?php foreach ($units as $unit) : ?>
                                     <option value="<?php echo strtolower($unit) ?>" <?php echo isset($cookie_data['length_unit']) && $cookie_data['length_unit'] === strtolower($unit)?"selected":"" ?>><?php echo $unit ?></option>
                                     <?php endforeach ?>
@@ -60,7 +59,7 @@
                             <input class="dialux-suggestions-fields number-only-field restrict-characters" data-restrict-to="15" type="text" placeholder="8" name="width" value="<?php echo isset($cookie_data['width'])?$cookie_data['width']:"" ?>">
                             <label for="width" id="width-error" class="error"><?php echo form_error('width') ?></label>
                             <label class="field-type">
-                                <select class="select-filed-name room-dimension-units" name="width_unit">
+                                <select class="select-filed-name dialux-suggestions-fields room-dimension-units" name="width_unit">
                                     <?php foreach ($units as $unit) : ?>
                                     <option value="<?php echo strtolower($unit) ?>" <?php echo isset($cookie_data['width_unit']) && $cookie_data['width_unit'] === strtolower($unit)?"selected":"" ?>><?php echo $unit ?></option>
                                     <?php endforeach ?>
@@ -77,7 +76,7 @@
                             <input class="dialux-suggestions-fields number-only-field restrict-characters" data-restrict-to="15" type="text" placeholder="8" name="height" value="<?php echo isset($cookie_data['height'])?$cookie_data['height']:"" ?>">
                             <label for="height" id="height-error" class="error"><?php echo form_error('height') ?></label>
                             <label class="field-type">
-                                <select class="select-filed-name room-dimension-units" name="height_unit">
+                                <select class="select-filed-name dialux-suggestions-fields room-dimension-units" name="height_unit">
                                     <?php foreach ($units as $unit) : ?>
                                     <option value="<?php echo strtolower($unit) ?>" <?php echo isset($cookie_data['height_unit']) && $cookie_data['height_unit'] === strtolower($unit)?"selected":"" ?>><?php echo $unit ?></option>
                                     <?php endforeach ?>
@@ -92,7 +91,7 @@
                     <div class="form-group">
                         <label class="labelTxt">Working Plane Height</label>
                         <div class="form-group-field form-dimention">
-                            <input class="dialux-suggestions-fields number-only-field restrict-characters" data-restrict-to="15" class="is_number"  type="text" placeholder=""  name="room_plane_height" id="room_plane_height" value="<?php echo isset($cookie_data['room_plane_height'])?$cookie_data['room_plane_height']:$room['reference_height'] ?>">
+                            <input class="dialux-suggestions-fields number-only-field restrict-characters" data-restrict-to="15" class="is_number"  type="text" placeholder=""  name="room_plane_height" id="room_plane_height" value="<?php echo isset($cookie_data['room_plane_height'])?$cookie_data['room_plane_height']:$room['reference_height']*100 ?>">
                             <label for="room_plane_height" id="room_plane_height-error" class="error"><?php echo form_error('room_plane_height') ?></label>
                             <label class="field-type">
                                 <select class="select-filed-name"  name="room_plane_height_unit" id="room_plane_height_unit">
@@ -173,7 +172,7 @@
                         <div class="form-group-field form-dimention">
                             <input class="dialux-suggestions-fields number-only-field restrict-characters" data-restrict-to="15" type="text" name="pendant_length" id="pendant_length" placeholder="" value="0.00">
                             <label class="field-type">
-                                <select class="select-filed-name" name="pendant_length_unit">
+                                <select class="select-filed-name dialux-suggestions-fields room-dimension-units" name="pendant_length_unit">
                                     <?php foreach ($units as $unit) : ?>
                                     <option value="<?php echo strtolower($unit) ?>"><?php echo $unit ?></option>
                                     <?php endforeach ?>

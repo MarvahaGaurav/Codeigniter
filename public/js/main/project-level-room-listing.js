@@ -125,9 +125,25 @@ requirejs(
             $self.find(".fa").remove();
             window.alert(error.status);
           }
-
         });
       }
+    });
+
+
+    $(".room-price-fields").on('change keyup', function () {
+      var self = this,
+          $self = $(self),
+          value = $self.val();
+      
+      var pricePerLuminary = parseInt($pricePerLuminaries.val()) || 0,
+          installationCharges = parseInt($installationCharges.val()) || 0,
+          discountPrice = parseInt($discountPrice.val()) || 0;
+
+      var sum = pricePerLuminary + installationCharges;
+
+      $subTotal.html(sum);
+
+      $total.html(sum - (sum * (discountPrice/100)));
     });
 
     $(".change-room-count").on('click', function () {

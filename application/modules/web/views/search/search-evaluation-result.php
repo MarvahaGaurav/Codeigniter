@@ -27,19 +27,19 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <p class="rd-property">Article Code</p>
-                            <p class="rd-value"><?php echo $specifications['articlecode']; ?></p>
+                            <p class="rd-value"><?php echo(json_decode($serachProductData)->articlecode) ?></p>
                         </div>
                         <div class="col-xs-12">
                             <p class="rd-property">Color Temprature</p>
-                            <p class="rd-value"><?php echo $specifications['colour_temperature']; ?></p>
+                            <p class="rd-value"><?php echo($article_additional_detail['colour_temperature']) ?></p>
                         </div>
                         <div class="col-xs-12">
                             <p class="rd-property">Beam Angle</p>
-                            <p class="rd-value"><?php echo $specifications['beam_angle']; ?></p>
+                            <p class="rd-value"><?php echo($article_additional_detail['beam_angle']) ?></p>
                         </div>
                         <div class="col-xs-12">
                             <p class="rd-property">Colour Rendering</p>
-                            <p class="rd-value"><?php echo $specifications['colour_rendering']; ?></p>
+                            <p class="rd-value"><?php echo($article_additional_detail['colour_rendering']) ?></p>
                         </div>
                     </div>
                 </div>
@@ -49,12 +49,14 @@
                         <div class="col-xs-12">
                             <p class="rd-property">Lux</p>
                             <p class="rd-value"><?php
-                                echo round($room_data['lux_value'], 2);
-                                ?></p>
+                                $temp = json_decode($serach_Product_Dialux_Response, true);
+                                echo round($temp['illuminance'], 2);
+                                ?>
+                            </p>
                         </div>
                         <div class="col-xs-12">
                             <p class="rd-property">Number of Luminaries</p>
-                            <p class="rd-value"><?php echo $room_data['luminaries_count_x'] * $room_data['luminaries_count_y']; ?></p>
+                            <p class="rd-value"><?php echo $temp['luminaireCountInX'] * $temp['luminaireCountInY']; ?></p>
                         </div>
 
                         <!--
@@ -91,42 +93,50 @@
             <!-- thumbnail list -->
             <div class="thumb-view-listing-wrapper thumb-tab">
                 <ul>
-                    <li class="active">
-                        <a href="#thumb-tab1" data-toggle="tab">
-                            <div class="thumb-view-list clearfix">
-                                <figure>
-                                    <?php
-                                    echo $room_data['top_view'];
-                                    ?>
-                                </figure>
-                                <span class="thumbnail-sideview">Top View</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#thumb-tab2" data-toggle="tab">
-                            <div class="thumb-view-list clearfix">
-                                <figure>
-                                    <?php
-                                    echo $room_data['front_view'];
-                                    ?>
-                                </figure>
-                                <span class="thumbnail-sideview">Front View</span>
-                            </div>
-                        </a>
-                    </li>
+                    <?php if($temp['projectionTop']){ ?>
+                        <li class="active">
+                            <a href="#thumb-tab1" data-toggle="tab">
+                                <div class="thumb-view-list clearfix">
+                                    <figure>
+                                        <?php
+                                        echo $temp['projectionTop'];
+                                        ?>
+                                    </figure>
+                                    <span class="thumbnail-sideview">Top View</span>
+                                </div>
+                            </a>
+                        </li>
+                    <?php } ?>
+
+                    <?php if($temp['projectionFront']){ ?>
+                        <li>
+                            <a href="#thumb-tab2" data-toggle="tab">
+                                <div class="thumb-view-list clearfix">
+                                    <figure>
+                                        <?php
+                                        echo $temp['projectionFront'];
+                                        ?>
+                                    </figure>
+                                    <span class="thumbnail-sideview">Front View</span>
+                                </div>
+                            </a>
+                        </li>
+                    <?php } ?>
+                    
+                    <?php if($temp['projectionSide']){ ?>
                     <li>
                         <a href="#thumb-tab3" data-toggle="tab">
                             <div class="thumb-view-list clearfix">
                                 <figure>
                                     <?php
-                                    echo $room_data['side_view'];
+                                    echo $temp['projectionSide'];
                                     ?>
                                 </figure>
                                 <span class="thumbnail-sideview">Side View</span>
                             </div>
                         </a>
                     </li>
+                    <?php } ?>
                 </ul>
             </div>
             <!-- //thumbnail list -->
@@ -136,21 +146,23 @@
             <div class="thumbview-tablecell thumbview-tablecell-one">
                 <div class="thumb-view-evenly">
                     <!-- thumbnail -->
+                    
                     <div id="thumb-tab1" class="thumb-view-wrapper thumb-view-fullp active">
                         <?php
-                        echo $room_data['top_view'];
+                        echo $temp['projectionTop'];
                         ?>
                     </div>
+                    
 
                     <div id="thumb-tab2" class="thumb-view-wrapper thumb-view-fullp">
                         <?php
-                        echo $room_data['front_view'];
+                        echo $temp['projectionFront'];
                         ?>
                     </div>
 
                     <div id="thumb-tab3" class="thumb-view-wrapper thumb-view-fullp">
                         <?php
-                        echo $room_data['side_view'];
+                        echo $temp['projectionSide'];
                         ?>
                     </div>
                     <!-- //thumbnail -->
@@ -159,8 +171,8 @@
         </div>
 
         <!-- thumb view end -->
-        <input type="hidden" name="token" id ="token" value="<?php echo $csrfToken; ?>">
-        <input type="hidden" name="token_nme" id ="token_nme" value="<?php echo $csrfName; ?>">
+        <!-- <input type="hidden" name="token" id ="token" value="<?php echo $csrfToken; ?>"> -->
+        <!-- <input type="hidden" name="token_nme" id ="token_nme" value="<?php echo $csrfName; ?>"> -->
         <!-- Caption before section -->
         <!-- Caption before section -->
 

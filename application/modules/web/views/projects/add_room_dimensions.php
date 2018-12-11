@@ -204,7 +204,7 @@
                         <div class="form-group-field form-dimention">
                             <input class="dialux-suggestions-fields number-only-field restrict-characters" data-restrict-to="15" type="number" name="pendant_length" id="pendant_length" placeholder="" value="0.00">
                             <label class="field-type">
-                                <select class="select-filed-name" name="pendant_length_unit">
+                                <select class="select-filed-name dialux-suggestions-fields room-dimension-units" name="pendant_length_unit">
                                     <?php foreach ($units as $unit) : ?>
                                     <option value="<?php echo strtolower($unit) ?>"><?php echo $unit ?></option>
                                     <?php endforeach ?>

@@ -176,7 +176,6 @@ class Technician extends MY_Controller
 
     public function detail()
     {
-
         $get = $this->input->get();
         $this->load->helper(['input_data', 'datetime']);
         $get = trim_input_parameters($get);

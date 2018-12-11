@@ -58,32 +58,39 @@ if (isset($_SERVER["REQUEST_URI"]) && preg_match('/.*\/(api)\/.*/', $_SERVER["RE
     //$route['404_override'] = 'website/Page404';
 }
 
-$route['default_controller']   = 'web/QuickCalcController/applications';
+$route['default_controller'] = 'web/QuickCalcController/applications';
 $route['translate_uri_dashes'] = false;
 
 $route['home/search'] = 'web/SearchController/index';
-$route['home/profile/(.+)/edit']      = 'web/UserController/edit_profile/$1';
-$route['home/profile/(.+)']           = 'web/UserController/profile/$1';
-$route['home/settings/(.+)']          = 'web/UserController/settings/$1';
-$route['home/inspirations']           = 'web/InspirationController';
-$route['home/inspirations/add']       = 'web/InspirationController/add';
+$route['home/profile/(.+)/edit'] = 'web/UserController/edit_profile/$1';
+$route['home/profile/(.+)'] = 'web/UserController/profile/$1';
+$route['home/settings/(.+)'] = 'web/UserController/settings/$1';
+$route['home/inspirations'] = 'web/InspirationController';
+$route['home/inspirations/add'] = 'web/InspirationController/add';
 $route['home/inspirations/(.+)/edit'] = 'web/InspirationController/edit/$1';
-$route['home/inspirations/(.+)']      = 'web/InspirationController/details/$1';
+$route['home/inspirations/(.+)'] = 'web/InspirationController/details/$1';
 
 /**
  * Projects
  */
-$route['home/projects']                                                = 'web/ProjectController';
-$route['home/projects/create']                                         = 'web/ProjectController/create';
-$route['home/projects/get-porduct']                                    = 'web/ProjectController/get_product/$1';
-$route['home/projects/view-result/(:any)']                             = 'web/ProjectController/view_result/$1';
-$route['home/projects/(:any)/quotations']                              = 'web/QuotesController/customerQuotesList/$1';
-$route['home/projects/(:any)/edit']                                    = 'web/ProjectController/edit/$1';
-$route['home/projects/(:any)']                                         = 'web/ProjectController/project_details/$1';
-$route['home/projects/(:any)/levels']                                  = 'web/ProjectLevelsController/levelsListing/$1';
-$route['home/projects/(:any)/levels/(:num)/rooms']                     = 'web/ProjectRoomsController/projectCreateRoomListing/$1/$2';
-$route['home/projects/(:any)/levels/(:num)/rooms/results']                     = 'web/ProjectRoomsController/projectResultRoomListing/$1/$2';
-$route['home/projects/(:any)/levels/(:num)/rooms/(:any)/edit']         = 'web/ProjectRoomsController/editDimensions/$1/$2/$3';
+$route['home/projects'] = 'web/ProjectController';
+$route['home/projects/create'] = 'web/ProjectController/create';
+$route['home/projects/get-porduct'] = 'web/ProjectController/get_product/$1';
+$route['home/projects/view-result/(:any)'] = 'web/ProjectController/view_result/$1';
+$route['home/projects/(:any)/quotations'] = 'web/QuotesController/customerQuotesList/$1';
+$route['home/projects/(:any)/edit'] = 'web/ProjectController/edit/$1';
+$route['home/projects/(:any)'] = 'web/ProjectController/project_details/$1';
+$route['home/projects/(:any)/levels'] = 'web/ProjectLevelsController/levelsListing/$1';
+$route['home/projects/(:any)/levels/(:num)/rooms'] = 'web/ProjectRoomsController/projectCreateRoomListing/$1/$2';
+$route['home/projects/(:any)/levels/(:num)/rooms/results'] = 'web/ProjectRoomsController/projectResultRoomListing/$1/$2';
+$route['home/projects/(:any)/levels/(:num)/rooms/(:any)/edit'] = 'web/ProjectRoomsController/editDimensions/$1/$2/$3';
+
+$route['home/search'] = 'web/SearchArticlesController/search';
+$route['home/fast-calc/lux'] = 'web/QuickCalcLuxController/luxValues';
+$route['home/fast-calc/product/(:any)/article/(:any)'] = "web/SearchArticlesController/QuickCal/$1/$2";
+$route['home/fast-calc/evaluation/(:any)/(:any)'] = 'web/SearchArticlesController/view_result/$1/$2';
+
+
 $route['home/projects/(:any)/levels/(:num)/rooms/(:any)/project-rooms/(:any)/accessory-products'] = 'web/ProjectProductController/AccessoryProduct/$1/$2/$3/$4';
 $route['home/projects/(:any)/levels/(:num)/rooms/(:any)/project-rooms/(:any)/selected-products'] = 'web/ProjectProductController/selectedProjectProducts/$1/$2/$3/$4';
 $route['home/projects/(:any)/levels/(:num)/rooms/(:any)/project-rooms/(:any)/accessory-products/(:any)'] = 'web/ProjectProductController/accessoryProductDetail/$1/$2/$3/$4/$5';
@@ -93,8 +100,8 @@ $route['home/projects/(:any)/levels/(:num)/rooms/(:any)/edit/products/(:any)'] =
 $route['home/projects/(:any)/levels/(:num)/rooms/(:any)/edit/products/(:any)/mounting/(:num)'] = 'web/ProjectProductController/productDetailsEdit/$1/$2/$3/$4/$5';
 $route['home/projects/(:any)/levels/(:num)/rooms/(:any)/edit/products/(:any)/mounting/(:num)/articles/(:any)'] = 'web/ProductArticlesController/editRoomArticleDetail/$1/$2/$3/$4/$5/$6';
 
-$route['home/projects/(:any)/quotation/installers']                    = 'web/ProjectRequestController/installerListing/$1';
-$route['home/projects/(:any)/levels/(:num)/rooms/applications']        = 'web/ProjectRoomsController/applications/$1/$2';
+$route['home/projects/(:any)/quotation/installers'] = 'web/ProjectRequestController/installerListing/$1';
+$route['home/projects/(:any)/levels/(:num)/rooms/applications'] = 'web/ProjectRoomsController/applications/$1/$2';
 $route['home/projects/(:any)/levels/(:num)/rooms/applications/(:any)/rooms'] = 'web/ProjectRoomsController/roomType/$1/$2/$3';
 $route['home/projects/(:any)/levels/(:num)/rooms/applications/(:any)/rooms/(:any)/dimensions'] = 'web/ProjectRoomsController/dimensions/$1/$2/$3/$4';
 $route['home/projects/(:any)/levels/(:num)/rooms/applications/(:any)/rooms/(:any)/dimensions/products'] = 'web/ProjectProductController/selectProduct/$1/$2/$3/$4';
@@ -114,67 +121,67 @@ $route['home/projects/(:any)/levels/(:num)/rooms/applications/(:any)/rooms/(:any
 // $route['home/projects/(:any)/select-room-type']                        = 'web/ProjectController/room_type/$1';
 
 
-$route['home/quotes']               = 'web/QuotesController';
-$route['home/quotes/awaiting']      = 'web/QuotesController/awaiting';
-$route['home/quotes/submitted']     = 'web/QuotesController/submitted';
-$route['home/quotes/approved']      = 'web/QuotesController/approved';
-$route['home/technicians']          = 'web/TechnicianController';
+$route['home/quotes'] = 'web/QuotesController';
+$route['home/quotes/awaiting'] = 'web/QuotesController/awaiting';
+$route['home/quotes/submitted'] = 'web/QuotesController/submitted';
+$route['home/quotes/approved'] = 'web/QuotesController/approved';
+$route['home/technicians'] = 'web/TechnicianController';
 $route['home/technicians/requests'] = 'web/TechnicianController/request_list';
-$route['home/technicians/(.+)']     = 'web/TechnicianController/details/$1';
-$route['home/companies']            = 'web/CompaniesController/companies';
-$route['home/companies/favorites']  = 'web/CompaniesController/favoriteCompanies';
-$route['home/companies/(:any)']     = 'web/CompaniesController/companyDetails/$1';
+$route['home/technicians/(.+)'] = 'web/TechnicianController/details/$1';
+$route['home/companies'] = 'web/CompaniesController/companies';
+$route['home/companies/favorites'] = 'web/CompaniesController/favoriteCompanies';
+$route['home/companies/(:any)'] = 'web/CompaniesController/companyDetails/$1';
 
-$route['home/fast-calc']                                        = 'web/QuickCalcController/quickcalc';
-$route['home/applications']                                     = 'web/QuickCalcController/applications';
-$route['home/applications/(:any)/rooms']                        = 'web/QuickCalcController/rooms/$1';
-$route['home/applications/(:any)/rooms/(:any)/fast-calc']       = 'web/QuickCalcController/quickcalc/$1/$2';
-$route['home/applications/(:any)/rooms/(:any)/select-porduct']  = 'web/QuickCalcController/select_product/$1/$2';
+$route['home/fast-calc'] = 'web/QuickCalcController/quickcalc';
+$route['home/applications'] = 'web/QuickCalcController/applications';
+$route['home/applications/(:any)/rooms'] = 'web/QuickCalcController/rooms/$1';
+$route['home/applications/(:any)/rooms/(:any)/fast-calc'] = 'web/QuickCalcController/quickcalc/$1/$2';
+$route['home/applications/(:any)/rooms/(:any)/select-porduct'] = 'web/QuickCalcController/select_product/$1/$2';
 $route['home/applications/(:any)/rooms/(:any)/mounting/(:num)/articles/(:any)'] = 'web/QuickCalcController/articles/$1/$2/$3/$4';
 
 $route['home/application-detail/(:any)/rooms/(:any)/mounting/(:num)/articles/(:any)/code/(:num)'] = 'web/QuickCalcController/articleDetail/$1/$2/$3/$4/$5';
 
-$route['home/applications/quick_cal']                           = "web/QuickCalcController/quick_cal";
-$route['home/applications/view-result/(:any)']                  = "web/QuickCalcController/view_result/$1";
+$route['home/applications/quick_cal'] = "web/QuickCalcController/quick_cal";
+$route['home/applications/view-result/(:any)'] = "web/QuickCalcController/view_result/$1";
 
-$route['logout']   = 'web/Logout';
-$route['login']    = 'web/index/index';
+$route['logout'] = 'web/Logout';
+$route['login'] = 'web/index/index';
 $route['register'] = 'web/index/signup';
 
 /* Route for Admin */
-$route["admin"]                 = 'admin/Admin';
-$route["admin/forget"]          = 'admin/Admin/forget';
-$route["admin/editMerchant"]    = 'admin/Vendor_Management/merchant_edit_profile';
-$route["admin/viewMerchant"]    = 'admin/Vendor_Management/merchant_view_profile';
-$route["admin/users"]           = 'admin/User/index';
-$route["admin/profile"]         = 'admin/Admin_Profile/admin_profile';
+$route["admin"] = 'admin/Admin';
+$route["admin/forget"] = 'admin/Admin/forget';
+$route["admin/editMerchant"] = 'admin/Vendor_Management/merchant_edit_profile';
+$route["admin/viewMerchant"] = 'admin/Vendor_Management/merchant_view_profile';
+$route["admin/users"] = 'admin/User/index';
+$route["admin/profile"] = 'admin/Admin_Profile/admin_profile';
 $route["admin/change-password"] = 'admin/Admin_Profile/admin_change_password';
-$route["admin/edit-profile"]    = 'admin/Admin_Profile/edit_profile';
-$route["admin/users/detail"]    = 'admin/User/detail';
+$route["admin/edit-profile"] = 'admin/Admin_Profile/edit_profile';
+$route["admin/users/detail"] = 'admin/User/detail';
 
 
 /* Add merchant Ajax prodilepicture */
 
-$route['req/upload/profile-picture']      = 'admin/AjaxUtil/profilePictureUpload';
-$route['req/check-email-exists']          = 'admin/AjaxUtil/emailExistsAjax';
-$route['req/check-mobile-exists']         = 'admin/AjaxUtil/mobileExistsAjax';
-$route['req/block-user']                  = 'admin/AjaxUtil/changestatus';
-$route['req/delete-user']                 = 'admin/AjaxUtil/deleteuser';
-$route['req/check-edit-email-exists']     = 'admin/AjaxUtil/editemailExistsAjax';
-$route['req/check-edit-mobile-exists']    = 'admin/AjaxUtil/editmobileExistsAjax';
+$route['req/upload/profile-picture'] = 'admin/AjaxUtil/profilePictureUpload';
+$route['req/check-email-exists'] = 'admin/AjaxUtil/emailExistsAjax';
+$route['req/check-mobile-exists'] = 'admin/AjaxUtil/mobileExistsAjax';
+$route['req/block-user'] = 'admin/AjaxUtil/changestatus';
+$route['req/delete-user'] = 'admin/AjaxUtil/deleteuser';
+$route['req/check-edit-email-exists'] = 'admin/AjaxUtil/editemailExistsAjax';
+$route['req/check-edit-mobile-exists'] = 'admin/AjaxUtil/editmobileExistsAjax';
 $route['req/check-edit-passmatch-exists'] = 'admin/AjaxUtil/oldpasswordExistsAjax';
-$route['req/getstatesbycountry']          = 'admin/AjaxUtil/getStatesByCountry';
-$route['req/change-user-status']          = 'admin/AjaxUtil/changeUserStatus';
-$route['req/manage-sidebar']              = 'admin/AjaxUtil/manageSideBar';
+$route['req/getstatesbycountry'] = 'admin/AjaxUtil/getStatesByCountry';
+$route['req/change-user-status'] = 'admin/AjaxUtil/changeUserStatus';
+$route['req/manage-sidebar'] = 'admin/AjaxUtil/manageSideBar';
 
 /* Api Routes */
-$route['api/v1/user/profile']['GET']         = 'api/Profile'; //update swagger
-$route['api/v1/user/profile']['put']         = 'api/Profile/profileupdate'; //update swagger
-$route['api/manage-friend']                  = 'api/managefriends';
-$route['api/v1/employee/request']["GET"]     = 'api/EmployeeController/request'; //update swagger
-$route['api/v1/employee/request']["POST"]    = 'api/Employee/actiononemployee'; //update swagger
+$route['api/v1/user/profile']['GET'] = 'api/Profile'; //update swagger
+$route['api/v1/user/profile']['put'] = 'api/Profile/profileupdate'; //update swagger
+$route['api/manage-friend'] = 'api/managefriends';
+$route['api/v1/employee/request']["GET"] = 'api/EmployeeController/request'; //update swagger
+$route['api/v1/employee/request']["POST"] = 'api/Employee/actiononemployee'; //update swagger
 $route['api/v1/employee/permission']["POST"] = 'api/Employee/setpermissopnforemp';
-$route['api/v1/employee/permission']["GET"]  = 'api/EmployeeController/employeePermissions';
+$route['api/v1/employee/permission']["GET"] = 'api/EmployeeController/employeePermissions';
 
-$route['warranty']       = 'website/warranty';
+$route['warranty'] = 'website/warranty';
 $route['transfer-image'] = 'xhttp/ImageController';

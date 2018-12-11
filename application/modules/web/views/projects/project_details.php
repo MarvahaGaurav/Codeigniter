@@ -29,7 +29,7 @@
                         <th>Name</th>
                         <th class="text-center">Project Level</th>
                         <th class="">Location</th>
-                        <?php if (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true)) { ?>
+                        <?php if (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && $isRequested) { ?>
                         <th class="text-center">Quotes Count</th>
                         <?php } ?>
                         <th>Actions</th>
@@ -41,12 +41,12 @@
                         <td class="op-semibold"><?php echo $project['name']; ?></td>
                         <td class="op-semibold text-center"><?php echo $project['levels']; ?></td>
                         <td class=""><?php echo $project['address'] ?></td>
-                        <?php if (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true)) { ?>
+                        <?php if (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && $isRequested) { ?>
                         <td class="op-semibold text-center"><?php echo $quoteCount ?> Quote(s)</td>
                         <?php } ?>
                         <td class="op-semibold">
                             <a href="<?php echo base_url('home/projects/' . encryptDecrypt($project['project_id']) . '/edit') ?>" class="project-action"><i class="fa fa-pencil"></i></a>
-                            <?php if (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true)) { ?>
+                            <?php if (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && $isRequested) { ?>
                             <a href="<?php echo base_url('home/projects/' . $projectId . '/quotations') ?>" class="project-action"><i class="fa fa-quote-right"></i></a>
                             <?php } ?>
                         </td>

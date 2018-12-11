@@ -1,5 +1,4 @@
 <?php
-
 defined("BASEPATH") or exit("No direct script access allowed");
 
 /**
@@ -10,7 +9,6 @@ defined("BASEPATH") or exit("No direct script access allowed");
  */
 class BaseController extends MY_Controller
 {
-
     protected $data;
     protected $userInfo;
     private   $user_query_fields;

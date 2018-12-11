@@ -255,7 +255,7 @@ class QuickCalcController extends BaseController
             delete_cookie('quick_cal_selectd_room');
             delete_cookie('quick_cal_form_data');
 
-            $this->session->set_flashdata("flash-message", $this->lang->line("room_added"));
+            $this->session->set_flashdata("flash-message", $this->lang->line("room_calculated"));
             $this->session->set_flashdata("flash-type", "success");
             redirect(base_url('home/applications/view-result/' . encryptDecrypt($quickRoomId)));
         } else {
@@ -487,6 +487,7 @@ class QuickCalcController extends BaseController
             $this->data["csrfToken"] = $this->security->get_csrf_hash();
             website_view('quickcalc/select_product', $this->data);
         } catch (Exception $ex) {
+
         }
     }
 
