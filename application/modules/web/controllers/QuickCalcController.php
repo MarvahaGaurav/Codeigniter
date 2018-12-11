@@ -432,8 +432,6 @@ class QuickCalcController extends BaseController
         ];
     }
 
-
-
     /**
      *
      */

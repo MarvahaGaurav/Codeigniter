@@ -30,7 +30,7 @@
                     <div class="form-group">
                         <label class="labelTxt">Room Name</label>
                         <div class="form-group-field">
-                            <input type="text" name="name" id="room-name" placeholder="Bathroom" value="" readonly>
+                            <input type="text" name="name" id="room-name" placeholder="Livingroom" value="" readonly>
                             <label for="name" id="name-error" class="error"><?php echo form_error('name') ?></label>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                                 <select class="select-filed-name2" name="application" id="application">
                                     <option value="">Select Application</option>
                                     <?php foreach($applications as $application) { ?>
-                                    <option value="<?php echo encryptDecrypt($application['application_id']) ?>"><?php echo $application['title'] ?></option>
+                                    <option value="<?php echo encryptDecrypt($application['application_id']) ?>" <?php echo (int)$application_id === (int)$application['application_id']?'selected':'' ?>><?php echo $application['title'] ?></option>
                                     <?php } ?>
                                 </select>
                                 <span class="customArrow"></span>
@@ -61,6 +61,9 @@
                                 <div class="form-group-field">
                                 <select class="select-filed-name2" name="room" id="room">
                                     <option value="">Select Room</option>
+                                    <?php foreach($rooms as $room) { ?>
+                                    <option data-json='<?php echo json_encode($room) ?>' value="<?php echo $room['room_id'] ?>" <?php echo $room_id === $room['room_id']?'selected':'' ?>><?php echo $room['title'] ?></option>
+                                    <?php } ?>
                                 </select>
                                 <span class="customArrow"></span>
                             </div>
@@ -77,7 +80,7 @@
                     <div class="form-group">
                         <label class="labelTxt">Room Length</label>
                         <div class="form-group-field form-dimention">
-                            <input class="dialux-suggestions-fields number-only-field restrict-characters" data-restrict-to="15" type="text" placeholder="10" name="length" value="">
+                            <input class="dialux-suggestions-fields number-only-field restrict-characters" data-restrict-to="15" type="text" placeholder="10" name="length" value="<?php echo isset($cookieData['length'])?$cookieData['length']:'' ?>">
                             <label for="length" id="length-error" class="error">
                                 <?php echo form_error('length') ?>
                             </label>
@@ -85,7 +88,7 @@
                             <label class="field-type">
                                 <select class="select-filed-name room-dimension-units" name="length_unit">
                                     <?php foreach ($units as $unit) : ?>
-                                    <option value="<?php echo strtolower($unit) ?>" <?php echo isset($cookie_data['length_unit']) && $cookie_data['length_unit'] === strtolower($unit)?"selected":"" ?>><?php echo $unit ?></option>
+                                    <option value="<?php echo strtolower($unit) ?>" <?php echo isset($cookieData['length_unit']) && $cookieData['length_unit'] === strtolower($unit)?"selected":"" ?>><?php echo $unit ?></option>
                                     <?php endforeach ?>
                                 </select>
                                 <span class="customArrow"></span>
@@ -101,7 +104,7 @@
                         <label class="labelTxt">Room Width</label>
 
                         <div class="form-group-field form-dimention">
-                            <input class="dialux-suggestions-fields number-only-field restrict-characters" data-restrict-to="15" type="text" placeholder="8" name="width" value="<?php echo isset($cookie_data['width'])?$cookie_data['width']:"" ?>">
+                            <input class="dialux-suggestions-fields number-only-field restrict-characters" data-restrict-to="15" type="text" placeholder="8" name="width" value="<?php echo isset($cookieData['width'])?$cookieData['width']:"" ?>">
                             <label for="width" id="width-error" class="error">
                                     <?php echo form_error('width') ?>
                             </label>
@@ -109,7 +112,7 @@
                             <label class="field-type">
                                 <select class="select-filed-name room-dimension-units" name="width_unit">
                                     <?php foreach ($units as $unit) : ?>
-                                    <option value="<?php echo strtolower($unit) ?>" <?php echo isset($cookie_data['width_unit']) && $cookie_data['width_unit'] === strtolower($unit)?"selected":"" ?>><?php echo $unit ?></option>
+                                    <option value="<?php echo strtolower($unit) ?>" <?php echo isset($cookieData['width_unit']) && $cookieData['width_unit'] === strtolower($unit)?"selected":"" ?>><?php echo $unit ?></option>
                                     <?php endforeach ?>
                                 </select>
                                 <span class="customArrow"></span>
@@ -123,7 +126,7 @@
                         <label class="labelTxt">Room Height</label>
 
                         <div class="form-group-field form-dimention">
-                            <input class="dialux-suggestions-fields number-only-field restrict-characters" data-restrict-to="15" type="text" placeholder="8" name="height" value="<?php echo isset($cookie_data['height'])?$cookie_data['height']:"" ?>">
+                            <input class="dialux-suggestions-fields number-only-field restrict-characters" data-restrict-to="15" type="text" placeholder="8" name="height" value="<?php echo isset($cookieData['height'])?$cookieData['height']:"" ?>">
                             <label for="height" id="height-error" class="error">
                                     <?php echo form_error('height') ?>
                             </label>
@@ -131,7 +134,7 @@
                             <label class="field-type">
                                 <select class="select-filed-name room-dimension-units" name="height_unit">
                                     <?php foreach ($units as $unit) : ?>
-                                    <option value="<?php echo strtolower($unit) ?>" <?php echo isset($cookie_data['height_unit']) && $cookie_data['height_unit'] === strtolower($unit)?"selected":"" ?>><?php echo $unit ?></option>
+                                    <option value="<?php echo strtolower($unit) ?>" <?php echo isset($cookieData['height_unit']) && $cookieData['height_unit'] === strtolower($unit)?"selected":"" ?>><?php echo $unit ?></option>
                                     <?php endforeach ?>
                                 </select>
                                 <span class="customArrow"></span>
@@ -146,7 +149,7 @@
                     <div class="form-group">
                         <label class="labelTxt">Working Plane Height</label>
                         <div class="form-group-field form-dimention">
-                            <input class="dialux-suggestions-fields number-only-field restrict-characters" data-restrict-to="15" class="is_number"  type="text" placeholder=""  name="room_plane_height" id="room_plane_height" value="">
+                            <input class="dialux-suggestions-fields number-only-field restrict-characters" data-restrict-to="15" class="is_number"  type="text" placeholder=""  name="room_plane_height" id="room_plane_height" value="<?php echo isset($cookieData['room_plane_height'])?$cookieData['room_plane_height']:'' ?>">
                             <label for="room_plane_height" id="room_plane_height-error" class="error"><?php echo form_error('room_plane_height') ?></label>
                             <label class="field-type">
                                 <select class="select-filed-name"  name="room_plane_height_unit" id="room_plane_height_unit">
@@ -163,7 +166,7 @@
                     <div class="form-group">
                         <label class="labelTxt">Number of Luminaries</label>
                         <div class="form-group-field form-dimention">
-                            <input class="is_number number-only-field restrict-characters" data-restrict-to="2"  type="text" placeholder="8" name="room_luminaries_x" id="room_luminaries_x" value="<?php echo isset($cookie_data['room_luminaries_x'])?$cookie_data['room_luminaries_x']:"" ?>">
+                            <input class="is_number number-only-field restrict-characters" data-restrict-to="2"  type="text" placeholder="8" name="room_luminaries_x" id="room_luminaries_x" value="<?php echo isset($cookieData['room_luminaries_x'])?$cookieData['room_luminaries_x']:"" ?>">
                             <label for="room_luminaries_x" id="room_luminaries_x-error" class="error"><?php echo form_error('room_luminaries_x') ?></label>
                             <label class="field-type">
                                 <select class="select-filed-name">
@@ -179,7 +182,7 @@
                     <div class="form-group">
                         <label class="labelTxt"> .</label>
                         <div class="form-group-field form-dimention">
-                            <input class="is_number number-only-field restrict-characters" data-restrict-to="2" type="text" placeholder="8" name="room_luminaries_y" id="room_luminaries_y" value="<?php echo isset($cookie_data['room_luminaries_y'])?$cookie_data['room_luminaries_y']:"" ?>">
+                            <input class="is_number number-only-field restrict-characters" data-restrict-to="2" type="text" placeholder="8" name="room_luminaries_y" id="room_luminaries_y" value="<?php echo isset($cookieData['room_luminaries_y'])?$cookieData['room_luminaries_y']:"" ?>">
                             <label for="room_luminaries_y" id="room_luminaries_y-error" class="error"><?php echo form_error('room_luminaries_y') ?></label>
                             <label class="field-type">
                                 <select class="select-filed-name">
@@ -195,7 +198,7 @@
                     <div class="form-group">
                         <label class="labelTxt">Total</label>
                         <div class="form-group-field">
-                            <input disabled="true" value="<?php echo isset($cookie_data['room_luminaries_x'], $cookie_data['room_luminaries_y'])?(int)$cookie_data['room_luminaries_x'] * (int)$cookie_data['room_luminaries_y']:"" ?>" readonly="true" type="text" name="xy_total" id="xy_total">
+                            <input disabled="true" value="<?php echo isset($cookieData['room_luminaries_x'], $cookieData['room_luminaries_y'])?(int)$cookieData['room_luminaries_x'] * (int)$cookieData['room_luminaries_y']:"" ?>" readonly="true" type="text" name="xy_total" id="xy_total">
                             <span name="xy_total_error" id="xy_total_error"></span>
                         </div>
                     </div>
@@ -219,10 +222,10 @@
                     <div class="form-group">
                         <label class="labelTxt">Select Product</label>
                         <div class="form-group-field">
-                            <input id="uploadfile" class="select-filed-name2 chooseFile" type="text" placeholder="Choose File" disabled="display" value="<?php echo isset($selected_product['product_name'])?$selected_product['product_name']:''; ?>">
+                            <input id="uploadfile" class="select-filed-name2 chooseFile" type="text" placeholder="Choose File" disabled="display" value="<?php echo isset($selectedProduct['product_name'])?$selectedProduct['product_name']:''; ?>">
                             <label for="product_id" id="product_id-error" class="error"><?php echo form_error('product_id') ?></label>
                             <label class="choosebtn">
-                                <button disabled type="button" name="choose_product" id="choose_product">Choose</button>
+                                <button <?php echo isset($selectedProduct['product_id'], $selectedProduct['articel_id'], $selectedProduct['product_name'])?'':'disabled' ?> data-redirect-to="<?php echo isset($cookieData['application'], $cookieData['room'])?base_url("/home/fast-calc/lux/applications/" . $cookieData['application'] . '/rooms/' . $cookieData['room'] . '/products'):'javascript:void(0)' ?>" class="redirectable" type="button" name="choose_product" id="choose_product">Choose</button>
                             </label>
                         </div>
                     </div>
@@ -273,7 +276,7 @@
                     <div class="form-group">
                         <label class="labelTxt">Wall</label>
                         <div class="form-group-field">
-                            <input class="dialux-suggestions-fields number-only-field restrict-characters" data-restrict-to="15" type="text" name="rho_wall" value="" placeholder="">
+                            <input class="dialux-suggestions-fields number-only-field restrict-characters" data-restrict-to="15" type="text" name="rho_wall" value="<?php echo isset($cookieData['rho_wall'])?$cookieData['rho_wall']:'' ?>" placeholder="">
                             <label for="rho_wall" id="rho_wall-error" class="error"><?php echo form_error('rho_wall') ?></label>
                             <label class="field-type">
                                 <select class="select-filed-name">
@@ -288,7 +291,7 @@
                     <div class="form-group">
                         <label class="labelTxt">Ceiling</label>
                         <div class="form-group-field">
-                            <input class="dialux-suggestions-fields number-only-field restrict-characters" data-restrict-to="15" type="text" name="rho_ceiling" value="" placeholder="">
+                            <input class="dialux-suggestions-fields number-only-field restrict-characters" data-restrict-to="15" type="text" name="rho_ceiling" value="<?php echo isset($cookieData['rho_ceiling'])?$cookieData['rho_ceiling']:'' ?>" placeholder="">
                             <label for="rho_ceiling" id="rho_ceiling-error" class="error"><?php echo form_error('rho_ceiling') ?></label>
                             <label class="field-type">
                                 <select class="select-filed-name">
@@ -303,7 +306,7 @@
                     <div class="form-group">
                         <label class="labelTxt">Floor</label>
                         <div class="form-group-field">
-                            <input class="dialux-suggestions-fields number-only-field restrict-characters" data-restrict-to="15" type="text" name="rho_floor" value="" placeholder="">
+                            <input class="dialux-suggestions-fields number-only-field restrict-characters" data-restrict-to="15" type="text" name="rho_floor" value="<?php echo isset($cookieData['rho_floor'])?$cookieData['rho_floor']:'' ?>" placeholder="">
                             <label for="rho_floor" id="rho_floor-error" class="error"><?php echo form_error('rho_floor') ?></label>
                             <label class="field-type">
                                 <select class="select-filed-name">
@@ -328,7 +331,7 @@
                     <div class="form-group">
                         <label class="labelTxt">Lux Value</label>
                         <div class="form-group-field">
-                            <input class="dialux-suggestions-fields number-only-field restrict-characters" data-restrict-to="15" type="text" name="lux_values" value="" placeholder="">
+                            <input class="dialux-suggestions-fields number-only-field restrict-characters" data-restrict-to="15" type="text" name="lux_values" value="<?php echo isset($cookieData['lux_values'])?$cookieData['lux_values']:'' ?>" placeholder="">
                             <label for="lux_values" id="lux_values-error" class="error"><?php echo form_error('lux_values') ?></label>
                             <label class="field-type">
                                 <select class="select-filed-name">
@@ -347,16 +350,15 @@
         <!-- button wrapper section -->
         <div class="section-title clearfix">
             <div class="button-wrapper">
-                <input name="evaluate_btn" id="evaluate_btn" type="submit" value="Evaluate" class="custom-btn btn-margin btn-width save">
-                <button type="button" class="custom-btn btn-margin btn-width cancel">Cancel</button>
+                <input name="evaluate_btn" id="final-room-submission" type="submit" value="Calculate" class="custom-btn btn-margin btn-width save">
             </div>
         </div>
         <!-- button wrapper section -->
-        <input type="hidden" name="room_id" id="room_id" value="">
-        <input type="hidden" name="application_id" id="application_id" value="">
-        <input type="hidden" name="article_code" id="article_code" value=""">
-        <input type="hidden" name="type" id="type" value="">
-        <input type="hidden" name="product_id" id="product_id" value="">
+        <input type="hidden" name="room_id" id="room_id" value="<?php echo isset($cookieData['room_id'])?$cookieData['room_id']:'' ?>">
+        <input type="hidden" name="application_id" id="application_id" value="<?php echo isset($cookieData['application_id'])?$cookieData['application_id']:'' ?>">
+        <input type="hidden" name="article_code" id="article_code" value="<?php echo isset($selectedProduct['articel_id'])?$selectedProduct['articel_id']:'' ?>">
+        <input type="hidden" name="type" id="type" value="<?php echo isset($selectedProduct['type'])?$selectedProduct['type']:'' ?>">
+        <input type="hidden" name="product_id" id="product_id" value="<?php echo isset($selectedProduct['product_id'])?$selectedProduct['product_id']:'' ?>">
         <?php echo form_close(); ?>
         <!-- no record found -->
         <!-- <div class="no-record text-center">

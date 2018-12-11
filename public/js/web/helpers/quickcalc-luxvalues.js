@@ -81,9 +81,9 @@
         let form_data = $( formData ).serialize();
         console.log( form_data );
         /*Creating cookie with all form element*/
-        eraseCookie( "quick_cal_form_data" );
-        setCookie( "quick_cal_form_data", form_data, 7 );
-        openNewWindow();
+        eraseCookie( "lux_form_data" );
+        setCookie( "lux_form_data", form_data, 7 );
+        // openNewWindow();
     } );
 
 
@@ -153,8 +153,8 @@
         let formData = $( "#quick_cal_form" );
         let form_data = $( formData ).serialize();
         /*Creating cookie with all form element*/
-        eraseCookie( "quick_cal_form_data" );
-        setCookie( "quick_cal_form_data", form_data, 7 );
+        eraseCookie( "lux_form_data" );
+        setCookie( "lux_form_data", form_data, 7 );
     } );
 
 

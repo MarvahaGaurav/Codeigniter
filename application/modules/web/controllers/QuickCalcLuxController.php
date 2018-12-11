@@ -30,13 +30,58 @@ class QuickCalcLuxController extends BaseController
 
             $this->data['units'] = ["Meter", "Inch", "Yard"];
 
-            $this->data['validation_error_keys'] = [];
+            $formData = [];
+            $this->load->helper(['cookie']);
+            $cookie_data = get_cookie("lux_form_data");
+            parse_str($cookie_data, $formData);
+            $productData = [];
+            $selectedProduct = get_cookie('lux_selected_product', $productData);
+            $selectedProduct = json_decode($selectedProduct, true);
+            $this->data['application_id'] = '';
+            $this->data['rooms'] = [];
+            $this->data['redirectData'] = '';
+
+            if (isset($formData['application'])) {
+                $this->data['application_id'] = encryptDecrypt($formData['application'], 'decrypt');
+                $this->data['rooms'] = $this->roomData($this->data['application_id']);
+            }
+
+            $this->data['room_id'] = '';
+            if (isset($formData['application'], $formData['room'])) {
+                $this->data['room_id'] = $formData['room_id'];
+            }
+
+            $this->data['cookieData'] = $formData;
+            $this->data['selectedProduct'] = $selectedProduct;
             $this->data['showSuspensionHeight'] = false;
+
+            $this->data['validation_errors'] = [];
+            $this->data['validation_error_keys'] = [];
+            $this->postRequest = $this->input->post();
+            if (!empty($this->postRequest) && !empty($this->data['rooms'])) {
+                $this->quickCalcFormHandler($this->data['rooms']);
+            }
+
+            if (isset($this->data['selectedProduct']['product_id'])) {
+                $mountingTypes = $this->UtilModel->selectQuery('type', 'product_mounting_types', [
+                    'where' => ['product_id' => $this->data['selectedProduct']['product_id'], 'type !=' => 0]
+                ]);
+                $mountingTypes = array_column($mountingTypes, 'type');
+                $suspendedFilter = array_filter($mountingTypes, function ($type) {
+                    return in_array((int)$type, [MOUNTING_SUSPENDED, MOUNTING_PENDANT], true);
+                });
+                $this->data['showSuspensionHeight'] = (bool)!empty($suspendedFilter);
+            }
+
+            
+            $this->data['validation_error_keys'] = [];
             website_view('luxquickcalc/quickcalc', $this->data);
         } catch (\Exception $error) {
             show404($this->lang->line('internal_server_error'), base_url());
         }
     }
+
+
 
     public function selectProduct($applicationId, $roomId)
     {
@@ -66,7 +111,7 @@ class QuickCalcLuxController extends BaseController
     public function selectArticle($applicationId, $roomId, $productId)
     {
         try {
-            $queryString = $applicationId . '/rooms/' . $roomId .'/products/' . $productId;
+            $queryString = $applicationId . '/rooms/' . $roomId . '/products/' . $productId;
 
             $this->neutralGuard();
             if (isset($this->userInfo, $this->userInfo['user_id']) && !empty($this->userInfo['user_id'])) {
@@ -195,7 +240,7 @@ class QuickCalcLuxController extends BaseController
             $this->data['articleCode'] = $articleCode;
             $this->data['mounting'] = 1;
 
-            $this->data['js'] = "article_quick_cal";
+            $this->data['js'] = "article_lux";
 
             website_view('luxquickcalc/article_details', $this->data);
 
@@ -228,6 +273,276 @@ class QuickCalcLuxController extends BaseController
                 'rules' => 'trim|required|is_natural_no_zero'
             ],
         ]);
+    }
+
+     /**
+     *
+     * @param type $project_room_id
+     */
+    public function view_result()
+    {
+        try {
+            $this->load->model("UtilModel");
+            $room_data = $this->UtilModel->selectQuery("*", "quick_rooms", ["single_row" => true, "where" => ["id" => $id]]);
+            $this->data['specifications'] = $this->UtilModel->selectQuery(
+                "*",
+                "product_specifications",
+                ["single_row" => true, "where" => ["articlecode" => $room_data['article_code'], "product_id" => $room_data['product_id']]]
+            );
+//            echo $this->db->last_query();
+            $this->data['room_data'] = $room_data;
+            $this->data["csrfName"] = $this->security->get_csrf_token_name();
+            $this->data["csrfToken"] = $this->security->get_csrf_hash();
+            website_view('quickcalc/evaluation_result', $this->data);
+        } catch (Exception $ex) {
+        }
+    }
+
+    private function quickCalcFormHandler($room)
+    {
+        $this->load->library(['form_validation']);
+        $this->form_validation->reset_validation();
+        $this->form_validation->set_data($this->postRequest);
+
+        $this->form_validation->set_rules($this->validateQuickCalcForm());
+
+        $validData = (bool)$this->form_validation->run();
+
+        $uld = "";
+        if (isset($this->postRequest['product_id'], $this->postRequest['article_code'])) {
+            $uld = $this->UtilModel->selectQuery('uld', 'product_specifications', [
+                'where' => [
+                    'product_id' => $this->postRequest['product_id'],
+                    'articlecode' => $this->postRequest['article_code']
+                ],
+                'single_row' => true
+            ]);
+
+            $uld = $uld['uld'];
+        }
+        if (empty($uld)) {
+            $this->session->set_flashdata("flash-message", $this->lang->line('we_are_unable_to_get_data'));
+            $this->session->set_flashdata("flash-type", "danger");
+            redirect(base_url(uri_string()));
+        }
+
+        pd($this->postRequest);
+
+        if ($validData) {
+            $this->load->helper(['utility', 'input_data', 'quick_calc']);
+            $length = convert_to_meter($this->postRequest['length_unit'], $this->postRequest['length']);
+            $width = convert_to_meter($this->postRequest['width_unit'], $this->postRequest['width']);
+            $height = convert_to_meter($this->postRequest['height_unit'], $this->postRequest['height']);
+            $this->postRequest = trim_input_parameters($this->postRequest, false);
+            $insert = [
+                // "application_id" => $this->postRequest['application_id'],
+                "room_id" => $this->postRequest['room_id'],
+                "name" => $this->postRequest['name'],
+                "length" => $length,
+                "width" => $width,
+                "height" => $height,
+                "maintainance_factor" => isset($this->postRequest['maintainance_factor']) && !empty($this->postRequest['maintainance_factor']) ? $this->postRequest['maintainance_factor'] : $room['maintainance_factor'],
+                "shape" => "Rectangular",
+                "suspension_height" => isset($this->postRequest['pendant_length']) ? convert_to_meter($this->postRequest['pendant_length_unit'], $this->postRequest['pendant_length']) : 0.00,
+                "working_plane_height" => isset($this->postRequest['room_plane_height']) ? $this->postRequest['room_plane_height'] / 100 : 0.00, //need to confirm
+                "rho_wall" => isset($this->postRequest['rho_wall']) && !empty($this->postRequest['rho_wall']) ? $this->postRequest['rho_wall'] : $room['reflection_values_wall'],
+                "rho_ceiling" => isset($this->postRequest['rho_ceiling']) && !empty($this->postRequest['rho_ceiling']) ? $this->postRequest['rho_ceiling'] : $room['reflection_values_ceiling'],
+                "rho_floor" => isset($this->postRequest['rho_floor']) && !empty($this->postRequest['rho_floor']) ? $this->postRequest['rho_floor'] : $room['reflection_values_floor'],
+                "lux_value" => isset($this->postRequest['lux_values']) && !empty($this->postRequest['lux_values']) ? $this->postRequest['lux_values'] : $room['lux_values'],
+                "luminaries_count_x" => $this->postRequest['room_luminaries_x'],
+                "luminaries_count_y" => $this->postRequest['room_luminaries_y'],
+                "fast_calc_response" => '',
+                "created_at" => $this->datetime,
+                'type' => $this->postRequest['type'],
+                'product_id' => $this->postRequest['product_id'],
+                'article_code' => $this->postRequest['article_code']
+            ];
+
+            $response = $this->fetchQuickCalcData($insert, $uld);
+            $decodedResponse = json_decode($response, true);
+            if (!isset($decodedResponse['projectionTop'], $decodedResponse['projectionSide'], $decodedResponse['projectionFront'])) {
+                $this->session->set_flashdata("flash-message", $this->lang->line('we_are_unable_to_get_data'));
+                $this->session->set_flashdata("flash-type", "danger");
+                redirect(base_url(uri_string()));
+            }
+
+            $insert['fast_calc_response'] = $response;
+            $insert['side_view'] = $decodedResponse['projectionSide'];
+            $insert['top_view'] = $decodedResponse['projectionTop'];
+            $insert['front_view'] = $decodedResponse['projectionFront'];
+
+
+            $this->load->helper('cookie');
+            delete_cookie('quick_cal_selectd_room');
+            delete_cookie('quick_cal_form_data');
+
+            $this->session->set_flashdata("flash-message", $this->lang->line("room_calculated"));
+            $this->session->set_flashdata("flash-type", "success");
+            redirect(base_url('home/fast-calc/lux/view-result/' . encryptDecrypt($quickRoomId)));
+        } else {
+            $this->data['validation_errors'] = $this->form_validation->error_array();
+            $this->data['validation_error_keys'] = array_keys($this->data['validation_errors']);
+        }
+    }
+
+    private function roomData($application_id)
+    {
+        $roomData = $this->UtilModel->selectQuery(
+            "application_id, body, icon, image, language_code, lux_values,
+         maintainance_factor, reference_height, reflection_values_ceiling, reflection_values_floor,
+        reflection_values_wall, room_id, slug, sub_title, title, ugr, uo",
+            "rooms",
+            ["where" => ['application_id' => $application_id]]
+        );
+
+        $roomData = array_map(
+            function ($room) {
+                $room['room_id'] = encryptDecrypt($room['room_id']);
+                $room['application_id'] = encryptDecrypt($room['application_id']);
+                return $room;
+            },
+            $roomData
+        );
+
+        return $roomData;
+    }
+
+    private function validateQuickCalcForm()
+    {
+        return [
+            [
+                'field' => "name",
+                'label' => "Name",
+                'rules' => 'trim|required'
+            ],
+            [
+                'field' => "room_id",
+                'label' => "Room id",
+                'rules' => 'trim|required'
+            ],
+            [
+                'field' => "length",
+                'label' => "Length",
+                'rules' => 'trim|required|numeric'
+            ],
+            [
+                'field' => "length_unit",
+                'label' => "Length unit",
+                'rules' => 'trim|required|regex_match[/^(meter|yard|inch)$/]',
+                'errors' => [
+                    'regex_match' => $this->lang->line('invalid_measurement_unit')
+                ]
+            ],
+            [
+                'field' => "width",
+                'label' => "Width",
+                'rules' => 'trim|required|numeric'
+            ],
+            [
+                'field' => "width_unit",
+                'label' => "Width unit",
+                'rules' => 'trim|required|regex_match[/^(meter|yard|inch)$/]',
+                'errors' => [
+                    'regex_match' => $this->lang->line('invalid_measurement_unit')
+                ]
+            ],
+            [
+                'field' => "height",
+                'label' => "Height",
+                'rules' => 'trim|required|numeric'
+            ],
+            [
+                'field' => "height_unit",
+                'label' => "Height unit",
+                'rules' => 'trim|required|regex_match[/^(meter|yard|inch)$/]',
+                'errors' => [
+                    'regex_match' => $this->lang->line('invalid_measurement_unit')
+                ]
+            ],
+            [
+                'field' => "room_plane_height",
+                'label' => "Room plane height",
+                'rules' => 'trim|required|numeric'
+            ],
+            [
+                'field' => "room_plane_height_unit",
+                'label' => "Room plane height unit",
+                'rules' => 'trim|required|regex_match[/^(cms)$/]',
+                'errors' => [
+                    'regex_match' => $this->lang->line('invalid_measurement_unit')
+                ]
+            ],
+            [
+                'field' => "room_luminaries_x",
+                'label' => "Room luminaries x",
+                'rules' => 'trim|required|is_natural_no_zero'
+            ],
+            [
+                'field' => "room_luminaries_y",
+                'label' => "Room luminaries y",
+                'rules' => 'trim|required|is_natural_no_zero'
+            ],
+            [
+                'field' => "pendant_length",
+                'label' => "Pendant length",
+                'rules' => 'trim|numeric'
+            ],
+            [
+                'field' => "pendant_length_unit",
+                'label' => "Pendant length unit",
+                'rules' => 'trim|regex_match[/^(meter|yard|inch)$/]',
+                'errors' => [
+                    'regex_match' => $this->lang->line('invalid_measurement_unit')
+                ]
+            ],
+            [
+                'field' => "rho_wall",
+                'label' => "Rho wall",
+                'rules' => 'trim|numeric'
+            ],
+            [
+                'field' => "rho_ceiling",
+                'label' => "Rho ceiling",
+                'rules' => 'trim|numeric'
+            ],
+            [
+                'field' => "rho_floor",
+                'label' => "Rho floor",
+                'rules' => 'trim|numeric'
+            ],
+            [
+                'field' => "maintainance_factor",
+                'label' => "Maintainance factor",
+                'rules' => 'trim|required|numeric'
+            ], [
+                'field' => "lux_values",
+                'label' => "Lux values",
+                'rules' => 'trim|numeric'
+            ],
+            // [
+            //     'field' => "application_id",
+            //     'label' => "Application id",
+            //     'rules' => 'trim|required|is_natural_no_zero'
+            // ],
+            [
+                'field' => "article_code",
+                'label' => "Article code",
+                'rules' => 'trim|required|is_natural_no_zero'
+            ],
+            [
+                'field' => "type",
+                'label' => "Type",
+                'rules' => 'trim|required|regex_match[/^(1|2|3|4|5|6|7)$/]',
+                'errors' => [
+                    'regex_match' => $this->lang->line("bad_request")
+                ]
+            ],
+            [
+                'field' => "product_id",
+                'label' => "Product id",
+                'rules' => 'trim|required'
+            ],
+        ];
     }
 
 }

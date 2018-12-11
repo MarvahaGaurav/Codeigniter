@@ -35,17 +35,19 @@ requirejs(
             $roomLuminariesY = $("#room_luminaries_y"),
             $xyTotal = $("#xy_total"),
             $luxValues = $("input[name='lux_values']"),
-            $chooseProduct = $("#choose_product")
+            $chooseProduct = $("#choose_product"),
             $roomPlaneHeight = $("input[name='room_plane_height']"),
             $rhoWall = $("input[name='rho_wall']"),
             $rhoCeiling = $("input[name='rho_ceiling']"),
             $rhoFloor = $("input[name='rho_floor']"),
             $maintainanceFactor = $("input[name='maintainance_factor']"),
-            $luxValues = $("input[name='lux_values']")
-            $roomName = $("#room-name")
+            $luxValues = $("input[name='lux_values']"),
+            $roomName = $("#room-name"),
             $roomTitle = $("#room-title"),
-            $roomId = $("#room_id")
-            $applicationId = $("#application_id");
+            $roomId = $("#room_id"),
+            $applicationId = $("#application_id"),
+            $application = $("#application"),
+            $finalRoomSubmission = $("#final-room-submission");
 
         var $advancedOptionsDiv = $("#advanced-options-div");
         $("#display-advanced-options").on("change", function () {
@@ -61,10 +63,24 @@ requirejs(
 
         var $room = $("#room");
 
-        $("#application").on("change", function () {
+        if ($application && $application.val() && $application.val().trim().length > 0) {
+
+        }
+
+        $application.on("change", function () {
             var self = this,
                 $self = $(self),
                 value = $self.val();
+
+            if (value.trim().length == 0) {
+                var roomEmptySelect = $("#room").children("option")[0].outerHTML;
+                console.log(roomEmptySelect);
+                $room.html(roomEmptySelect);
+                $chooseProduct.attr("disabled", "disabled");
+                return 0;
+            }
+
+            var roomHtml = $("#room").children("option[value='']")[0].outerHTML;
 
             $.ajax({
                 url: window.location.protocol + "//" + window.location.host + '/xhttp/applications/rooms',
@@ -73,12 +89,15 @@ requirejs(
                 data: {
                     application_id: value
                 },
+                beforeSend: function () {
+                    $room.html(roomHtml);
+                    $room.attr('disabled', 'disabled');
+                },
                 success: function (response) {
+                    $room.removeAttr('disabled');
                     if (response.success) {
                         var html = '',
                             data = response.data;
-
-                        var roomHtml = $room.html();
 
                         html = data.reduce(function (previousValue, currentValue) {
                             var jsonData = JSON.stringify(currentValue);
@@ -88,7 +107,7 @@ requirejs(
 
                         $room.html(html);
                     } else {
-                        $("#room option").each(function(index, element) {
+                        $("#room option").each(function (index, element) {
                             if ($(element).val().trim().length > 0) $(element).remove();
                         });
                     }
@@ -101,6 +120,11 @@ requirejs(
                 $self = $(self),
                 value = $self.val();
 
+            if (value.trim().length == 0) {
+                $chooseProduct.attr("disabled", "disabled");
+                return 0;
+            }
+
             var $selectedOption = $self.children('option:selected'),
                 roomData = JSON.parse($selectedOption.attr('data-json'));
 
@@ -112,12 +136,14 @@ requirejs(
                 $maintainanceFactor.val(roomData.maintainance_factor);
                 $luxValues.val(roomData.lux_values);
                 $chooseProduct.addClass('redirectable');
-                $chooseProduct.attr('data-redirect-to', window.location.protocol + "//" + window.location.host + '/home/fast-calc/lux/applications/'+ roomData.application_id +'/rooms/'+ roomData.room_id +'/products');
+                $chooseProduct.attr('data-redirect-to', window.location.protocol + "//" + window.location.host + '/home/fast-calc/lux/applications/' + roomData.application_id + '/rooms/' + roomData.room_id + '/products');
                 $roomName.val(roomData.title);
-                $roomTitle.html(roomData.title+ " : ");
+                $roomTitle.html(roomData.title + " : ");
                 $roomId.val(roomData.room_id);
                 $applicationId.val(roomData.application_id);
                 $chooseProduct.removeAttr('disabled');
+                getDialuxData(self);
+                // $(".dialux-suggestions-fields").trigger('change');
             } else {
                 $roomPlaneHeight.val('');
                 $rhoWall.val('');
@@ -137,7 +163,12 @@ requirejs(
         });
 
         $(".dialux-suggestions-fields").on("change keydown", function () {
-            var self = this,
+            getDialuxData(this);
+        });
+
+        function getDialuxData(element)
+        {
+            var self = element,
                 $self = $(self),
                 formData = getFormData($addForm);
 
@@ -156,17 +187,37 @@ requirejs(
                     method: "POST",
                     data: formData,
                     dataType: "json",
+                    beforeSend: function () {
+                        $roomLuminariesX.attr("placeholder", "loading...");
+                        $roomLuminariesX.attr("disabled", "disabled");
+                        $roomLuminariesX.attr("value", "");
+                        $roomLuminariesY.attr("placeholder", "loading...");
+                        $roomLuminariesY.attr("disabled", "disabled");
+                        $roomLuminariesY.attr("value", "");
+                        $finalRoomSubmission.attr("disabled", "disabled");
+                    },
                     success: function (response) {
+                        $roomLuminariesX.attr("placeholder", "");
+                        $roomLuminariesX.removeAttr("disabled");
+                        $roomLuminariesY.attr("placeholder", "");
+                        $roomLuminariesY.removeAttr("disabled");
+                        $finalRoomSubmission.removeAttr("disabled");
                         if (response.success) {
                             $roomLuminariesX.val(response.data.luminaireCountInX);
                             $roomLuminariesY.val(response.data.luminaireCountInY);
                             $xyTotal.val(response.data.luminaireCount);
                             // $luxValues.val((response.data.illuminance));
                         }
+                    },
+                    error: function(error) {
+                        $roomLuminariesX.attr("placeholder", "");
+                        $roomLuminariesX.removeAttr("disabled");
+                        $roomLuminariesY.attr("placeholder", "");
+                        $roomLuminariesY.removeAttr("disabled");
+                        $finalRoomSubmission.removeAttr("disabled");
                     }
                 });
             }
-
-        });
+        }
     }
 );
