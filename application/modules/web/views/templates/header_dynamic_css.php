@@ -92,7 +92,7 @@
                                     <ul class="dropdown-menu">
                                         <li><a href="<?php echo base_url('home/applications') ?>">Application</a></li>
                                         <li><a href="<?php echo base_url('home/fast-calc/lux') ?>">Lux Values</a></li>
-                                        <li><a href="#">Number Luminaires</a></li>
+                                        <li><a href="<?php echo base_url('home/fast-calc/luminary') ?>">Number Luminaires</a></li>
                                     </ul>
                                 </li>
                                 <?php if (

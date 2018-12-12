@@ -126,3 +126,4 @@ ERROR - 2018-12-07 09:37:27 --> Could not find the specified $config['composer_a
 ERROR - 2018-12-07 09:37:51 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
 ERROR - 2018-12-07 09:39:42 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
 ERROR - 2018-12-07 09:43:22 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php
+ERROR - 2018-12-07 09:52:39 --> Could not find the specified $config['composer_autoload'] path: application/composer/vendor/autoload.php

@@ -234,3 +234,4 @@ $lang['tco_value_successfully_updated'] = 'TCO value for this room has been save
 $lang['not_received_any_quotes'] = 'You have not received any quotes';
 $lang['room_calculated'] = 'Your room has been calculated';
 $lang['calculate_again'] = 'Calculate again to view result';
+$lang['unable_to_calculate'] = 'We are unable to calculate data for this room';

@@ -287,7 +287,7 @@ class Employee extends REST_Controller
                 //pr($myEmployeedetail);
                 if(!empty($myEmployeedetail) && $myEmployeedetail['requested_by'] == $postDataArr['employee_id']) {                    
                     $whereArr['where'] = ['er_id'=>$postDataArr['er_id']];                
-                    $updaterequesr =  $this->Common_model->update_single('employee_request_master', ['status'=>$postDataArr['action']], $whereArr); 
+                    $updaterequesr =  $this->Common_model->update_single('employee_request_master', ['status'=>$postDataArr['action']], $whereArr);
                 } else {
                      $this->response(array('code' => INVALID_REQUEST_ID, 'msg' => $this->lang->line('invalid_request_id'), 'result' => (object)[]));
                 }

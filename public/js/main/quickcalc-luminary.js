@@ -10,7 +10,7 @@ requirejs.config({
         jqueryValidator: 'jquery.validate.min',
         autocomplete: 'jquery.autocomplete.min',
         location: 'lib/location',
-        helper: 'web/helpers/quickcalc-luxvalues',
+        helper: 'web/helpers/quickcalc-luminaryvalues',
         roomForm: 'web/helpers/room-form'
     },
     shim: {
@@ -138,7 +138,7 @@ requirejs(
                 $maintainanceFactor.val(roomData.maintainance_factor);
                 $luxValues.val(roomData.lux_values);
                 $chooseProduct.addClass('redirectable');
-                $chooseProduct.attr('data-redirect-to', window.location.protocol + "//" + window.location.host + '/home/fast-calc/lux/applications/' + roomData.application_id + '/rooms/' + roomData.room_id + '/products');
+                $chooseProduct.attr('data-redirect-to', window.location.protocol + "//" + window.location.host + '/home/fast-calc/luminary/applications/' + roomData.application_id + '/rooms/' + roomData.room_id + '/products');
                 $roomName.val(roomData.title);
                 $roomTitle.html(roomData.title + " : ");
                 $roomId.val(roomData.room_id);

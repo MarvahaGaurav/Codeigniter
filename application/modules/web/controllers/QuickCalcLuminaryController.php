@@ -5,7 +5,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 require_once "BaseController.php";
 require_once APPPATH . "/libraries/Traits/QuickCalc.php";
 
-class QuickCalcLuxController extends BaseController
+class QuickCalcLuminaryController extends BaseController
 {
 
     use QuickCalc;
@@ -23,7 +23,7 @@ class QuickCalcLuxController extends BaseController
         try {
             $this->load->config('css_config');
             // $this->data['css'] = $this->config->item('basic-with-font-awesome');
-            $this->data['js'] = 'quickcalc-lux';
+            $this->data['js'] = 'quickcalc-luminary';
 
             $applicationData = $this->UtilModel->selectQuery(
                 'application_id,type,title',
@@ -38,10 +38,10 @@ class QuickCalcLuxController extends BaseController
 
             $formData = [];
             $this->load->helper(['cookie']);
-            $cookie_data = get_cookie("lux_form_data");
+            $cookie_data = get_cookie("luminary_form_data");
             parse_str($cookie_data, $formData);
             $productData = [];
-            $selectedProduct = get_cookie('lux_selected_product', $productData);
+            $selectedProduct = get_cookie('luminary_selected_product', $productData);
             if (!empty($selectedProduct)) {
                 $selectedProduct = json_decode($selectedProduct, true);
             }
@@ -82,7 +82,7 @@ class QuickCalcLuxController extends BaseController
             }
 
             $this->data['validation_error_keys'] = [];
-            website_view('luxquickcalc/quickcalc', $this->data);
+            website_view('luminaryquickcalc/quickcalc', $this->data);
         } catch (\Exception $error) {
             show404($this->lang->line('internal_server_error'), base_url());
         }
@@ -96,7 +96,7 @@ class QuickCalcLuxController extends BaseController
             if (isset($this->userInfo, $this->userInfo['user_id']) && !empty($this->userInfo['user_id'])) {
                 $this->data['userInfo'] = $this->userInfo;
             }
-            $this->data['js'] = 'select_product_lux';
+            $this->data['js'] = 'select_product_luminary';
             $this->load->model("Room");
             $option = ["where" => ["room_id" => encryptDecrypt($roomId, 'decrypt'), "application_id" => encryptDecrypt($applicationId, 'decrypt')]];
             $this->data['room_id'] = $roomId;
@@ -109,7 +109,7 @@ class QuickCalcLuxController extends BaseController
             $this->data["csrfName"] = $this->security->get_csrf_token_name();
             $this->data["csrfToken"] = $this->security->get_csrf_hash();
 
-            website_view('luxquickcalc/select_product', $this->data);
+            website_view('luminaryquickcalc/select_product', $this->data);
         } catch (\Exception $error) {
             show404($this->lang->line('internal_server_error'), base_url());
         }
@@ -162,7 +162,7 @@ class QuickCalcLuxController extends BaseController
                 return $article;
             }, $productSpecifications);
 
-            $this->data['js'] = "article_lux";
+            $this->data['js'] = "article_luminary";
             $this->data['product'] = $productData;
             $this->data['product_id'] = $productId;
             $this->data['application_id'] = $applicationId;
@@ -172,7 +172,7 @@ class QuickCalcLuxController extends BaseController
             $this->data['related_products'] = $relatedProducts;
             $this->data['urlString'] = $queryString;
 
-            website_view('luxquickcalc/select_article', $this->data);
+            website_view('luminaryquickcalc/select_article', $this->data);
 
         } catch (\Exception $error) {
             show404($this->lang->line('internal_server_error'), base_url());
@@ -247,9 +247,9 @@ class QuickCalcLuxController extends BaseController
             $this->data['articleCode'] = $articleCode;
             $this->data['mounting'] = 1;
 
-            $this->data['js'] = "article_lux";
+            $this->data['js'] = "article_luminary";
 
-            website_view('luxquickcalc/article_details', $this->data);
+            website_view('luminaryquickcalc/article_details', $this->data);
 
         } catch (\Exception $error) {
             show404($this->lang->line('internal_server_error'), base_url());
@@ -289,8 +289,8 @@ class QuickCalcLuxController extends BaseController
     public function view_result()
     {
         try {
-            $roomData = $this->session->flashdata('luxRoomData');
-            $productData = $this->session->flashdata("luxProduct");
+            $roomData = $this->session->flashdata('luminaryRoomData');
+            $productData = $this->session->flashdata("luminaryProduct");
 
             if (empty($roomData) || empty($productData)) {
                 $this->session->set_flashdata("flash-message", $this->lang->line('calculate_again'));
@@ -397,12 +397,12 @@ class QuickCalcLuxController extends BaseController
                 'uld' => $uld
             ]);
 
-            $this->session->set_flashdata("luxRoomData", $quickCalcRoomData);
-            $this->session->set_flashdata("luxProduct", $luxProductData);
+            $this->session->set_flashdata("luminaryRoomData", $quickCalcRoomData);
+            $this->session->set_flashdata("luminaryProduct", $luxProductData);
 
             $this->load->helper('cookie');
-            delete_cookie('lux_form_data');
-            delete_cookie('lux_selected_product');
+            delete_cookie('luminary_form_data');
+            delete_cookie('luminary_selected_product');
 
             $this->session->set_flashdata("flash-message", $this->lang->line("room_calculated"));
             $this->session->set_flashdata("flash-type", "success");

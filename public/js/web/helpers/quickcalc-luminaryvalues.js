@@ -81,8 +81,8 @@
         let form_data = $( formData ).serialize();
         console.log( form_data );
         /*Creating cookie with all form element*/
-        eraseCookie( "lux_form_data" );
-        setCookie( "lux_form_data", form_data, 7 );
+        eraseCookie( "luminary_form_data" );
+        setCookie( "luminary_form_data", form_data, 7 );
         // openNewWindow();
     } );
 

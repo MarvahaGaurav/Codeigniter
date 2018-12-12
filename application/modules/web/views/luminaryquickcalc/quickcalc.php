@@ -4,7 +4,7 @@
         <!-- breadcrumb -->
         <ul class="breadcrumb">
             <li><a href="javascript:void(0)">Home</a></li>
-            <li class="active">Lux Values</li>
+            <li class="active">No of Luminaries</li>
         </ul>
         <!-- //breadcrumb -->
 
@@ -147,7 +147,7 @@
                     <div class="form-group">
                         <label class="labelTxt">Working Plane Height</label>
                         <div class="form-group-field form-dimention">
-                            <input class="dialux-suggestions-fields number-only-field restrict-characters" data-restrict-to="15" class="is_number"  type="text" placeholder=""  name="room_plane_height" id="room_plane_height" value="<?php echo isset($cookieData['room_plane_height'])?$cookieData['room_plane_height']: 0.75*100 ?>">
+                            <input class="dialux-suggestions-fields number-only-field restrict-characters" data-restrict-to="15" class="is_number"  type="text" placeholder=""  name="room_plane_height" id="room_plane_height" value="<?php echo isset($cookieData['room_plane_height'])?$cookieData['room_plane_height']:'75' ?>">
                             <label for="room_plane_height" id="room_plane_height-error" class="error"><?php echo form_error('room_plane_height') ?></label>
                             <label class="field-type">
                                 <select class="select-filed-name"  name="room_plane_height_unit" id="room_plane_height_unit">

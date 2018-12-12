@@ -87,9 +87,15 @@ $route['home/projects/(:any)/levels/(:num)/rooms/(:any)/edit'] = 'web/ProjectRoo
 
 $route['home/search'] = 'web/SearchArticlesController/search';
 $route['home/fast-calc/lux'] = 'web/QuickCalcLuxController/luxValues';
+$route['home/fast-calc/lux/view-result'] = 'web/QuickCalcLuxController/view_result';
 $route['home/fast-calc/lux/applications/(:any)/rooms/(:any)/products'] = 'web/QuickCalcLuxController/selectProduct/$1/$2';
 $route['home/fast-calc/lux/applications/(:any)/rooms/(:any)/products/(:any)'] = 'web/QuickCalcLuxController/selectArticle/$1/$2/$3';
 $route['home/fast-calc/lux/applications/(:any)/rooms/(:any)/products/(:any)/articles/(:any)'] = 'web/QuickCalcLuxController/articleDetails/$1/$2/$3/$4';
+$route['home/fast-calc/luminary'] = 'web/QuickCalcLuminaryController/luxValues';
+$route['home/fast-calc/luminary/view-result'] = 'web/QuickCalcLuminaryController/view_result';
+$route['home/fast-calc/luminary/applications/(:any)/rooms/(:any)/products'] = 'web/QuickCalcLuminaryController/selectProduct/$1/$2';
+$route['home/fast-calc/luminary/applications/(:any)/rooms/(:any)/products/(:any)'] = 'web/QuickCalcLuminaryController/selectArticle/$1/$2/$3';
+$route['home/fast-calc/luminary/applications/(:any)/rooms/(:any)/products/(:any)/articles/(:any)'] = 'web/QuickCalcLuminaryController/articleDetails/$1/$2/$3/$4';
 $route['home/fast-calc/product/(:any)/article/(:any)'] = "web/SearchArticlesController/QuickCal/$1/$2";
 $route['home/fast-calc/evaluation/(:any)/(:any)'] = 'web/SearchArticlesController/view_result/$1/$2';
 
