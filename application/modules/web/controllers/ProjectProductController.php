@@ -870,7 +870,7 @@ class ProjectProductController extends BaseController
      *
      * @return void
      */
-    private function validateAccessoryProduct()
+    public function validateAccessoryProduct()
     {
         $this->form_validation->set_data($this->validationData);
 

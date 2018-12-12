@@ -207,6 +207,7 @@ $lang['remove_product_message'] = 'Are you sure you want to remove %s?';
 $lang['add_final_price_button_txt'] = 'Add Project Price';
 $lang['view_final_price_button_txt'] = 'View Project Price';
 $lang['final_project_price_header'] = 'Final Project Price';
+$lang['send_email_to_customer_txt'] = 'Send Email';
 $lang['Evaluate_btn_txt'] = 'Calculate';
 $lang['room_count_set_txt'] = "Set";
 $lang['room_count_sets_txt'] = "Sets";

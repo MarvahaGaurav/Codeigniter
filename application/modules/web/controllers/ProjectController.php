@@ -299,7 +299,7 @@ class ProjectController extends BaseController
         return $rules;
     }
 
-    private function setEditValidationRule()
+    public function setEditValidationRule()
     {
         $rules =  [
             ['field' => 'project_number', 'label' => 'Project Number', 'rules' => 'trim'],
