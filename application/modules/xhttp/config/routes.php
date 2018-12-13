@@ -19,6 +19,7 @@ $route['xhttp/projects/rooms/add-price'] = 'ProjectRoomController/addRoomQuotati
 $route['xhttp/projects/rooms/add-quote-price'] = 'ProjectRoomController/addRoomQuotationByInstaller';
 $route['xhttp/projects/article/remove'] = 'ProjectProductController/removeProductArticle';
 $route['xhttp/projects/installer/price'] = 'ProjectPriceController/installerFinalPrice';
+$route['xhttp/projects/installer/quotePrice'] = 'ProjectPriceController/installerFinalQuotePrice';
 $route['xhttp/projects/rooms/decrement-count'] = 'ProjectRoomController/decrementRoomCount';
 $route['xhttp/projects/rooms/increment-count'] = 'ProjectRoomController/incrementRoomCount';
 $route['xhttp/projects/rooms/products/articles'] =  'ProjectProductController/searchProductArticlesByRoom';

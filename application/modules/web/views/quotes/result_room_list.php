@@ -5,8 +5,7 @@
         <ul class="breadcrumb">
         <li><a href="javascript:void(0)">Home</a></li>
             <li><a href="<?php echo base_url('home/quotes/awaiting') ?>">Awaiting Quotes</a></li>
-            <li><a href="<?php echo base_url('home/quotes/projects') ?>">Projects</a></li>
-            <li><a href="<?php echo base_url('home/quotes/projects/' . $projectId) ?>">Details</a></li>
+            <li><a href="<?php echo base_url('home/quotes/projects/' . $projectId.'/'.$request_id) ?>"> Project Details</a></li>
             <li class="active">Rooms</li>
         </ul>
         <!-- //breadcrumb -->
@@ -41,7 +40,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach($rooms as $key => $room) : ?>
+                    <?php foreach($rooms as $key => $room) : //pr($room)?>
                     <tr>
                         <td class="td-thumb text-nowrap">
                             <div class="d-flex">
@@ -68,7 +67,7 @@
                         </td>
                         <?php } ?>
                         <td class="op-semibold text-center">
-                        <a href="<?php echo base_url("/home/quotes/projects/view-result/" . encryptDecrypt($room['project_room_id'])) ?>" class="tb-view-list" title="View Results">View Results</a>
+                        <a href="<?php echo base_url("/home/quotes/projects/".$projectId.'/'.$request_id."/view-result/" . encryptDecrypt($room['project_room_id'])) ?>" class="tb-view-list" title="View Results">View Results</a>
                         </td>
                     </tr>
                     <?php endforeach ?>
@@ -111,7 +110,9 @@
             <div class="button-wrapper clearfix">
             
             <?php if (in_array((int)$userInfo['user_type'], [INSTALLER], true)) { ?>
-                <button class="col-md-2 btn-margin custom-btn save" id="add-price-installer-button" type="button" data-toggle="modal" data-target="#quotes-send-email"><?php echo $this->lang->line('send_email_to_customer_txt') ?></button>
+                <div class="request-quotation-btn-wrapper">
+                <button class="col-md-2 custom-btn save redirectable" data-redirect-to="<?php echo base_url('/home/quotes/projects/' . $projectId.'/'.$request_id) ?>" id="view-installer-button" type="button" >Submit</button>
+            </div>
             <?php } ?>
             
             </div>

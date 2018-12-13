@@ -25,7 +25,7 @@
 
         <!-- form wrapper -->
 
-        <?php echo form_open_multipart(base_url('home/quotes/projects/' . $projectId . '/edit'), array ('id' => 'add_project', 'name' => "add_project")) ?>
+        <?php echo form_open_multipart(base_url('home/quotes/projects/' . $projectId .'/'.$request_id. '/edit'), array ('id' => 'add_project', 'name' => "add_project")) ?>
         <div class="form-wrapper">
             <div class="row form-inline-wrapper">
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">

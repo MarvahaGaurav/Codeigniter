@@ -65,6 +65,7 @@
                     </thead>
                     <tbody>
                         <?php foreach ($quotations as $quotation) {
+                            
                             ?>
                         <tr>
                             <td class="op-semibold"><?php echo $quotation['name']  ?></td>
@@ -72,7 +73,7 @@
                             <td><?php echo strlen($quotation['address']) > 50?substr($quotation['address'], 0, 50) . '...':$quotation['address'] ?></td>
                             <td><?php echo convert_date_time_format('Y-m-d H:i:s', $quotation['request_created_at'], 'h:i A, M d,Y') ?></td>
                             <td class="op-semibold">
-                                <a href="<?php echo base_url("home/quotes/projects/" . encryptDecrypt($quotation['project_id'])) ?>" class="tb-view-list" title="View">
+                                <a href="<?php echo base_url("home/quotes/projects/" . encryptDecrypt($quotation['project_id'])."/".encryptDecrypt($quotation['request_id'])) ?>" class="tb-view-list" title="View">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                 </a>
                             </td>

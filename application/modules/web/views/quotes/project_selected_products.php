@@ -4,10 +4,9 @@
         <!-- breadcrumb -->
         <ul class="breadcrumb">
             <li><a href="javascript:void(0)">Home</a></li>
-            <li><a href="<?php echo base_url('home/projects') ?>">Projects</a></li>
-            <li><a href="<?php echo base_url('home/projects/' . $projectId) ?>">Details</a></li>
-            <li><a href="<?php echo base_url('home/projects/' . $projectId . '/levels') ?>">Levels</a></li>
-            <li><a href="<?php echo base_url('home/projects/' . $projectId . '/levels/' . $level .'/rooms') ?>">Rooms</a></li>
+            <li><a href="<?php echo base_url('home/projects/' . $projectId.'/'.$request_id) ?>">Project Details</a></li>
+            <li><a href="<?php echo base_url('home/projects/' . $projectId .'/'.$request_id. '/levels') ?>">Levels</a></li>
+            <li><a href="<?php echo base_url('home/projects/' . $projectId .'/'.$request_id. '/levels/' . $level .'/rooms') ?>">Rooms</a></li>
             <li class="active">Selected Products</li>
         </ul>
         <!-- //breadcrumb -->

@@ -45,7 +45,7 @@
                         <td class="op-semibold text-center"><?php echo $quoteCount ?> Quote(s)</td>
                         <?php } ?>
                         <td class="op-semibold">
-                            <a href="<?php echo base_url('home/quotes/projects/' . encryptDecrypt($project['project_id']) . '/edit') ?>" class="project-action"><i class="fa fa-pencil"></i></a>
+                            <a href="<?php echo base_url('home/quotes/projects/' . encryptDecrypt($project['project_id']) .'/'.encryptDecrypt($request_id). '/edit') ?>" class="project-action"><i class="fa fa-pencil"></i></a>
                             <?php if (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && $isRequested) { ?>
                             <a href="<?php echo base_url('home/projects/' . $projectId . '/quotations') ?>" class="project-action"><i class="fa fa-quote-right"></i></a>
                             <?php } ?>
@@ -116,11 +116,11 @@
                      <td align="center" class="text-center"><?php echo (int)$level['room_count'] ?></td>
                      <td class="text-center action">
                         <?php if ((bool)$level['active']) { ?>
-                        <a href="<?php echo base_url("/home/quotes/projects/{$projectId}/levels/{$level['level']}/rooms") ?>" title="<?php echo $this->lang->line('view') ?>"><i class="fa fa-eye"></i></a>  
+                        <a href="<?php echo base_url("/home/quotes/projects/{$projectId}/{$request_id}/levels/{$level['level']}/rooms") ?>" title="<?php echo $this->lang->line('view') ?>"><i class="fa fa-eye"></i></a>  
                         <?php } ?>
                         
                         <?php if (((in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && empty($quotationRequest)) ||
-                           (in_array((int)$userInfo['user_type'], [INSTALLER], true) && !(bool)$hasAddedFinalPrice) ||
+                           (in_array((int)$userInfo['user_type'], [INSTALLER], true) && !(bool)$hasFinalQuotePriceAdded) ||
                            in_array((int)$userInfo['user_type'], [WHOLESALER, ELECTRICAL_PLANNER], true)) &&
                            ((bool)$level['active'] && count($active_levels) > 1 && (int)$level['room_count'] > 0)
                            ) { ?>
@@ -134,22 +134,26 @@
          </div>
         
 
-            <?php if (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && empty($quotationRequest)) { ?>
-            <?php if (!empty($projectLevels) && $all_levels_done) { ?>
+            
+            
+            <?php if (in_array((int)$userInfo['user_type'], [INSTALLER], true) && !empty($projectLevels) && (bool)$all_levels_done && (bool)$hasAddedAllPrice) { ?>
             <div class="request-quotation-btn-wrapper">
-                <button class="col-md-2 custom-btn save redirectable" data-redirect-to="<?php echo base_url('/home/projects/' . $projectId . '/quotation/installers') ?>" id="view-installer-button" type="button" <?php echo (bool)$all_levels_done?"":"disabled" ?>>View Installers</button>
-            </div>
-            <?php } ?>
-            <?php } ?>
-            <!-- <?php if (in_array((int)$userInfo['user_type'], [INSTALLER], true) && !empty($projectLevels) && (bool)$all_levels_done && (bool)$hasAddedAllPrice) { ?>
-            <div class="request-quotation-btn-wrapper">
-                <?php if (!(bool)$hasAddedFinalPrice) { ?>
+                <?php if (!(bool)$hasFinalQuotePriceAdded) { ?>
                 <button class="col-md-2 custom-btn save" id="add-price-installer-button" type="button" data-toggle="modal" data-target="#project-final-price-modal"><?php echo $this->lang->line('add_final_price_button_txt') ?></button>
-                <?php } else if ((bool)$hasAddedFinalPrice) {?>
+                <?php } else if ((bool)$hasFinalQuotePriceAdded) {?>
                 <button class="col-md-2 custom-btn save" id="add-price-installer-button" type="button" data-toggle="modal" data-target="#project-final-price-modal"><?php echo $this->lang->line('view_final_price_button_txt') ?></button>
                 <?php }?>
+
+                <?php if((bool)$hasFinalQuotePriceAdded){ ?>
+                    <button class="col-md-2 custom-btn save" id="send-email-button" type="button" data-toggle="modal" data-target="#send-email-to-customer"><?php echo $this->lang->line('send_email_to_customer_txt') ?></button>
+
+                <?php } ?>
+
+
             </div>
-            <?php }?> -->
+            <?php }?>
+
+
         <!-- //Project list table -->
 
         <?php if (empty($rooms)) { ?>
@@ -161,8 +165,11 @@
         </div> -->
         <?php } ?>
 
+        
+
     </div>
 </div>
+
 
 <div id="level-clone-modal" class="modal fade" role="dialog">
   <div class="modal-dialog modal-custom">
@@ -202,6 +209,7 @@
   </div>
 </div>
 
+<!------add final price model---->
 <?php if (in_array((int)$userInfo['user_type'], [INSTALLER], true)) { ?>
 <div id="project-final-price-modal" class="modal fade" role="dialog">
     <div class="modal-dialog modal-custom">
@@ -209,7 +217,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <div class="text-center">
-                    <h4 class="modal-title"><?php echo (bool)$hasAddedFinalPrice?$this->lang->line('final_project_price_header'):$this->lang->line('add_final_price_button_txt') ?></h4>
+                    <h4 class="modal-title"><?php echo (bool)$hasFinalQuotePriceAdded?$this->lang->line('final_project_price_header'):$this->lang->line('add_final_price_button_txt') ?></h4>
                 </div>
             </div>
             <div class="modal-body">
@@ -231,13 +239,13 @@
                 <div class="form-group">
                     <label for="additional_product_charges" class="priceTxt">Additional Product Charges</label>
                     <div class="inputField">
-                        <input type="text" <?php echo (bool)$hasAddedFinalPrice?'disabled="disabled"':'name="additional_product_charges"' ?> class="modal-price-fields restrict-characters number-only-field" data-restrict-to="15" id="additional_product_charges" value="<?php echo isset($projectRoomPrice['additional_product_charges'])?$projectRoomPrice['additional_product_charges']:'' ?>">
+                        <input type="text" <?php echo (bool)$hasFinalQuotePriceAdded?'disabled="disabled"':'name="additional_product_charges"' ?> class="modal-price-fields restrict-characters number-only-field" data-restrict-to="15" id="additional_product_charges" value="<?php echo isset($projectRoomPrice['additional_product_charges'])?$projectRoomPrice['additional_product_charges']:'' ?>">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="discount" class="priceTxt">Discount&nbsp;(%)</label>
                     <div class="inputField">
-                        <input type="text" <?php echo (bool)$hasAddedFinalPrice?'disabled="disabled"':'name="discount"' ?> class="modal-price-fields restrict-characters number-only-field" id="discount" data-restrict-to="15" value="<?php echo isset($projectRoomPrice['discount'])?$projectRoomPrice['discount']:'' ?>">
+                        <input type="text" <?php echo (bool)$hasFinalQuotePriceAdded?'disabled="disabled"':'name="discount"' ?> class="modal-price-fields restrict-characters number-only-field" id="discount" data-restrict-to="15" value="<?php echo isset($projectRoomPrice['discount'])?$projectRoomPrice['discount']:'' ?>">
                     </div>
                 </div>
                 <hr>
@@ -253,14 +261,15 @@
                     <div class="inputField">
                         <span class="total"><?php echo isset($projectRoomPrice['total'])?$projectRoomPrice['total']:0.00 ?></span>
                     </div>
-                </div>                
+                </div>   
+                <input type="hidden" name="request_id" value=<?php echo $request_id; ?>>              
                 </div>
                 <?php echo form_close() ?>
             </div>
-            <?php if (!(bool)$hasAddedFinalPrice) { ?>
+            <?php if (!(bool)$hasFinalQuotePriceAdded) { ?>
             <div class="modal-footer">
                 <div class="text-center button-wrapper">
-                    <button type="button" class="custom-btn btn-margin btn-width save" data-csrf='<?php echo $csrf ?>' data-text="<?php echo $this->lang->line('select') ?>" id="final-price-submit" data-clone=""><?php echo $this->lang->line('add_final_price_button_txt') ?></button>
+                    <button type="button" class="custom-btn btn-margin btn-width save" data-csrf='<?php echo $csrf ?>' data-text="<?php echo $this->lang->line('select') ?>" id="final-quote-price-submit" data-clone=""><?php echo $this->lang->line('add_final_price_button_txt') ?></button>
                 </div>
             </div>
             <?php }?>
@@ -269,3 +278,40 @@
     </div>
 </div>
 <?php } ?>
+
+<!------send email to customer modal--->
+
+<div id="send-email-to-customer" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-custom">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <div class="text-center">
+                    <h4 class="modal-title"><?php echo (bool)$hasFinalQuotePriceAdded?$this->lang->line('send_email_to_customer_txt'):$this->lang->line('add_final_price_button_txt') ?></h4>
+                </div>
+            </div>
+            <div class="modal-body">
+                <?php echo form_open('', ['id' => 'installer-submit-price', 'class' => 'form-horizontal', 'role' => 'form']) ?>
+                <div class="projectPric">
+                <div class="form-group">
+                        	
+                    <label for="contact-email" class="col-sm-6 control-label">E-mail:</label>
+                            <div class="col-sm-10">
+                            	<input type="email" name="email" class="form-control" id="contact-email" placeholder="you@example.com">
+                            </div>
+                        </div>            
+                </div>
+                <?php echo form_close() ?>
+
+                <div class="text-center button-wrapper">
+                    <button type="button" class="custom-btn btn-margin btn-width save" data-csrf='<?php echo $csrf ?>' data-text="<?php echo $this->lang->line('select') ?>" id="send-email-to-customer" data-clone=""><?php echo $this->lang->line('send_email') ?></button>
+                </div>
+
+            </div>
+            
+            
+           
+        </div>
+
+    </div>
+</div>
