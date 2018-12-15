@@ -62,9 +62,13 @@ requirejs(
       var self = this,
         $self = $(this),
         $installerSubmitPrice = $("#installer-submit-price");
+        
 
       var formData = getFormData($installerSubmitPrice);
       var text = $self.text();
+
+      
+  
       $.ajax({
         url: window.location.protocol + "//" + window.location.host + "/xhttp/projects/installer/quotePrice",
         method: "POST",
@@ -76,7 +80,6 @@ requirejs(
         },
         success: function(response) {
           if (response.success) {
-              
               window.location.reload();
           }
         },
@@ -89,14 +92,21 @@ requirejs(
     $("#send-email-to-customer").on("click", function () { 
       var self = this,
         $self = $(this),
-        $installerSubmitPrice = $("#email_send");
+        $installerSubmitData = $("#installer-send-email");
 
-        console.log($installerSubmitPrice);
+        //console.log($installerSubmitData);
 
-      var formData = getFormData($installerSubmitPrice);
+      var formData = getFormData($installerSubmitData);
       var text = $self.text();
+      
+      var email = $('contact-email').val();
+
+      if(formData.email=='') {
+        console.log("please enter email");
+        return false;
+      }
       $.ajax({
-        url: window.location.protocol + "//" + window.location.host + "/xhttp/quotes/sendmail",
+        url: window.location.protocol + "//" + window.location.host + "/xhttp/projects/installer/sendmail",
         method: "POST",
         dataType: "json",
         data: formData,
@@ -106,11 +116,12 @@ requirejs(
         },
         success: function(response) {
           if (response.success) {
-              
-              window.location.reload();
+              //window.location.reload();
+              window.location.href=window.location.protocol + "//" + window.location.host+"/home/quotes/awaiting";
           }
         },
         error: function (error) {
+          console.log(error);
           $self.html(text);
         }
       })

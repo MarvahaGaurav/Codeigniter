@@ -27,6 +27,7 @@ trait QuickCalc {
             "uldUri" => $uld
         ];
 
+        
         $response = hitCulrQuickCal($request_data);
 
         return $response;
