@@ -120,7 +120,7 @@ class Company extends BaseModel
 
     public function companyDetails($companyId, $params = [])
     {
-        $query = "company_master.company_id, company_name, company_image,
+        $query = "company_master.company_id, company_name, company_image, user.user_id,
             company_master.company_id, country.name as country, city.name as city, user.email,
             user.prm_user_countrycode, user.alt_user_countrycode, user.phone, user.alt_userphone";
 

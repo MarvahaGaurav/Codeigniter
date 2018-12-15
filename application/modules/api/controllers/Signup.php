@@ -2,9 +2,10 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 require APPPATH . '/libraries/REST_Controller.php';
-
+require APPPATH . '/libraries/Traits/Notifier.php';
 class Signup extends REST_Controller
 {
+    use Notifier;
 
     /**
      * Datatime string
@@ -419,18 +420,13 @@ class Signup extends REST_Controller
                 }
                 $postDataArr['user_id'] = $userId;
                 
-                if ($postDataArr['is_owner'] == '1') {
+                if ($postDataArr['is_owner'] == ROLE_EMPLOYEE) {
                     $whereArr['where'] = ['is_owner' => 2, 'company_id' => $signupArr['company_id']];
                     $companyowner_info = $this->Common_model->fetch_data('ai_user', ['user_id'], $whereArr, true);
                     if ($companyowner_info) {
                         // adding in notification master table
                         $requestedbyname = $postDataArr['first_name'].' '.$postDataArr['middle_name'].' '.$postDataArr['last_name'];
-                        $msg = "" . $requestedbyname . " has requested to join your company as employee.";
-                        $notifArr['sender_id'] = $userId;
-                        $notifArr['reciever_id'] = $companyowner_info['user_id'];
-                        $notifArr['message'] = $msg;
-                        $notifArr['msg_type'] = 1;
-                        $notifArr['user_type'] = $postDataArr['user_type'];
+                        $this->notifyEmployeePermission($userId, $companyowner_info['user_id']);
                         $notificationId = $this->Common_model->insert_single('users_notification_master', $notifArr);
 
                         // adding in employee request tabel

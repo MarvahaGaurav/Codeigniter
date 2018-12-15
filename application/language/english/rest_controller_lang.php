@@ -45,9 +45,11 @@ $lang['no_data_found'] = 'No Record Found';
 $lang['invalid_request_id'] = 'Invalid request id to proceed';
 $lang['profile_update_success'] = 'Profile Updated Successfully!';
 $lang['invalid_request'] = 'Something went wrong with your request';
+$lang['account_no_longer_exists'] = 'Account no longer exists';
 /*
  * Friend Section language
  */
+
 $lang['req_already_sent'] = 'You have already send request to this user';
 $lang['req_already_recieved'] = 'You have already received request from this user';
 $lang['request_sent'] = 'Request sent successfully';
@@ -199,6 +201,19 @@ $lang['company_not_found'] =  'Company not found';
 $lang['not_received_this_request'] = 'You have not received this request';
 $lang['invalid_project'] = 'Provided project is invalid';
 $lang['product_removed'] = 'Product Removed';
-$lang['add_rooms'] = 'Add rooms'; 
+$lang['add_rooms'] = 'Add rooms';
 $lang['tco_already_done'] = 'TCO already done for this room';
 $lang['project_deleted'] = 'Your project has been deleted';
+$lang['project_room_required'] = 'Project Room is requried';
+$lang['request_sent_to_company'] = "A request has been sent to %s, you will be notified once you've been approved.";
+$lang['room_products_fetched'] = 'Products for your room retrieved';
+
+$lang['notification_employee_request_received'] = '%s has requested to join your company';
+$lang['notification_received_quotes'] = 'You have received a quotation request from %s';
+$lang['notification_permission_granted'] = 'Notification granted permission';
+$lang['notification_send_quotes'] = 'You have received a quotation from %s';
+$lang['notification_accept_quote'] = 'Your quote has been accepted by %s';
+$lang['notification_edit_quote_price'] = 'An updated quote has been provided';
+$lang['no_notification_found'] = 'You have no notifications';
+$lang['notification_fetched'] = 'Notifications fetched';
+$lang['no_request_found'] = 'No request found';

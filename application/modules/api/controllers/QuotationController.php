@@ -2,9 +2,11 @@
 defined("BASEPATH") or exit("No direct script access allowed");
 
 require 'BaseController.php';
+require APPPATH . '/libraries/Traits/Notifier.php';
 
 class QuotationController extends BaseController
 {
+    use Notifier;
     /**
      * Request Data
      *
@@ -92,59 +94,63 @@ class QuotationController extends BaseController
 
             $this->requestData = trim_input_parameters($this->requestData, false);
 
+            $requestData = $this->UtilModel->selectQuery('project_requests.id, user_id, project_id', 'project_requests', [
+                'join' => ['projects' => 'projects.id=project_requests.project_id'],
+                'where' => ['project_requests.id' => $this->requestData['request_id']], 'single_row' => true
+            ]);
+
+            if (empty($requestData)) {
+                $this->response([
+                    'code' => HTTP_NOT_FOUND,
+                    'msg' => $this->lang->line('no_request_found')
+                ]);
+            }
+
             $check = $this->UtilModel->selectQuery('id', 'project_quotations', [
                 'where' => ['request_id' => $this->requestData['request_id'], 'company_id' => $user_data['company_id']],
                 'single_row' => true
             ]);
-            
+
             if (!empty($check)) {
                 $this->response([
                     'code' => HTTP_CONFLICT,
                     'msg' => $this->lang->line('quotation_already_provided')
                 ]);
             }
-            
+
             $this->load->model('ProjectRooms');
             $params['request_id'] = $this->requestData['request_id'];
             $params['company_id'] = $user_data['company_id'];
             $roomsData = $this->ProjectRooms->getQuotedRooms($params);
-            
+
             $roomDataCheck = array_filter($roomsData, function ($data) {
                 return $data['empty_room_quotations'] === "empty";
             });
-            
+
             if (!empty($roomDataCheck)) {
                 $this->response([
                     'code' => HTTP_BAD_REQUEST,
                     'msg' => $this->lang->line('provide_quotations_for_all_rooms')
                 ]);
             }
-           
-            $quotationData = $this->UtilModel->selectQuery('id', 'project_quotations', [
-                'where' => ['request_id' => $this->requestData['request_id'], 'company_id' => $user_data['company_id']]
-            ]);
 
-            if (!empty($quotationData)) {
-                $this->response([
-                    'code' => HTTP_BAD_REQUEST,
-                    'msg' => $this->lang->line('quoted_by_company')
-                ]);
-            }
-            
+
             $quotationId = $this->UtilModel->insertTableData([
                 'language_code' => $language_code,
                 'request_id' => $this->requestData['request_id'],
                 'company_id' => $user_data['company_id'],
                 'user_id' => $user_data['user_id'],
                 'additional_product_charges' =>
-                    isset($this->requestData['additional_product_charges'])?(double)$this->requestData['additional_product_charges']:0.00,
+                    isset($this->requestData['additional_product_charges']) ? (double)$this->requestData['additional_product_charges'] : 0.00,
                 'discount' =>
-                    isset($this->requestData['discount'])?(double)$this->requestData['discount']:0.00,
+                    isset($this->requestData['discount']) ? (double)$this->requestData['discount'] : 0.00,
                 'created_at' => $this->datetime,
                 'created_at_timestamp' => time(),
                 'updated_at' => $this->datetime,
                 'updated_at_timestamp' => time()
             ], 'project_quotations', true);
+
+            $this->notifySendQuote($user_data['user_id'], $requestData['user_id'], $requestData['project_id']);
 
             $this->response([
                 'code' => HTTP_OK,
@@ -226,7 +232,7 @@ class QuotationController extends BaseController
 
             $this->response([
                 'code' => HTTP_OK,
-                'msg' => $this->lang->line('quotes_deleted') 
+                'msg' => $this->lang->line('quotes_deleted')
             ]);
         } catch (\Exception $error) {
             $this->db->trans_rollback();
@@ -297,7 +303,7 @@ class QuotationController extends BaseController
 
             $this->load->model("ProjectQuotation");
             $params['offset'] =
-                isset($this->requestData['offset'])&&is_numeric($this->requestData['offset'])&&(int)$this->requestData['offset'] > 0 ? (int)$this->requestData['offset']: 0;
+                isset($this->requestData['offset']) && is_numeric($this->requestData['offset']) && (int)$this->requestData['offset'] > 0 ? (int)$this->requestData['offset'] : 0;
             $params['limit'] = API_RECORDS_PER_PAGE;
 
             if (isset($this->requestData['request_id'])) {
@@ -331,13 +337,13 @@ class QuotationController extends BaseController
                 $quotation['quotation_price']['accessory_product_charge'] = 0.00;
                 $quotation['quotation_price']['total'] = 0.00;
                 $quotation['quotation_price']['total'] = $quotation['quotation_price']['main_product_charge'] +
-                                                    $quotation['quotation_price']['accessory_product_charge'] +
-                                                    get_percentage(
-                                                        $quotation['quotation_price']['price_per_luminaries'] +
-                                                        $quotation['quotation_price']['installation_charges'] +
-                                                        $quotation['quotation_price']['additional_product_charges'],
-                                                        $quotation['quotation_price']['discount']
-                                                    );
+                    $quotation['quotation_price']['accessory_product_charge'] +
+                    get_percentage(
+                    $quotation['quotation_price']['price_per_luminaries'] +
+                        $quotation['quotation_price']['installation_charges'] +
+                        $quotation['quotation_price']['additional_product_charges'],
+                    $quotation['quotation_price']['discount']
+                );
 
                 unset($quotation['discount'], $quotation['additional_product_charges']);
                 return $quotation;
@@ -435,6 +441,19 @@ class QuotationController extends BaseController
             $this->validationRun();
 
             $this->db->trans_begin();
+
+            $requestData = $this->UtilModel->selectQuery('project_requests.id, user_id, project_id', 'project_requests', [
+                'join' => ['projects' => 'projects.id=project_requests.project_id'],
+                'where' => ['project_requests.id' => $this->requestData['request_id']], 'single_row' => true
+            ]);
+
+            if (empty($requestData)) {
+                $this->response([
+                    'code' => HTTP_NOT_FOUND,
+                    'msg' => $this->lang->line('no_request_found')
+                ]);
+            }
+
             $message = $this->lang->line('quotation_accpeted');
             if ((int)$this->requestData['type'] === CUSTOMER_QUOTATION_APPROVE) {
                 $this->UtilModel->updateTableData([
@@ -456,6 +475,8 @@ class QuotationController extends BaseController
                     'id !=' => $this->requestData['quotation_id'],
                     'request_id' => $this->requestData['request_id']
                 ]);
+
+                $this->notifyAcceptedQuotes($user_data['user_id'], $this->requestData['quotation_id'], $requestData['project_id']);
             } elseif ((int)$this->requestData['type'] === CUSTOMER_QUOTATION_REJECT) {
                 $message = $this->lang->line('quotation_rejected');
 
@@ -465,7 +486,7 @@ class QuotationController extends BaseController
                     'id' => $this->requestData['quotation_id']
                 ]);
             }
-            
+
             $this->db->trans_commit();
             $this->response([
                 'code' => HTTP_OK,
@@ -566,11 +587,11 @@ class QuotationController extends BaseController
                 'id',
                 'project_room_quotations',
                 [
-                'where' => [
-                    'company_id' => $user_data['company_id'],
-                    'project_room_id' => $this->requestData['project_room_id']
-                ],
-                'single_row' => true
+                    'where' => [
+                        'company_id' => $user_data['company_id'],
+                        'project_room_id' => $this->requestData['project_room_id']
+                    ],
+                    'single_row' => true
                 ]
             );
 
@@ -682,7 +703,7 @@ class QuotationController extends BaseController
             $this->validationRun();
 
             $this->requestData = trim_input_parameters($this->requestData);
-            
+
             $roomQuotationData = $this->UtilModel->selectQuery('id', 'project_room_quotations', [
                 'where' => ['id' => $this->requestData['room_quotation_id']],
                 'single_row' => true
@@ -721,16 +742,16 @@ class QuotationController extends BaseController
             $this->UtilModel->updateTableData($updateData, 'project_room_quotations', [
                 'id' => $this->requestData['room_quotation_id']
             ]);
-            
+
             $priceData = $this->UtilModel->selectQuery(
                 'id as room_quotation_id, project_room_id, user_id, company_id,price_per_luminaries,
                 installation_charges,discount_price,created_at, created_at_timestamp',
                 'project_room_quotations',
                 [
-                'where' => [
-                    'id' => $this->requestData['room_quotation_id']
-                ],
-                'single_row' => true
+                    'where' => [
+                        'id' => $this->requestData['room_quotation_id']
+                    ],
+                    'single_row' => true
                 ]
             );
 
@@ -894,7 +915,7 @@ class QuotationController extends BaseController
             ]
         ]);
     }
-    
+
     /**
      * Validate room quotation edit
      *

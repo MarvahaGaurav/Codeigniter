@@ -15,8 +15,6 @@ class Project extends BaseModel
         $this->tableName = "projects";
     }
 
-
-
     public function save_project(array $data)
     {
         $this->db->insert($this->tableName, $data);
@@ -48,6 +46,12 @@ class Project extends BaseModel
         if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
             foreach ($params['where'] as $tableColumn => $searchValue) {
                 $this->db->where($tableColumn, $searchValue);
+            }
+        }
+
+        if (isset($params['like']) && is_array($params['like']) && !empty($params['like'] ) ) {
+            foreach ($params['like'] as $tableColumn => $searchValue) {
+                $this->db->like($tableColumn, $searchValue);
             }
         }
 

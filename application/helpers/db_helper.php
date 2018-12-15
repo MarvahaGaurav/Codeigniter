@@ -13,7 +13,7 @@ if (!function_exists('getDataWith')) {
      * @param string $childField
      * @return array
      */
-    function getDataWith($parentArray, $childArray, $parentMatchField, $childMatchField, $outputField = '', $childField = '')
+    function getDataWith($parentArray, $childArray, $parentMatchField, $childMatchField, $outputField = '', $childField = '', $getFirstElement = false)
     {
         $tempArray = [];
         foreach ($childArray as $value) {
@@ -35,6 +35,9 @@ if (!function_exists('getDataWith')) {
         foreach ($parentArray as $key => $value) {
             if (isset($tempArray[$value[$parentMatchField]])) {
                 $parentArray[$key][$outputField] = $tempArray[$value[$parentMatchField]];
+                if ((bool)$getFirstElement) {
+                    $parentArray[$key][$outputField] = array_shift($parentArray[$key][$outputField]);
+                }
             } else {
                 $parentArray[$key][$outputField] = [];
             }

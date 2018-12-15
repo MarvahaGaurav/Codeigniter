@@ -2,12 +2,15 @@
 defined("BASEPATH") or exit("No direct script access allowed");
 
 require 'BaseController.php';
-require  APPPATH . '/libraries/Traits/ProjectDelete.php';
+require APPPATH . '/libraries/Traits/ProjectDelete.php';
+require APPPATH . '/libraries/Traits/ProjectLevelEdit.php';
+require APPPATH . '/libraries/Traits/Notifier.php';
+
 
 class ProjectController extends BaseController
 {
 
-    use ProjectDelete;
+    use ProjectDelete, ProjectLevelEdit, Notifier;
     /**
      * Request Data
      *
@@ -147,14 +150,14 @@ class ProjectController extends BaseController
             if (in_array((int)$user_data['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], true)) {
                 $project['company_id'] = $user_data['company_id'];
             }
-            
+
             if ((int)$user_data['user_type'] === INSTALLER && (int)$user_data['is_owner'] === ROLE_OWNER && isset($this->requestData['installer_id'])) {
                 $project['installer_id'] = $this->requestData['installer_id'];
             }
 
             $this->db->trans_begin();
             $projectId = $this->UtilModel->insertTableData($project, 'projects', true);
-            
+
             $levelsCount = (int)$this->requestData['levels'];
             $levelsData = [];
             foreach (range(1, $levelsCount) as $key => $level) {
@@ -163,9 +166,9 @@ class ProjectController extends BaseController
                     'level' => $level
                 ];
             }
-            
+
             $this->UtilModel->insertBatch('project_levels', $levelsData);
-            
+
             $this->db->trans_commit();
             $this->response([
                 'code' => HTTP_OK,
@@ -204,7 +207,7 @@ class ProjectController extends BaseController
             $this->requestData = $this->delete();
 
             $this->validateDeleteProject();
-            
+
             $this->validationRun();
 
             $this->projectId = $this->requestData['project_id'];
@@ -326,14 +329,14 @@ class ProjectController extends BaseController
             $this->user = $user_data;
 
             $this->userTypeHandling([INSTALLER, PRIVATE_USER, BUSINESS_USER, WHOLESALER, ELECTRICAL_PLANNER]);
-            
+
             $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['project_edit']);
 
             $this->requestData = $this->put();
 
             $this->validateProject(true);
 
-            if (! (bool) $this->form_validation->run()) {
+            if (!(bool)$this->form_validation->run()) {
                 $errorMessage = $this->form_validation->error_array();
                 $this->response([
                     'code' => HTTP_UNPROCESSABLE_ENTITY,
@@ -343,7 +346,7 @@ class ProjectController extends BaseController
 
             $this->requestData = trim_input_parameters($this->requestData, false);
 
-            $projectData = $this->UtilModel->selectQuery('user_id, company_id', 'projects', [
+            $projectData = $this->UtilModel->selectQuery('id, user_id, company_id, levels', 'projects', [
                 'where' => ['id' => $this->requestData['project_id']],
                 'single_row' => true
             ]);
@@ -354,7 +357,7 @@ class ProjectController extends BaseController
                     'msg' => $this->lang->line('no_data_found')
                 ]);
             }
-            
+
             $isOwnProject = false;
             if (in_array((int)$user_data['user_type'], [PRIVATE_USER, BUSINESS_USER], true)) {
                 $isOwnProject = (int)$user_data['user_id'] === (int)$projectData['user_id'];
@@ -373,13 +376,19 @@ class ProjectController extends BaseController
                 'user_id' => $user_data['user_id'],
                 'number' => $this->requestData['number'],
                 'name' => $this->requestData['name'],
-                'levels' => $this->requestData['levels'],
+                // 'levels' => $this->requestData['levels'],
                 'address' => $this->requestData['address'],
                 'lat' => $this->requestData['lat'],
                 'lng' => $this->requestData['lng'],
                 'updated_at' => $this->datetime,
                 'updated_at_timestamp' => time()
             ];
+
+            $this->db->trans_begin();
+            if (isset($this->requestData['levels'])) {
+                $project['levels'] = (int)$this->requestData['levels'];
+                $this->editLevel((int)$projectData['levels'], (int)$this->requestData['levels'], (int)$projectData['id'], (int)$user_data['user_type']);
+            }
 
             if ((int)$user_data['user_type'] === INSTALLER && (int)$user_data['is_owner'] === ROLE_OWNER && isset($this->requestData['installer_id'])) {
                 $project['installer_id'] = $this->requestData['installer_id'];
@@ -390,6 +399,7 @@ class ProjectController extends BaseController
             ]);
 
             $project['project_id'] = $this->requestData['project_id'];
+            $this->db->trans_commit();
 
             $this->response([
                 'code' => HTTP_OK,
@@ -397,6 +407,7 @@ class ProjectController extends BaseController
                 'data' => $project
             ]);
         } catch (\Exception $error) {
+            $this->db->trans_rollback();
             $this->response([
                 'code' => HTTP_INTERNAL_SERVER_ERROR,
                 'api_code_result' => 'INTERNAL_SERVER_ERROR',
@@ -461,17 +472,16 @@ class ProjectController extends BaseController
             $this->user = $user_data;
 
             $this->userTypeHandling([PRIVATE_USER, BUSINESS_USER]);
-            
+
             $this->requestData = $this->post();
-            
+
             $this->validateSendQuotation();
 
             $this->validationRun();
 
             if (!is_array($this->requestData['company_id']) ||
                 empty($this->requestData['company_id']) ||
-                count($this->requestData['company_id']) > MAXIMUM_REQUEST_COUNTS_PER_PROJECT
-            ) {
+                count($this->requestData['company_id']) > MAXIMUM_REQUEST_COUNTS_PER_PROJECT) {
                 $this->response([
                     'code' => HTTP_BAD_REQUEST,
                     'msg' => $this->lang->line('invalid_request')
@@ -521,7 +531,10 @@ class ProjectController extends BaseController
 
             $this->UtilModel->insertBatch('project_request_installers', $requestData);
 
+            $this->notifyQuotationRequest($user_data['user_id'], $this->requestData['company_id'], $this->requestData['project_id']);
+
             $this->db->trans_commit();
+
             $this->response([
                 'code' => HTTP_OK,
                 'msg' => $this->lang->line('quotation_sent')
@@ -529,11 +542,84 @@ class ProjectController extends BaseController
         } catch (\Exception $error) {
             $this->db->trans_rollback();
             $this->response([
-            'code' => HTTP_INTERNAL_SERVER_ERROR,
-            'api_code_result' => 'INTERNAL_SERVER_ERROR',
-            'msg' => $this->lang->line("internal_server_error")
+                'code' => HTTP_INTERNAL_SERVER_ERROR,
+                'api_code_result' => 'INTERNAL_SERVER_ERROR',
+                'msg' => $this->lang->line("internal_server_error")
             ]);
         }
+    }
+
+    public function fetchRoomproducts_get()
+    {
+        try {
+            $user_data = $this->accessTokenCheck('u.user_type, is_owner, u.company_id');
+            $language_code = $this->langcode_validate();
+
+            $this->user = $user_data;
+
+            $this->userTypeHandling([INSTALLER, PRIVATE_USER, BUSINESS_USER, WHOLESALER, ELECTRICAL_PLANNER]);
+
+            $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['project_view']);
+
+            $this->requestData = $this->get();
+
+            $this->validateFetchRoomProducts();
+
+            $this->validationRun();
+
+            $params['offset'] =
+                isset($this->requestData['offset']) && is_numeric($this->requestData['offset']) && (int)$this->requestData['offset'] > 0 ? (int)$this->requestData['offset'] : 0;
+            $params['limit'] = API_RECORDS_PER_PAGE;
+
+            $this->load->model(['ProjectRoomProducts', 'ProductMountingTypes']);
+            $params['where']['project_room_id'] = $this->requestData['project_room_id'];
+            $roomProducts = $this->ProjectRoomProducts->get($params);
+            $productCount = (int)$roomProducts['data'];
+            $roomProducts = $roomProducts['data'];
+
+            $productIds = array_column($roomProducts, 'product_id');
+            $productMountingTypeData = $this->ProductMountingTypes->get($productIds);
+            $roomProducts = getDataWith($roomProducts, $productMountingTypeData, 'product_id', 'product_id', 'mounting_type', 'type');
+
+            $hasMorePages = false;
+            $nextCount = -1;
+
+            if ((int)$productCount > ($params['offset'] + API_RECORDS_PER_PAGE)) {
+                $hasMorePages = true;
+                $nextCount = $params['offset'] + API_RECORDS_PER_PAGE;
+            }
+
+            $response = [
+                'code' => HTTP_OK,
+                'msg' => $this->lang->line('room_products_fetched'),
+                'data' => $roomProducts,
+                'total' => $productCount,
+                'has_more_pages' => $hasMorePages,
+                'per_page_count' => $params['limit'],
+                'next_count' => $nextCount
+            ];
+            
+            $this->response($response);
+        } catch (\Exception $error) {
+            $this->response([
+                'code' => HTTP_INTERNAL_SERVER_ERROR,
+                'api_code_result' => 'INTERNAL_SERVER_ERROR',
+                'msg' => $this->lang->line("internal_server_error")
+            ]);
+        }
+    }
+
+    private function validateFetchRoomProducts()
+    {
+        $this->form_validation->set_data($this->requestData);
+
+        $this->form_validation->set_rules([
+            [
+                'label' => 'Project Room Id',
+                'field' => 'project_room_id',
+                'rules' => 'trim|required|is_natural_no_zero'
+            ]
+        ]);
     }
 
     /**
@@ -590,10 +676,10 @@ class ProjectController extends BaseController
             $this->load->model("Project");
             $get = $this->get();
             $params['offset'] =
-                isset($get['offset'])&&is_numeric($get['offset'])&&(int)$get['offset'] > 0 ? (int)$get['offset']: 0;
+                isset($get['offset']) && is_numeric($get['offset']) && (int)$get['offset'] > 0 ? (int)$get['offset'] : 0;
             $params['limit'] = API_RECORDS_PER_PAGE;
-            
-            if (isset($get['search'])&&is_string($get['search'])&&strlen(trim($get['search'])) > 0) {
+
+            if (isset($get['search']) && is_string($get['search']) && strlen(trim($get['search'])) > 0) {
                 $search = trim($get['search']);
                 $params['where']['name LIKE'] = "%{$search}%";
             }
@@ -602,19 +688,18 @@ class ProjectController extends BaseController
                 $this->load->helper('common');
                 $permissions = retrieveEmployeePermission($this->user['user_id']);
             }
-            
+
             if (in_array((int)$user_data['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], true)) {
                 if ((int)$user_data['user_type'] === INSTALLER &&
-                 (int)$user_data['is_owner'] === ROLE_EMPLOYEE &&
-                 isset($permissions['project_view']) &&
-                 (int)$permissions['project_view'] === 1
-                ) {
+                    (int)$user_data['is_owner'] === ROLE_EMPLOYEE &&
+                    isset($permissions['project_view']) &&
+                    (int)$permissions['project_view'] === 1) {
                     $params['where']['company_id'] = $user_data['company_id'];
-                } if ((int)$user_data['user_type'] === INSTALLER &&
-                (int)$user_data['is_owner'] === ROLE_EMPLOYEE &&
-                isset($permissions['project_view']) &&
-                (int)$permissions['project_view'] === 0
-                ) {
+                }
+                if ((int)$user_data['user_type'] === INSTALLER &&
+                    (int)$user_data['is_owner'] === ROLE_EMPLOYEE &&
+                    isset($permissions['project_view']) &&
+                    (int)$permissions['project_view'] === 0) {
                     $params['where']['installer_id'] = $user_data['user_id'];
                 } else {
                     $params['where']['company_id'] = $user_data['company_id'];
@@ -708,23 +793,23 @@ class ProjectController extends BaseController
             $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['project_view']);
 
             $this->requestData = $this->get();
-            
+
             $this->validateProductDetails();
 
-            if (! (bool) $this->form_validation->run()) {
+            if (!(bool)$this->form_validation->run()) {
                 $errorMessage = $this->form_validation->error_array();
                 $this->response([
                     'code' => HTTP_UNPROCESSABLE_ENTITY,
                     'msg' => array_shift($errorMessage),
                 ]);
             }
-            
+
             $this->load->model("Project");
 
             $params['project_id'] = $this->requestData['project_id'];
 
             $projectData = $this->Project->details($params);
-            
+
             if (empty($projectData)) {
                 $this->response([
                     'code' => HTTP_NOT_FOUND,
@@ -736,7 +821,7 @@ class ProjectController extends BaseController
             $roomParams['where']['project_id'] = $this->requestData['project_id'];
             $roomParams['limit'] = 5;
             $roomData = $this->ProjectRooms->get($roomParams);
-            
+
             $rooms = $roomData['data'];
             $roomCount = (int)$roomData['count'];
             if (!empty($rooms)) {
@@ -799,7 +884,7 @@ class ProjectController extends BaseController
             $this->userTypeHandling([INSTALLER, PRIVATE_USER, BUSINESS_USER, WHOLESALER, ELECTRICAL_PLANNER]);
 
             $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['project_add']);
-            
+
             $this->requestData = $this->post();
 
             $this->validateProjectRoomProducts();
@@ -834,7 +919,7 @@ class ProjectController extends BaseController
             $productData['type'] = PROJECT_ROOM_ACCESSORY_PRODUCT;
             $productData['created_at'] = $this->datetime;
             $productData['created_at_timestamp'] = $this->timestamp;
-            
+
 
             $this->UtilModel->insertTableData($productData, 'project_room_products');
 
@@ -867,7 +952,7 @@ class ProjectController extends BaseController
             $this->userTypeHandling([INSTALLER, PRIVATE_USER, BUSINESS_USER, WHOLESALER, ELECTRICAL_PLANNER]);
 
             $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['project_add']);
-            
+
             $this->requestData = $this->delete();
 
             $this->validateProjectRoomProductsDelete();
@@ -952,11 +1037,6 @@ class ProjectController extends BaseController
                 'rules' => 'trim|required'
             ],
             [
-                'label' => 'Project Levels',
-                'field' => 'levels',
-                'rules' => 'trim|required|is_natural_no_zero'
-            ],
-            [
                 'label' => 'Address',
                 'field' => 'address',
                 'rules' => 'trim|required'
@@ -977,6 +1057,17 @@ class ProjectController extends BaseController
             array_unshift($validationRules, [
                 'label' => 'Project',
                 'field' => 'project_id',
+                'rules' => 'trim|required|is_natural_no_zero'
+            ]);
+            array_unshift($validationRules, [
+                'label' => 'Project Levels',
+                'field' => 'levels',
+                'rules' => 'trim|is_natural_no_zero'
+            ]);
+        } else {
+            array_unshift($validationRules, [
+                'label' => 'Project Levels',
+                'field' => 'levels',
                 'rules' => 'trim|required|is_natural_no_zero'
             ]);
         }

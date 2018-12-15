@@ -30,7 +30,8 @@ class ProjectRoomProducts extends BaseModel
             ->join('products', 'products.product_id=prs.product_id')
             ->join('product_specifications as ps', 'ps.product_id=products.product_id AND prs.article_code=ps.articlecode')
             ->from($this->tableName)
-            ->group_by('articlecode, project_room_id');
+            ->group_by('articlecode, project_room_id')
+            ->order_by('prs.type', 'ASC');
 
         if (isset($params['limit']) && is_numeric($params['limit']) && (int)$params['limit'] > 0) {
             $this->db->limit((int)$params['limit']);

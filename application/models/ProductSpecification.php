@@ -86,11 +86,18 @@ class ProductSpecification extends BaseModel
      * @param array $params
      * @return array
      */
-    public function fetchArticles($params)
+    public function fetchArticles($params, $additionalFields = '')
     {
-        $this->db->select('SQL_CALC_FOUND_ROWS image, product_id, articlecode, title, uld,
-                        type, driver, length, width, height', false)
-            ->from($this->tableName);
+        if (isset($params['left_join']) && is_array($params['left_join']) && !empty($params['left_join'])) {
+            foreach ($params['left_join'] as $joinTable => $joinCondition) {
+                $this->db->join($joinTable, $joinCondition, 'left');
+            }
+        }
+
+        $this->db->select('SQL_CALC_FOUND_ROWS image, product_specifications.product_id, articlecode, title, uld,
+        product_specifications.type, driver, length, width, height' . $additionalFields, false)
+            ->from($this->tableName)
+            ->order_by('product_specifications.title', 'ASC');
 
         if (isset($params['limit']) && is_numeric($params['limit']) && (int)$params['limit'] > 0) {
             $this->db->limit((int)$params['limit']);
@@ -105,6 +112,13 @@ class ProductSpecification extends BaseModel
                 $this->db->where($tableColumn, $searchValue);
             }
         }
+
+        if (isset($params['join']) && is_array($params['join']) && !empty($params['join'])) {
+            foreach ($params['join'] as $joinTable => $joinCondition) {
+                $this->db->join($joinTable, $joinCondition);
+            }
+        }
+        
 
         $query = $this->db->get();
 

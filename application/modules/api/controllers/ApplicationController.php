@@ -1,6 +1,5 @@
 <?php
 defined("BASEPATH") or exit("No direct script access allowed");
-
 require 'BaseController.php';
 
 class ApplicationController extends BaseController

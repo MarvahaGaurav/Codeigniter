@@ -232,8 +232,12 @@ $lang['mark_as_done'] = 'Level Mark As Done';
 $lang['level_mark_as_done_confirmation'] = 'Are you sure you want to mark Level %d as done?';
 $lang['tco_value_successfully_updated'] = 'TCO value for this room has been saved';
 $lang['not_received_any_quotes'] = 'You have not received any quotes';
-$lang['room_calculated'] = 'Your room has been calculated';
+$lang['room_calculated'] = 'Your results are here';
 $lang['calculate_again'] = 'Calculate again to view result';
+$lang['unable_to_calculate'] = 'We are unable to calculate results for this room';
+$lang['tco_done'] = "TCO calculated";
+
+
 
 $lang['final_quote_price_added'] = "Final price added sucessfully";
 $lang['send_email'] = "Send";
@@ -252,3 +256,6 @@ $lang['add_final_quote_price_button_txt'] = 'Send Quote Price';
 $lang['view_final_quote_price_button_txt'] = 'View Quote Price';
 $lang['final_quote_price_header'] = 'Final quote price';
 $lang['send-quote-later']   = 'Send quote later';
+
+
+
