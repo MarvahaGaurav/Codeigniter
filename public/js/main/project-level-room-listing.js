@@ -130,6 +130,46 @@ requirejs(
     });
 
 
+    $("#add-quote-price-submit").on("click", function () {
+      var self = this,
+        $self = $(self),
+        target = $targetHandler.attr('data-target');
+
+      if ($addPriceForm.valid()) {
+        var formData = getFormData($addPriceForm);
+
+        $.ajax({
+          url: window.location.protocol + "//" + window.location.host + "/xhttp/projects/rooms/add-quote-price",
+          method: "POST",
+          data: formData,
+          dataType: "json",
+          beforeSend: function () {
+            var html = $self.html();
+            $self.html("<i class='fa fa-circle-o-notch fa-spin'></i>" + html);
+            $self.attr("disabled", "disabled");
+          },
+          success: function (response) {
+            $self.find(".fa").remove();
+            $self.removeAttr("disabled");
+            if (response.success) {
+              window.location.reload();
+              displaySuccessMessage(response.msg);
+              $(target).attr("data-room-price", JSON.stringify(response.data));
+              $("#add-price-modal").modal('hide');
+            } else {
+              displayErrorMessage(response.msg);
+            }
+          },
+          error: function (error) {
+            $self.removeAttr("disabled");
+            $self.find(".fa").remove();
+            window.alert(error.status);
+          }
+        });
+      }
+    });
+
+
     $(".room-price-fields").on('change keyup', function () {
       var self = this,
           $self = $(self),

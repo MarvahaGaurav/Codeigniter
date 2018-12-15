@@ -943,8 +943,9 @@ class ProjectRoomsController extends BaseController
      *
      * @return void
      */
-    private function validateRoomsListing()
+    public function validateRoomsListing()
     {
+        
         $this->form_validation->set_data($this->validationData);
 
         $this->form_validation->set_rules([
