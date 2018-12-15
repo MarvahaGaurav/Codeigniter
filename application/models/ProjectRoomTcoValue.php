@@ -19,6 +19,7 @@ class ProjectRoomTcoValue extends BaseModel
     {
         $tcoData = [
             'project_room_id' => $data['project_room_id'],
+            'company_id' => $data['company_id'],
             'existing_number_of_luminaries' => $data['existing_number_of_luminaries'],
             'existing_wattage' => $data['existing_wattage'],
             'existing_led_source_life_time' => $data['existing_led_source_life_time'],

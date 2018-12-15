@@ -84,6 +84,7 @@ $route['home/projects/(:any)/levels'] = 'web/ProjectLevelsController/levelsListi
 $route['home/projects/(:any)/levels/(:num)/rooms'] = 'web/ProjectRoomsController/projectCreateRoomListing/$1/$2';
 $route['home/projects/(:any)/levels/(:num)/rooms/results'] = 'web/ProjectRoomsController/projectResultRoomListing/$1/$2';
 $route['home/projects/(:any)/levels/(:num)/rooms/(:any)/edit'] = 'web/ProjectRoomsController/editDimensions/$1/$2/$3';
+$route['home/projects/(:any)/levels/(:num)/rooms/(:any)/tco'] = 'web/TcoController/tco/$1/$2/$3';
 
 $route['home/search'] = 'web/SearchArticlesController/search';
 $route['home/fast-calc/lux'] = 'web/QuickCalcLuxController/luxValues';

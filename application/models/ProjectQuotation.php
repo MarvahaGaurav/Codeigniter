@@ -212,6 +212,20 @@ class ProjectQuotation extends BaseModel
         return $data;
     }
 
+    public function approvedOwner($quotationId)
+    {
+        $this->db->select('u.user_id')
+            ->from('project_quotations as pq')
+            ->join('ai_user as u', 'u.company_id=pq.company_id AND is_owner=' . ROLE_OWNER)
+            ->where('pq.id', $quotationId);
+
+        $query = $this->db->get();
+
+        $data = $query->row_array();
+
+        return $data;
+    }
+
     public function activeQuotation()
     {
         $this->db->select();

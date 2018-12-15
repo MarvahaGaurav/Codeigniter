@@ -172,13 +172,13 @@ class ProjectRequest extends BaseModel
             projects.lng as project_lng, pr.created_at as request_created_at, projects.levels,
             pr.created_at_timestamp as request_created_at_timestamp,
             pq.additional_product_charges, pq.discount,
-            totalQuotationChargesPerRoom(projects.id, pq.company_id) as price,
+            totalQuotationChargesPerRoom(projects.id, pq.company_id) as price, pq.status as quotation_status,
             pq.created_at as quotation_created_at,
             pq.created_at_timestamp as quotation_created_at_timestamp';
 
         $this->db->join(
             "project_quotations as pq",
-            "pq.request_id=pr.id AND pq.company_id={$params['company_id']} AND pq.status=" . QUOTATION_STATUS_QUOTED
+            "pq.request_id=pr.id"
         );
         $this->db->select($fields, false)
             ->from('project_requests as pr')
@@ -186,6 +186,7 @@ class ProjectRequest extends BaseModel
             ->join('ai_user as user', 'user.user_id=projects.user_id')
             ->where('pr.language_code', $params['language_code'])
             ->order_by("pr.id", "DESC");
+        $this->db->where("(pq.status=" . QUOTATION_STATUS_QUOTED ." or pq.status=". QUOTATION_STATUS_REJECTED .")", null);
         
         if (isset($params['user_id']) && is_numeric($params['user_id'])) {
             $this->db->where('projects.user_id', $params['user_id']);

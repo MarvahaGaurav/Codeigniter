@@ -13,8 +13,10 @@ $route['api/v1/user/signup'] = 'Signup';
 $route['api/v1/user/logout'] = 'Logout';
 $route['api/v1/user/settings'] = 'UserController/edit';
 $route['api/v1/user/location'] = 'UserController/location';
-
+$route['api/v1/employee/company'] = 'EmployeeController/updateEmployeeCompany';
 $route['api/v1/employee'] = 'EmployeeController/employee';
+
+$route['api/v1/notifications'] = 'NotificationController/index';
 
 $route['api/v1/inspirations'] = 'InspirationController/inspiration';
 $route['api/v1/inspirations/all'] = 'InspirationController/companyInspiration';
@@ -46,6 +48,8 @@ $route['api/v1/projects/rooms/tco'] = 'ProjectTcoController/saveTco';
 $route['api/v1/projects/rooms'] = 'ProjectRoomController/projectRooms';
 $route['api/v1/projects/quotation-request'] = 'ProjectController/sendQuotationRequest';
 $route['api/v1/projects/rooms/quotations'] = 'QuotationController/roomsQuotation';
+$route['api/v1/projects/rooms/(:num)/products'] = 'ProjectController/fetchRoomproducts/project_room_id/$1';
+
 $route['api/v1/projects/rooms/(:any)/fast-calc'] = 'ProjectRoomController/roomQuickCalcResponse/project_room_id/$1';
 $route['api/v1/projects/levels'] = 'ProjectLevelsController';
 $route['api/v1/projects/technician/charges'] = 'TechnicianChargesController';

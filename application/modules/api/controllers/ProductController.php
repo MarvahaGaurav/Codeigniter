@@ -517,6 +517,12 @@ class ProductController extends BaseController
      *   operationId="productFetch_get",
      *   produces={"application/json"},
      * @SWG\Parameter(
+     *     name="accesstoken",
+     *     in="header",
+     *     description="optional",
+     *     type="string",
+     * ),
+     * @SWG\Parameter(
      *     name="X-Language-Code",
      *     in="header",
      *     description="en ,da ,nb ,sv ,fi ,fr ,nl ,de",
@@ -533,6 +539,12 @@ class ProductController extends BaseController
      *     name="search",
      *     in="query",
      *     description="Search text",
+     *     type="string",
+     *   ),
+     * @SWG\Parameter(
+     *     name="project_room_id",
+     *     in="query",
+     *     description="required with accesstoken",
      *     type="string",
      *   ),
      * @SWG\Parameter(
@@ -671,9 +683,22 @@ class ProductController extends BaseController
      */
     public function productArticles_get()
     {
+        $userData = $this->checkForSessionUser('user_type, company_id');
+
         $language_code = $this->langcode_validate();
 
         $this->requestData = $this->get();
+        $isLogin = false;
+        if (isset($userData['user_id']) && (!isset($this->requestData['project_room_id']) || (int)$this->requestData['project_room_id'] < 1)) {
+            $this->response([
+                'code' => HTTP_UNPROCESSABLE_ENTITY,
+                'msg' => $this->lang->line('project_room_required')
+            ]);
+        }
+
+        if (isset($userData['user_id'])) {
+            $isLogin = true;
+        }
 
         $this->requestData = trim_input_parameters($this->requestData, false);
 
@@ -688,7 +713,7 @@ class ProductController extends BaseController
 
         if (isset($this->requestData['search']) && strlen(trim($this->requestData['search'])) > 0) {
             $search = trim($this->requestData['search']);
-            $params['where']['title LIKE'] = "%{$search}%";
+            $params['where']['title LIKE'] = "{$search}%";
         }
 
         if (isset($this->requestData['room_id'], $this->requestData['mounting_type'])) {
@@ -698,14 +723,20 @@ class ProductController extends BaseController
         } else if (isset($this->requestData['room_id'])) {
             $roomId = (int)$this->requestData['room_id'];
             $params['where']["EXISTS(SELECT id FROM room_products WHERE room_products.product_id=product_specifications.product_id AND room_products.room_id='{$roomId}')"] = null;
-
         }
 
         $this->load->model(['ProductSpecification', 'ProductMountingTypes']);
         $this->load->helper(['db']);
 
         $this->benchmark->mark('start');
-        $data = $this->ProductSpecification->fetchArticles($params);
+        $additionalFields = '';
+        if ($isLogin) {
+            $params['left_join']['project_room_products as prp'] = 'prp.article_code=product_specifications.articlecode AND prp.product_id=product_specifications.product_id AND prp.project_room_id=' . $this->requestData['project_room_id'];
+            $additionalFields = ', IFNULL(prp.id, 0) as is_selected';
+        }
+
+        $data = $this->ProductSpecification->fetchArticles($params, $additionalFields);
+
         $this->benchmark->mark('stop');
         $articlesData = $data['data'];
         $count = $data['count'];
@@ -732,6 +763,9 @@ class ProductController extends BaseController
 
         $articlesData = array_map(function ($article) {
             $article['image'] = preg_replace("/^\/home\/forge\//", "https://", $article['image']);
+            if (isset($article['is_selected'])) {
+                $article['is_selected'] = (bool)$article['is_selected'];
+            }
             $article['title'] = trim(strip_tags($article['title']));
             return $article;
         }, $articlesData);
@@ -754,11 +788,7 @@ class ProductController extends BaseController
             'total' => isset($count) ? $count : 0,
             'elapsed_time' => $this->benchmark->elapsed_time('start', 'stop')
         ]);
-
     }
-
-    
-
 
     /**
      * Rooms related products

@@ -65,7 +65,7 @@
                         <?php  } ?>
                         </td>
                         <td class="text-center">
-                            <a href="javascript:void(0)" onclick="window.alert('Under development')" class="tb-view-list" title="<?php echo $this->lang->line('tco_txt') ?>"><?php echo $this->lang->line('tco_txt') ?></a>
+                            <a href="<?php echo base_url('home/projects/' . $projectId . '/levels/' . $level . '/rooms/' . encryptDecrypt($room['project_room_id']) . '/tco') ?>" class="tb-view-list" title="<?php echo $this->lang->line('tco_txt') ?>"><?php echo $this->lang->line('tco_txt') ?></a>
                         </td>
                         <?php } ?>
                         <td class="op-semibold text-center">

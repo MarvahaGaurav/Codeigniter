@@ -557,7 +557,7 @@ class InspirationController extends BaseController
         }
 
         if ((in_array((int)$user_data['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && (int)$user_data['user_id'] !== (int)$inspirationData['user_id']) ||
-            (in_array((int)$user_data['user_type'], [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER, WHOLESALER], true) && (int)$user_data['company_id'] !== (int)$inspirationData['user_id'])) {
+            (in_array((int)$user_data['user_type'], [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER, WHOLESALER], true) && (int)$user_data['company_id'] !== (int)$inspirationData['company_id'])) {
             $this->response(
                 [
                     "code" => HTTP_FORBIDDEN,

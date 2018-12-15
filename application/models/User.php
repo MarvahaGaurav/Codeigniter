@@ -12,6 +12,22 @@ class User extends BaseModel
         $this->load->database();
         $this->tableName = "ai_user";
     }
+
+    public function basicUserInfo($userId)
+    {
+        $this->db->select("user_id, first_name as full_name, email, image")
+            ->from($this->tableName);
+        
+        if (is_array($userId)) {
+            $this->db->where_in('user_id', $userId);
+        } else {
+            $this->db->where('user_id', $userId);
+        }
+
+        $result = $this->db->get()->result_array();
+
+        return $result;
+    }
     
     public function login($email, $password)
     {
@@ -80,5 +96,30 @@ class User extends BaseModel
         $data = $query->result_array();
 
         return $data;
+    }
+
+    /**
+     * Owner by company
+     *
+     * @param array|int $companyId
+     * @return array
+     */
+    public function ownerByCompany($companyId)
+    {
+        $this->db->select('user_id, first_name, email, company_id')
+            ->from('ai_user')
+            ->where('is_owner', ROLE_OWNER);
+
+        if (is_array($companyId)) {
+            $this->db->where_in('company_id', $companyId);
+        } else {
+            $this->db->where('company_id', $companyId);
+        }
+
+        $query = $this->db->get();
+
+        $result = $query->result_array();
+
+        return $result;
     }
 }

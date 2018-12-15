@@ -5,7 +5,6 @@ require 'BaseController.php';
 
 class ProjectTcoController extends BaseController
 {
-
     private $requestData;
     public function __construct()
     {
@@ -34,6 +33,8 @@ class ProjectTcoController extends BaseController
             $this->tcoCheck($this->requestData['project_room_id']);
 
             $this->load->model(['ProjectRoomTcoValue']);
+
+            $this->requestData['company_id'] = $user_data['company_id'];
 
             $this->ProjectRoomTcoValue->insert($this->requestData);
 
@@ -64,6 +65,12 @@ class ProjectTcoController extends BaseController
         }
     }
 
+    /**
+     * @todo - include checks for project and quotes seperatley
+     *
+     * @param [type] $projectRoomId
+     * @return void
+     */
     private function roomDataCheck($projectRoomId)
     {
         $roomData = $this->UtilModel->selectQuery('pr.id, p.user_id, p.company_id', 'project_rooms as pr', [
@@ -78,12 +85,12 @@ class ProjectTcoController extends BaseController
             ]);
         }
 
-        if ((int)$roomData['company_id'] !== (int)$this->user['company_id']) {
-            $this->response([
-                'code' => HTTP_FORBIDDEN,
-                'msg' => $this->lang->line('forbidden_action')
-            ]);
-        } 
+        // if ((int)$roomData['company_id'] !== (int)$this->user['company_id']) {
+        //     $this->response([
+        //         'code' => HTTP_FORBIDDEN,
+        //         'msg' => $this->lang->line('forbidden_action')
+        //     ]);
+        // } 
     }
 
     /**
