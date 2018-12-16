@@ -31,7 +31,7 @@ requirejs(
       }
     });
 
-    $("#final-price-submit").on("click", function () {
+    $("#final-price-submit").on("click", function () { 
       var self = this,
         $self = $(this),
         $installerSubmitPrice = $("#installer-submit-price");
@@ -57,6 +57,77 @@ requirejs(
         }
       })
     });
+
+    $("#final-quote-price-submit").on("click", function () { 
+      var self = this,
+        $self = $(this),
+        $installerSubmitPrice = $("#installer-submit-price");
+        
+
+      var formData = getFormData($installerSubmitPrice);
+      var text = $self.text();
+
+      
+  
+      $.ajax({
+        url: window.location.protocol + "//" + window.location.host + "/xhttp/projects/installer/quotePrice",
+        method: "POST",
+        dataType: "json",
+        data: formData,
+        beforeSend: function () {
+          var html = $self.html().trim();
+          $self.html("<i class='fa fa-circle-o-notch fa-spin'></i> " + html);
+        },
+        success: function(response) {
+          if (response.success) {
+              window.location.reload();
+          }
+        },
+        error: function (error) {
+          $self.html(text);
+        }
+      })
+    });
+
+    $("#send-email-to-customer").on("click", function () { 
+      var self = this,
+        $self = $(this),
+        $installerSubmitData = $("#installer-send-email");
+
+        //console.log($installerSubmitData);
+
+      var formData = getFormData($installerSubmitData);
+      var text = $self.text();
+      
+      var email = $('contact-email').val();
+
+      if(formData.email=='') {
+        console.log("please enter email");
+        return false;
+      }
+      $.ajax({
+        url: window.location.protocol + "//" + window.location.host + "/xhttp/projects/installer/sendmail",
+        method: "POST",
+        dataType: "json",
+        data: formData,
+        beforeSend: function () {
+          var html = $self.html().trim();
+          $self.html("<i class='fa fa-circle-o-notch fa-spin'></i> " + html);
+        },
+        success: function(response) {
+          if (response.success) {
+              //window.location.reload();
+              window.location.href=window.location.protocol + "//" + window.location.host+"/home/quotes/awaiting";
+          }
+        },
+        error: function (error) {
+          console.log(error);
+          $self.html(text);
+        }
+      })
+    });
+
+
 
     var $cloneSource = $("#clone-source"),
       $cloneDestination = $("#clone-destination"),

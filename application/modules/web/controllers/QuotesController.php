@@ -5,15 +5,17 @@ require_once APPPATH . "/libraries/Traits/LevelRoomCheck.php";
 require_once APPPATH . "/libraries/Traits/TotalProjectPrice.php";
 require_once APPPATH . "/libraries/Traits/TechnicianChargesCheck.php";
 require_once APPPATH . "/libraries/Traits/InstallerPriceCheck.php";
+require_once APPPATH . "/libraries/Traits/QuickCalc.php";
+
 
 class QuotesController extends BaseController
 {
-    use LevelRoomCheck, InstallerPriceCheck, TotalProjectPrice, TechnicianChargesCheck;
+    use LevelRoomCheck, InstallerPriceCheck, TotalProjectPrice, TechnicianChargesCheck,QuickCalc;
     
     private $validationData;
 
     function __construct()
-    {
+    { 
         parent::__construct();
         $this->activeSessionGuard();
         $this->load->helper(['datetime']);
@@ -46,10 +48,17 @@ class QuotesController extends BaseController
 
             $data = $this->ProjectRequest->customerRequests($params);
 
+            $this->data['csrf'] = json_encode([
+                $this->data["csrfName"] = $this->security->get_csrf_token_name() =>
+                    $this->data["csrfToken"] = $this->security->get_csrf_hash()
+            ]);
+
             $this->data['quotations'] = $data['data'];
             $this->load->library('Commonfn');
             $this->data['links'] = $this->commonfn->pagination(uri_string(), $data['count'], $params['limit']);
             $this->data['search'] = $search;
+            $this->data['js'] = 'main';
+
 
             website_view("quotes/main", $this->data);
         } else {
@@ -88,6 +97,8 @@ class QuotesController extends BaseController
 
             $this->load->helper(['utility']);
             $data['data'] = $this->parseQuotationData($data['data']);
+
+            
 
             $this->data['quotes'] = $data['data'];
             $this->load->config('css_config');
@@ -319,7 +330,7 @@ class QuotesController extends BaseController
      * @return object
      */
 
-    public function project_details($project_id)
+    public function project_details($project_id,$request_id)
     {
         
         try {
@@ -328,6 +339,7 @@ class QuotesController extends BaseController
             $this->load->model(["Project", "ProjectRooms", "UtilModel"]);
             $this->load->config('css_config');
             $this->data['css'] = $this->config->item('basic-with-font-awesome');
+            $this->data['js'] = 'level-listing';
             $this->data['userInfo'] = $this->userInfo;
             $roomParams['where']['project_id'] = $id;
             $roomParams['limit']               = 5;
@@ -443,16 +455,51 @@ class QuotesController extends BaseController
             $this->data['hasAddedAllPrice'] = false;
             $this->data['projectRoomPrice'] = [];
             $this->data['hasAddedFinalPrice'] = false;
+            $this->data['request_id'] = $request_id;
+            $request_id= encryptDecrypt($request_id, "decrypt");
+
+            $this->data['request_status'] = $this->getRequestStatus($request_id);
+            
             if (in_array((int)$this->userInfo['user_type'], [INSTALLER], true)) {
                 $this->load->helper(['utility']);
                 $this->data['hasAddedAllPrice'] = $this->projectCheckPrice($id);
                 $this->data['projectRoomPrice'] = (array)$this->quotationTotalPrice((int)$this->userInfo['user_type'], $id);
                 $this->data['hasAddedFinalPrice'] = $this->hasTechnicianAddedFinalPrice($id);
+
+                
+                $this->data['hasFinalQuotePriceAdded'] = $this->isFinalQuotePriceAdded($request_id);
             }
 
+           
 
             website_view('quotes/project_details', $this->data);
         } catch (Exception $ex) {
+        }
+    }
+
+    private function isFinalQuotePriceAdded($request_id)
+    {
+        $requestData = $this->UtilModel->selectQuery('id', 'project_quotations', [
+            'where' => ['request_id' => $request_id], 'single_row' => true
+        ]);
+
+        if(!empty($requestData)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private function getRequestStatus($request_id)
+    {
+        $requestData = $this->UtilModel->selectQuery('id', 'project_quotations', [
+            'where' => ['request_id' => $request_id], 'single_row' => true
+        ]);
+
+        if(!empty($requestData)) {
+            return $requestData[status];
+        } else {
+            return false;
         }
     }
 
@@ -617,8 +664,8 @@ class QuotesController extends BaseController
      *@param string projectId
      * @return void
      */
-    public function editProject($projectId)
-    {
+    public function editProject($projectId,$requestId)
+    { 
         require_once('ProjectController.php');
         $obj = new ProjectController();
 
@@ -680,7 +727,8 @@ class QuotesController extends BaseController
 
         try {
             $post = $this->input->post();
-            if (isset($post) and ! empty($post)) {
+            
+            if (isset($post) and ! empty($post)) { 
                 $this->load->library('form_validation');
                 $this->form_validation->CI = & $this;
                 $rules                     =$obj->setEditValidationRule();
@@ -708,6 +756,8 @@ class QuotesController extends BaseController
                         'id' => $projectId 
                     ]);
 
+                    
+
                     $this->load->model("UtilModel");
             
                     if ($this->db->trans_status() === true) {
@@ -715,13 +765,16 @@ class QuotesController extends BaseController
                         $this->session->set_flashdata("flash-message", $this->lang->line('project_updated'));
                         $this->session->set_flashdata("flash-type", "success");
                         $projectId = encryptDecrypt($projectId, 'encrypt');
-                        redirect(base_url("home/quotes/projects/".$projectId));
+                        redirect(base_url("home/quotes/projects/".$projectId.'/'.$requestId));
                     } else {
                         throw new Exception("Something Went Wrong", 500);
                     }
                 }
             }
             $this->data['js'] = 'project_edit';
+            $this->data['request_id'] = $requestId;
+
+            
             website_map_modal_view("quotes/edit_project", $this->data);
         } catch (Exception $ex) {
             $this->db->trans_rollback();
@@ -852,8 +905,8 @@ class QuotesController extends BaseController
         }
     }
 
-    public function projectResultRoomListing($projectId, $level)
-    {
+    public function projectResultRoomListing($projectId, $request_id,$level)
+    { 
         try {
             require_once('ProjectRoomsController.php');
             $obj = new ProjectRoomsController();
@@ -981,6 +1034,7 @@ class QuotesController extends BaseController
                 $this->data['projectRoomPrice'] = (array)$this->quotationTotalPrice((int)$this->userInfo['user_type'], $projectId, $level);
                 $this->data['hasAddedFinalPrice'] = $this->hasTechnicianAddedFinalPrice($projectId);
             }
+            $this->data['request_id'] = $request_id;
 
 
             website_view('quotes/result_room_list', $this->data);
@@ -996,8 +1050,8 @@ class QuotesController extends BaseController
      * @return void
      */
 
-    public function view_result($project_room_id)
-    {
+    public function view_result($project_id,$request_id,$project_room_id)
+    { 
         try {
             $this->activeSessionGuard();
             if (isset($this->userInfo, $this->userInfo['user_id']) && ! empty($this->userInfo['user_id'])) {
@@ -1040,6 +1094,34 @@ class QuotesController extends BaseController
             ]);
             $this->data['product_data'] = $roomProductData;
             $this->data['product_specification_data'] = $productSpecifications;
+            $this->data['request_id'] = $request_id;
+
+            /*******room view result**************/
+
+
+            $this->data['room_data']['working_plane_height'] / 100;
+
+            // pd($this->data['room_data']);
+
+            $quickCalcData = $this->fetchQuickCalcData($this->data['room_data'], $productSpecifications['uld']);
+
+            $quickCalcData = json_decode($quickCalcData, true);
+
+            //pr($quickCalcData);
+
+            if (!isset($quickCalcData['projectionFront'], $quickCalcData['projectionTop'], $quickCalcData['projectionSide'])) {
+                $this->session->set_flashdata("flash-message", $this->lang->line('unable_to_calculate'));
+                $this->session->set_flashdata("flash-type", "danger");
+                redirect(base_url('home/projects/' . encryptDecrypt($this->data['room_data']['project_id'] . '/levels/' . $this->data['room_data']['level'] . '/rooms/results')));
+            }
+
+            $this->data['room_data']['front_view'] = $quickCalcData['projectionFront'];
+            $this->data['room_data']['top_view'] = $quickCalcData['projectionTop'];
+            $this->data['room_data']['side_view'] = $quickCalcData['projectionSide'];
+
+            $this->data['product_data'] = $roomProductData;
+            $this->data['product_specification_data'] = $productSpecifications;
+     
 
             //pr($this->data);
             website_view('quotes/view_result', $this->data);

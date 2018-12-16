@@ -64,12 +64,12 @@ class ProjectRequest extends BaseModel
             'SQL_CALC_FOUND_ROWS pr.id as request_id, projects.name as project_name,
                 projects.address as project_address, projects.id as project_id, projects.lat as project_lat,
                 projects.lng as project_lng, pr.created_at as request_created_at, projects.number as project_number,
-                pr.created_at_timestamp as request_created_at_timestamp',
+                pr.created_at_timestamp as request_created_at_timestamp,pq.status',
             false
         )
             ->from('projects')
             ->join('project_requests as pr', 'pr.project_id=projects.id')
-            // ->join('project_quotations as pq', 'pr.id=pq.request_id AND pq.status=' . QUOTATION_STATUS_APPROVED)
+             ->join('project_quotations as pq', 'pr.id=pq.request_id ')
             // ->join('company_master as company', 'company.company_id=pq.company_id')
             ->where("EXISTS (SELECT id FROM project_quotations WHERE request_id=pr.id AND project_quotations.status=". QUOTATION_STATUS_QUOTED ." LIMIT 1)", null, false)
             ->where('projects.language_code', $params['language_code'])

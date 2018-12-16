@@ -76,6 +76,109 @@ class ProjectPriceController extends BaseController
         }
     }
 
+
+    public function installerFinalQuotePrice()
+    {
+        try {
+            $this->activeSessionGuard();
+
+            $this->requestData = $this->input->post();
+
+            //pr($this->requestData);
+
+            if (isset($this->requestData['project_id'])) {
+                $this->requestData['project_id'] = encryptDecrypt($this->requestData['project_id'], 'decrypt');
+            }
+
+            if (isset($this->requestData['request_id'])) {
+                $this->requestData['request_id'] = encryptDecrypt($this->requestData['request_id'], 'decrypt');
+            }
+            
+
+            $this->validateAddCharges();
+
+            $projectId = $this->requestData['project_id'];
+            $additionalProductCharges = isset($this->requestData['additional_product_charges'])?$this->requestData['additional_product_charges']:0.00;
+            $discount = isset($this->requestData['discount'])?$this->requestData['discount']:0.00;
+
+            $projectData = $this->UtilModel->selectQuery('id, user_id, company_id', 'projects', [
+                'where' => ['id' => $projectId], 'single_row' => true
+            ]);
+
+            
+            $this->handleTechnicianChargesCheck($projectId, 'xhr');
+
+            $insertData = [
+                'request_id' => (int)$this->requestData['request_id'],
+                'company_id' => $this->userInfo['company_id'],
+                'user_id' => $this->userInfo['user_id'],
+                'language_code' => 'en',
+                'additional_product_charges' => isset($this->requestData['additional_product_charges'])?$this->requestData['additional_product_charges']:0.00,
+                'discount' => isset($this->requestData['discount'])?$this->requestData['discount']:0.00,
+                'created_at' => $this->datetime,
+                'created_at_timestamp' => $this->timestamp,
+                'updated_at' => $this->datetime,
+                'updated_at_timestamp' => $this->timestamp,
+            ];
+
+           
+
+            $this->UtilModel->insertTableData($insertData, 'project_quotations');
+
+            
+
+            $status = 
+            
+            $this->session->set_flashdata("flash-message", $this->lang->line('final_quote_price_added'));
+            $this->session->set_flashdata("flash-type", "success");
+            json_dump([
+                'success' => true,
+                'message' => $this->lang->line('final_quote_price_added')
+            ]);
+        } catch (\Exception $error) {
+            json_dump(
+                [
+                    "success" => false,
+                    "error" => "Internal Server Error",
+                ]
+            );
+        }
+    }
+
+    public function sendMailToCustomer()
+    {
+        try {
+            $this->activeSessionGuard();
+
+            $this->requestData = $this->input->post();
+
+            /*****************send email to user ******************/
+           
+            $this->load->library('Commonfn');
+
+            $data['subject'] = 'Quote Submitted';
+            $data['email'] = $this->requestData['email'];
+            $data['mailerName'] = 'welcome';
+            $isSend =$this->commonfn->sendEmailToUser($data);
+            
+            $status = 
+            
+            $this->session->set_flashdata("flash-message", $this->lang->line('mail-sent-sucessfully'));
+            $this->session->set_flashdata("flash-type", "success");
+            json_dump([
+                'success' => true,
+                'message' => $this->lang->line('mail-sent-sucessfully')
+            ]);
+        } catch (\Exception $error) {
+            json_dump(
+                [
+                    "success" => false,
+                    "error" => "Internal Server Error",
+                ]
+            );
+        }
+    }
+
     private function validateAddCharges()
     {
         $this->load->library('form_validation');
@@ -108,6 +211,78 @@ class ProjectPriceController extends BaseController
                 [
                     "success" => false,
                     "error" => array_shift($errorMessage),
+                ]
+            );
+        }
+    }
+
+    public function approveQuote() {
+        try {
+            $this->activeSessionGuard();
+
+            $this->requestData = $this->input->post();
+
+            $request_id = $this->requestData['request_id'];
+
+            $updateData['status']=  QUOTATION_STATUS_APPROVED;
+            $updateData['updated_at']= $this->datetime;
+            $updateData['updated_at_timestamp'] = $this->timestamp;
+
+            
+            $this->UtilModel->updateTableData($updateData, 'project_quotations', [
+                    'request_id' => $request_id
+            ]);
+
+
+            $status = 
+            
+            $this->session->set_flashdata("flash-message", $this->lang->line('quote-approved'));
+            $this->session->set_flashdata("flash-type", "success");
+            json_dump([
+                'success' => true,
+                'message' => $this->lang->line('quote-approved-success')
+            ]);
+        } catch (\Exception $error) {
+            json_dump(
+                [
+                    "success" => false,
+                    "error" => "Internal Server Error",
+                ]
+            );
+        }
+    }
+
+
+    public function rejectQuote() {
+        try {
+            $this->activeSessionGuard();
+
+            $this->requestData = $this->input->post();
+
+            $request_id = $this->requestData['request_id'];
+
+            $updateData['status']=  QUOTATION_STATUS_REJECTED;
+            $updateData['updated_at']= $this->datetime;
+            $updateData['updated_at_timestamp'] = $this->timestamp;
+
+            
+            $this->UtilModel->updateTableData($updateData, 'project_quotations', [
+                    'request_id' => $request_id
+            ]);
+
+            $status = 
+            
+            $this->session->set_flashdata("flash-message", $this->lang->line('quote-rejected'));
+            $this->session->set_flashdata("flash-type", "success");
+            json_dump([
+                'success' => true,
+                'message' => $this->lang->line('quote-rejected-success')
+            ]);
+        } catch (\Exception $error) {
+            json_dump(
+                [
+                    "success" => false,
+                    "error" => "Internal Server Error",
                 ]
             );
         }

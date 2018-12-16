@@ -262,6 +262,7 @@ $(document).ready(function () {
                 dataRedirect = $self.attr("data-redirect"),
                 dataTarget = $self.attr("data-target");
 
+               
             $.ajax({
                 url: dataUrl,
                 method: "POST",
@@ -291,8 +292,11 @@ $(document).ready(function () {
                             $self.removeAttr("disabled");
                             $confirmationModal.modal("hide");
                             displaySuccessMessage(response.message);
+                        } else {
+                            $confirmationModal.modal("hide");
+                            window.location.reload();
                         }
-                    }
+                    } 
                 }
             });
         });

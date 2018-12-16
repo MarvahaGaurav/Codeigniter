@@ -838,6 +838,7 @@ class ProjectController extends BaseController
 
             $this->data['product_data'] = $roomProductData;
             $this->data['product_specification_data'] = $productSpecifications;
+            //pr($this->data);
             website_view('projects/view_result', $this->data);
         } catch (Exception $ex) {
         }

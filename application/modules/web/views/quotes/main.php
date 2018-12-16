@@ -36,7 +36,7 @@
 
         <!-- project list search -->
         <div class="project-list-wrapper clearfix">
-            <h2 class="project-listtxt">Pending Quotes</h2>
+            <h2 class="project-listtxt">Quotes</h2>
             <div class="search-wrapper search-wrapper-width-1 fawe-icon-position">
                 <span class="fawe-icon fawe-icon-position-right close-ico">
                     <i class="fa fa-times"></i>
@@ -59,19 +59,37 @@
                             <th>Project Name</th>
                             <th>Location</th>
                             <th>Received On</th>
+                            <th>Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($quotations as $quotation) { ?>
+                        <?php foreach ($quotations as $quotation) {
+                            $token= json_decode($csrf,true);
+                            $quotation['csrf_token'] = $token['csrf_token'];
+                            ?>
                         <tr>
                             <td class="op-semibold"><?php echo $quotation['project_name'] ?></td>
                             <td><?php echo strlen($quotation['project_address']) > 50?substr($quotation['project_address'], 0, 50) . '...':$quotation['project_address'] ?></td>
                             <td><?php echo convert_date_time_format('Y-m-d H:i:s', $quotation['request_created_at'], 'h:i A, M d,Y') ?></td>
-                            <td class="op-semibold">
+                            <td><?php if($quotation['status']==QUOTATION_STATUS_QUOTED) { echo "Pending";} else if($quotation['status']==QUOTATION_STATUS_APPROVED) { echo "Approved";} else if($quotation['status']==QUOTATION_STATUS_REJECTED) { echo "Rejected";}?></td>
+                            <td class="op-semibold" >
                                 <a href="javascript:void(0)" class="tb-view-list" title="View">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                 </a>
+
+                            <?php if($quotation['status']==QUOTATION_STATUS_QUOTED) { ?>
+                                <a href="javascript:void(0)" data-csrf='<?php echo $csrf ?>' id="approve" class="confirmation-action-xhttp project-action" data-json='<?php echo json_encode($quotation) ?>' title="<?php echo $this->lang->line('approve') ?>" data-url="<?php echo base_url("xhttp/quotes/approve") ?>" data-target="#quotes-<?php echo $quotation['request_id'] ?>"  data-redirect="<?php echo base_url(uri_string()) ?>" data-title="<?php echo $this->lang->line('approve-quote-title') ?>" data-message="<?php echo $this->lang->line('approve_quote_confirmation') ?>">
+                                    Approve
+                                </a>
+
+                                <a href="javascript:void(0)" data-csrf='<?php echo $csrf ?>' id="reject" class="confirmation-action-xhttp project-action" data-json='<?php echo json_encode($quotation) ?>'  title="<?php echo $this->lang->line('reject') ?>" data-url="<?php echo base_url("xhttp/quotes/reject") ?>" data-target="#quotes-<?php echo $quotation['request_id'] ?>"  data-redirect="<?php echo base_url(uri_string()) ?>" data-title="<?php echo $this->lang->line('reject-quote-title') ?>" data-message="<?php echo $this->lang->line('reject_quote_confirmation') ?>">
+                                    Reject
+                                </a>
+                            <?php } ?>
+                                
+                                
+                                
                             </td>
                         </tr>
                         <?php } ?>

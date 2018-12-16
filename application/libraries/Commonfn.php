@@ -167,6 +167,7 @@ class Commonfn {
         $body = $this->CI->load->view('mail/' . $mailtemplate, $data, TRUE);
         $this->CI->email->message($body);
         $status = $this->CI->email->send();
+        
         return (bool)$status ? true : false;
     }
 
