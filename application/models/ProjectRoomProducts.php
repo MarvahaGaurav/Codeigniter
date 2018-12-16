@@ -78,7 +78,8 @@ class ProjectRoomProducts extends BaseModel
             ->from('project_room_products as prp')
             ->join("products", "products.product_id=prp.product_id")
             ->join('product_specifications as ps', 'ps.product_id=prp.product_id AND ps.articlecode=prp.article_code')
-            ->where('prp.project_room_id', $params['project_room_id']);
+            ->where('prp.project_room_id', $params['project_room_id'])
+            ->order_by('prp.type', 'ASC');
 
         if (isset($params['search'])) {
             $this->db->where("(products.title LIKE '%{$params['search']}%' OR ps.title LIKE '%{$params['search']}%')");

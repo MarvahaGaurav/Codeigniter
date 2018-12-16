@@ -71,7 +71,8 @@ if (count($images)) {
 
 
 <!--Table Wrapper-->
-
+<span id="selected-text" data-lang="<?php echo $this->lang->line('selected') ?>"></span>
+<span id="select-text" data-lang="<?php echo $this->lang->line('select') ?>"></span>
 <div class="container">
     <div id="no-more-tables">
         <table class="articles table table-striped table-hover table-condensed">
@@ -119,9 +120,9 @@ if (count($images)) {
                         <div>
                             <div class="btn-group">
                                 <?php if (in_array($specification['articlecode'], $selected_articles)) { ?>
-                                    <button disabled="disabled" type="button" class="inverse-outline-btn">Selected</button>
+                                    <button data-accessory='<?php echo $specification['accessory_data'] ?>' type="button" data-type="remove" class="inverse-outline-btn select-project-accessory"><?php echo $this->lang->line('selected') ?></button>
                                 <?php } else {?>
-                                    <button title="Select Product" data-selected="<?php echo $this->lang->line('selected') ?>" data-accessory='<?php echo $specification['accessory_data'] ?>'  class="outline-btn select-project-accessory" onclick="">Select</button>
+                                    <button title="Select Product" data-accessory='<?php echo $specification['accessory_data'] ?>' data-type="add" class="outline-btn select-project-accessory" onclick=""><?php echo $this->lang->line('select') ?></button>
                                 <?php } ?>
                                 <button title="More info"  class="outline-btn redirectable" data-redirect-to="<?php echo base_url('home/projects/' . $project_id . '/levels/' . $level .'/rooms/'. $room_id . '/project-rooms/' . $project_room_id . '/accessory-products/' . encryptDecrypt($product_id) . '/articles/' . $specification['articlecode']) ?>">Info</button>
 
