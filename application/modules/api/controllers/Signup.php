@@ -16,6 +16,8 @@ class Signup extends REST_Controller
 
     function __construct()
     {
+        // error_reporting(-1);
+        // ini_set('display_errors', 1);
         parent::__construct();
         $this->load->model('Common_model');
         $this->load->helper('security');
@@ -539,59 +541,7 @@ class Signup extends REST_Controller
                             $this->load->library("PushNotification");
                             $this->load->model("UtilModel");
                             
-                            $user_data = $this->UtilModel->selectQuery(
-                                "device_token, platform, ai_user.user_id",
-                                "ai_user",
-                                [
-                                    "where" => ["ai_user.company_id" => $signupArr["company_id"], "is_owner" => ROLE_OWNER, "ai_user.status" => 1],
-                                    "join" => ["ai_session" => "ai_user.user_id=ai_session.user_id"]
-                                ]
-                            );
                             $this->UtilModel->insertTableData($employeePermission, 'user_employee_permission');
-                            $ios_user_data = array_filter(
-                                $user_data,
-                                function ($data) {
-                                    return IPHONE === (int)$data["platform"]?true:false;
-                                }
-                            );
-                            $android_user_data = array_filter(
-                                $user_data,
-                                function ($data) {
-                                    return ANDROID === (int)$data["platform"]?true:false;
-                                }
-                            );
-
-                            $android_tokens = array_map(
-                                function ($data) {
-                                    return $data['device_token'];
-                                },
-                                $android_user_data
-                            );
-
-                            if ($android_tokens) {
-                                $android_payload_data = [
-                                    'badge' => 1,
-                                    'sound' => 'default',
-                                    'status' => 1,
-                                    'type' => "new_employee_request",
-                                    'message' => "{$signupArr['full_name']} has requested your approval",
-                                    'time' => strtotime('now')
-                                ];
-                                $this->pushnotification->androidMultiplePush($android_tokens, $android_payload_data);
-                            }
-                            if ($ios_user_data) {
-                                $ios_payload_data = [
-                                    'badge' => 1,
-                                    'alert' => "New Employee Request",
-                                    'sound' => 'default',
-                                    'status' => 1,
-                                    'type' => "new_employee_request",
-                                    'message' => "{$signupArr['full_name']} has requested your approval",
-                                    'time' => strtotime('now')
-                                ];
-
-                                $this->pushnotification->sendMultipleIphonePush($ios_user_data, $ios_payload_data);
-                            }
                         }
                         
                         $signupArr['country_name'] = $this->Common_model->fetch_data("country_list", "name", ["where" => ["country_code1" => $signupArr['country_id']]], true);

@@ -138,7 +138,6 @@ class BaseController extends REST_Controller
 
     public function checkForSessionUser($additionalParams = "", $options = [])
     {
-
         $accessToken = "";
         if (isset($this->header["accesstoken"])) {
             $accessToken = $this->header["accesstoken"];

@@ -23,6 +23,7 @@ trait Notifier
         }, $receiverIds);
 
         $this->Notification->saveNotificationInBatches($notificationData);
+        $this->sendPushNotification($receiverIds, $senderId, NOTIFICATION_RECEIVED_QUOTES, $projectId);
     }
 
     private function notifyEmployeePermission($senderId, $receiverId)
@@ -36,6 +37,7 @@ trait Notifier
         ];
 
         $this->Notification->saveNotification($notification);
+        $this->sendPushNotification($receiverId, $senderId, NOTIFICATION_EMPLOYEE_REQUEST_RECEIVED);
     }
 
     private function notifySendQuote($senderId, $receiverId, $projectId)
@@ -50,6 +52,7 @@ trait Notifier
         ];
 
         $this->Notification->saveNotification($notification);
+        $this->sendPushNotification($receiverId, $senderId, NOTIFICATION_SEND_QUOTES, $projectId);
     }
 
     private function notifyAcceptedQuotes($senderId, $approvedQuotationId, $projectId)
@@ -70,21 +73,58 @@ trait Notifier
             ];
 
             $this->Notification->saveNotification($notification);
+            $this->sendPushNotification($receiverId, $senderId, NOTIFICATION_ACCEPT_QUOTE, $projectId);
         }
     }
 
-    private function notifyPermissionGranted($senderId, $receiverId, $projectId)
+    private function notifyPermissionGranted($senderId, $receiverId, $oldPermissions, $newPermissions)
     {
         $this->load->model(['Notification']);
 
         $notification = [
             'sender_id' => $senderId,
             'receiver_id' => $receiverId,
-            'project_id' => $projectId,
             'type' => NOTIFICATION_PERMISSION_GRANTED
         ];
 
-        $this->Notification->saveNotification($notification);
+        $message = $this->comparePermissions($oldPermissions, $newPermissions);
+
+        if (!empty(trim($message))) {
+            $notificationId = $this->Notification->saveNotification($notification);
+            $this->Notification->saveNotificationMessage($notificationId, $message);
+            $message = sprintf($this->lang->line('notification_permission_granted'), $message);
+            $this->sendPushNotification($receiverId, $senderId, NOTIFICATION_PERMISSION_GRANTED, '', $message);
+        }
+    }
+
+    private function sendPushNotification($userIds, $senderId, $type, $projectId='', $message='')
+    {
+        if (!is_array($userIds)) {
+            $userIds = [$userIds];
+        }
+
+        $this->load->library(['aws_push_notification']);
+
+        $this->load->model(['User']);
+        
+        $senderDetail = $this->User->basicUserInfo($senderId, true);
+
+        if (!empty($senderDetail)) {
+            $payLoad = [
+                'message' => sprintf($this->getNotificationMessage($type), $senderDetail['full_name']),
+                'type' => $type
+            ];
+
+            if (!empty($message)) {
+                $payLoad['message'] = $message;
+            }
+
+            if (!empty($projectId)) {
+                $payLoad['project_id'] = $projectId;
+            }
+
+            $this->aws_push_notification->sendNotificationToUsers($userIds, $payLoad);
+        }
     }
 
     protected function getNotificationMessage($type)

@@ -54,6 +54,8 @@ class Notification extends BaseModel
             $sender = array_unique(array_column($result['data'], 'sender_id'));
             $sender = $this->User->basicUserInfo($sender);
             $result['data'] = getDataWith($result['data'], $sender, 'sender_id', 'user_id', 'sender', '', true);
+            $notificationMessages = $this->getNotificationMessages(array_column($result['data']), 'id');
+            $result['data'] = getDataWith($result['data'], $notificationMessages, 'id', 'notification_id', 'messages', '', true);
         }
 
         $result['count'] = $this->db->query("SELECT FOUND_ROWS() as count")->row_array()['count'];
@@ -80,6 +82,8 @@ class Notification extends BaseModel
         if (!(bool)$status) {
             throw new \Exception('notification insert error');
         }
+
+        return $this->db->insert_id();
     }
 
     public function saveNotificationInBatches($data)
@@ -105,5 +109,28 @@ class Notification extends BaseModel
         if (!(bool)$status) {
             throw new \Exception('notification insert error');
         }
+    }
+
+    public function saveNotificationMessage($notificationId, $message)
+    {
+        $status = $this->db->set([
+            'notification_id' => $notificationId,
+            'message' => $message
+        ])->insert('notification_messages');
+
+        if (!(bool)$status) {
+            throw new \Exception('notification insert error');
+        }
+    }
+
+    public function getNotificationMessages($notificationIds)
+    {
+        $this->db->select('*')
+         ->from('notification_messages')
+         ->where_in('notification_id', $notificationIds);
+        
+        $result = $this->db->get()->result_array();
+
+        return $result;
     }
 }

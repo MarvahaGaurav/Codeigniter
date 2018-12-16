@@ -210,10 +210,19 @@ $lang['room_products_fetched'] = 'Products for your room retrieved';
 
 $lang['notification_employee_request_received'] = '%s has requested to join your company';
 $lang['notification_received_quotes'] = 'You have received a quotation request from %s';
-$lang['notification_permission_granted'] = 'Notification granted permission';
+$lang['notification_permission_granted'] = 'You have been granted permissions for %s';
 $lang['notification_send_quotes'] = 'You have received a quotation from %s';
 $lang['notification_accept_quote'] = 'Your quote has been accepted by %s';
 $lang['notification_edit_quote_price'] = 'An updated quote has been provided';
 $lang['no_notification_found'] = 'You have no notifications';
 $lang['notification_fetched'] = 'Notifications fetched';
 $lang['no_request_found'] = 'No request found';
+
+$lang['project_text'] = 'Project';
+$lang['insp_text'] = 'Inspiration';
+$lang['quote_text'] = 'Quotes';
+
+$lang['view_text'] = 'View';
+$lang['add_text'] = 'Add';
+$lang['edit_text'] = 'Edit';
+$lang['delete_text'] = 'Delete';

@@ -1,12 +1,18 @@
 <?php
 
 require APPPATH . 'libraries/REST_Controller.php';
+require_once APPPATH . "/libraries/Traits/Notifier.php";
+require_once APPPATH . "/libraries/Traits/PermissionHandler.php";
 
 class Employee extends REST_Controller
 {
 
+    use Notifier, PermissionHandler;
+
     public function __construct() 
     {
+        error_reporting(-1);
+        ini_set('display_errors', 1);
         parent::__construct();
         $this->load->model('Common_model');
         $this->load->library('form_validation');
@@ -296,68 +302,11 @@ class Employee extends REST_Controller
                     
                     /* I have to work in this area*/                    
                     if($updaterequesr) {
-                        // $message = "";
-                        // $alert = "";
-                        // if ( $postDataArr['action'] == 1 ) {
-                        //     $message = "Your Employee request has been accepted";
-                        //     $alert = "Employee request accepted";
-                        // } else {
-                        //     $message = "Your Employee request has been rejected";
-                        //     $alert = "Employee request rejected";
-                        // }
-                        // $this->load->model("UtilModel");
-                        // $user_data = $this->UtilModel->selectQuery(
-                        //     "device_token, platform, ai_user.user_id",
-                        //     "ai_user",
-                        //     [
-                        //         "where" => ["ai_user.user_id" => $postDataArr["employee_id"]],
-                        //         "join" => ["ai_session" => "ai_user.user_id=ai_session.user_id"]
-                        //     ]
-                        // );
-
-                        // $ios_user_data = array_filter($user_data, function($data){
-                        //     return IPHONE === (int)$data["platform"]?true:false;
-                        // });
-
-                        // $android_user_data = array_filter($user_data, function($data){
-                        //     return ANDROID === (int)$data["platform"]?true:false;
-                        // });
-
-                        // $android_tokens = array_map(function($data){
-                        //     return $data['device_token'];
-                        // }, $android_user_data);
-
-                        // if ( $android_tokens ) {
-                        //     $android_payload_data = [
-                        //         'badge' => 1,
-                        //         'sound' => 'default',
-                        //         'status' => 1,
-                        //         'type' => "employee_request_status",
-                        //         'message' => $message,
-                        //         'time' => strtotime('now')
-                        //     ];
-                        //     $this->pushnotification->androidMultiplePush($android_tokens, $android_payload_data);
-                        // }
-
-                        // if ( $ios_user_data ) {
-                        //     $ios_payload_data = [
-                        //         'badge' => 1,
-                        //         'alert' => $alert,
-                        //         'sound' => 'default',
-                        //         'status' => 1,
-                        //         'type' => "employee_request_status",
-                        //         'message' => $message,
-                        //         'time' => strtotime('now')
-                        //     ];
-
-                        //     $this->pushnotification->sendMultipleIphonePush($ios_user_data, $ios_payload_data);
-                        // }
                         $this->response(array('code' => SUCCESS_CODE, 'msg' => $this->lang->line('process_success'), 'result' => (object)[]));
                     }else{                        
                         $this->response(array('code' => TRY_AGAIN_CODE, 'msg' => $this->lang->line('process_failuare'), 'result' => (object)[]));
                     }
                     /* I have to work in this area*/
-                    
                 }
             } catch (Exception $e) {
                 $this->db->trans_rollback();
@@ -608,7 +557,7 @@ class Employee extends REST_Controller
                 }
                 //pr($user_info);
                 $whereArr['where'] = ['employee_id'=>$postDataArr['employee_id'],'user_id'=>$user_info['user_id']];
-                $myEmployeepermissiondetail =  $this->Common_model->fetch_data('user_employee_permission', 'employee_id,user_id,pr_id', $whereArr, true);                         
+                $myEmployeepermissiondetail =  $this->Common_model->fetch_data('user_employee_permission', '*', $whereArr, true);                         
                 //pr($myEmployeepermissiondetail);
                 $insArr['quote_view'] = $postDataArr['quote_view'];
                 $insArr['quote_add'] = $postDataArr['quote_add'];
@@ -636,53 +585,7 @@ class Employee extends REST_Controller
                 if ($this->db->trans_status() === true) {
                     $this->db->trans_commit(); 
 
-                    // $this->load->model("UtilModel");
-                    // $user_data = $this->UtilModel->selectQuery(
-                    //     "device_token, platform, ai_user.user_id",
-                    //     "ai_user",
-                    //     [
-                    //         "where" => ["ai_user.user_id" => $postDataArr["employee_id"]],
-                    //         "join" => ["ai_session" => "ai_user.user_id=ai_session.user_id"]
-                    //     ]
-                    // );
-
-                    // $ios_user_data = array_filter($user_data, function($data){
-                    //     return IPHONE === (int)$data["platform"]?true:false;
-                    // });
-
-                    // $android_user_data = array_filter($user_data, function($data){
-                    //     return ANDROID === (int)$data["platform"]?true:false;
-                    // });
-
-                    // $android_tokens = array_map(function($data){
-                    //     return $data['device_token'];
-                    // }, $android_user_data);
-
-                    // if ( $android_tokens ) {
-                    //     $android_payload_data = [
-                    //         'badge' => 1,
-                    //         'sound' => 'default',
-                    //         'status' => 1,
-                    //         'type' => "employee_permission_updated",
-                    //         'message' => $message,
-                    //         'time' => strtotime('now')
-                    //     ];
-                    //     $this->pushnotification->androidMultiplePush($android_tokens, $android_payload_data);
-                    // }
-
-                    // if ( $ios_user_data ) {
-                    //     $ios_payload_data = [
-                    //         'badge' => 1,
-                    //         'alert' => "Permissions updated",
-                    //         'sound' => 'default',
-                    //         'status' => 1,
-                    //         'type' => "employee_permission_updated",
-                    //         'message' => $message,
-                    //         'time' => strtotime('now')
-                    //     ];
-
-                    //     $this->pushnotification->sendMultipleIphonePush($ios_user_data, $ios_payload_data);
-                    // }
+                    $this->notifyPermissionGranted($myEmployeepermissiondetail['user_id'], $myEmployeepermissiondetail['employee_id'], $myEmployeepermissiondetail, $insArr);
                     $this->response(array('code' => SUCCESS_CODE, 'msg' => $this->lang->line('process_success'), 'result' => (object)[])); 
                 }
             } catch (Exception $e) {
