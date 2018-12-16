@@ -171,7 +171,7 @@ class ProjectRequest extends BaseModel
             projects.address as project_address, projects.id as project_id, projects.lat as project_lat,
             projects.lng as project_lng, pr.created_at as request_created_at, projects.levels,
             pr.created_at_timestamp as request_created_at_timestamp,
-            pq.additional_product_charges, pq.discount,
+            pqR.additional_product_charges, pq.discount,
             totalQuotationChargesPerRoom(projects.id, pq.company_id) as price, pq.status as quotation_status,
             pq.created_at as quotation_created_at,
             pq.created_at_timestamp as quotation_created_at_timestamp';

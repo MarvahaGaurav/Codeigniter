@@ -47,7 +47,7 @@ class ProjectRoomTcoValue extends BaseModel
             ->insert($this->tableName);
     }
 
-    public function get($projectRoomIds)
+    public function get($projectRoomIds, $companyId = 0)
     {
         $this->db->select("project_room_id, existing_number_of_luminaries, existing_wattage, existing_led_source_life_time,
             existing_hours_per_year, existing_energy_price_per_kw, existing_number_of_light_source,
@@ -56,6 +56,10 @@ class ProjectRoomTcoValue extends BaseModel
             new_price_per_light_source, new_price_to_change_light_source, roi, created_at, created_at_timestamp, updated_at, updated_at_timestamp")
             ->from($this->tableName)
             ->where_in('project_room_id', $projectRoomIds);
+
+        if ((int)$companyId > 0) {
+            $this->db->where("company_id", $companyId);
+        }
 
         $query = $this->db->get();
 
