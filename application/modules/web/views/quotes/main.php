@@ -64,31 +64,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($quotations as $quotation) {
-                            $token= json_decode($csrf,true);
-                            $quotation['csrf_token'] = $token['csrf_token'];
-                            ?>
+                        <?php foreach ($quotations as $quotation) { ?>
                         <tr>
                             <td class="op-semibold"><?php echo $quotation['project_name'] ?></td>
                             <td><?php echo strlen($quotation['project_address']) > 50?substr($quotation['project_address'], 0, 50) . '...':$quotation['project_address'] ?></td>
                             <td><?php echo convert_date_time_format('Y-m-d H:i:s', $quotation['request_created_at'], 'h:i A, M d,Y') ?></td>
                             <td><?php if($quotation['status']==QUOTATION_STATUS_QUOTED) { echo "Pending";} else if($quotation['status']==QUOTATION_STATUS_APPROVED) { echo "Approved";} else if($quotation['status']==QUOTATION_STATUS_REJECTED) { echo "Rejected";}?></td>
                             <td class="op-semibold" >
-                                <a href="javascript:void(0)" class="tb-view-list" title="View">
+                                <a  class="tb-view-list" title="View" href="<?php echo base_url("home/quotes/projects/" . encryptDecrypt($quotation['project_id'])."/".encryptDecrypt($quotation['request_id'])) ?>" >
                                     <i class="fa fa-eye" aria-hidden="true"></i>
-                                </a>
-
-                            <?php if($quotation['status']==QUOTATION_STATUS_QUOTED) { ?>
-                                <a href="javascript:void(0)" data-csrf='<?php echo $csrf ?>' id="approve" class="confirmation-action-xhttp project-action" data-json='<?php echo json_encode($quotation) ?>' title="<?php echo $this->lang->line('approve') ?>" data-url="<?php echo base_url("xhttp/quotes/approve") ?>" data-target="#quotes-<?php echo $quotation['request_id'] ?>"  data-redirect="<?php echo base_url(uri_string()) ?>" data-title="<?php echo $this->lang->line('approve-quote-title') ?>" data-message="<?php echo $this->lang->line('approve_quote_confirmation') ?>">
-                                    Approve
-                                </a>
-
-                                <a href="javascript:void(0)" data-csrf='<?php echo $csrf ?>' id="reject" class="confirmation-action-xhttp project-action" data-json='<?php echo json_encode($quotation) ?>'  title="<?php echo $this->lang->line('reject') ?>" data-url="<?php echo base_url("xhttp/quotes/reject") ?>" data-target="#quotes-<?php echo $quotation['request_id'] ?>"  data-redirect="<?php echo base_url(uri_string()) ?>" data-title="<?php echo $this->lang->line('reject-quote-title') ?>" data-message="<?php echo $this->lang->line('reject_quote_confirmation') ?>">
-                                    Reject
-                                </a>
-                            <?php } ?>
-                                
-                                
+                                </a>    
                                 
                             </td>
                         </tr>

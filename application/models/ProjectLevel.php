@@ -129,5 +129,35 @@ class ProjectLevel extends BaseModel
 
         return $result;
     }
+
+    /**
+     * Used to check if all room prices have been added
+     * 
+     * @param $projectId project ID for which the check need to be done
+     *
+     * @return array
+     */
+    public function isAllRoomPriceAdded($projectId,$level)
+    {
+        $this->db->select("pr.id,prq.installation_charges")
+         ->from('project_rooms as pr')
+         ->join("project_room_quotations as prq","pr.id=prq.project_room_id",'left')
+         ->where('pr.project_id', $projectId)
+         ->where('pr.level', $level);
+
+         $query = $this->db->get();
+
+         $result = $query->result_array();
+
+        foreach($result as $key=>$val) {
+            if($val['installation_charges']=='') {
+                return false;
+            }
+            
+        }
+        return true;
+
+        
+    }
     
 }

@@ -255,7 +255,8 @@ $lang['reject_quote_confirmation'] = 'Are you sure want to reject this quote?';
 $lang['add_final_quote_price_button_txt'] = 'Send Quote Price';
 $lang['view_final_quote_price_button_txt'] = 'View Quote Price';
 $lang['final_quote_price_header'] = 'Final quote price';
-$lang['send-quote-later']   = 'Send quote later';
+$lang['send-quote-later']   = 'Send Quote Later';
+$lang['send-email-now']     = 'Send Email Now';
 $lang['select'] = 'Select';
 
 

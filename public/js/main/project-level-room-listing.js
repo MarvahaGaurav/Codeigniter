@@ -36,7 +36,7 @@ requirejs(
           maxlength: 12
         },
         discount_price: {
-          required: true,
+          //required: true,
           number: true,
           maxlength: 12
         }
@@ -52,7 +52,7 @@ requirejs(
       $total = $("#total"),
       $modalPirceText = $(".modal-price-text");
 
-    $(".installer-add-price").on("click", function () {
+    $(".installer-add-price").on("click", function () { 
       var self = this,
         $self = $(self),
         priceData = $self.attr("data-room-price"),
@@ -90,7 +90,7 @@ requirejs(
       $("#add-price-modal").modal('show');
     });
 
-    $("#add-price-submit").on("click", function () {
+    $("#add-price-submit").on("click", function () { 
       var self = this,
         $self = $(self),
         target = $targetHandler.attr('data-target');

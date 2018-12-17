@@ -158,7 +158,7 @@ class ProjectPriceController extends BaseController
 
             $data['subject'] = 'Quote Submitted';
             $data['email'] = $this->requestData['email'];
-            $data['mailerName'] = 'welcome';
+            $data['mailerName'] = 'sendquote';
             $isSend =$this->commonfn->sendEmailToUser($data);
             
             $status = 
@@ -222,7 +222,8 @@ class ProjectPriceController extends BaseController
 
             $this->requestData = $this->input->post();
 
-            $request_id = $this->requestData['request_id'];
+            $request_id = $this->requestData['quotation_id'];
+            $request_id = encryptDecrypt($request_id, 'decrypt');
 
             $updateData['status']=  QUOTATION_STATUS_APPROVED;
             $updateData['updated_at']= $this->datetime;
@@ -230,8 +231,9 @@ class ProjectPriceController extends BaseController
 
             
             $this->UtilModel->updateTableData($updateData, 'project_quotations', [
-                    'request_id' => $request_id
+                    'id' => $request_id
             ]);
+
 
 
             $status = 
@@ -259,7 +261,8 @@ class ProjectPriceController extends BaseController
 
             $this->requestData = $this->input->post();
 
-            $request_id = $this->requestData['request_id'];
+            $request_id = $this->requestData['quotation_id'];
+            $request_id = encryptDecrypt($request_id, 'decrypt');
 
             $updateData['status']=  QUOTATION_STATUS_REJECTED;
             $updateData['updated_at']= $this->datetime;
@@ -267,7 +270,7 @@ class ProjectPriceController extends BaseController
 
             
             $this->UtilModel->updateTableData($updateData, 'project_quotations', [
-                    'request_id' => $request_id
+                    'id' => $request_id
             ]);
 
             $status = 
