@@ -349,6 +349,66 @@ class BaseController extends REST_Controller
     }
 
     /**
+     * Handles employee permissions, this logic can be replaced
+     * with any other abstaction which would exit the program
+     * and provide a relevant message in a valid JSON
+     * String format, should the given employee
+     * not have adequate permissions
+     *
+     * @param array $userTypesToCheck
+     * @param array $permissionsToCheck
+     * @return array
+     */
+    protected function multiplePermissionChecksOr($userTypesToCheck, $permissionsToCheck)
+    { 
+        if (!is_array($userTypesToCheck) || !is_array($permissionsToCheck)) {
+            $this->response([
+                'code' => HTTP_INTERNAL_SERVER_ERROR,
+                'msg' => $this->lang->line("internal_server_error")
+            ]);
+        }
+
+        $permissionArray = [];
+        
+        $validPermission = false;
+        if (in_array((int)$this->user['user_type'], $userTypesToCheck, true) &&
+            (int)$this->user['is_owner'] === ROLE_EMPLOYEE) { 
+            $this->load->helper('common');
+            $permissions = retrieveEmployeePermission($this->user['user_id']);
+            
+
+            if (empty($permissions)) {
+                $this->response([
+                    'code' => HTTP_FORBIDDEN,
+                    'msg' => $this->lang->line('forbidden_action')
+                ]);
+            }
+
+            $permissionKeys = array_keys($permissions);
+            foreach ($permissionsToCheck as $permissionToCheck) {
+                if (!in_array($permissionToCheck, $permissionKeys)) {
+                    $this->response([
+                        'code' => HTTP_INTERNAL_SERVER_ERROR,
+                        'msg' => $this->lang->line("internal_server_error")
+                    ]);
+                }
+
+                $permissionArray[] = $permissions[$permissionToCheck];
+            }
+
+            $hasPermission = array_search(1, $permissionArray);
+
+            if (!is_numeric($hasPermission)) {
+                $this->response([
+                    'code' => HTTP_FORBIDDEN,
+                    'msg' => $this->lang->line('forbidden_action')
+                ]);
+            }
+
+        }
+    }
+
+    /**
      * Permission checks on User Types
      *
      * @param array $userData

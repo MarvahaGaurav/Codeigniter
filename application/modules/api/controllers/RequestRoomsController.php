@@ -84,7 +84,7 @@ class RequestRoomsController extends BaseController
                 $this->load->model(['ProjectRoomQuotation']);
                 $projectRoomIds = array_column($rooms, 'project_room_id');
                 $roomPrice = $this->ProjectRoomQuotation->quotationInfo([
-                    'where_in' => ['project_room_id' => $projectRoomIds]
+                    'where_in' => ['project_room_id' => $projectRoomIds], 'where' => ['company_id' => $user_data['company_id']]
                 ]);
                 $this->load->helper('utility');
                 $rooms = getDataWith($rooms, $roomPrice, 'project_room_id', 'project_room_id', 'price');

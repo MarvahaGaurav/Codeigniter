@@ -49,6 +49,7 @@ $route['api/v1/projects/rooms/tco'] = 'ProjectTcoController/saveTco';
 $route['api/v1/projects/rooms'] = 'ProjectRoomController/projectRooms';
 $route['api/v1/projects/quotation-request'] = 'ProjectController/sendQuotationRequest';
 $route['api/v1/projects/rooms/quotations'] = 'QuotationController/roomsQuotation';
+$route['api/v1/requests/rooms/quotations'] = 'QuotationController/requestRoomsQuotation';
 $route['api/v1/projects/rooms/(:num)/products'] = 'ProjectController/fetchRoomproducts/project_room_id/$1';
 
 $route['api/v1/projects/rooms/(:any)/fast-calc'] = 'ProjectRoomController/roomQuickCalcResponse/project_room_id/$1';

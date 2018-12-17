@@ -204,7 +204,7 @@ class QuotationController extends BaseController
                     'msg' => $this->lang->line('forbidden_action')
                 ]);
             }
-            
+
             $projectRooms = $this->UtilModel->selectQuery('id', 'project_rooms', [
                 'where' => ['project_id' => $this->requestData['project_id']]
             ]);
@@ -566,54 +566,7 @@ class QuotationController extends BaseController
 
             $this->user = $user_data;
 
-            $this->userTypeHandling([INSTALLER]);
-
-            $this->handleEmployeePermission([INSTALLER], ['quote_add', 'project_add']);
-
-            $this->requestData = $this->post();
-
-            $this->validateRoomQuotations();
-
-            $this->validationRun();
-
-            $check = $this->UtilModel->selectQuery(
-                'id',
-                'project_room_quotations',
-                [
-                    'where' => [
-                        'company_id' => $user_data['company_id'],
-                        'project_room_id' => $this->requestData['project_room_id']
-                    ],
-                    'single_row' => true
-                ]
-            );
-
-            if (!empty($check)) {
-                $this->response([
-                    'code' => HTTP_CONFLICT,
-                    'msg' => $this->lang->line('quotation_already_added')
-                ]);
-            }
-
-            $quotationData = [
-                'project_room_id' => $this->requestData['project_room_id'],
-                'user_id' => $user_data['user_id'],
-                'company_id' => $user_data['company_id'],
-                'price_per_luminaries' => $this->requestData['price_per_luminaries'],
-                'installation_charges' => $this->requestData['installation_charges'],
-                'discount_price' => $this->requestData['discount_price'],
-                'created_at' => $this->datetime,
-                'created_at_timestamp' => time(),
-                'updated_at' => $this->datetime,
-                'updated_at_timestamp' => time()
-            ];
-
-            $this->UtilModel->insertTableData($quotationData, 'project_room_quotations');
-
-            $this->response([
-                'code' => HTTP_OK,
-                'msg' => $this->lang->line('room_quotation_added')
-            ]);
+            $this->projectRoomQuotations(['project_add']);
         } catch (\Exception $error) {
             $this->response([
                 'code' => HTTP_INTERNAL_SERVER_ERROR,
@@ -621,6 +574,132 @@ class QuotationController extends BaseController
                 'msg' => $this->lang->line("internal_server_error")
             ]);
         }
+    }
+
+    /**
+     * @SWG\Post(path="/requests/rooms/quotations",
+     *   tags={"Requests & Quotations"},
+     *   summary="Add Room Quotation",
+     *   description="Add room quotation",
+     *   operationId="roomsQuotation_post",
+     *   consumes ={"multipart/form-data"},
+     *   produces={"application/json"},
+     * @SWG\Parameter(
+     *     name="X-Language-Code",
+     *     in="header",
+     *     description="en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+     *     type="string",
+     *     required=true
+     * ),
+     * @SWG\Parameter(
+     *     name="accesstoken",
+     *     in="header",
+     *     description="Access token received during signup or login",
+     *     required=true,
+     *     type="string"
+     *   ),
+     * @SWG\Parameter(
+     *     name="project_room_id",
+     *     in="formData",
+     *     description="",
+     *     type="string",
+     *     required = true
+     *  ),
+     * @SWG\Parameter(
+     *     name="price_per_luminaries",
+     *     in="formData",
+     *     description="",
+     *     type="string",
+     *     required = true
+     *  ),
+     * @SWG\Parameter(
+     *     name="installation_charges",
+     *     in="formData",
+     *     description="",
+     *     type="string",
+     *     required = true
+     *  ),
+     * @SWG\Parameter(
+     *     name="discount_price",
+     *     in="formData",
+     *     description="",
+     *     type="string",
+     *     required = true
+     *  ),
+     * @SWG\Response(response=200, description="OK"),
+     * @SWG\Response(response=401, description="Unauthorize"),
+     * @SWG\Response(response=422, description="Validation Errors"),
+     * @SWG\Response(response=500, description="Internal server error"),
+     * )
+     */
+    public function requestRoomsQuotation_post()
+    {
+        try {
+            $user_data = $this->accessTokenCheck('u.user_type, is_owner, u.company_id');
+            $language_code = $this->langcode_validate();
+
+            $this->user = $user_data;
+
+            $this->projectRoomQuotations(['quote_add']);
+        } catch (\Exception $error) {
+            $this->response([
+                'code' => HTTP_INTERNAL_SERVER_ERROR,
+                'api_code_result' => 'INTERNAL_SERVER_ERROR',
+                'msg' => $this->lang->line("internal_server_error")
+            ]);
+        }
+    }
+
+    private function projectRoomQuotations($permissions)
+    {
+        $this->userTypeHandling([INSTALLER]);
+
+        $this->handleEmployeePermission([INSTALLER], $permissions);
+
+        $this->requestData = $this->post();
+
+        $this->validateRoomQuotations();
+
+        $this->validationRun();
+
+        $check = $this->UtilModel->selectQuery(
+            'id',
+            'project_room_quotations',
+            [
+                'where' => [
+                    'company_id' => $this->user['company_id'],
+                    'project_room_id' => $this->requestData['project_room_id']
+                ],
+                'single_row' => true
+            ]
+        );
+
+        if (!empty($check)) {
+            $this->response([
+                'code' => HTTP_CONFLICT,
+                'msg' => $this->lang->line('quotation_already_added')
+            ]);
+        }
+
+        $quotationData = [
+            'project_room_id' => $this->requestData['project_room_id'],
+            'user_id' => $this->user['user_id'],
+            'company_id' => $this->user['company_id'],
+            'price_per_luminaries' => $this->requestData['price_per_luminaries'],
+            'installation_charges' => $this->requestData['installation_charges'],
+            'discount_price' => $this->requestData['discount_price'],
+            'created_at' => $this->datetime,
+            'created_at_timestamp' => time(),
+            'updated_at' => $this->datetime,
+            'updated_at_timestamp' => time()
+        ];
+
+        $this->UtilModel->insertTableData($quotationData, 'project_room_quotations');
+
+        $this->response([
+            'code' => HTTP_OK,
+            'msg' => $this->lang->line('room_quotation_added')
+        ]);
     }
 
     /**
@@ -682,12 +761,92 @@ class QuotationController extends BaseController
             $user_data = $this->accessTokenCheck('u.user_type, is_owner, u.company_id');
             $language_code = $this->langcode_validate();
 
+            $this->projectRoomQuotationEdit(['project_add']);
+        } catch (\Exception $error) {
+            $this->response([
+                'code' => HTTP_INTERNAL_SERVER_ERROR,
+                'api_code_result' => 'INTERNAL_SERVER_ERROR',
+                'msg' => $this->lang->line("internal_server_error")
+            ]);
+        }
+    }
 
-            $this->user = $user_data;
+    /**
+     * @SWG\Put(path="/requests/rooms/quotations",
+     *   tags={"Requests & Quotations"},
+     *   summary="Edit Room Quotation",
+     *   description="Edit room quotation",
+     *   operationId="roomsQuotation_put",
+     *   consumes ={"multipart/form-data"},
+     *   produces={"application/json"},
+     * @SWG\Parameter(
+     *     name="X-Language-Code",
+     *     in="header",
+     *     description="en ,da ,nb ,sv ,fi ,fr ,nl ,de",
+     *     type="string",
+     *     required=true
+     * ),
+     * @SWG\Parameter(
+     *     name="accesstoken",
+     *     in="header",
+     *     description="Access token received during signup or login",
+     *     required=true,
+     *     type="string"
+     *   ),
+     * @SWG\Parameter(
+     *     name="room_quotation_id",
+     *     in="formData",
+     *     description="",
+     *     type="string",
+     *     required = true
+     *  ),
+     * @SWG\Parameter(
+     *     name="price_per_luminaries",
+     *     in="formData",
+     *     description="",
+     *     type="string",
+     *  ),
+     * @SWG\Parameter(
+     *     name="installation_charges",
+     *     in="formData",
+     *     description="",
+     *     type="string",
+     *  ),
+     * @SWG\Parameter(
+     *     name="discount_price",
+     *     in="formData",
+     *     description="",
+     *     type="string",
+     *  ),
+     * @SWG\Response(response=200, description="OK"),
+     * @SWG\Response(response=401, description="Unauthorize"),
+     * @SWG\Response(response=422, description="Validation Errors"),
+     * @SWG\Response(response=500, description="Internal server error"),
+     * )
+     */
+    public function requestRoomsQuotation_put()
+    {
+        try {
+            $user_data = $this->accessTokenCheck('u.user_type, is_owner, u.company_id');
+            $language_code = $this->langcode_validate();
+
+            $this->projectRoomQuotationEdit(['quote_add']);
+        } catch (\Exception $error) {
+            $this->response([
+                'code' => HTTP_INTERNAL_SERVER_ERROR,
+                'api_code_result' => 'INTERNAL_SERVER_ERROR',
+                'msg' => $this->lang->line("internal_server_error")
+            ]);
+        }
+    }
+
+    private function projectRoomQuotationEdit($permissions)
+    {
+        $this->user = $user_data;
 
             $this->userTypeHandling([INSTALLER]);
 
-            $this->handleEmployeePermission([INSTALLER], ['quote_edit']);
+            $this->handleEmployeePermission([INSTALLER], $permissions);
 
             $this->requestData = $this->put();
 
@@ -753,13 +912,6 @@ class QuotationController extends BaseController
                 'msg' => $this->lang->line('room_quotation_added'),
                 'data' => $priceData
             ]);
-        } catch (\Exception $error) {
-            $this->response([
-                'code' => HTTP_INTERNAL_SERVER_ERROR,
-                'api_code_result' => 'INTERNAL_SERVER_ERROR',
-                'msg' => $this->lang->line("internal_server_error")
-            ]);
-        }
     }
 
     /**
