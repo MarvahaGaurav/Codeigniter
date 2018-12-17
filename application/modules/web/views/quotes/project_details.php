@@ -1,10 +1,23 @@
+<?php $refererUrl = $_SERVER['HTTP_REFERER']; 
+      $referalUrlAr = explode('/', $refererUrl);
+      $endUri = end($referalUrlAr);
+
+?>
 <div class="inner-container">
     <div class="container">
 
         <!-- breadcrumb -->
         <ul class="breadcrumb">
             <li><a href="javascript:void(0)">Home</a></li>
+            <?php if($endUri == 'awaiting')  {?>
             <li><a href="<?php echo base_url('home/quotes/awaiting') ?>">Awaiting Quotes</a></li>
+            <?php } else if ($endUri == 'submitted') {?>
+            <li><a href="<?php echo base_url('home/quotes/submitted') ?>">Submitted Quotes</a></li>
+            <?php } else if ($endUri == 'approved') { ?>
+            <li><a href="<?php echo base_url('home/quotes/approved') ?>">Approved Quotes</a></li>
+            <?php } else if($endUri =='quotes') { ?>
+            <li><a href="<?php echo base_url('home/quotes') ?>">Quotes</a></li>
+            <?php } ?> 
             <li class="active">Project Details</li>
         </ul>
         <!-- //breadcrumb -->
@@ -47,7 +60,7 @@
                         <td class="op-semibold">
                             <a href="<?php echo base_url('home/quotes/projects/' . encryptDecrypt($project['project_id']) .'/'.encryptDecrypt($request_id). '/edit') ?>" class="project-action"><i class="fa fa-pencil"></i></a>
                             <?php if (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && $isRequested) { ?>
-                            <a href="<?php echo base_url('home/projects/' . $projectId . '/quotations') ?>" class="project-action"><i class="fa fa-quote-right"></i></a>
+                            <a href="<?php echo base_url('home/projects/' . $projectId .'/'.$request_id. '/quotations') ?>" class="project-action"><i class="fa fa-quote-right"></i></a>
                             <?php } ?>
                         </td>
                     </tr>
@@ -119,12 +132,8 @@
                         <a href="<?php echo base_url("/home/quotes/projects/{$projectId}/{$request_id}/levels/{$level['level']}/rooms") ?>" title="<?php echo $this->lang->line('view') ?>"><i class="fa fa-eye"></i></a>  
                         <?php } ?>
                         
-                        <?php if (((in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && empty($quotationRequest)) ||
-                           (in_array((int)$userInfo['user_type'], [INSTALLER], true) && !(bool)$hasFinalQuotePriceAdded) ||
-                           in_array((int)$userInfo['user_type'], [WHOLESALER, ELECTRICAL_PLANNER], true)) &&
-                           ((bool)$level['active'] && count($active_levels) > 1 && (int)$level['room_count'] > 0)
-                           ) { ?>
-                        <a href="javascript:void(0)" class="level-clone-btn" data-source-levels="<?php echo $level['level'] ?>" data-destination-levels="<?php echo $level['cloneable_destinations'] ?>"><i class="fa fa fa-clone"></i></a>
+                        <?php if ((bool)$level['isAllRoomPriceAdded']) { ?>
+                           <a href="javascript:void(0)" class="level-clone-btn"><i class="fa fa-check-circle" aria-hidden="true"></i></a>
                         <?php } ?>
                      </td>
                   </tr>
@@ -144,10 +153,7 @@
                 <button class="col-md-2 custom-btn save" id="add-price-installer-button" type="button" data-toggle="modal" data-target="#project-final-price-modal"><?php echo $this->lang->line('view_final_quote_price_button_txt') ?></button>
                 <?php }?>
 
-                <?php if((bool)$hasFinalQuotePriceAdded){ ?>
-                    <button class="col-md-2 custom-btn save" id="send-email-button" type="button" data-toggle="modal" data-target="#send-email-to-customer"><?php echo $this->lang->line('send_email_to_customer_txt') ?></button>
-
-                <?php } ?>
+                
 
 
             </div>
@@ -266,15 +272,15 @@
                 </div>
                 <?php echo form_close() ?>
             </div>
-            <?php if (!(bool)$hasFinalQuotePriceAdded) { ?>
+            <?php if (($request_status!=QUOTATION_STATUS_APPROVED && $request_status!=QUOTATION_STATUS_REJECTED)) { ?>
             <div class="modal-footer">
                 <div class="text-center button-wrapper">
-                    <button type="button" class="custom-btn btn-margin btn-width save" data-csrf='<?php echo $csrf ?>' data-text="<?php echo $this->lang->line('select') ?>" id="final-quote-price-submit" data-clone=""><?php echo $this->lang->line('send-quote-later') ?></button>
+                    <button type="button" class="custom-btn btn-margin btn-width save" data-csrf='<?php echo $csrf ?>' data-text="<?php echo $this->lang->line('select') ?>" data-dismiss="modal" id="final-quote-send-later" data-clone=""><?php echo $this->lang->line('send-quote-later') ?></button>
+                    
+                    <button type="button" class="custom-btn btn-margin btn-width save" data-target="#send-email-to-customer" data-csrf='<?php echo $csrf ?>' data-text="<?php echo $this->lang->line('select') ?>" id="final-quote-email-now" data-clone=""><?php echo $this->lang->line('send-email-now') ?></button>
                 </div>
 
-                <div class="text-center button-wrapper">
-                    <button type="button" class="custom-btn btn-margin btn-width save" data-csrf='<?php echo $csrf ?>' data-text="<?php echo $this->lang->line('select') ?>" id="final-quote-price-submit" data-clone=""><?php echo $this->lang->line('send-email-now') ?></button>
-                </div>
+                
             </div>
             <?php }?>
         </div>
@@ -291,7 +297,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <div class="text-center">
-                    <h4 class="modal-title"><?php echo (bool)$hasFinalQuotePriceAdded?$this->lang->line('send_email_to_customer_txt'):$this->lang->line('add_final_price_button_txt') ?></h4>
+                    <h4 class="modal-title"><?php echo $this->lang->line('send_email_to_customer_txt') ?></h4>
                 </div>
             </div>
             <div class="modal-body">

@@ -254,7 +254,7 @@ $(document).ready(function () {
 
         });
 
-        $("#confirmation-ok").on("click", function () {
+        $("#confirmation-ok").on("click", function () { 
             var $self = $(this),
                 dataJson = $self.attr("data-json"),
                 dataUrl = $self.attr("data-url"),
@@ -262,6 +262,7 @@ $(document).ready(function () {
                 dataRedirect = $self.attr("data-redirect"),
                 dataTarget = $self.attr("data-target");
 
+               
                
             $.ajax({
                 url: dataUrl,

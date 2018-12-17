@@ -58,7 +58,7 @@ requirejs(
       })
     });
 
-    $("#final-quote-price-submit").on("click", function () { 
+    $("#final-quote-email-now").on("click", function () { 
       var self = this,
         $self = $(this),
         $installerSubmitPrice = $("#installer-submit-price");
@@ -80,7 +80,10 @@ requirejs(
         },
         success: function(response) {
           if (response.success) {
-              window.location.reload();
+              //window.location.reload();
+              $('#project-final-price-modal').modal('hide');
+              $('#send-email-to-customer').modal('show');
+
           }
         },
         error: function (error) {
@@ -126,6 +129,8 @@ requirejs(
         }
       })
     });
+
+    
 
 
 
