@@ -54,7 +54,7 @@ class Notification extends BaseModel
             $sender = array_unique(array_column($result['data'], 'sender_id'));
             $sender = $this->User->basicUserInfo($sender);
             $result['data'] = getDataWith($result['data'], $sender, 'sender_id', 'user_id', 'sender', '', true);
-            $notificationMessages = $this->getNotificationMessages(array_column($result['data']), 'id');
+            $notificationMessages = $this->getNotificationMessages(array_column($result['data'], 'id'));
             $result['data'] = getDataWith($result['data'], $notificationMessages, 'id', 'notification_id', 'messages', '', true);
         }
 

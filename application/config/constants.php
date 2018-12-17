@@ -246,6 +246,7 @@ define('CHAT_PUSH', 7);
  */
 defined("OPEN_SSL_KEY") or define('OPEN_SSL_KEY', '011b519a043dcb915314695e1ce560dd4e29dae06867cdb701ffc96350e18caf');
 defined("APNS_ARN") or define("APNS_ARN", "arn:aws:sns:us-west-2:969615346061:app/APNS_SANDBOX/sg-ios-dev");
+defined("GCM_ARN") or define("GCM_ARN", "arn:aws:sns:us-west-2:969615346061:app/GCM/sg-android-dev");
 defined("SNS_REGION") or define("SNS_REGION", "us-west-2");
 defined("AWS_KEY") or define("AWS_KEY", "AKIAJDOK6GDAABSRZ2FA");
 defined("AWS_SECRET") or define("AWS_SECRET", "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");
@@ -332,4 +333,6 @@ defined("NOTIFICATION_PERMISSION_GRANTED") or define("NOTIFICATION_PERMISSION_GR
 defined("NOTIFICATION_SEND_QUOTES") or define("NOTIFICATION_SEND_QUOTES", 4);
 defined("NOTIFICATION_ACCEPT_QUOTE") or define("NOTIFICATION_ACCEPT_QUOTE", 5);
 defined("NOTIFICATION_EDIT_QUOTE_PRICE") or define("NOTIFICATION_EDIT_QUOTE_PRICE", 6);
-defined("NOTIFICATION_REJECT_QUOTE") or define("NOTIFICATION_REJECT_QUOTE", 7);
+defined("NOTIFICATION_EMPLOYEE_APPROVED") or define("NOTIFICATION_EMPLOYEE_APPROVED", 7);
+
+defined("SILENT_NOTIFICATION_PERMISSION_GRANTED") or define("SILENT_NOTIFICATION_PERMISSION_GRANTED", 1);

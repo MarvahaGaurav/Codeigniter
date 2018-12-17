@@ -81,7 +81,7 @@ trait PermissionHandler
             return '';
         }
 
-        return $this->lang->line($module . '_text') . " (" . implode(", ", $permissionString) . ")";
+        return $this->lang->line($module . '_text') . ": " . implode(", ", $permissionString) . "";
     }
 
 }

@@ -214,6 +214,7 @@ $lang['notification_permission_granted'] = 'You have been granted permissions fo
 $lang['notification_send_quotes'] = 'You have received a quotation from %s';
 $lang['notification_accept_quote'] = 'Your quote has been accepted by %s';
 $lang['notification_edit_quote_price'] = 'An updated quote has been provided';
+$lang['notification_request_approved'] = 'Your request to join %s has been approved';
 $lang['no_notification_found'] = 'You have no notifications';
 $lang['notification_fetched'] = 'Notifications fetched';
 $lang['no_request_found'] = 'No request found';

@@ -287,10 +287,9 @@ class Employee extends REST_Controller
                 if ($user_info['status'] == 2) {
                     $this->response(array('code' => ACCOUNT_BLOCKED, 'msg' => $this->lang->line('account_blocked'), 'result' => (object)[]));
                 }
-                //pr($user_info);
                 $whereArr['where'] = ['er_id'=>$postDataArr['er_id']];
-                $myEmployeedetail =  $this->Common_model->fetch_data('employee_request_master', 'requested_by,requested_to,status', $whereArr, true);                         
-                //pr($myEmployeedetail);
+                $myEmployeedetail =  $this->Common_model->fetch_data('employee_request_master', 'requested_by,requested_to,status', $whereArr, true);   
+                
                 if(!empty($myEmployeedetail) && $myEmployeedetail['requested_by'] == $postDataArr['employee_id']) {                    
                     $whereArr['where'] = ['er_id'=>$postDataArr['er_id']];                
                     $updaterequesr =  $this->Common_model->update_single('employee_request_master', ['status'=>$postDataArr['action']], $whereArr);
@@ -300,13 +299,17 @@ class Employee extends REST_Controller
                 if ($this->db->trans_status() === true) {
                     $this->db->trans_commit(); 
                     
-                    /* I have to work in this area*/                    
                     if($updaterequesr) {
+                        $companyId = $user_info['company_id'];
+                        $companyInfo = $this->Common_model->fetch_data('company_master', 'company_name', [
+                            'where' => ['company_id' => $companyId]
+                        ], true);
+                        $companyName = isset($companyInfo['company_name'])?$companyInfo['company_name']:'';
+                        $this->approvePermission($myEmployeedetail['requested_to'], $myEmployeedetail['requested_by'], $companyName);
                         $this->response(array('code' => SUCCESS_CODE, 'msg' => $this->lang->line('process_success'), 'result' => (object)[]));
                     }else{                        
                         $this->response(array('code' => TRY_AGAIN_CODE, 'msg' => $this->lang->line('process_failuare'), 'result' => (object)[]));
                     }
-                    /* I have to work in this area*/
                 }
             } catch (Exception $e) {
                 $this->db->trans_rollback();

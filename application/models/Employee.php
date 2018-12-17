@@ -17,9 +17,11 @@ class Employee extends BaseModel
     {
         $this->db->select('u.user_id,u.first_name as full_name, u.email,u.user_type,u.is_owner,IF(u.image !="",u.image,"") as image,IF(u.image_thumb !="",u.image_thumb,"") as image_thumb')
             ->from("ai_user as u")
-            ->where("company_id", $params['company_id'])
+            ->join("employee_request_master as erm", "erm.requested_by=u.user_id")
+            ->where("erm.status", EMPLOYEE_REQUEST_ACCEPTED)
+            ->where("u.company_id", $params['company_id'])
             ->where("u.is_owner", ROLE_EMPLOYEE)
-            ->order_by('u.user_id', 'DESC');
+            ->order_by('erm.er_id', 'DESC');
 
         if (isset($params['limit']) && is_numeric($params['limit']) && (int)$params['limit'] > 0) {
             $this->db->limit((int)$params['limit']);

@@ -1329,6 +1329,7 @@ class Common_model extends CI_Model
         if ($companyid) {
             $this->db->where('erm.company_id', $companyid);
         }
+        $this->db->order_by('erm.er_id', 'DESC');
         $query = $this->db->get();
 
         $result['result'] = $query->result();

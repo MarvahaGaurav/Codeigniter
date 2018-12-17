@@ -79,7 +79,7 @@ class Profile extends REST_Controller
             if ($this->db->trans_status() === true) {
                 $this->db->trans_commit();
                 $whereArr['where'] = ['company_id' => $user_info['company_id']];
-                $companyDetail = $this->Common_model->fetch_data('company_master', 'company_id,company_name,company_reg_number,company_image,company_image_thumb', $whereArr, true);
+                $companyDetail = $this->Common_model->fetch_data('company_master', 'company_id,company_name,company_reg_number,company_image,IFNULL(company_image_thumb, "") as company_image_thumb', $whereArr, true);
                 if ($companyDetail) {
                     $newresArr = array_merge($companyDetail, $user_info);
                 } else {

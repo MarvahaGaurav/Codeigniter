@@ -150,6 +150,14 @@ class Login extends REST_Controller
                                 $userInfo['is_employee_rejected'] = (bool)(!empty($employeeApprovalStatus)&&
                                                                 (int)$employeeApprovalStatus['status'] === EMPLOYEE_REQUEST_REJECTED);
                             }
+                            $companyData = (object)[];
+                            if (!empty($userInfo['company_id'])) {
+                                $this->load->model(['UtilModel']);
+                                $companyData = $this->UtilModel->selectQuery('company_name, company_reg_number, company_address, lat, lng, country, city, zipcode, company_image, company_image_thumb, owner_type, insert_date', 'company_master', [
+                                    'where' => ['company_id' => $userInfo['company_id']], 'single_row' => true
+                                ]);
+                            }
+                            $userInfo['company'] = $companyData;
                             $this->response(array('code' => SUCCESS_CODE, 'msg' => $this->lang->line('login_successful'), 'result' => $userInfo));
                         }
                     } else if ($userInfo['status'] == BLOCKED) {

@@ -6,7 +6,7 @@ use Aws\Sns\SnsClient\AwsClient;
 class Sns
 {
     const APNS_ARN = APNS_ARN;
-    const GCM_ARN = "";
+    const GCM_ARN = GCM_ARN;
     const REGION = SNS_REGION;
 
     private $topicARN;

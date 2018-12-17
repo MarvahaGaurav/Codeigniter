@@ -248,22 +248,22 @@ class Signup extends REST_Controller
                 'rules' => 'trim|required'
             )
         );
-        
-        if (in_array($postDataArr['user_type']!='1')) {
-            $required_fields_arr[] = array('field' => 'is_owner','label' => 'Owner','rules' => 'trim|required');
-       
+
+        if (in_array($postDataArr['user_type'] != '1')) {
+            $required_fields_arr[] = array('field' => 'is_owner', 'label' => 'Owner', 'rules' => 'trim|required');
+
             if ($postDataArr['is_owner'] == '2') {
-                $required_fields_arr[] = array('field' => 'company_name','label' => 'Company Name','rules' => 'trim|required');
-                $required_fields_arr[] = array('field' => 'company_reg_number','label' => 'Company Registration Number','rules' => 'trim|required');
+                $required_fields_arr[] = array('field' => 'company_name', 'label' => 'Company Name', 'rules' => 'trim|required');
+                $required_fields_arr[] = array('field' => 'company_reg_number', 'label' => 'Company Registration Number', 'rules' => 'trim|required');
                 if (in_array((int)$postDataArr['user_type'], [INSTALLER], true)) {
-                    $required_fields_arr[] = array('field' => 'company_address','label' => 'Company Address','rules' => 'trim|required');
-                    $required_fields_arr[] = array('field' => 'latitude','label' => 'Latitude','rules' => 'trim|required');
-                    $required_fields_arr[] = array('field' => 'longitude','label' => 'Longitude','rules' => 'trim|required');
+                    $required_fields_arr[] = array('field' => 'company_address', 'label' => 'Company Address', 'rules' => 'trim|required');
+                    $required_fields_arr[] = array('field' => 'latitude', 'label' => 'Latitude', 'rules' => 'trim|required');
+                    $required_fields_arr[] = array('field' => 'longitude', 'label' => 'Longitude', 'rules' => 'trim|required');
                 }
-                $required_fields_arr[] = array('field' => 'country','label' => 'Country','rules' => 'trim|required');
+                $required_fields_arr[] = array('field' => 'country', 'label' => 'Country', 'rules' => 'trim|required');
                 // $required_fields_arr[] = array('field' => 'state','label' => 'State','rules' => 'trim|required');
-                $required_fields_arr[] = array('field' => 'city','label' => 'City','rules' => 'trim|required');
-                $required_fields_arr[] = array('field' => 'zipcode','label' => 'Zipcode','rules' => 'trim|required');
+                $required_fields_arr[] = array('field' => 'city', 'label' => 'City', 'rules' => 'trim|required');
+                $required_fields_arr[] = array('field' => 'zipcode', 'label' => 'Zipcode', 'rules' => 'trim|required');
             }/*else{
                 $required_fields_arr[] = array('field' => 'company_id','label' => 'Company','rules' => 'trim|required');
             }*/
@@ -313,8 +313,8 @@ class Signup extends REST_Controller
                 $signupArr["first_name"] = trim($postDataArr["first_name"]);
                 $signupArr["middle_name"] = isset($postDataArr["middle_name"]) ? trim($postDataArr["middle_name"]) : "";
                 $signupArr["last_name"] = isset($postDataArr["last_name"]) ? trim($postDataArr["last_name"]) : "";
-                $signupArr["email"] = $postDataArr["email"];
-                $signupArr['language'] = isset($postDataArr['language'])&&preg_match('/^(en|da|nb|sv|fi|fr|nl|de)$/', $postDataArr['language'])?$postDataArr['language']:"en";
+                $signupArr["email"] = trim($postDataArr["email"]);
+                $signupArr['language'] = isset($postDataArr['language']) && preg_match('/^(en|da|nb|sv|fi|fr|nl|de)$/', $postDataArr['language']) ? $postDataArr['language'] : "en";
                 //$signupArr["gender"] = isset($postDataArr["gender"]) ? trim($postDataArr["gender"]) : 0;
                 //$signupArr["dob"] = isset($postDataArr["dob"]) ? date('Y-m-d', strtotime($postDataArr["dob"])) : "";
                 //$signupArr["age"] = isset($postDataArr["age"]) ? trim($postDataArr["age"]) : "";
@@ -328,13 +328,11 @@ class Signup extends REST_Controller
                 $signupArr["country_id"] = isset($postDataArr['country']) ? $postDataArr['country'] : "";
                 // $signupArr["state_id"] = isset($postDataArr['state']) ? $postDataArr['state'] : "";
                 $signupArr["city_id"] = isset($postDataArr['city']) ? $postDataArr['city'] : "";
-                $signupArr["zipcode"] = isset($postDataArr['zipcode']) ? $postDataArr['zipcode'] : "";
+                $signupArr["zipcode"] = isset($postDataArr['zipcode']) ? trim($postDataArr['zipcode']) : "";
                 $signupArr["password"] = encrypt($postDataArr["password"]);
                 $signupArr["registered_date"] = date('Y-m-d H:i:s');
-                $signupArr["image"] = isset($postDataArr['profile_image']) ? $postDataArr['profile_image'] : "";
-                ;
-                $signupArr["image_thumb"] = isset($postDataArr['profile_image_thumb']) ? $postDataArr['profile_image_thumb'] : "";
-                ;
+                $signupArr["image"] = isset($postDataArr['profile_image']) ? $postDataArr['profile_image'] : "";;
+                $signupArr["image_thumb"] = isset($postDataArr['profile_image_thumb']) ? $postDataArr['profile_image_thumb'] : "";;
 
                 /*
                  *  upload profile pic option
@@ -359,19 +357,18 @@ class Signup extends REST_Controller
                     $signupArr["image"] = $imageName;
                     $signupArr["image_thumb"] = $thumbName;
                 }*/
-                
+
                 $this->db->trans_begin();
-                                
+
                 $signupArr["is_owner"] = $postDataArr['is_owner'];
                 $signupArr["user_type"] = $postDataArr['user_type'];
 
-                if ($postDataArr['is_owner'] == '2') {
+                $companyArr = [];
+
+                $this->db->trans_begin();
+                if ($postDataArr['is_owner'] == '2' || (int)$postDataArr['user_type'] === BUSINESS_USER) {
                     $companyArr['company_name'] = isset($postDataArr['company_name']) ? $postDataArr['company_name'] : "";
                     $companyArr['company_reg_number'] = isset($postDataArr['company_reg_number']) ? $postDataArr['company_reg_number'] : "";
-                    //$companyArr['prm_country_code'] = isset($postDataArr['prm_country_code']) ? $postDataArr['prm_country_code'] : "";
-                    //$companyArr['prm_contact_number'] = isset($postDataArr['prm_contact_number']) ? $postDataArr['prm_contact_number'] : "";
-                    //$companyArr['alt_country_code'] = isset($postDataArr['alt_country_code']) ? $postDataArr['alt_country_code'] : "";
-                    //$companyArr['alt_contact_number'] = isset($postDataArr['alt_contact_number']) ? $postDataArr['alt_contact_number'] : "";
                     $companyArr['company_address'] = isset($postDataArr['company_address']) ? $postDataArr['company_address'] : "";
                     $companyArr['lat'] = isset($postDataArr['latitude']) ? $postDataArr['latitude'] : 0.00;
                     $companyArr['lng'] = isset($postDataArr['longitude']) ? $postDataArr['longitude'] : 0.00;
@@ -384,26 +381,6 @@ class Signup extends REST_Controller
                     $companyArr["owner_type"] = $postDataArr['user_type'];
                     $companyArr['insert_date'] = date('Y-m-d H:i:s');
 
-                    /*if (isset($_FILES['company_image']) && !empty($_FILES['company_image'])) {
-                        $config = [];
-                        $config = getConfig(UPLOAD_IMAGE_PATH, 'jpeg|jpg|png', 3000, 1024, 768);
-                        $this->load->library('upload', $config);
-                        if ($this->upload->do_upload('company_image')) {
-                            $upload_data = $this->upload->data();
-                            $companuyImageName = $upload_data['file_name'];
-                            $companuyThumbFileName = $upload_data['file_name'];
-                            $fileSource = UPLOAD_IMAGE_PATH . $companuyThumbFileName;
-                            $targetPath = UPLOAD_THUMB_IMAGE_PATH;
-                            $isSuccess = $this->commonfn->thumb_create($companuyThumbFileName, $fileSource, $targetPath);
-                            if ($isSuccess) {
-                                $compthumbName = $companuyImageName;
-                            }
-                        } else {
-                            $this->response(array('code' => ERROR_UPLOAD_FILE, 'msg' => strip_tags($this->upload->display_errors()), 'result' => $signupArr));
-                        }
-                        $companyArr["company_image"] = $companuyImageName;
-                        $companyArr["company_image_thumb"] = $compthumbName;
-                    }*/
                     $companyId = $this->Common_model->insert_single('company_master', $companyArr);
                     if ($companyId) {
                         $signupArr["company_id"] = $companyId;
@@ -413,32 +390,13 @@ class Signup extends REST_Controller
                 } else {
                     $signupArr["company_id"] = isset($postDataArr['company_id']) ? $postDataArr['company_id'] : "";
                 }
-                //print_r($companyArr); die;
-                
-                //print_r($signupArr);die;
+
                 $userId = $this->Common_model->insert_single('ai_user', $signupArr);
                 if (!$userId) {
                     throw new Exception($this->lang->line('try_again'));
                 }
                 $postDataArr['user_id'] = $userId;
                 
-                if ($postDataArr['is_owner'] == ROLE_EMPLOYEE) {
-                    $whereArr['where'] = ['is_owner' => 2, 'company_id' => $signupArr['company_id']];
-                    $companyowner_info = $this->Common_model->fetch_data('ai_user', ['user_id'], $whereArr, true);
-                    if ($companyowner_info) {
-                        // adding in notification master table
-                        $requestedbyname = $postDataArr['first_name'].' '.$postDataArr['middle_name'].' '.$postDataArr['last_name'];
-                        $this->notifyEmployeePermission($userId, $companyowner_info['user_id']);
-                        $notificationId = $this->Common_model->insert_single('users_notification_master', $notifArr);
-
-                        // adding in employee request tabel
-                        $requestfArr['requested_by'] = $userId;
-                        $requestfArr['requested_to'] = $companyowner_info['user_id'];
-                        $requestfArr['request_time'] = date('Y-m-d H:i:s');
-                        $requestfArr['company_id'] = $signupArr["company_id"];
-                        $requestid = $this->Common_model->insert_single('employee_request_master', $requestfArr);
-                    }
-                }
                 /*
                  * Generate Public and Private Access Token
                  */
@@ -470,41 +428,14 @@ class Signup extends REST_Controller
                 } else {
                     $sessionId = $this->Common_model->insert_single('ai_session', $sessionArr);
                 }
+                if ((int)$postDataArr['is_owner'] === ROLE_EMPLOYEE) {
+                    $whereArr['where'] = ['is_owner' => 2, 'company_id' => $signupArr['company_id']];
+                    $companyowner_info = $this->Common_model->fetch_data('ai_user', 'user_id', $whereArr, true);
+                }
+
                 if ($this->db->trans_status() === true) {
                     $this->db->trans_commit();
-                    if ($postDataArr['is_owner'] == '1') {
-                        $whereArr['where'] = ['is_owner' => 2, 'company_id' => $postDataArr['company_id']];
-                        $companyowner_info = $this->Common_model->fetch_data('ai_user', ['user_id'], $whereArr, true);
-                        if ($companyowner_info) {
-                            /*
-                            * Create Android Payload
-                            */
-                            $requestedbyname = $postDataArr['first_name'].' '.$postDataArr['middle_name'].' '.$postDataArr['last_name'];
-                            $msg = "" . $requestedbyname . " has requested to join your company as employee.";
-                            $androidPayload = [];
-                            $androidPayload['message'] = $msg;
-                            $androidPayload['user_id'] = $userId;
-                            $androidPayload['type'] = 1;
-                            $androidPayload['time'] = time();
-                            /*
-                            * Create Ios Payload
-                            */
-                            $iosPayload = [];
-                            $iosPayload['alert'] = array('title' => $msg, 'user_id' => $userId);
-                            $iosPayload['badge'] = 0;
-                            $iosPayload['type'] = 1;
-                            $iosPayload['sound'] = 'beep.mp3';
-                            
-                            $pushData = [];
-                            $pushData['receiver_id'] = $companyowner_info['user_id'];
-                            $pushData['androidPayload'] = $androidPayload;
-                            $pushData['iosPayload'] = $iosPayload;
 
-                            $this->load->library('commonfn');
-                            //$this->commonfn->sendPush($pushData);
-                        }
-                    }
-                    
                     if (!empty($sessionId) && !empty($userId)) {
                         unset($signupArr['password']);
                         $signupArr['full_name'] = $signupArr['first_name'];
@@ -531,7 +462,7 @@ class Signup extends REST_Controller
                         $signupArr['is_employee_approved'] = false;
                         $signupArr['is_employee_rejected'] = false;
 
-                        if (ROLE_EMPLOYEE === (int)$signupArr["is_owner"]) {
+                        if (ROLE_EMPLOYEE === (int)$signupArr["is_owner"] && !empty($companyowner_info)) {
                             $employeePermission['employee_id'] = $userId;
                             $employeePermission['user_id'] = $companyowner_info['user_id'];
                             $employeePermission['insert_date'] = $this->datetime;
@@ -540,12 +471,30 @@ class Signup extends REST_Controller
 
                             $this->load->library("PushNotification");
                             $this->load->model("UtilModel");
-                            
+
                             $this->UtilModel->insertTableData($employeePermission, 'user_employee_permission');
                         }
-                        
+
+                        if ((int)$postDataArr['is_owner'] === ROLE_EMPLOYEE) {
+                            if ($companyowner_info) {
+                                // adding in notification master table
+                                $requestedbyname = $postDataArr['first_name'] . ' ' . $postDataArr['middle_name'] . ' ' . $postDataArr['last_name'];
+                                $this->notifyEmployeePermission($userId, $companyowner_info['user_id']);
+                                $notificationId = $this->Common_model->insert_single('users_notification_master', $notifArr);
+        
+                                // adding in employee request tabel
+                                $requestfArr['requested_by'] = $userId;
+                                $requestfArr['requested_to'] = $companyowner_info['user_id'];
+                                $requestfArr['request_time'] = date('Y-m-d H:i:s');
+                                $requestfArr['company_id'] = $signupArr["company_id"];
+                                $requestid = $this->Common_model->insert_single('employee_request_master', $requestfArr);
+                            }
+                        }
+
+                        $signupArr['company'] = empty($companyArr) ? (object)[] : $companyArr;
                         $signupArr['country_name'] = $this->Common_model->fetch_data("country_list", "name", ["where" => ["country_code1" => $signupArr['country_id']]], true);
                         $signupArr['country_name'] = $signupArr['country_name']['name'];
+                        $this->db->trans_commit();
                         $this->response(array('code' => SUCCESS_CODE, 'msg' => $this->lang->line('registration_success'), 'result' => $signupArr));
                     }
                 }
@@ -561,9 +510,6 @@ class Signup extends REST_Controller
         }
     }
 
-    
-    
-    
     public function sendWelcomeMail($mailData)
     {
 
@@ -605,30 +551,30 @@ class Signup extends REST_Controller
     {
         $language_code = $this->head("X-Language-Code");
         $language_code = trim($language_code);
-        $valid_language_codes = ["en","da","nb","sv","fi","fr","nl","de"];
+        $valid_language_codes = ["en", "da", "nb", "sv", "fi", "fr", "nl", "de"];
 
         if (empty($language_code)) {
             $this->response(
                 [
-                'code' => HTTP_UNPROCESSABLE_ENTITY,
-                'api_code_result' => 'UNPROCESSABLE_ENTITY',
-                'msg' => $this->lang->line('header_missing'),
-                'extra_info' => [
-                    "missing_parameter" => "language_code"
-                ]
+                    'code' => HTTP_UNPROCESSABLE_ENTITY,
+                    'api_code_result' => 'UNPROCESSABLE_ENTITY',
+                    'msg' => $this->lang->line('header_missing'),
+                    'extra_info' => [
+                        "missing_parameter" => "language_code"
+                    ]
                 ]
             );
         }
 
-        if (! in_array($language_code, $valid_language_codes)) {
+        if (!in_array($language_code, $valid_language_codes)) {
             $this->response(
                 [
-                'code' => HTTP_UNPROCESSABLE_ENTITY,
-                'api_code_result' => 'UNPROCESSABLE_ENTITY',
-                'msg' => $this->lang->line('invalid_header'),
-                'extra_info' => [
-                    "missing_parameter" => $this->lang->line('invalid_language_code')
-                ]
+                    'code' => HTTP_UNPROCESSABLE_ENTITY,
+                    'api_code_result' => 'UNPROCESSABLE_ENTITY',
+                    'msg' => $this->lang->line('invalid_header'),
+                    'extra_info' => [
+                        "missing_parameter" => $this->lang->line('invalid_language_code')
+                    ]
                 ]
             );
         }

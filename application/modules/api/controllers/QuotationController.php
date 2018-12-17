@@ -204,7 +204,7 @@ class QuotationController extends BaseController
                     'msg' => $this->lang->line('forbidden_action')
                 ]);
             }
-
+            
             $projectRooms = $this->UtilModel->selectQuery('id', 'project_rooms', [
                 'where' => ['project_id' => $this->requestData['project_id']]
             ]);
@@ -568,14 +568,7 @@ class QuotationController extends BaseController
 
             $this->userTypeHandling([INSTALLER]);
 
-            $this->handleEmployeePermission([INSTALLER], ['quote_add']);
-
-            if ((int)$user_data['user_type'] !== INSTALLER) {
-                $this->response([
-                    'code' => HTTP_FORBIDDEN,
-                    'msg' => $this->lang->line('forbidden_action')
-                ]);
-            }
+            $this->handleEmployeePermission([INSTALLER], ['quote_add', 'project_add']);
 
             $this->requestData = $this->post();
 
@@ -953,7 +946,7 @@ class QuotationController extends BaseController
     {
         $this->form_validation->set_data($this->requestData);
 
-        $this->form_validaition->set_rules([
+        $this->form_validation->set_rules([
             [
                 'field' => 'project_id',
                 'label' => 'Project',
