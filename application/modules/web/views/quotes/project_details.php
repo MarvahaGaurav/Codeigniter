@@ -45,7 +45,7 @@
                         <?php if (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && $isRequested) { ?>
                         <th class="text-center">Quotes Count</th>
                         <?php } ?>
-                        <th>Actions</th>
+                        <!-- <th>Actions</th> -->
                     </tr>
                 </thead>
                 <tbody>
@@ -57,12 +57,12 @@
                         <?php if (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && $isRequested) { ?>
                         <td class="op-semibold text-center"><?php echo $quoteCount ?> Quote(s)</td>
                         <?php } ?>
-                        <td class="op-semibold">
+                        <!-- <td class="op-semibold">
                             <a href="<?php echo base_url('home/quotes/projects/' . encryptDecrypt($project['project_id']) .'/'.encryptDecrypt($request_id). '/edit') ?>" class="project-action"><i class="fa fa-pencil"></i></a>
                             <?php if (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && $isRequested) { ?>
                             <a href="<?php echo base_url('home/projects/' . $projectId .'/'.$request_id. '/quotations') ?>" class="project-action"><i class="fa fa-quote-right"></i></a>
                             <?php } ?>
-                        </td>
+                        </td> -->
                     </tr>
                 </tbody>
             </table>

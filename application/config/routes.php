@@ -139,6 +139,7 @@ $route['home/quotes/projects/(:any)/(:any)'] = 'web/QuotesController/project_det
 $route['home/quotes/projects/(:any)/(:any)/quotations/levels'] = 'web/QuotesController/levelsListing/$1/$2';
 $route['home/quotes/projects/(:any)/(:any)/edit']='web/QuotesController/editProject/$1/$2';
 $route['home/quotes/projects/(:any)/(:any)/levels/(:num)/rooms'] ='web/QuotesController/projectResultRoomListing/$1/$2/$3';
+$route['home/quotes/projects/(:any)/(:any)/levels/(:num)/rooms/(:any)/tco'] = 'web/QuotesController/tco/$1/$2/$3/$4';
 $route['home/quotes/projects/(:any)/(:any)/levels/(:num)/rooms/(:any)/project-rooms/(:any)/selected-products'] = 'web/QuotesController/selectedProjectProducts/$1/$2/$3/$4/$5';
 $route['home/quotes/projects/(:any)/(:any)/view-result/(:any)'] = 'web/QuotesController/view_result/$1/$2/$3';
 $route['home/technicians'] = 'web/TechnicianController';

@@ -133,7 +133,7 @@ class TcoController extends BaseController
         }
     }
 
-    private function validateTco()
+    public function validateTco()
     {
         $this->form_validation->set_data($this->validationData);
 
@@ -156,7 +156,7 @@ class TcoController extends BaseController
         ]);
     }
 
-    private function validateTcoForm()
+    public function validateTcoForm()
     {
         $this->form_validation->reset_validation();
 

@@ -69,6 +69,8 @@ class QuotesController extends BaseController
     public function customerQuotesList($projectId,$requestId)
     {
         try {
+
+           
             $this->activeSessionGuard();
             $this->userTypeHandling([PRIVATE_USER, BUSINESS_USER], base_url('home/applications'));
 
@@ -138,6 +140,10 @@ class QuotesController extends BaseController
 
             $this->load->model(['ProjectRequest']);
             $get = $this->input->get();
+
+            $permissions = $this->handleEmployeePermission([INSTALLER], ['quote_view'], base_url('home/applications'));
+
+            pr($permissions);
 
             $search = isset($get['search'])&&is_string($get['search'])&&strlen(trim($get['search']))>0?trim($get['search']):'';
             $page = isset($get['page']) && (int)$get['page'] > 1 ? (int)$get['page'] : 1;
@@ -1056,6 +1062,11 @@ class QuotesController extends BaseController
             }
             $this->data['request_id'] = $request_id;
 
+            $request_id= encryptDecrypt($request_id, "decrypt");
+
+            $this->data['request_status'] = $this->getRequestStatus($request_id);
+
+            
 
             website_view('quotes/result_room_list', $this->data);
         } catch (\Exception $error) {
@@ -1265,4 +1276,235 @@ class QuotesController extends BaseController
         } catch (\Exception $error) {
         }
     }
+
+    /**
+     * Tco data from room listing 
+     *
+     * @return void
+     */
+    public function tco($projectId, $requestId,$level, $projectRoomId)
+    { 
+        try {
+            $obj = require('TcoController.php');
+            $obj = new TcoController();
+            $this->activeSessionGuard();
+            $this->data['userInfo'] = $this->userInfo;
+            $this->load->config('css_config');
+            $this->data['css'] = $this->config->item('basic-with-font-awesome');
+            $this->data['js'] = 'tco';
+
+            $languageCode = "en";
+            $projectId = encryptDecrypt($projectId, "decrypt");
+            $projectRoomId = encryptDecrypt($projectRoomId, "decrypt");
+
+            $obj->validationData = ['project_id' => $projectId, 'level' => $level, 'project_room_id' => $projectRoomId];
+
+            //pr($obj->validationData);
+            $obj->validateTco();
+
+            $status = $obj->validationRun();
+
+            
+
+            if (!$status) {
+                show404($this->lang->line('bad_request'), base_url(''));
+            }
+
+            $this->userTypeHandling([INSTALLER], base_url('home/applications'));
+
+            $permissions = $this->handleEmployeePermission([INSTALLER], ['project_add'], base_url('home/applications'));
+
+            $this->load->model(['UtilModel', 'ProjectRooms', 'ProjectRoomProducts']);
+            $projectData = $this->UtilModel->selectQuery('*', 'projects', [
+                'where' => ['id' => $projectId, 'language_code' => $languageCode], 'single_row' => true
+            ]);
+
+            $levelCheck = $this->UtilModel->selectQuery('id, status', 'project_levels', [
+                'where' => ['project_id' => $projectId, 'level' => $level], 'single_row' => true
+            ]);
+
+           
+
+            if (empty($projectData)) {
+                show404($this->lang->line('project_not_found'), base_url(''));
+            }
+
+            if (empty($levelCheck)) {
+                show404($this->lang->line('bad_request'), base_url(''));
+            }
+
+            
+
+            $roomData = $this->UtilModel->selectQuery('*', 'project_rooms', [
+                'where' => ['id' => $projectRoomId], 'single_row' => true
+            ]);
+
+            $tcoData = $this->UtilModel->selectQuery('*', 'project_room_tco_values', [
+                'where' => ['project_room_id' => $projectRoomId], 'single_row' => true
+            ]);
+
+            
+            if ((int)$roomData['project_id'] !== (int)$projectData['id']) {
+                show404($this->lang->line('forbidden_action'), base_url(''));
+            }
+
+            $this->requestData = $this->input->post();
+
+            $this->requestData = trim_input_parameters($this->requestData, false);
+            if (!empty($this->requestData)) {
+                $this->tcoFormHandler($this->requestData, (bool)empty($tcoData), $projectRoomId, $projectId, $level,$requestId);
+            }
+
+            $productData = $this->UtilModel->selectQuery('lifetime_hours, wattage, system_wattage', 'project_room_products as prp', [
+                'where' => ['project_room_id' => $roomData['id']], 
+                'join' => ['product_specifications as ps' => 'prp.product_id=ps.product_id AND prp.article_code=ps.articlecode'],
+                'single_row' => true
+            ]);
+
+            $this->data['tcoData'] = $tcoData;
+            $this->data['roomData'] = $roomData;
+            $this->data['productData'] = $productData;
+            $requestId = encryptDecrypt($requestId, "decrypt");
+            
+            $this->data['request_status'] = $this->getRequestStatus($requestId);
+
+            
+            //pr($this->data);
+            
+            website_view('tco/tco_quotes', $this->data);
+        } catch (\Exception $error) {
+            show404($this->lang->line('internal_server_error'), base_url(''));
+        }
+    }
+
+    private function tcoFormHandler($requestData, $toInsert, $projectRoomId, $projectId, $level,$requestId)
+    {
+        $this->tco->setTcoParams($requestData);
+        $roi = $this->tco->returnOnInvestment();
+
+        $this->validateTcoForm();
+
+        $status = $this->validationRun();
+        
+        $tcoData = $requestData;
+        $tcoData['company_id'] = $this->userInfo['company_id'];
+        
+        if ((bool)$status) {
+            if ($toInsert) {
+                $tcoData['project_room_id']  = $projectRoomId;
+                $tcoData['roi'] = $roi;
+                
+                $this->load->model("ProjectRoomTcoValue");
+                $this->ProjectRoomTcoValue->insert($tcoData);
+                $this->session->set_flashdata("flash-message", $this->lang->line("tco_done"));
+                $this->session->set_flashdata("flash-type", "success");
+                
+                redirect(base_url('home/quotes/projects/' . encryptDecrypt($projectId).'/'.$requestId . '/levels/' . $level . '/rooms'));
+            } else {
+                $tcoData['roi'] = $roi;
+                $tcoData['updated_at'] = $this->datetime;
+                $tcoData['updated_at_timestamp'] = $this->timestamp;
+                $this->UtilModel->updateTableData($tcoData, 'project_room_tco_values', [
+                    'project_room_id' => $projectRoomId
+                ]);
+                $this->session->set_flashdata("flash-message", $this->lang->line("tco_done"));
+                $this->session->set_flashdata("flash-type", "success");
+                redirect(base_url('home/quotes/projects/' . encryptDecrypt($projectId).'/'.$requestId . '/levels/' . $level . '/rooms'));
+            }
+        }
+    }
+
+    public function validateTcoForm()
+    {
+        $this->form_validation->reset_validation();
+
+        
+
+        $this->form_validation->set_data($this->requestData);
+
+        $this->form_validation->set_rules([
+            [
+                'field' => 'existing_number_of_luminaries',
+                'label' => 'Existing number of luminaries',
+                'rules' => 'trim|required'
+            ],
+            [
+                'field' => 'existing_wattage',
+                'label' => 'Existing wattage',
+                'rules' => 'trim|required'
+            ],
+            [
+                'field' => 'existing_led_source_life_time',
+                'label' => 'Existing led source life time',
+                'rules' => 'trim|required'
+            ],
+            [
+                'field' => 'existing_hours_per_year',
+                'label' => 'Existing hours per year',
+                'rules' => 'trim|required'
+            ],
+            [
+                'field' => 'existing_energy_price_per_kw',
+                'label' => 'Existing energy price per kw',
+                'rules' => 'trim|required'
+            ],
+            [
+                'field' => 'existing_number_of_light_source',
+                'label' => 'Existing number of light source',
+                'rules' => 'trim|required'
+            ],
+            [
+                'field' => 'existing_price_per_light_source',
+                'label' => 'Existing price per light source',
+                'rules' => 'trim|required'
+            ],
+            [
+                'field' => 'existing_price_to_change_light_source',
+                'label' => 'Existing price to change light source',
+                'rules' => 'trim|required'
+            ],
+            [
+                'field' => 'new_number_of_luminaries',
+                'label' => 'New number of luminaries',
+                'rules' => 'trim|required'
+            ],
+            [
+                'field' => 'new_wattage',
+                'label' => 'New wattageD',
+                'rules' => 'trim|required'
+            ],
+            [
+                'field' => 'new_led_source_life_time',
+                'label' => 'New led source life time',
+                'rules' => 'trim|required'
+            ],
+            [
+                'field' => 'new_hours_per_year',
+                'label' => 'New hours per year',
+                'rules' => 'trim|required'
+            ],
+            [
+                'field' => 'new_energy_price_per_kw',
+                'label' => 'New energy price per kw',
+                'rules' => 'trim|required'
+            ],
+            [
+                'field' => 'new_number_of_light_source',
+                'label' => 'New number of light source',
+                'rules' => 'trim|required'
+            ],
+            [
+                'field' => 'new_price_per_light_source',
+                'label' => 'New price per light source',
+                'rules' => 'trim|required'
+            ],
+            [
+                'field' => 'new_price_to_change_light_source',
+                'label' => 'New price to change light source',
+                'rules' => 'trim|required'
+            ]
+        ]);
+    }
+
+    
 }

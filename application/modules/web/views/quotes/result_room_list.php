@@ -57,13 +57,13 @@
                             <a href="javascript:void(0)" id="add-price-<?php echo $key ?>" data-modal-text="<?php echo $this->lang->line('add_price_txt') ?>" data-action="add" data-target-value="<?php echo $key ?>" data-room-price='<?php echo $room['price_data'] ?>'' class="tb-view-list project-action installer-add-price" title="<?php echo $this->lang->line('add_price_txt') ?>" data-project-room-id="<?php echo encryptDecrypt($room['project_room_id']) ?>">Add</a>
                             <?php } else {?>
                             <?php echo $room['price']['total'] ?>$
-                            <?php if (!(bool)$hasAddedFinalPrice) { ?>
+                            <?php if (!(bool)$hasAddedFinalPrice || ((bool)$request_status!=QUOTATION_STATUS_APPROVED && (bool)$request_status!=QUOTATION_STATUS_REJECTED)) { ?>
                             <a href="javascript:void(0)" id="add-price-<?php echo $key ?>" data-modal-text="<?php echo $this->lang->line('edit_price_txt') ?>" data-action="edit" data-target-value="<?php echo $key ?>" data-room-price='<?php echo $room['price_data'] ?>'' class="project-action installer-add-price" title="<?php echo $this->lang->line('edit_price_txt') ?>" data-project-room-id="<?php echo encryptDecrypt($room['project_room_id']) ?>"><i class="fa fa-pencil"></i></a>
                             <?php }?>
                         <?php  } ?>
                         </td>
                         <td class="text-center">
-                            <a href="javascript:void(0)" onclick="window.alert('Under development')" class="tb-view-list" title="<?php echo $this->lang->line('tco_txt') ?>"><?php echo $this->lang->line('tco_txt') ?></a>
+                            <a href="<?php echo base_url('home/quotes/projects/'.$projectId.'/'.$request_id.'/levels/'.$room['level'].'/rooms/'.encryptDecrypt($room['project_room_id']).'/tco') ?>" onclick="" class="tb-view-list" title="<?php echo $this->lang->line('tco_txt') ?>"><?php echo $this->lang->line('tco_txt') ?></a>
                         </td>
                         <?php } ?>
                         <td class="op-semibold text-center">
