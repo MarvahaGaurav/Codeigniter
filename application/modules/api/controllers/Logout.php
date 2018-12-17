@@ -78,7 +78,7 @@ class Logout extends REST_Controller
             $whereArr = [];
             $whereArr['where'] = ['public_key' => $accessTokenArr[0], 'private_key' => $accessTokenArr[1]];
             //                pr($whereArr);
-            $isSuccess = $this->Common_model->update_single('ai_session', ['login_status' => 0], $whereArr);
+            $isSuccess = $this->Common_model->update_single('ai_session', ['login_status' => 0, 'public_key' => '', 'private_key' => '', 'endpoint_arn' => ''], $whereArr);
             if ($isSuccess) {
                 $this->response(array('code' => SUCCESS_CODE, 'msg' => $this->lang->line('logout_successful'), 'result' => (object)[]));
             } else {

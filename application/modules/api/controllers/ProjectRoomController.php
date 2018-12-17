@@ -572,7 +572,7 @@ class ProjectRoomController extends BaseController
 
             $this->validationRun();
 
-            $search = isset($this->requestData['search']) && is_string($this->requestData['search']) && strlen(trim($this->requestData['search'])) > 0?trim($this->requestData['search']):'';
+            $search = isset($this->requestData['search']) && is_string($this->requestData['search']) && strlen(trim($this->requestData['search'])) > 0 ? trim($this->requestData['search']) : '';
 
             if (strlen($search) > 0) {
                 $params['where']["(project_rooms.name LIKE '%{$search}%' OR project_rooms.reference_name LIKE '%{$search}%')"] = null;
@@ -709,7 +709,7 @@ class ProjectRoomController extends BaseController
 
             $this->validationRun();
 
-            $projectData = $this->UtilModel->selectQuery('user_id, company_id, fast_calc_response', 'project_rooms',[
+            $projectData = $this->UtilModel->selectQuery('user_id, company_id, fast_calc_response', 'project_rooms', [
                 'join' => ['projects' => 'projects.id=project_rooms.project_id'],
                 'where' => ['project_rooms.id' => $this->requestData['project_room_id']], 'single_row' => true
             ]);
@@ -723,8 +723,7 @@ class ProjectRoomController extends BaseController
 
             if ($this->uri->segment(3) === "projects") {
                 if ((in_array((int)$user_data['user_type'], [PRIVATE_USER, BUSINESS_USER], true) &&
-                    (int)$user_data['user_id'] !== (int)$projectData['user_id']) || 
-                    (in_array((int)$user_data['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], true) &&
+                    (int)$user_data['user_id'] !== (int)$projectData['user_id']) || (in_array((int)$user_data['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], true) &&
                     (int)$user_data['company_id'] !== (int)$projectData['company_id'])) {
                     $this->response([
                         'code' => HTTP_FORBIDDEN,

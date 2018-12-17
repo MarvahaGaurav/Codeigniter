@@ -6,3 +6,10 @@ if (!function_exists('permission_handler')) {
     {
     }
 }
+
+if (!function_exists('comparePermissions')) {
+
+    
+}
+
+

@@ -6,7 +6,7 @@ require APPPATH . '/libraries/Traits/Notifier.php';
 
 class NotificationController extends BaseController
 {
-    use Notifier; 
+    use Notifier;
 
     private $requestData;
 
@@ -40,8 +40,15 @@ class NotificationController extends BaseController
                 ]);
             }
 
-            $notifications = array_map(function($notification){
+            $notifications = array_map(function ($notification) {
                 $notification['message'] = $this->getNotificationMessage($notification['type']);
+                if ((int)$notification['type'] === NOTIFICATION_PERMISSION_GRANTED) {
+                    $notification['message'] = sprintf(
+                        $this->lang->line('notification_permission_granted'),
+                        isset($notification['messages'], $notification['messages']['message'])? $notification['messages']['message']: ''
+                    );
+                    unset($notification['messages']);
+                }
                 return $notification;
             }, $notifications);
 
@@ -62,7 +69,7 @@ class NotificationController extends BaseController
                 'per_page_count' => $params['limit'],
                 'next_count' => $nextCount
             ];
-            
+
             $this->response($response);
         } catch (\Exception $error) {
             $this->response([

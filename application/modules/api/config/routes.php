@@ -15,6 +15,7 @@ $route['api/v1/user/settings'] = 'UserController/edit';
 $route['api/v1/user/location'] = 'UserController/location';
 $route['api/v1/employee/company'] = 'EmployeeController/updateEmployeeCompany';
 $route['api/v1/employee'] = 'EmployeeController/employee';
+$route['api/v1/user/aws/token'] = "AwsController/index";
 
 $route['api/v1/notifications'] = 'NotificationController/index';
 

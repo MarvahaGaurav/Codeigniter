@@ -13,7 +13,7 @@ class User extends BaseModel
         $this->tableName = "ai_user";
     }
 
-    public function basicUserInfo($userId)
+    public function basicUserInfo($userId, $single_row = false)
     {
         $this->db->select("user_id, first_name as full_name, email, image")
             ->from($this->tableName);
@@ -24,7 +24,11 @@ class User extends BaseModel
             $this->db->where('user_id', $userId);
         }
 
-        $result = $this->db->get()->result_array();
+        if ($single_row) {
+            $result = $this->db->get()->row_array();
+        } else {
+            $result = $this->db->get()->result_array();
+        }
 
         return $result;
     }
@@ -96,6 +100,20 @@ class User extends BaseModel
         $data = $query->result_array();
 
         return $data;
+    }
+
+    public function getArnTokens($userIds)
+    {
+        $this->db->select('endpoint_arn')
+            ->where_in('user_id', $userIds)
+            ->where('endpoint_arn !=', "''")
+            ->from('ai_session');
+        
+        $query = $this->db->get();
+
+        $result = $query->result_array();
+
+        return $result;
     }
 
     /**

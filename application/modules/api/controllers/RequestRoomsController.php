@@ -68,7 +68,7 @@ class RequestRoomsController extends BaseController
             $this->load->helper('utility');
             if (!empty($rooms)) {
                 $roomIds = array_column($rooms, 'project_room_id');
-                $this->load->model(['ProjectRoomProducts', 'ProductMountingTypes']);
+                $this->load->model(['ProjectRoomProducts', 'ProductMountingTypes', 'ProjectRoomTcoValue']);
                 $roomProductParams['where']['project_room_id'] = $roomIds;
                 $roomProducts = $this->ProjectRoomProducts->get($roomProductParams);
                 $roomProducts = $roomProducts['data'];
@@ -77,6 +77,9 @@ class RequestRoomsController extends BaseController
                 $roomProducts = getDataWith($roomProducts, $productMountingTypeData, 'product_id', 'product_id', 'mounting_type', 'type');
                 $this->load->helper('db');
                 $rooms = getDataWith($rooms, $roomProducts, 'project_room_id', 'project_room_id', 'products');
+                $tcoData = $this->ProjectRoomTcoValue->get($roomIds, $user_data['company_id']);
+                $rooms = getDataWith($rooms, $tcoData, 'project_room_id', 'project_room_id', 'tco');
+
 
                 $this->load->model(['ProjectRoomQuotation']);
                 $projectRoomIds = array_column($rooms, 'project_room_id');
@@ -96,6 +99,11 @@ class RequestRoomsController extends BaseController
                             $room['price']['price_per_luminaries'] + $room['price']['installation_charges'],
                             $room['price']['discount_price']
                         );
+                    }
+                    if (empty($room['tco'])) {
+                        $room['tco'] = (object)[];
+                    } else {
+                        $room['tco'] = array_shift($room['tco']);
                     }
                     return $room;
                 }, $rooms);
