@@ -32,7 +32,7 @@
                         <th>Room Dimension</th>
                         <th class="text-center">No. of Rooms</th>
                         <th class="text-center">Additional Products</th>
-                        <?php if (in_array((int)$userInfo['user_type'], [INSTALLER], true)) { ?>
+                        <?php if (in_array((int)$userInfo['user_type'], [INSTALLER], true) && (bool)$permission['project_edit']) { ?>
                         <th class="text-center">Installation Price</th>
                         <th class="text-center">Comparison</th>
                         <?php } ?>
@@ -51,7 +51,7 @@
                         <td><?php echo "{$room['length']}M x {$room['width']}M x {$room['height']}M" ?></td>
                         <td class="text-center"><?php echo $room['count'] ?> <?php echo (int)$room['count'] > 1?$this->lang->line('room_count_sets_txt'):$this->lang->line('room_count_set_txt') ?></td>
                         <td class="text-center"><?php echo count($room['products']) - 1 ?></td>
-                        <?php if (in_array((int)$userInfo['user_type'], [INSTALLER], true)) { ?>
+                        <?php if (in_array((int)$userInfo['user_type'], [INSTALLER], true) && (bool)$permission['project_edit']) { ?>
                         <td class="text-center">
                         <?php if (empty($room['price'])) { ?>
                             <a href="javascript:void(0)" id="add-price-<?php echo $key ?>" data-modal-text="<?php echo $this->lang->line('add_price_txt') ?>" data-action="add" data-target-value="<?php echo $key ?>" data-room-price='<?php echo $room['price_data'] ?>'' class="tb-view-list project-action installer-add-price" title="<?php echo $this->lang->line('add_price_txt') ?>" data-project-room-id="<?php echo encryptDecrypt($room['project_room_id']) ?>">Add</a>
@@ -72,7 +72,7 @@
                     </tr>
                     <?php endforeach ?>
                 </tbody>
-                <?php if (in_array((int)$userInfo['user_type'], [INSTALLER], true)) { ?>
+                <?php if (in_array((int)$userInfo['user_type'], [INSTALLER], true) && (bool)$permission['project_edit']) { ?>
                 <tfoot>
                     <tr>
                     <td colspan="7">
@@ -109,7 +109,7 @@
             
             <div class="button-wrapper clearfix">
             
-            <?php if (in_array((int)$userInfo['user_type'], [INSTALLER], true)) { ?>
+            <?php if (in_array((int)$userInfo['user_type'], [INSTALLER], true) && (bool)$permission['project_edit']) { ?>
                 <div class="request-quotation-btn-wrapper">
                 <button class="col-md-2 custom-btn save redirectable" data-redirect-to="<?php echo base_url('/home/quotes/projects/' . $projectId.'/'.$request_id) ?>" id="view-installer-button" type="button" >Submit</button>
             </div>

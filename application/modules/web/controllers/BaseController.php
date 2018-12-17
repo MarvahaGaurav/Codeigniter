@@ -124,17 +124,18 @@ class BaseController extends MY_Controller
         ) {
             $this->load->helper('common');
             $this->data['permissions'] = $this->employeePermission;
-            if (empty($this->employeePermission)) {
+            
+            if (empty($this->employeePermission)) { 
                 show404($this->lang->line('adequate_permission_required'), $redirectUrl);
             }
 
-            $permissionKeys = array_keys($this->employeePermission);
-            foreach ($permissionsToCheck as $permissionToCheck) {
-                if (!in_array($permissionToCheck, $permissionKeys)) {
+            $permissionKeys = array_keys($this->employeePermission); 
+            foreach ($permissionsToCheck as $permissionToCheck) { 
+                if (!in_array($permissionToCheck, $permissionKeys)) { 
                     show404($this->lang->line('adequate_permission_required'), $redirectUrl);
                 }
                     
-                if (!(bool)$this->employeePermission[$permissionToCheck]) {
+                if (!(bool)$this->employeePermission[$permissionToCheck]) { 
                     show404($this->lang->line('adequate_permission_required'), $redirectUrl);
                 }
             }

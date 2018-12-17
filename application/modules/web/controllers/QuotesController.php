@@ -143,7 +143,6 @@ class QuotesController extends BaseController
 
             $permissions = $this->handleEmployeePermission([INSTALLER], ['quote_view'], base_url('home/applications'));
 
-            pr($permissions);
 
             $search = isset($get['search'])&&is_string($get['search'])&&strlen(trim($get['search']))>0?trim($get['search']):'';
             $page = isset($get['page']) && (int)$get['page'] > 1 ? (int)$get['page'] : 1;
@@ -186,6 +185,8 @@ class QuotesController extends BaseController
 
             $this->load->model(['ProjectRequest', 'ProjectRoomQuotation']);
             $get = $this->input->get();
+
+            $permissions = $this->handleEmployeePermission([INSTALLER], ['quote_view'], base_url('home/applications'));
 
             $search = isset($get['search'])&&is_string($get['search'])&&strlen(trim($get['search']))>0?trim($get['search']):'';
             $page = isset($get['page']) && (int)$get['page'] > 1 ? (int)$get['page'] : 1;
@@ -231,6 +232,8 @@ class QuotesController extends BaseController
 
             $this->load->model(['ProjectRequest', 'ProjectRoomQuotation']);
             $get = $this->input->get();
+
+            $permissions = $this->handleEmployeePermission([INSTALLER], ['quote_view'], base_url('home/applications'));
 
             $search = isset($get['search'])&&is_string($get['search'])&&strlen(trim($get['search']))>0?trim($get['search']):'';
             $page = isset($get['page']) && (int)$get['page'] > 1 ? (int)$get['page'] : 1;
@@ -399,6 +402,10 @@ class QuotesController extends BaseController
                 }
             }
 
+            $permissions = $this->handleEmployeePermission([INSTALLER], ['project_view'], base_url('home/applications'));
+
+            $this->data['permission'] = $permissions;
+            
             $this->data['rooms']           = $rooms;
             $this->data['room_count']      = $roomCount;
             $this->data['has_more_rooms']  = $roomCount > 4;
@@ -959,6 +966,9 @@ class QuotesController extends BaseController
             $this->userTypeHandling([INSTALLER], base_url('home/applications'));
 
             $permissions = $this->handleEmployeePermission([INSTALLER], ['project_view'], base_url('home/applications'));
+
+            $this->data['permission'] = $permissions;
+
             
             $this->load->model(['UtilModel', 'ProjectRooms', 'ProjectRoomProducts']);
             $projectData = $this->UtilModel->selectQuery('*', 'projects', [
@@ -1065,6 +1075,8 @@ class QuotesController extends BaseController
             $request_id= encryptDecrypt($request_id, "decrypt");
 
             $this->data['request_status'] = $this->getRequestStatus($request_id);
+
+            
 
             
 
