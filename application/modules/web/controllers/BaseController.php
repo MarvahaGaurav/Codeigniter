@@ -115,13 +115,14 @@ class BaseController extends MY_Controller
      * @return array
      */
     protected function handleEmployeePermission($userTypesToCheck, $permissionsToCheck, $redirectUrl)
-    {
+    { 
+        
         if (!is_array($userTypesToCheck) || !is_array($permissionsToCheck)) {
             show404($this->lang->line('internal_server_error'), $redirectUrl);
         }
         if (in_array((int)$this->userInfo['user_type'], $userTypesToCheck, true) &&
         (int)$this->userInfo['is_owner'] === ROLE_EMPLOYEE
-        ) {
+        ) { 
             $this->load->helper('common');
             $this->data['permissions'] = $this->employeePermission;
             

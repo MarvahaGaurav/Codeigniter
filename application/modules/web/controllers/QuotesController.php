@@ -405,7 +405,7 @@ class QuotesController extends BaseController
             $permissions = $this->handleEmployeePermission([INSTALLER], ['project_view'], base_url('home/applications'));
 
             $this->data['permission'] = $permissions;
-            
+
             $this->data['rooms']           = $rooms;
             $this->data['room_count']      = $roomCount;
             $this->data['has_more_rooms']  = $roomCount > 4;
@@ -489,8 +489,11 @@ class QuotesController extends BaseController
             $this->data['hasAddedFinalPrice'] = false;
             $this->data['request_id'] = $request_id;
             $request_id= encryptDecrypt($request_id, "decrypt");
+            
 
             $this->data['request_status'] = $this->getRequestStatus($request_id);
+
+            //$this->data['request_status']=2;
             
             if (in_array((int)$this->userInfo['user_type'], [INSTALLER], true)) {
                 $this->load->helper(['utility']);
@@ -503,7 +506,7 @@ class QuotesController extends BaseController
             }
 
            
-            //pr($this->data);
+            
             website_view('quotes/project_details', $this->data);
         } catch (Exception $ex) {
         }
@@ -1155,7 +1158,7 @@ class QuotesController extends BaseController
             if (!isset($quickCalcData['projectionFront'], $quickCalcData['projectionTop'], $quickCalcData['projectionSide'])) {
                 $this->session->set_flashdata("flash-message", $this->lang->line('unable_to_calculate'));
                 $this->session->set_flashdata("flash-type", "danger");
-                redirect(base_url('home/projects/' . encryptDecrypt($this->data['room_data']['project_id'] . '/levels/' . $this->data['room_data']['level'] . '/rooms/results')));
+                redirect(base_url('home/quotes/projects/' .$project_id.'/'.$request_id.'/'. '/levels/' . $this->data['room_data']['level'] . '/rooms'));
             }
 
             $this->data['room_data']['front_view'] = $quickCalcData['projectionFront'];
@@ -1311,12 +1314,12 @@ class QuotesController extends BaseController
 
             $obj->validationData = ['project_id' => $projectId, 'level' => $level, 'project_room_id' => $projectRoomId];
 
-            //pr($obj->validationData);
+            
             $obj->validateTco();
 
             $status = $obj->validationRun();
 
-            
+           
 
             if (!$status) {
                 show404($this->lang->line('bad_request'), base_url(''));

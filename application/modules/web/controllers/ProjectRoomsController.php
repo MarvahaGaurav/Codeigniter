@@ -56,6 +56,8 @@ class ProjectRoomsController extends BaseController
             $this->userTypeHandling([INSTALLER, PRIVATE_USER, BUSINESS_USER, WHOLESALER, ELECTRICAL_PLANNER], base_url('home/applications'));
 
             $permissions = $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['project_view'], base_url('home/applications'));
+            
+            $this->data['permission'] = $permissions; 
             $this->load->model(['UtilModel', 'ProjectRooms', 'ProjectRoomProducts']);
             $projectData = $this->UtilModel->selectQuery('*', 'projects', [
                 'where' => ['id' => $projectId, 'language_code' => $languageCode], 'single_row' => true
@@ -163,6 +165,8 @@ class ProjectRoomsController extends BaseController
                 $this->load->helper(['utility']);
                 $this->data['hasAddedFinalPrice'] = $this->hasTechnicianAddedFinalPrice($projectId);
             }
+
+            //pr($this->data);
 
             website_view('projects/levels_room_list', $this->data);
         } catch (\Exception $error) {

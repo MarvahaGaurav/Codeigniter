@@ -245,6 +245,7 @@
                 <div class="form-group">
                     <label for="additional_product_charges" class="priceTxt">Additional Product Charges</label>
                     <div class="inputField">
+                    <?php //echo "ddd".$permission['project_edit']; die; ?>
                         <input type="text" <?php echo (bool)$hasFinalQuotePriceAdded && ($request_status==QUOTATION_STATUS_APPROVED ||$request_status==QUOTATION_STATUS_REJECTED)?'disabled="disabled"':'name="additional_product_charges"' ?> class="modal-price-fields restrict-characters number-only-field" data-restrict-to="15" id="additional_product_charges" value="<?php echo isset($projectRoomPrice['additional_product_charges'])?$projectRoomPrice['additional_product_charges']:'' ?>">
                     </div>
                 </div>
@@ -272,7 +273,7 @@
                 </div>
                 <?php echo form_close() ?>
             </div>
-            <?php if (($request_status!=QUOTATION_STATUS_APPROVED && $request_status!=QUOTATION_STATUS_REJECTED)) { ?>
+            <?php if (($request_status!=QUOTATION_STATUS_APPROVED && $request_status!=QUOTATION_STATUS_REJECTED) && $permission['project_edit']==1) { ?>
             <div class="modal-footer">
                 <div class="text-center button-wrapper">
                     <button type="button" class="custom-btn btn-margin btn-width save" data-csrf='<?php echo $csrf ?>' data-text="<?php echo $this->lang->line('select') ?>" data-dismiss="modal" id="final-quote-send-later" data-clone=""><?php echo $this->lang->line('send-quote-later') ?></button>
