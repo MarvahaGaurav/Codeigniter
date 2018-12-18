@@ -18,6 +18,15 @@ class TestController extends BaseController
         $this->load->helper('images');
     }
 
+    public function test_get()
+    {
+        $this->load->model("ProjectQuotation");
+
+        $data = $this->ProjectQuotation->quotationPriceByProjects([234]);
+
+        print_r($data);
+    }
+
     public function index_post()
     {
         $url = generate_video_thumbnail("https://s3.amazonaws.com/appinventiv-development/smartguide_sample_video.mp4");

@@ -17,7 +17,7 @@ class ProjectLevelsController extends BaseController
         $this->load->library('form_validation');
     }
 
-     /**
+    /**
      * Save project created by user
      *
      * @return string
@@ -99,10 +99,14 @@ class ProjectLevelsController extends BaseController
             $this->load->helper(['project', 'db']);
             //add activity key to all project level data
             $projectLevels = level_activity_status_handler($projectLevels);
-
-            $totalPrice = $this->handleTotalPrice(
+            $this->load->helper(['utility']);
+            // $totalPrice = $this->handleTotalPrice(
+            //     (int)$user_data['user_type'],
+            //     ['project_id' => $this->requestData['project_id'], 'company_id' => $user_data['company_id']]
+            // );
+            $totalPrice = $this->quotationTotalPrice(
                 (int)$user_data['user_type'],
-                ['project_id' => $this->requestData['project_id'], 'company_id' => $user_data['company_id']]
+                $this->requestData['project_id']
             );
 
             $this->load->model(['ProjectRooms']);
@@ -110,9 +114,9 @@ class ProjectLevelsController extends BaseController
 
             $projectLevels = getDataWith($projectLevels, $roomCount, 'level', 'level', 'room_count', 'room_count');
             $projectLevels = array_map(function ($project) {
-                $project['room_count'] = is_array($project['room_count'])&&
-                    count($project['room_count'])&&
-                    isset($project['room_count'][0])?(int)$project['room_count'][0]:0;
+                $project['room_count'] = is_array($project['room_count']) &&
+                    count($project['room_count']) &&
+                    isset($project['room_count'][0]) ? (int)$project['room_count'][0] : 0;
                 return $project;
             }, $projectLevels);
 
@@ -141,7 +145,7 @@ class ProjectLevelsController extends BaseController
                 ]);
                 $response['is_technician_final_price_added'] = !empty($technicianCharges);
             }
-            
+
             $this->response($response);
         } catch (\Exception $error) {
             $this->response([
@@ -152,7 +156,7 @@ class ProjectLevelsController extends BaseController
         }
     }
 
-     /**
+    /**
      * @SWG\Put(path="/projects/levels",
      *   tags={"Projects"},
      *   summary="Update project levels status",
@@ -216,7 +220,7 @@ class ProjectLevelsController extends BaseController
             $this->validationRun();
 
             $projectData = $this->UtilModel->selectQuery('user_id, id as project_id, company_id', 'projects', [
-            'where' => ['id' => $projectId], 'single_row' => true
+                'where' => ['id' => $projectId], 'single_row' => true
             ]);
 
             if (empty($projectData)) {
@@ -226,7 +230,7 @@ class ProjectLevelsController extends BaseController
                 ]);
             }
 
-            
+
 
             if (((int)$projectData['user_id'] !== (int)$user_data['user_id']) && ((int)$projectData['company_id'] !== (int)$user_data['company_id'])) {
                 $this->response([
@@ -236,9 +240,9 @@ class ProjectLevelsController extends BaseController
             }
 
             $projectRooms = $this->UtilModel->selectQuery('project_id', 'project_rooms', [
-            'where' => ['project_id' => $projectId, 'level' => $level], 'single_row' => true
+                'where' => ['project_id' => $projectId, 'level' => $level], 'single_row' => true
             ]);
-            
+
             if (empty($projectRooms)) {
                 $this->response([
                     'code' => HTTP_FORBIDDEN,
@@ -248,10 +252,10 @@ class ProjectLevelsController extends BaseController
 
             $this->UtilModel->updateTableData([
                 'status' => 1
-                ], 'project_levels', [
+            ], 'project_levels', [
                 'project_id' => $projectId,
                 'level' => $level
-                ]);
+            ]);
 
             $this->response([
                 'code' => HTTP_OK,
@@ -267,7 +271,7 @@ class ProjectLevelsController extends BaseController
     }
 
 
-     /**
+    /**
      * @SWG\Post(path="/projects/levels",
      *   tags={"Projects"},
      *   summary="Post Project Level resource - (clone)",
@@ -360,7 +364,7 @@ class ProjectLevelsController extends BaseController
                     'msg' => $this->lang->line('no_data_found')
                 ]);
             }
-            
+
             $isOwnProject = false;
             if (in_array((int)$user_data['user_type'], [PRIVATE_USER, BUSINESS_USER], true)) {
                 $isOwnProject = (int)$user_data['user_id'] === (int)$projectData['user_id'];
@@ -383,7 +387,7 @@ class ProjectLevelsController extends BaseController
                     'level' => $this->requestData['reference_level']
                 ]
             ]);
-            
+
             $time = [
                 'time' => $this->datetime,
                 'timestamp' => $this->timestamp
@@ -393,7 +397,7 @@ class ProjectLevelsController extends BaseController
                 'where_in' => ['level' => $this->requestData['destination_levels']],
                 'where' => ['project_id' => $this->requestData['project_id']]
             ]);
-            
+
             $this->ProjectRooms->cloneLevelRooms($roomsData, $this->requestData['destination_levels'], $time);
 
             $cloneRoomParams = [
@@ -416,7 +420,7 @@ class ProjectLevelsController extends BaseController
             }
 
             $this->ProjectRoomProducts->cloneProjectRoomProducts($productsData, $sourceDestinationRoomIdMap);
-            
+
             $this->response([
                 'code' => HTTP_OK,
                 'msg' => $this->lang->line('level_clone_successful')
@@ -476,11 +480,11 @@ class ProjectLevelsController extends BaseController
         $this->form_validation->set_data($this->requestData);
 
         $this->form_validation->set_rules([
-        [
-            'label' => 'Project',
-            'field' => 'project_id',
-            'rules' => 'trim|required|is_natural_no_zero'
-        ]
+            [
+                'label' => 'Project',
+                'field' => 'project_id',
+                'rules' => 'trim|required|is_natural_no_zero'
+            ]
         ]);
     }
 
@@ -523,40 +527,40 @@ class ProjectLevelsController extends BaseController
         if ((int)$userType === INSTALLER) {
             $totalPrice->main_product_charge = 0.00;
             $totalPrice->accessory_product_charge = 0.00;
-            $totalPriceData =  $this->ProjectQuotation->getProjectQuotationPriceByInstaller($projectParams);
+            $totalPriceData = $this->ProjectQuotation->getProjectQuotationPriceByInstaller($projectParams);
             $quotationPrice = $this->ProjectQuotation->quotationChargesByInstaller($projectParams);
 
-            $totalPrice->price_per_luminaries = isset($totalPriceData['price_per_luminaries'])?
-                                                    (double)$totalPriceData['price_per_luminaries']:0.00;
-            $totalPrice->installation_charges = isset($totalPriceData['installation_charges'])?
-                                                    (double)$totalPriceData['installation_charges']:0.00;
-            $totalPrice->discount_price = isset($totalPriceData['discount_price'])?
-                                                    (double)$totalPriceData['discount_price']:0.00;
-            $totalPrice->additional_product_charges = isset($quotationPrice['additional_product_charges'])?
-                                                    (double)$quotationPrice['additional_product_charges']:0.00;
-            $totalPrice->discount = isset($quotationPrice['discount'])?
-                                                    (double)$quotationPrice['discount']:0.00;
-           
-            
+            $totalPrice->price_per_luminaries = isset($totalPriceData['price_per_luminaries']) ?
+                (double)$totalPriceData['price_per_luminaries'] : 0.00;
+            $totalPrice->installation_charges = isset($totalPriceData['installation_charges']) ?
+                (double)$totalPriceData['installation_charges'] : 0.00;
+            $totalPrice->discount_price = isset($totalPriceData['discount_price']) ?
+                (double)$totalPriceData['discount_price'] : 0.00;
+            $totalPrice->additional_product_charges = isset($quotationPrice['additional_product_charges']) ?
+                (double)$quotationPrice['additional_product_charges'] : 0.00;
+            $totalPrice->discount = isset($quotationPrice['discount']) ?
+                (double)$quotationPrice['discount'] : 0.00;
+
+
             $totalPrice->total = get_percentage(($totalPrice->main_product_charge
-                                        + $totalPrice->accessory_product_charge
-                                        + $totalPrice->price_per_luminaries
-                                        + $totalPrice->installation_charges
-                                        + $totalPrice->additional_product_charges), $totalPrice->discount_price);
+                + $totalPrice->accessory_product_charge
+                + $totalPrice->price_per_luminaries
+                + $totalPrice->installation_charges
+                + $totalPrice->additional_product_charges), $totalPrice->discount_price);
             $totalPrice->total = round($totalPrice->total, 2);
         } elseif (in_array((int)$userType, [BUSINESS_USER, PRIVATE_USER], true)) {
             $totalPrice->main_product_charge = 0.00;
             $totalPrice->accessory_product_charge = 0.00;
             $totalPriceData = $this->ProjectQuotation->approvedProjectQuotationPrice($projectParams);
-            $totalPrice->price_per_luminaries = isset($totalPriceData['price_per_luminaries'])?(double)$totalPriceData['price_per_luminaries']:0.00;
-            $totalPrice->installation_charges = isset($totalPriceData['installation_charges'])?(double)$totalPriceData['installation_charges']:0.00;
-            $totalPrice->discount_price = isset($totalPriceData['discount_price'])?(double)$totalPriceData['discount_price']:0.00;
-            $totalPrice->additional_product_charges = isset($totalPriceData['additional_product_charges'])?(double)$totalPriceData['additional_product_charges']:0.00;
-            $totalPrice->discount = isset($totalPriceData['discount'])?(double)$totalPriceData['discount']:0.00;
+            $totalPrice->price_per_luminaries = isset($totalPriceData['price_per_luminaries']) ? (double)$totalPriceData['price_per_luminaries'] : 0.00;
+            $totalPrice->installation_charges = isset($totalPriceData['installation_charges']) ? (double)$totalPriceData['installation_charges'] : 0.00;
+            $totalPrice->discount_price = isset($totalPriceData['discount_price']) ? (double)$totalPriceData['discount_price'] : 0.00;
+            $totalPrice->additional_product_charges = isset($totalPriceData['additional_product_charges']) ? (double)$totalPriceData['additional_product_charges'] : 0.00;
+            $totalPrice->discount = isset($totalPriceData['discount']) ? (double)$totalPriceData['discount'] : 0.00;
 
             $totalPrice->total = get_percentage(($totalPrice->price_per_luminaries
-                                        + $totalPrice->installation_charges
-                                        + $totalPrice->additional_product_charges), $totalPrice->discount_price);
+                + $totalPrice->installation_charges
+                + $totalPrice->additional_product_charges), $totalPrice->discount_price);
             $totalPrice->total = round($totalPrice->total, 2);
         }
 

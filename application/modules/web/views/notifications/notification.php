@@ -17,7 +17,7 @@
         <?php foreach ($notifications as $notification) { ?>
             <div class="well well-lg">
                 <div>
-                    <span><img src="<?php echo $notification['sender']['image'] ?>" alt="<?php $notification['id'] ?>" height="200px" width="200"></span>
+                    <span><img src="<?php echo empty($notification['sender']['image'])?base_url('public/images/user-placeholder.png'):$notification['sender']['image'] ?>" alt="<?php $notification['id'] ?>" height="200px" width="200"></span>
                     <span><?php echo $notification['message'] ?></span>
                 </div>
                 <div class="clearfix col-md-12">

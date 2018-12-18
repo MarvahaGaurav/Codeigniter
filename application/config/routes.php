@@ -61,6 +61,7 @@ if (isset($_SERVER["REQUEST_URI"]) && preg_match('/.*\/(api)\/.*/', $_SERVER["RE
 $route['default_controller']   = 'web/QuickCalcController/applications';
 $route['translate_uri_dashes'] = false;
 
+$route['home/notifications']          = 'web/NotificationController/index';
 $route['home/search'] = 'web/SearchController/index';
 $route['home/profile/(.+)/edit']      = 'web/UserController/edit_profile/$1';
 $route['home/profile/(.+)']           = 'web/UserController/profile/$1';
@@ -73,18 +74,34 @@ $route['home/inspirations/(.+)']      = 'web/InspirationController/details/$1';
 /**
  * Projects
  */
-$route['home/notifications']                                           = 'web/NotificationController/index';
-$route['home/projects']                                                = 'web/ProjectController';
-$route['home/projects/create']                                         = 'web/ProjectController/create';
-$route['home/projects/get-porduct']                                    = 'web/ProjectController/get_product/$1';
-$route['home/projects/view-result/(:any)']                             = 'web/ProjectController/view_result/$1';
-$route['home/projects/(:any)/quotations']                              = 'web/QuotesController/customerQuotesList/$1';
-$route['home/projects/(:any)/edit']                                    = 'web/ProjectController/edit/$1';
-$route['home/projects/(:any)']                                         = 'web/ProjectController/project_details/$1';
-$route['home/projects/(:any)/levels']                                  = 'web/ProjectLevelsController/levelsListing/$1';
-$route['home/projects/(:any)/levels/(:num)/rooms']                     = 'web/ProjectRoomsController/projectCreateRoomListing/$1/$2';
-$route['home/projects/(:any)/levels/(:num)/rooms/results']                     = 'web/ProjectRoomsController/projectResultRoomListing/$1/$2';
-$route['home/projects/(:any)/levels/(:num)/rooms/(:any)/edit']         = 'web/ProjectRoomsController/editDimensions/$1/$2/$3';
+$route['home/projects'] = 'web/ProjectController';
+$route['home/projects/create'] = 'web/ProjectController/create';
+$route['home/projects/get-porduct'] = 'web/ProjectController/get_product/$1';
+$route['home/projects/view-result/(:any)'] = 'web/ProjectController/view_result/$1';
+$route['home/projects/(:any)/(:any)/quotations'] = 'web/QuotesController/customerQuotesList/$1/$2';
+$route['home/projects/(:any)/edit'] = 'web/ProjectController/edit/$1';
+$route['home/projects/(:any)'] = 'web/ProjectController/project_details/$1';
+$route['home/projects/(:any)/levels'] = 'web/ProjectLevelsController/levelsListing/$1';
+$route['home/projects/(:any)/levels/(:num)/rooms'] = 'web/ProjectRoomsController/projectCreateRoomListing/$1/$2';
+$route['home/projects/(:any)/levels/(:num)/rooms/results'] = 'web/ProjectRoomsController/projectResultRoomListing/$1/$2';
+$route['home/projects/(:any)/levels/(:num)/rooms/(:any)/edit'] = 'web/ProjectRoomsController/editDimensions/$1/$2/$3';
+$route['home/projects/(:any)/levels/(:num)/rooms/(:any)/tco'] = 'web/TcoController/tco/$1/$2/$3';
+
+$route['home/search'] = 'web/SearchArticlesController/search';
+$route['home/fast-calc/lux'] = 'web/QuickCalcLuxController/luxValues';
+$route['home/fast-calc/lux/view-result'] = 'web/QuickCalcLuxController/view_result';
+$route['home/fast-calc/lux/applications/(:any)/rooms/(:any)/products'] = 'web/QuickCalcLuxController/selectProduct/$1/$2';
+$route['home/fast-calc/lux/applications/(:any)/rooms/(:any)/products/(:any)'] = 'web/QuickCalcLuxController/selectArticle/$1/$2/$3';
+$route['home/fast-calc/lux/applications/(:any)/rooms/(:any)/products/(:any)/articles/(:any)'] = 'web/QuickCalcLuxController/articleDetails/$1/$2/$3/$4';
+$route['home/fast-calc/luminary'] = 'web/QuickCalcLuminaryController/luxValues';
+$route['home/fast-calc/luminary/view-result'] = 'web/QuickCalcLuminaryController/view_result';
+$route['home/fast-calc/luminary/applications/(:any)/rooms/(:any)/products'] = 'web/QuickCalcLuminaryController/selectProduct/$1/$2';
+$route['home/fast-calc/luminary/applications/(:any)/rooms/(:any)/products/(:any)'] = 'web/QuickCalcLuminaryController/selectArticle/$1/$2/$3';
+$route['home/fast-calc/luminary/applications/(:any)/rooms/(:any)/products/(:any)/articles/(:any)'] = 'web/QuickCalcLuminaryController/articleDetails/$1/$2/$3/$4';
+$route['home/fast-calc/product/(:any)/article/(:any)'] = "web/SearchArticlesController/QuickCal/$1/$2";
+$route['home/fast-calc/evaluation/(:any)/(:any)'] = 'web/SearchArticlesController/view_result/$1/$2';
+
+
 $route['home/projects/(:any)/levels/(:num)/rooms/(:any)/project-rooms/(:any)/accessory-products'] = 'web/ProjectProductController/AccessoryProduct/$1/$2/$3/$4';
 $route['home/projects/(:any)/levels/(:num)/rooms/(:any)/project-rooms/(:any)/selected-products'] = 'web/ProjectProductController/selectedProjectProducts/$1/$2/$3/$4';
 $route['home/projects/(:any)/levels/(:num)/rooms/(:any)/project-rooms/(:any)/accessory-products/(:any)'] = 'web/ProjectProductController/accessoryProductDetail/$1/$2/$3/$4/$5';
@@ -115,11 +132,18 @@ $route['home/projects/(:any)/levels/(:num)/rooms/applications/(:any)/rooms/(:any
 // $route['home/projects/(:any)/select-room-type']                        = 'web/ProjectController/room_type/$1';
 
 
-$route['home/quotes']               = 'web/QuotesController';
-$route['home/quotes/awaiting']      = 'web/QuotesController/awaiting';
-$route['home/quotes/submitted']     = 'web/QuotesController/submitted';
-$route['home/quotes/approved']      = 'web/QuotesController/approved';
-$route['home/technicians']          = 'web/TechnicianController';
+$route['home/quotes'] = 'web/QuotesController';
+$route['home/quotes/awaiting'] = 'web/QuotesController/awaiting';
+$route['home/quotes/submitted'] = 'web/QuotesController/submitted';
+$route['home/quotes/approved'] = 'web/QuotesController/approved';
+$route['home/quotes/projects/(:any)/(:any)'] = 'web/QuotesController/project_details/$1/$2'; 
+$route['home/quotes/projects/(:any)/(:any)/quotations/levels'] = 'web/QuotesController/levelsListing/$1/$2';
+$route['home/quotes/projects/(:any)/(:any)/edit']='web/QuotesController/editProject/$1/$2';
+$route['home/quotes/projects/(:any)/(:any)/levels/(:num)/rooms'] ='web/QuotesController/projectResultRoomListing/$1/$2/$3';
+$route['home/quotes/projects/(:any)/(:any)/levels/(:num)/rooms/(:any)/tco'] = 'web/QuotesController/tco/$1/$2/$3/$4';
+$route['home/quotes/projects/(:any)/(:any)/levels/(:num)/rooms/(:any)/project-rooms/(:any)/selected-products'] = 'web/QuotesController/selectedProjectProducts/$1/$2/$3/$4/$5';
+$route['home/quotes/projects/(:any)/(:any)/view-result/(:any)'] = 'web/QuotesController/view_result/$1/$2/$3';
+$route['home/technicians'] = 'web/TechnicianController';
 $route['home/technicians/requests'] = 'web/TechnicianController/request_list';
 $route['home/technicians/(.+)']     = 'web/TechnicianController/details/$1';
 $route['home/companies']            = 'web/CompaniesController/companies';

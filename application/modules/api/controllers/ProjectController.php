@@ -847,6 +847,36 @@ class ProjectController extends BaseController
                 );
                 $this->load->helper('db');
                 $rooms = getDataWith($rooms, $roomProducts, 'project_room_id', 'project_room_id', 'products');
+                if ((int)$user_data['user_type'] === INSTALLER) {
+                    $this->load->model(['ProjectRoomQuotation', 'ProjectRoomTcoValue']);
+                    $projectRoomIds = array_column($rooms, 'project_room_id');
+                    $roomPrice = $this->ProjectRoomQuotation->quotationInfo([
+                        'where_in' => ['project_room_id' => $projectRoomIds]
+                    ]);
+                    $tcoData = $this->ProjectRoomTcoValue->get($projectRoomIds);
+                    $this->load->helper('utility');
+                    $rooms = getDataWith($rooms, $roomPrice, 'project_room_id', 'project_room_id', 'price');
+                    $rooms = getDataWith($rooms, $tcoData, 'project_room_id', 'project_room_id', 'tco');
+                    $rooms = array_map(function ($room) {
+                        if (empty($room['price'])) {
+                            $room['has_price'] = false;
+                            $room['price'] = (object)[];
+                        } else {
+                            $room['has_price'] = true;
+                            $room['price'] = $room['price'][0];
+                            $room['price']['total'] = get_percentage(
+                                $room['price']['price_per_luminaries'] + $room['price']['installation_charges'],
+                                $room['price']['discount_price']
+                            );
+                        }
+                        if (empty($room['tco'])) {
+                            $room['tco'] = (object)[];
+                        } else {
+                            $room['tco'] = $room['tco'][0];
+                        }
+                        return $room;
+                    }, $rooms);
+                }
             }
 
             $projectData['rooms'] = $rooms;
