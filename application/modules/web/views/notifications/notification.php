@@ -12,7 +12,6 @@
             <h1 class="page-title">Notifications</h1>
             <p class="prj-description"></p>
         </div>
-
     
         <?php foreach ($notifications as $notification) { ?>
             <div class="well well-lg">
@@ -31,8 +30,9 @@
         <?php }?>
 
         <?php if (empty($notifications)) {?>
-            <div class="col-md-12 text-center">
-                No notifications found
+            <div class="no-record text-center">
+                <img src="<?php echo base_url("public/images/svg/notification.svg"); ?>" alt="Note Paper">
+                <p>You have no notifications</p>
             </div>
         <?php }?>
 
