@@ -397,7 +397,7 @@ class ProjectRoomController extends BaseController
             [
                 'field' => 'discount_price',
                 'label' => 'Discount price',
-                'rules' => 'trim|required|numeric|greater_than_equal_to[0]'
+                'rules' => 'trim|numeric|greater_than_equal_to[0]'
             ]
         ]);
 

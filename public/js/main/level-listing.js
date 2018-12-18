@@ -130,6 +130,10 @@ requirejs(
       })
     });
 
+    $( function() {
+      $( "#datepicker" ).datepicker();
+    } );
+
     
 
 

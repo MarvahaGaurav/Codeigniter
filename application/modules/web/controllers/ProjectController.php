@@ -191,7 +191,7 @@ class ProjectController extends BaseController
 
         $this->userTypeHandling([INSTALLER, PRIVATE_USER, BUSINESS_USER, WHOLESALER, ELECTRICAL_PLANNER], base_url('home/applications'));
 
-        $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['project_add'], base_url('home/applications'));
+        $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['project_edit'], base_url('home/applications'));
 
         $languageCode = "en";
 

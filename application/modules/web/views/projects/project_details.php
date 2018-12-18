@@ -41,7 +41,8 @@
                         <td class="op-semibold"><?php echo $project['name']; ?></td>
                         <td class="op-semibold text-center"><?php echo $project['levels']; ?></td>
                         <td class=""><?php echo $project['address'] ?></td>
-                        <?php if (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && $isRequested) { ?>
+                        
+                        <?php if (empty($project['requests']) && ((in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true)) || ((in_array((int)$userInfo['user_type'], [INSTALLER, ELECTRICAL_PLANNER,WHOLESALER], true) && $userInfo['is_owner']==ROLE_OWNER )) || ((in_array((int)$userInfo['user_type'], [INSTALLER, ELECTRICAL_PLANNER,WHOLESALER], true) && $permission['project_edit']==1))) && $isRequested) { ?>
                         <td class="op-semibold text-center"><?php echo $quoteCount ?> Quote(s)</td>
                         <?php } ?>
                         <td class="op-semibold">

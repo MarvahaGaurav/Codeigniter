@@ -67,7 +67,7 @@
                             </div>
                         </td>
                         <td>
-                            <div class="price-comparison" id="competitor" style="display: none;">
+                            <div class="price-comparison competitor" style="display: none;">
                                 <input type="<?php echo $textType ?>" value="" >
                             </div>
                         </td>
@@ -85,7 +85,7 @@
                             </div>
                         </td>
                         <td>
-                            <div class="price-comparison" id="competitor" style="display: none;">
+                            <div class="price-comparison competitor" style="display: none;">
                                 <input type="<?php echo $textType ?>" value="" >
                             </div>
                         </td>
@@ -103,7 +103,7 @@
                             </div>
                         </td>
                         <td>
-                            <div class="price-comparison" id="competitor" style="display: none;">
+                            <div class="price-comparison competitor" style="display: none;">
                                 <input type="<?php echo $textType ?>" value="" >
                             </div>
                         </td>
@@ -121,7 +121,7 @@
                             </div>
                         </td>
                         <td>
-                            <div class="price-comparison" id="competitor" style="display: none;">
+                            <div class="price-comparison competitor" style="display: none;">
                                 <input type="<?php echo $textType ?>" value="" >
                             </div>
                         </td>
@@ -139,7 +139,7 @@
                             </div>
                         </td>
                         <td>
-                            <div class="price-comparison" id="competitor" style="display: none;">
+                            <div class="price-comparison competitor" style="display: none;">
                                 <input type="<?php echo $textType ?>" value="" >
                             </div>
                         </td>
@@ -157,7 +157,7 @@
                             </div>
                         </td>
                         <td>
-                            <div class="price-comparison" id="competitor" style="display: none;">
+                            <div class="price-comparison competitor" style="display: none;">
                                 <input type="<?php echo $textType ?>" value="" >
                             </div>
                         </td>
@@ -175,7 +175,7 @@
                             </div>
                         </td>
                         <td>
-                            <div class="price-comparison" id="competitor" style="display: none;">
+                            <div class="price-comparison competitor" style="display: none;">
                                 <input type="<?php echo $textType ?>" value="" >
                             </div>
                         </td>
@@ -193,7 +193,7 @@
                             </div>
                         </td>
                         <td>
-                            <div class="price-comparison" id="competitor" style="display: none;">
+                            <div class="price-comparison competitor" style="display: none;">
                                 <input type="<?php echo $textType ?>" value="" >
                             </div>
                         </td>
@@ -210,7 +210,7 @@
                             </div>
                         </td>
                         <td>
-                            <div class="price-comparison" id="competitor" style="display: none;">
+                            <div class="price-comparison competitor" style="display: none;">
                             </div>
                         </td>
                     </tr>

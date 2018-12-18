@@ -248,7 +248,7 @@
                 <div class="form-group">
                     <label for="additional_product_charges" class="priceTxt">Additional Product Charges</label>
                     <div class="inputField">
-                    <?php //echo "ddd".$permission['project_edit']; die; ?>
+                   
                         <input type="text" <?php echo (bool)$hasFinalQuotePriceAdded && ($request_status==QUOTATION_STATUS_APPROVED ||$request_status==QUOTATION_STATUS_REJECTED)?'disabled="disabled"':'name="additional_product_charges"' ?> class="modal-price-fields restrict-characters number-only-field" data-restrict-to="15" id="additional_product_charges" value="<?php echo isset($projectRoomPrice['additional_product_charges'])?$projectRoomPrice['additional_product_charges']:'' ?>">
                     </div>
                 </div>

@@ -3,10 +3,11 @@ defined("BASEPATH") or exit("No direct script access allowed");
 
 require_once "BaseController.php";
 require_once APPPATH . "/libraries/Traits/TechnicianChargesCheck.php";
+require_once APPPATH . "/libraries/Traits/Notifier.php";
 
 class ProjectPriceController extends BaseController
 {
-    use TechnicianChargesCheck;
+    use TechnicianChargesCheck,Notifier ;
 
     private $requestData;
 
@@ -94,9 +95,10 @@ class ProjectPriceController extends BaseController
                 $this->requestData['request_id'] = encryptDecrypt($this->requestData['request_id'], 'decrypt');
             }
             
-
+            
             $this->validateAddCharges();
 
+            
             $projectId = $this->requestData['project_id'];
             $additionalProductCharges = isset($this->requestData['additional_product_charges'])?$this->requestData['additional_product_charges']:0.00;
             $discount = isset($this->requestData['discount'])?$this->requestData['discount']:0.00;
@@ -119,13 +121,13 @@ class ProjectPriceController extends BaseController
                 'created_at_timestamp' => $this->timestamp,
                 'updated_at' => $this->datetime,
                 'updated_at_timestamp' => $this->timestamp,
-            ];
-
-           
+            ];         
 
             $this->UtilModel->insertTableData($insertData, 'project_quotations');
-
             
+            // send push to requester
+
+            $this->notifySendQuote($this->userInfo['user_id'], $projectData['user_id'], $this->requestData['request_id']);
 
             $status = 
             
@@ -222,6 +224,8 @@ class ProjectPriceController extends BaseController
 
             $this->requestData = $this->input->post();
 
+            
+
             $request_id = $this->requestData['quotation_id'];
             $request_id = encryptDecrypt($request_id, 'decrypt');
 
@@ -234,7 +238,18 @@ class ProjectPriceController extends BaseController
                     'id' => $request_id
             ]);
 
+            $requestData = $this->UtilModel->selectQuery('request_id', 'project_quotations', [
+                'where' => ['id' => $request_id], 'single_row' => true
+            ]);
 
+            $projectData = $this->UtilModel->selectQuery('project_id', 'project_requests', [
+                'where' => ['project_id' => $requestData['project_id']], 'single_row' => true
+            ]);
+
+
+            // send push to installer
+
+            $this->notifyAcceptedQuotes($this->userInfo['user_id'], $request_id, $projectData['project_id']);
 
             $status = 
             
@@ -245,6 +260,7 @@ class ProjectPriceController extends BaseController
                 'message' => $this->lang->line('quote-approved-success')
             ]);
         } catch (\Exception $error) {
+            pr($error);
             json_dump(
                 [
                     "success" => false,

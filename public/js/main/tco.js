@@ -119,16 +119,10 @@ requirejs(
   function checkval() {
 
     if ($('#competitor_show').is(':checked')) {
-        $(".table-custom").each(function () {
-          $('#competitor').css("display", "block");
-          
-        })
-
-        
-        
-        
+       
+          $('.competitor').css("display", "block");
     } else {
-        $('#competitor').css("display", "none");
+      $('.competitor').css("display", "none");
     }
 
 }
