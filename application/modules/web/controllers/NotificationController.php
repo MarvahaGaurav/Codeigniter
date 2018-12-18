@@ -46,7 +46,11 @@ class NotificationController extends BaseController
                     );
                     unset($notification['messages']);
                 }
-                $notification['redirection'] = $this->redirectionHandler()[$notification['type']];
+                if ((int)$notification['type'] === NOTIFICATION_SEND_QUOTES) {
+                    $notification['redirection'] = sprintf($this->redirectionHandler()[NOTIFICATION_SEND_QUOTES], encryptDecrypt($notification['project_id']));
+                } else {
+                    $notification['redirection'] = $this->redirectionHandler()[$notification['type']];
+                }
                 $notification['redirection'] = !empty($notification['redirection'])?base_url($notification['redirection']):null;
                 return $notification;
             }, $notifications);
@@ -67,7 +71,7 @@ class NotificationController extends BaseController
             NOTIFICATION_EMPLOYEE_REQUEST_RECEIVED => "home/technicians/requests",
             NOTIFICATION_RECEIVED_QUOTES => "home/quotes/awaiting",
             NOTIFICATION_PERMISSION_GRANTED => null,
-            NOTIFICATION_SEND_QUOTES => null,
+            NOTIFICATION_SEND_QUOTES => "/home/projects/%s/quotations",
             NOTIFICATION_ACCEPT_QUOTE => "home/quotes/approved",
             NOTIFICATION_EDIT_QUOTE_PRICE => null,
             NOTIFICATION_EMPLOYEE_APPROVED => null
