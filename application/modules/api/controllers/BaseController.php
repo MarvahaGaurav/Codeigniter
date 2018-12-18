@@ -309,7 +309,7 @@ class BaseController extends REST_Controller
      * @return array
      */
     protected function handleEmployeePermission($userTypesToCheck, $permissionsToCheck)
-    { 
+    {
         if (!is_array($userTypesToCheck) || !is_array($permissionsToCheck)) {
             $this->response([
                 'code' => HTTP_INTERNAL_SERVER_ERROR,
@@ -321,7 +321,6 @@ class BaseController extends REST_Controller
             $this->load->helper('common');
             $permissions = retrieveEmployeePermission($this->user['user_id']);
             
-
             if (empty($permissions)) {
                 $this->response([
                     'code' => HTTP_FORBIDDEN,
