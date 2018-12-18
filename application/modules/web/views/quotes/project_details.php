@@ -45,7 +45,9 @@
                         <?php if (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && $isRequested) { ?>
                         <th class="text-center">Quotes Count</th>
                         <?php } ?>
-                        <!-- <th>Actions</th> -->
+                        <?php if(in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && $isRequested) { ?>
+                        <th>Actions</th>
+                        <?php } ?>
                     </tr>
                 </thead>
                 <tbody>
@@ -57,12 +59,13 @@
                         <?php if (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && $isRequested) { ?>
                         <td class="op-semibold text-center"><?php echo $quoteCount ?> Quote(s)</td>
                         <?php } ?>
-                        <!-- <td class="op-semibold">
+                        <?php if (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && $isRequested) { ?>
+                        <td class="op-semibold">
                             <a href="<?php echo base_url('home/quotes/projects/' . encryptDecrypt($project['project_id']) .'/'.encryptDecrypt($request_id). '/edit') ?>" class="project-action"><i class="fa fa-pencil"></i></a>
-                            <?php if (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) && $isRequested) { ?>
+                            
                             <a href="<?php echo base_url('home/projects/' . $projectId .'/'.$request_id. '/quotations') ?>" class="project-action"><i class="fa fa-quote-right"></i></a>
                             <?php } ?>
-                        </td> -->
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -273,7 +276,7 @@
                 </div>
                 <?php echo form_close() ?>
             </div>
-            <?php if (($request_status!=QUOTATION_STATUS_APPROVED && $request_status!=QUOTATION_STATUS_REJECTED) && $permission['project_edit']==1) { ?>
+            <?php if (($request_status!=QUOTATION_STATUS_APPROVED && $request_status!=QUOTATION_STATUS_REJECTED) && $permission['quote_add']==1) { ?>
             <div class="modal-footer">
                 <div class="text-center button-wrapper">
                     <button type="button" class="custom-btn btn-margin btn-width save" data-csrf='<?php echo $csrf ?>' data-text="<?php echo $this->lang->line('select') ?>" data-dismiss="modal" id="final-quote-send-later" data-clone=""><?php echo $this->lang->line('send-quote-later') ?></button>

@@ -71,6 +71,7 @@ class ProjectQuotation extends BaseModel
                 $search = $params['search'];
                 $this->db->where("(company_name LIKE '%{$search}%')");
             }
+            $this->db->group_by('request_id,c.company_id');
             $this->db->order_by("pq.id", "DESC");
             
         if (isset($params['limit']) && is_numeric($params['limit']) && (int)$params['limit'] > 0) {

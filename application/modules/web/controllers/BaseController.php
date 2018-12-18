@@ -57,10 +57,10 @@ class BaseController extends MY_Controller
             }
             $this->userInfo = $this->Common_model->fetch_data('ai_user', $this->user_query_fields, array ('where' => array ('user_id' => $sg_userinfo['user_id'], 'status' => 1)), true);
             $this->data['userInfo'] = $this->userInfo;
-            $this->data['employeePermission'] = [];
+            $this->data['permission'] = [];
             if ((int)$this->userInfo['is_owner'] === ROLE_EMPLOYEE) {
                 $this->employeePermission = retrieveEmployeePermission($this->userInfo['user_id']);
-                $this->data['employeePermission'] = $this->employeePermission;
+                $this->data['permission'] = $this->employeePermission;
             }
         } else {
             redirect(base_url("login"));
@@ -94,10 +94,10 @@ class BaseController extends MY_Controller
             $sg_userinfo    = $this->session_data;
             $this->userInfo = $this->Common_model->fetch_data('ai_user', $this->user_query_fields, array ('where' => array ('user_id' => $sg_userinfo['user_id'], 'status' => 1)), true);
             $this->data['userInfo'] = $this->userInfo;
-            $this->data['employeePermission'] = [];
+            $this->data['permission'] = [];
             if ((int)$this->userInfo['is_owner'] === ROLE_EMPLOYEE) {
                 $this->employeePermission = retrieveEmployeePermission($this->userInfo['user_id']);
-                $this->data['employeePermission'] = $this->employeePermission;
+                $this->data['permission'] = $this->employeePermission;
             }
         }
     }
@@ -162,7 +162,7 @@ class BaseController extends MY_Controller
             (int)$this->userInfo['user_type'],
             $validUserTypes,
             true
-        )) {
+        )) { 
             $message = strlen(trim($message)) > 0 ? $message : $this->lang->line('forbidden_action');
             show404($message, $redirectUrl);
         }

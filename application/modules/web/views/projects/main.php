@@ -56,7 +56,7 @@
                                 <a href="<?php echo base_url("home/projects/" . encryptDecrypt($project['project_id'])) ?>" class="project-action" title="<?php echo $this->lang->line('view') ?>">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                 </a>
-                                <?php if (empty($project['requests']) && $permission['project_edit']==1) { ?>
+                                <?php if (empty($project['requests']) && (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true))) { ?>
                                 <a href="<?php echo base_url('home/projects/' . encryptDecrypt($project['project_id']) . '/edit') ?>" class="project-action" title="<?php echo $this->lang->line("edit") ?>">
                                     <i class="fa fa-pencil" aria-hidden="true"></i>
                                 </a>

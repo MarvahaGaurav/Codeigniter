@@ -49,6 +49,7 @@ class ProjectController extends BaseController
                 return $project;
             }, $projects);
 
+            
             $permissions = $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['project_view'], base_url('home/applications'));
 
             
@@ -67,6 +68,9 @@ class ProjectController extends BaseController
             $this->data['projects'] = $projects;
             $this->load->library('Commonfn');
             $this->data['links'] = $this->commonfn->pagination(uri_string(), $temp['count'], $params['limit']);
+
+            //pr($this->data);
+            
             load_website_views("projects/main", $this->data);
         } else {
             load_website_views("projects/main_inactive_session", $this->data);

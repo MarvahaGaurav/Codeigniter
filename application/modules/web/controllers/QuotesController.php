@@ -505,7 +505,7 @@ class QuotesController extends BaseController
                 $this->data['hasFinalQuotePriceAdded'] = $this->isFinalQuotePriceAdded($request_id);
             }
 
-           
+           //pr($this->data);
             
             website_view('quotes/project_details', $this->data);
         } catch (Exception $ex) {
@@ -710,10 +710,12 @@ class QuotesController extends BaseController
         $this->load->config('css_config');
         $this->data['css'] = $this->config->item('create-project');
 
-        $this->userTypeHandling([INSTALLER], base_url('home/applications'));
+        
+        $this->userTypeHandling([INSTALLER, PRIVATE_USER, BUSINESS_USER, WHOLESALER, ELECTRICAL_PLANNER], base_url('home/applications'));
+        
+        $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['project_add'], base_url('home/applications'));
 
-        $this->handleEmployeePermission([INSTALLER], ['project_add'], base_url('home/applications'));
-
+        
         $languageCode = "en";
 
         $this->data['projectId'] = $projectId;
@@ -721,9 +723,11 @@ class QuotesController extends BaseController
         $projectId = encryptDecrypt($projectId, 'decrypt');
         $this->load->model("UtilModel");
 
-        if (empty($projectId) || !is_numeric($projectId)) {
+        if (empty($projectId) || !is_numeric($projectId)) { 
             show404($this->lang->line('bad_request'), base_url('/home/applications'));
         }
+
+       
 
         $projectData = $this->UtilModel->selectQuery('*', 'projects', [
             'where' => ['id' => $projectId, 'language_code' => $languageCode], 'single_row' => true
@@ -733,11 +737,12 @@ class QuotesController extends BaseController
             show404($this->lang->line('project_not_found'), base_url('/home/applications'));
         }
 
-        // if ((in_array((int)$this->userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) &&
-        //     (int)$this->userInfo['user_id'] !== (int)$projectData['user_id']) || (in_array((int)$this->userInfo['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], true) &&
-        //     (int)$this->userInfo['company_id'] !== (int)$projectData['company_id'])) {
-        //     show404($this->lang->line('forbidden_action'), base_url(''));
-        // }
+        
+        if ((in_array((int)$this->userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) &&
+            (int)$this->userInfo['user_id'] !== (int)$projectData['user_id']) || (in_array((int)$this->userInfo['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], true) &&
+            (int)$this->userInfo['company_id'] !== (int)$projectData['company_id'])) {
+            show404($this->lang->line('forbidden_action'), base_url(''));
+        }
 
         $this->data['employees'] = [];
 
@@ -966,7 +971,7 @@ class QuotesController extends BaseController
                 show404($this->lang->line('bad_request'), base_url(''));
             }
 
-            $this->userTypeHandling([INSTALLER], base_url('home/applications'));
+            $this->userTypeHandling([INSTALLER, PRIVATE_USER, BUSINESS_USER, WHOLESALER, ELECTRICAL_PLANNER], base_url('home/applications'));
 
             $permissions = $this->handleEmployeePermission([INSTALLER], ['project_view'], base_url('home/applications'));
 
@@ -1080,8 +1085,7 @@ class QuotesController extends BaseController
             $this->data['request_status'] = $this->getRequestStatus($request_id);
 
             
-
-            
+           
 
             website_view('quotes/result_room_list', $this->data);
         } catch (\Exception $error) {
