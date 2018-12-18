@@ -3,10 +3,11 @@ defined("BASEPATH") or exit("No direct script access allowed");
 
 require_once "BaseController.php";
 require_once APPPATH . "/libraries/Traits/ProjectRequestCheck.php";
+require_once APPPATH . "/libraries/Traits/Notifier.php";
 
 class ProjectRequestController extends BaseController
 {
-    use ProjectRequestCheck;
+    use ProjectRequestCheck, Notifier;
     /**
      * Post Request Data
      *
@@ -197,6 +198,7 @@ class ProjectRequestController extends BaseController
             }, $selectedInstallers);
 
             $this->UtilModel->insertBatch('project_request_installers', $installerRequestData);
+            $this->notifyQuotationRequest($this->userInfo['user_id'], $selectedInstallers, $projectId);
             $this->db->trans_commit();
 
             $this->session->set_flashdata("flash-message", $this->lang->line('quotation_sent'));

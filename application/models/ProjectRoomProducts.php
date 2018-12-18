@@ -147,12 +147,17 @@ class ProjectRoomProducts extends BaseModel
             ];
         }
 
-        $status = $this->db->insert_batch('project_room_products', $productInsertData);
+        $status = true;
 
-        if (!$status) {
-            throw new \Exception('Insert Error');
+        if (!empty($productInsertData)) {
+
+            $status = $this->db->insert_batch('project_room_products', $productInsertData);
+
+            if (!$status) {
+                throw new \Exception('Insert Error');
+            }
+
         }
-
         return $status;
     }
 

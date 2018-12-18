@@ -2,10 +2,12 @@
 defined("BASEPATH") or exit("No direct script access allowed");
 
 require_once "BaseController.php";
+require_once APPPATH . "/libraries/Traits/Notifier.php";
 
 class EmployeeController extends BaseController
 {
    
+    use Notifier;
     
     public function __construct()
     {
@@ -55,6 +57,7 @@ class EmployeeController extends BaseController
 
     public function request_action()
     {
+        $this->activeSessionGuard();
         $employee_id = $this->input->post("id");
 
         $employee_id = encryptDecrypt($employee_id, 'decrypt');
@@ -90,6 +93,11 @@ class EmployeeController extends BaseController
             } else {
                 $message = $this->lang->line('employee_rejected');
             }
+            $companyInfo = $this->Common_model->fetch_data('company_master', 'company_name', [
+                'where' => ['company_id' => $this->userInfo['company_id']]
+            ], true);
+            $companyName = isset($companyInfo['company_name'])?$companyInfo['company_name']:'';
+            $this->approvePermission($this->userInfo['user_id'], $employee_id, $companyName);
             // $this->User->update(['user_id' => $employee_id]);
             $this->session->set_flashdata("flash-message", $message);
             $this->session->set_flashdata("flash-type", "success");

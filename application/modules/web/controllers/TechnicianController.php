@@ -2,15 +2,16 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 require_once "BaseController.php";
+require APPPATH . '/libraries/Traits/Notifier.php';
+require APPPATH . '/libraries/Traits/PermissionHandler.php';
 
 class TechnicianController extends BaseController
 {
+    use Notifier, PermissionHandler;
 
     private $userData;
     public function __construct()
     {
-        error_reporting(-1);
-		ini_set('display_errors', 1);
         parent::__construct();
         $this->activeSessionGuard();
         $this->load->model("Employee");
@@ -83,6 +84,8 @@ class TechnicianController extends BaseController
         $data['image'] = empty($data['image']) ? base_url("public/images/missing_avatar.svg") : $data['image'];
         $this->data['technician'] = $data;
 
+        $oldPermission = $this->oldPermission($data);
+
         $post = $this->input->post();
         $this->load->helper("input_data");
 
@@ -106,6 +109,8 @@ class TechnicianController extends BaseController
             foreach ( $fieldMaps as $dbColumn => $postArrayKey ) {
                 $this->EmployeePermission->$dbColumn = isset($post[$postArrayKey])?1:0;
             }
+            $newPermission = $this->newPermission($this->EmployeePermission);
+
             if ($data['exist_check'] == 'not_exists' ) {
                 $this->EmployeePermission->user_id = $this->userInfo['user_id'];
                 $this->EmployeePermission->employee_id = $employee_id;
@@ -113,6 +118,7 @@ class TechnicianController extends BaseController
             } else {
                 $this->EmployeePermission->update(["employee_id" => $employee_id]);
             }
+            $this->notifyPermissionGranted($this->userInfo['user_id'], $employee_id, $oldPermission, $newPermission);
             $this->session->set_flashdata("flash-message", $this->lang->line("employee_permissions_updated"));
             $this->session->set_flashdata("flash-type", "success");
             redirect(base_url("home/technicians"));
@@ -175,6 +181,44 @@ class TechnicianController extends BaseController
         // $this->session->set_flashdata("flash-message", "");
         // $this->session->set_flashdata("flash-type", "");
         load_website_views("technicians/requests", $this->data);
+    }
+
+    private function newPermission($permission)
+    {
+        $permission = (array)$permission;
+
+        return [
+            'quote_view' => $permission['quote_view'],
+            'quote_add' => $permission['quote_add'],
+            'quote_edit' => $permission['quote_edit'],
+            'quote_delete' => $permission['quote_delete'],
+            'insp_view' => $permission['insp_view'],
+            'insp_add' => $permission['insp_add'],
+            'insp_edit' => $permission['insp_edit'],
+            'insp_delete' => $permission['insp_delete'],
+            'project_view' => $permission['project_view'],
+            'project_add' => $permission['project_add'],
+            'project_edit' => $permission['project_edit'],
+            'project_delete' => $permission['project_delete']
+        ];
+    }
+
+    private function oldPermission($permission)
+    {
+        return [
+            'quote_view' => $permission['quote_view'],
+            'quote_add' => $permission['quote_add'],
+            'quote_edit' => $permission['quote_edit'],
+            'quote_delete' => $permission['quote_delete'],
+            'insp_view' => $permission['insp_view'],
+            'insp_add' => $permission['insp_add'],
+            'insp_edit' => $permission['insp_edit'],
+            'insp_delete' => $permission['insp_delete'],
+            'project_view' => $permission['project_view'],
+            'project_add' => $permission['project_add'],
+            'project_edit' => $permission['project_edit'],
+            'project_delete' => $permission['project_delete']
+        ];
     }
 
 }

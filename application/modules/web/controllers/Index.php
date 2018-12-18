@@ -2,9 +2,11 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 require_once "BaseController.php";
+require APPPATH . '/libraries/Traits/Notifier.php';
 
 class Index extends BaseController
 {
+    use Notifier;
 
     public function __construct()
     {
@@ -15,8 +17,6 @@ class Index extends BaseController
         $this->inactiveSessionGuard();
 
     }
-
-
 
     /*
      * @function:index
@@ -311,6 +311,7 @@ class Index extends BaseController
                                 'company_id' => $postData['company_name'],
                             ]
                         );
+                        $this->notifyEmployeePermission($userId, $ownerData['user_id']);
                     }
 
                     $this->session->set_flashdata("flash-message", 'You have registered successfully!, Please login to continue');

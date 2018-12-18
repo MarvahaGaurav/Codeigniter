@@ -47,6 +47,7 @@ class Notification extends BaseModel
         $query = $this->db->get();
 
         $result['data'] = $query->result_array();
+        $result['count'] = $this->db->query("SELECT FOUND_ROWS() as count")->row_array()['count'];
 
         if (!empty($result['data'])) {
             $this->load->helper(['db']);
@@ -57,8 +58,6 @@ class Notification extends BaseModel
             $notificationMessages = $this->getNotificationMessages(array_column($result['data'], 'id'));
             $result['data'] = getDataWith($result['data'], $notificationMessages, 'id', 'notification_id', 'messages', '', true);
         }
-
-        $result['count'] = $this->db->query("SELECT FOUND_ROWS() as count")->row_array()['count'];
 
         return $result;
     }

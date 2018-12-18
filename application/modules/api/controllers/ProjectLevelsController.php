@@ -215,7 +215,7 @@ class ProjectLevelsController extends BaseController
 
             $this->validationRun();
 
-            $projectData = $this->UtilModel->selectQuery('user_id, id as project_id', 'projects', [
+            $projectData = $this->UtilModel->selectQuery('user_id, id as project_id, company_id', 'projects', [
             'where' => ['id' => $projectId], 'single_row' => true
             ]);
 
@@ -226,7 +226,9 @@ class ProjectLevelsController extends BaseController
                 ]);
             }
 
-            if ((int)$projectData['user_id'] !== (int)$user_data['user_id']) {
+            
+
+            if (((int)$projectData['user_id'] !== (int)$user_data['user_id']) && ((int)$projectData['company_id'] !== (int)$user_data['company_id'])) {
                 $this->response([
                     'code' => HTTP_FORBIDDEN,
                     'msg' => $this->lang->line('forbidden_action')
