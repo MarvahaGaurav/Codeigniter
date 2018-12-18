@@ -4,8 +4,8 @@
         <!-- breadcrumb -->
         <ul class="breadcrumb">
         <li><a href="javascript:void(0)">Home</a></li>
-            <li><a href="<?php echo base_url('home/quotes/awaiting') ?>">Awaiting Quotes</a></li>
-            <li><a href="<?php echo base_url('home/quotes/projects/'.$projectId) ?>">Project Details</a></li>
+            <li><a href="<?php echo base_url('home/quotes') ?>">Quotes</a></li>
+            <li><a href="<?php echo base_url('home/quotes/projects/'.$projectId.'/'.$request_id) ?>">Project Details</a></li>
             <li class="active">Edit Project</li>
         </ul>
         <!-- //breadcrumb -->
