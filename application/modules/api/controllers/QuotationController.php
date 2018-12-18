@@ -150,6 +150,15 @@ class QuotationController extends BaseController
                 'updated_at_timestamp' => time()
             ], 'project_quotations', true);
 
+            if (isset($this->requestData['expiry_time'])) {
+                $quotationData['expire_at'] = date("Y-m-d H:i:s", $this->requestData['expiry_time']);
+                $quotationData['expire_at_timestamp'] = $this->requestData['expiry_time'];
+            } else {
+                $expiryMonths = strtotime("+" . QUOTATION_EXPIRY_MONTH . " months");
+                $quotationData['expire_at'] = date("Y-m-d H:i:s", $expiryMonths);
+                $quotationData['expire_at_timestamp'] = $expiryMonths;
+            }
+
             $this->notifySendQuote($user_data['user_id'], $requestData['user_id'], $requestData['project_id']);
 
             $this->response([
@@ -761,6 +770,8 @@ class QuotationController extends BaseController
             $user_data = $this->accessTokenCheck('u.user_type, is_owner, u.company_id');
             $language_code = $this->langcode_validate();
 
+            $this->user = $user_data;
+
             $this->projectRoomQuotationEdit(['project_add']);
         } catch (\Exception $error) {
             $this->response([
@@ -830,6 +841,8 @@ class QuotationController extends BaseController
             $user_data = $this->accessTokenCheck('u.user_type, is_owner, u.company_id');
             $language_code = $this->langcode_validate();
 
+            $this->user = $user_data;
+
             $this->projectRoomQuotationEdit(['quote_add']);
         } catch (\Exception $error) {
             $this->response([
@@ -842,76 +855,74 @@ class QuotationController extends BaseController
 
     private function projectRoomQuotationEdit($permissions)
     {
-        $this->user = $user_data;
+        $this->userTypeHandling([INSTALLER]);
 
-            $this->userTypeHandling([INSTALLER]);
+        $this->handleEmployeePermission([INSTALLER], $permissions);
 
-            $this->handleEmployeePermission([INSTALLER], $permissions);
+        $this->requestData = $this->put();
 
-            $this->requestData = $this->put();
+        $this->validateRoomQuotationEdit();
 
-            $this->validateRoomQuotationEdit();
+        $this->validationRun();
 
-            $this->validationRun();
+        $this->requestData = trim_input_parameters($this->requestData);
 
-            $this->requestData = trim_input_parameters($this->requestData);
+        $roomQuotationData = $this->UtilModel->selectQuery('id', 'project_room_quotations', [
+            'where' => ['id' => $this->requestData['room_quotation_id']],
+            'single_row' => true
+        ]);
 
-            $roomQuotationData = $this->UtilModel->selectQuery('id', 'project_room_quotations', [
-                'where' => ['id' => $this->requestData['room_quotation_id']],
-                'single_row' => true
-            ]);
-
-            if (empty($roomQuotationData)) {
-                $this->response([
-                    'code' => HTTP_NOT_FOUND,
-                    'msg' => $this->lang->line('no_data_found')
-                ]);
-            }
-            $updateData = [];
-
-            if (isset($this->requestData['price_per_luminaries'])) {
-                $updateData['price_per_luminaries'] = $this->requestData['price_per_luminaries'];
-            }
-
-            if (isset($this->requestData['installation_charges'])) {
-                $updateData['installation_charges'] = $this->requestData['installation_charges'];
-            }
-
-            if (isset($this->requestData['discount_price'])) {
-                $updateData['discount_price'] = $this->requestData['discount_price'];
-            }
-
-            if (empty($updateData)) {
-                $this->response([
-                    'code' => HTTP_BAD_REQUEST,
-                    'msg' => $this->lang->line('nothing_to_update')
-                ]);
-            }
-
-            $updateData['updated_at'] = $this->datetime;
-            $updateData['updated_at_timestamp'] = time();
-
-            $this->UtilModel->updateTableData($updateData, 'project_room_quotations', [
-                'id' => $this->requestData['room_quotation_id']
-            ]);
-
-            $priceData = $this->UtilModel->selectQuery(
-                'id as room_quotation_id, project_room_id, user_id, company_id,price_per_luminaries,
-                installation_charges,discount_price,created_at, created_at_timestamp',
-                'project_room_quotations',
-                [
-                    'where' => [
-                        'id' => $this->requestData['room_quotation_id']
-                    ],
-                    'single_row' => true
-                ]
-            );
-
+        if (empty($roomQuotationData)) {
             $this->response([
-                'code' => HTTP_OK,
-                'msg' => $this->lang->line('room_quotation_added'),
-                'data' => $priceData
+                'code' => HTTP_NOT_FOUND,
+                'msg' => $this->lang->line('no_data_found')
             ]);
+        }
+        $updateData = [];
+
+        if (isset($this->requestData['price_per_luminaries'])) {
+            $updateData['price_per_luminaries'] = $this->requestData['price_per_luminaries'];
+        }
+
+        if (isset($this->requestData['installation_charges'])) {
+            $updateData['installation_charges'] = $this->requestData['installation_charges'];
+        }
+
+        if (isset($this->requestData['discount_price'])) {
+            $updateData['discount_price'] = $this->requestData['discount_price'];
+        }
+
+        if (empty($updateData)) {
+            $this->response([
+                'code' => HTTP_BAD_REQUEST,
+                'msg' => $this->lang->line('nothing_to_update')
+            ]);
+        }
+
+        $updateData['updated_at'] = $this->datetime;
+        $updateData['updated_at_timestamp'] = time();
+
+        $this->UtilModel->updateTableData($updateData, 'project_room_quotations', [
+            'id' => $this->requestData['room_quotation_id']
+        ]);
+
+        $priceData = $this->UtilModel->selectQuery(
+            'id as room_quotation_id, project_room_id, user_id, company_id,price_per_luminaries,
+                installation_charges,discount_price,created_at, created_at_timestamp',
+            'project_room_quotations',
+            [
+                'where' => [
+                    'id' => $this->requestData['room_quotation_id']
+                ],
+                'single_row' => true
+            ]
+        );
+
+        $this->response([
+            'code' => HTTP_OK,
+            'msg' => $this->lang->line('room_quotation_added'),
+            'data' => $priceData
+        ]);
     }
 
     /**
@@ -937,6 +948,11 @@ class QuotationController extends BaseController
             [
                 'field' => 'discount',
                 'label' => 'Discount',
+                'rules' => 'trim|numeric'
+            ],
+            [
+                'field' => 'expiry_time',
+                'label' => 'Expiry Time',
                 'rules' => 'trim|numeric'
             ]
         ]);

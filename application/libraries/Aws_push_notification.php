@@ -65,7 +65,7 @@ class Aws_push_notification
     /**
      * Payload for notification
      *
-     * @return array
+     * @return array    
      */
     private function payload()
     {

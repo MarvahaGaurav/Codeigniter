@@ -10,9 +10,10 @@ class ProjectRoomProducts extends BaseModel
 {
 
     public function __construct()
-    {
+    {   
         $this->load->database();
         $this->tableName = "project_room_products as prs";
+        $this->load->helper(['quick_calc']);
     }
 
     /**
@@ -246,5 +247,125 @@ class ProjectRoomProducts extends BaseModel
         $data['count'] = $this->db->query('SELECT FOUND_ROWS() as count')->row()->count;
 
         return $data;
+    }
+
+    /**
+     * fetch room detail
+     *
+     * @param array $params
+     * @return array
+     */
+
+    public function getRoomDetail($params){
+        $query = $this->db->select('project_rooms.*')
+            ->from('project_rooms');
+            
+
+        if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
+            foreach ($params['where'] as $tableColumn => $searchValue) {
+                $this->db->where($tableColumn, $searchValue);
+            }
+        }
+
+        $query = $query->get();
+        if( isset($params['single_row']) && $params['single_row'] == 'true'){
+            $data = $query->row_array();
+        }else{
+            $data = $query->result_array();
+        }
+        return $data;
+    }
+
+
+    /**
+     * fetch project detail of user
+     *
+     * @param array $params
+     * @return array
+     */
+
+    public function getProjectDetailOfUser($params){
+        // pr($params);
+        $query = $this->db->select(
+            'project_room_products.*, 
+            PR.title, PR.body, PR.slug, 
+            PRS.image, PRS.language_code, PRS.length, PRS.width, PRS.height, PRS.uld, '
+        )
+            ->from('project_room_products')
+            ->join('products as PR', 'PR.product_id = project_room_products.product_id')
+            ->join('product_specifications as PRS', 'PRS.product_id = project_room_products.product_id AND PRS.articlecode = project_room_products.article_code');
+
+        if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
+            foreach ($params['where'] as $tableColumn => $searchValue) {
+                $this->db->where($tableColumn, $searchValue);
+            }
+        }
+        
+        $query = $query->get();
+
+        if( isset($params['single_row']) && $params['single_row'] == 'true'){
+            $data = $query->row_array();
+        }else{
+            $data = $query->result_array();
+        }
+
+        
+
+        return $data;
+    }
+
+    /**
+     * fetch Quick Calculation
+     *
+     * @param array $params
+     * @return array
+     */
+
+    public function QucikCalDetail($params){
+        // return $params;
+        try {
+            
+            $query = $this->db->select('PR.*, PRP.article_code, PRP.product_id , PS.uld, products.title, PS.colour_temperature, PS.beam_angle, PS.energy_class, PS.ingress_protection_rating')
+                ->from('project_rooms as PR')
+                ->join('project_room_products as PRP', 'PRP.project_room_id = PR.id')
+                ->join('product_specifications as PS', 'PS.product_id = PRP.product_id AND PS.articlecode = PRP.article_code')
+                ->join('products' , 'PS.product_id = products.product_id');
+
+            if(isset($params['where']) ){
+                foreach ($params['where'] as $tableColumn => $searchValue) {
+                    $query->where($tableColumn, $searchValue);
+                }
+            }
+            $query = $query->get();
+
+            $data = $query->row_array();
+            // return $data;
+            $request = [
+                "authToken" => DIALUX_AUTH_TOKEN,
+                "roomLength" => floatval($data['length']),
+                "roomWidth" => floatval($data['width']),
+                "roomHeight" => floatval($data['height']),
+                "illuminance" => floatval($data['lux_value']),
+                "maintenanceFactor" => floatval($data['maintainance_factor']),
+                "roomType" => $data['name'],
+
+                "workingPlaneHeight" => floatval($data['working_plane_height'])/100,
+                "suspension" => floatval($data['suspension_height']),
+
+                "rhoCeiling" => floatval($data['rho_ceiling']),
+                "rhoWall" => floatval($data['rho_wall']),
+                "rhoFloor" => floatval($data['rho_floor']),
+                "uldUri" => $data['uld']
+            ];
+
+            // return $request;
+            $quickCalcResponse = quickCalcSuggestions($request);
+            $response['quickCalcResponse'] = json_decode($quickCalcResponse, true);
+            $response['data'] = $data;
+            $response['res_code'] = 200;
+            return $response;
+        } catch (Exception $e) {
+            
+        }
     }
 }
