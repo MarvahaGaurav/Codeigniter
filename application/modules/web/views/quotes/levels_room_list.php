@@ -120,11 +120,15 @@
             
         </div>
         <?php } ?>
+       
         <?php if (empty($rooms)) : ?>
         <div class="no-record text-center">
             <img src="<?php echo base_url("public/images/placeholder/no-found-ico-2.svg"); ?>" alt="Note Paper">
-            <p>You have no room.</p>
+            <?php if($permission['project_add']==1) { ?>
+                <p>You have no room.</p>
             <p>Tap on <a href="<?php echo base_url("home/projects/" . $projectId . "/levels/{$level}/rooms/applications"); ?>" class="page-link">Add Room</a> button to add a room.</p>
+            <?php } ?>
+            
         </div>
         <?php endif ?>
         <div class="pagination-wrap">
