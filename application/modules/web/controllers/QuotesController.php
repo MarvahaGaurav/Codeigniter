@@ -127,6 +127,67 @@ class QuotesController extends BaseController
         }
     }
 
+    public function customerQuotesListViaProject($projectId)
+    {
+        try {
+
+           
+            $this->activeSessionGuard();
+            $this->userTypeHandling([PRIVATE_USER, BUSINESS_USER], base_url('home/applications'));
+
+            $this->load->model(['ProjectQuotation']);
+
+            $projectId = encryptDecrypt($projectId, 'decrypt');
+            $this->load->library(['form_validation']);
+
+            $this->validationData = ['project_id' => $projectId];
+
+            $this->valdiateCustomerQuote();
+
+            $this->validationRun();
+
+            $status = $this->validationRun();
+
+            if (!$status) {
+                show404($this->lang->line('bad_request'), base_url(''));
+            }
+
+            $get = $this->input->get();
+            
+            $search = isset($get['search'])&&is_string($get['search'])&&strlen(trim($get['search']))>0?trim($get['search']):'';
+            $page = isset($get['page']) && (int)$get['page'] > 1 ? (int)$get['page'] : 1;
+            $params['limit'] = WEB_PAGE_LIMIT;
+            $params['offset'] = ($page - 1) * WEB_PAGE_LIMIT;
+            $params['user_id'] = $this->userInfo['user_id'];
+            $params['language_code'] = $this->languageCode;
+            $params['search'] = $search;
+            $params['project_id'] = $projectId;
+
+            
+            
+            $data = $this->ProjectQuotation->quotations($params);
+
+            $this->load->helper(['utility']);
+            $data['data'] = $this->parseQuotationData($data['data']);
+
+            
+
+            $this->data['quotes'] = $data['data'];
+            $this->data['search'] = $search;
+            $this->load->config('css_config');
+            $this->data['css'] = $this->config->item("basic-with-font-awesome");
+
+            $this->data['projectId'] = encryptDecrypt($projectId);
+            
+
+            //pr($this->data);
+
+            website_view('quotes/project_quotes', $this->data);
+        } catch (\Exception $error) {
+            show404($this->lang->line('internal_server_error'), base_url());
+        }
+    }
+
     /**
      * Installer awaiting quotes listing
      *

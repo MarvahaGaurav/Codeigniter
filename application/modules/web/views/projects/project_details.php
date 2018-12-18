@@ -45,7 +45,7 @@
                         <td class="op-semibold text-center"><?php echo $quoteCount ?> Quote(s)</td>
                         <?php } ?>
                         <td class="op-semibold">
-                           <?php if($permission['project_edit']==1) { ?>
+                           <?php if(1) { ?>
                             <a href="<?php echo base_url('home/projects/' . encryptDecrypt($project['project_id']) . '/edit') ?>" class="project-action"><i class="fa fa-pencil"></i></a>
                            <?php } ?>
                             
