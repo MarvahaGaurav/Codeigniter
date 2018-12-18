@@ -49,6 +49,11 @@ class ProjectController extends BaseController
                 return $project;
             }, $projects);
 
+            $permissions = $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['project_view'], base_url('home/applications'));
+
+            
+            $this->data['permission'] = $permissions;
+
             $this->load->helper(['db']);
             $projectIds = array_column($projects, 'project_id');
             $projectRequest = [];
@@ -906,6 +911,12 @@ class ProjectController extends BaseController
             $this->data['quotationRequest'] = $this->UtilModel->selectQuery('id', 'project_requests', [
                 'where' => ['project_id' => $this->data['project']['project_id']]
             ]);
+
+            $permissions = $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['project_view'], base_url('home/applications'));
+
+            $this->data['permission'] = $permissions;
+
+           // pr($this->data);
 
 
             website_view('projects/project_details', $this->data);
