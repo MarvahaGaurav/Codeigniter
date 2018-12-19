@@ -18,6 +18,9 @@
     } else if($request_status==QUOTATION_STATUS_REJECTED) {
         $quotes = 'Submitted Quotes';
         $url = 'home/quotes/submitted';
+    }else {
+        $quotes = 'Awaiting Quotes';
+        $url = 'home/quotes/awaiting';
     }
     ?>
     

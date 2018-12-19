@@ -17,6 +17,9 @@
             } else if($request_status==QUOTATION_STATUS_REJECTED) {
                 $quotes = 'Rejected Quotes';
                 $url = 'home/quotes/submitted';
+            }else {
+                $quotes = 'Awaiting Quotes';
+                $url = 'home/quotes/awaiting';
             }
             ?>
             <li><a href="<?php echo base_url($url) ?>"><?php echo $quotes  ?></a></li>

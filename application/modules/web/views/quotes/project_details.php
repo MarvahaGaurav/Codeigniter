@@ -317,9 +317,10 @@
                 <div class="projectPric">
                 <div class="form-group">
                         	
-                    <label for="contact-email" class="col-sm-6 control-label">E-mail:</label>
+                    <label for="contact-email" class="col-sm-6 control-label" id="email_error">E-mail:</label>
                             <div class="col-sm-10">
-                            	<input type="email" name="email" class="form-control" id="contact-email" placeholder="you@example.com">
+                            	<input type="text" name="email" required class="form-control" id="contact-email" placeholder="you@example.com">
+                                <?php echo isset($error) ? '<label class="alert-danger">' . $error . '</label>' : form_error('email', '<label class="alert-danger">', '</label>'); ?>
                             </div>
                         </div>            
                 </div>
