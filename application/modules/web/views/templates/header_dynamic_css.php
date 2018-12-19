@@ -58,6 +58,23 @@
                                     <li><a href="javascript:void(0)">RESIDENTIAL LIGHTING</a></li>
                                 </ul>
                             -->
+ <div class="sl-nav navbar-right">
+    <ul>
+      <li><b>Language</b><i class="fa fa-angle-down" aria-hidden="true"></i>
+        <div class="triangle"></div>
+        <ul>
+          <li><a href="#!"><i class="sl-flag flag-gb"></i> <span>English</span></a></li>
+          <li><a href="#!"><i class="sl-flag flag-no"></i> <span>Norsk</span></a></li>
+          <li><a href="#!"><i class="sl-flag flag-se"></i> <span>Svenska</span></a></li>
+          <li><a href="#!"><i class="sl-flag flag-dk"></i> <span>Dansk</span></a></li>
+          <li><a href="#!"><i class="sl-flag flag-de"></i> <span>Deutsch</span></a></li>
+          <li><a href="#!"><i class="sl-flag flag-nl"></i> <span>Nederlands</span></a></li>
+          <li><a href="#!"><i class="sl-flag flag-fr"></i> <span>Français</span></a></li>
+          <li><a href="#!"><i class="sl-flag flag-fi"></i> <span>Suomi</span></a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
                                 <ul class="nav navbar-nav navbar-right">
 
                                     <?php if ( ! empty($userInfo['user_id'])) { ?>
@@ -150,7 +167,7 @@
                                         </ul>
                                     </li>
                                 <?php } ?>
-                            </ul>
+                            </ul>                             
                         </div>
 
                         <ul class="nav navbar-nav navbar-right navbar-search-link">
@@ -171,12 +188,119 @@
                                     </i>
                                 </button>
                             </li>
-                            <li>
-                                <a href="<?php echo base_url("home/notifications") ?>" class="btn-basket basket">
+
+                            <li class="dropdown notification">
+                                <a href="javascript:void(0)" class="btn-basket basket">
                                     <i class="fa fa-bell" style="zoom: 100%;">
                                         <span class="badge badge-icon">0</span>
                                     </i>
                                 </a>
+                                <div class="dropdown-menu dropdown-menu-xl">
+                <!-- Dropdown header -->
+                <div class="padd10">
+                  <h6 class="text-sm">You have <strong class="text-primary">13</strong> notifications.</h6>
+                </div>
+                <!-- List group -->
+                <div class="list-group list-group-flush">
+                  <a href="<?php echo base_url("home/notifications") ?>" class="list-group-item list-group-item-action">
+                    <div class="d_flex">
+                      <div class="col-auto">
+                        <!-- Avatar -->
+                        <img alt="Image placeholder" src="<?php echo base_url("public/images/team-1.jpg") ?>" class="avatar">
+                      </div>
+                      <div class="col ml10">
+                        <div class="d__flex">
+                          <div>
+                            <h4 class="">John Snow</h4>
+                          </div>
+                          <div class="text-right text-muted">
+                            <small>2 hrs ago</small>
+                          </div>
+                        </div>
+                        <p>Let's meet at Starbucks at 11:30. Wdyt?</p>
+                      </div>
+                    </div>
+                  </a>
+                  <a href="<?php echo base_url("home/notifications") ?>" class="list-group-item list-group-item-action">
+                    <div class="d_flex">
+                      <div class="col-auto">
+                        <!-- Avatar -->
+                        <img alt="Image placeholder" src="<?php echo base_url("public/images/team-2.jpg") ?>" class="avatar">
+                      </div>
+                      <div class="col ml10">
+                        <div class="d__flex">
+                          <div>
+                            <h4 class="">John Snow</h4>
+                          </div>
+                          <div class="text-right text-muted">
+                            <small>2 hrs ago</small>
+                          </div>
+                        </div>
+                        <p>A new issue has been reported for Argon.</p>
+                      </div>
+                    </div>
+                  </a>
+                  <a href="<?php echo base_url("home/notifications") ?>" class="list-group-item list-group-item-action">
+                    <div class="d_flex">
+                      <div class="col-auto">
+                        <!-- Avatar -->
+                        <img alt="Image placeholder" src="<?php echo base_url("public/images/team-1.jpg") ?>" class="avatar">
+                      </div>
+                      <div class="col ml10">
+                        <div class="d__flex">
+                          <div>
+                            <h4 class="">John Snow</h4>
+                          </div>
+                          <div class="text-right text-muted">
+                            <small>2 hrs ago</small>
+                          </div>
+                        </div>
+                        <p>Your posts have been liked a lot.</p>
+                      </div>
+                    </div>
+                  </a>
+                  <a href="<?php echo base_url("home/notifications") ?>" class="list-group-item list-group-item-action">
+                    <div class="d_flex">
+                      <div class="col-auto">
+                        <!-- Avatar -->
+                        <img alt="Image placeholder" src="<?php echo base_url("public/images/team-2.jpg") ?>" class="avatar">
+                      </div>
+                      <div class="col ml10">
+                        <div class="d__flex">
+                          <div>
+                            <h4 class="">John Snow</h4>
+                          </div>
+                          <div class="text-right text-muted">
+                            <small>2 hrs ago</small>
+                          </div>
+                        </div>
+                        <p>Let's meet at Starbucks at 11:30. Wdyt?</p>
+                      </div>
+                    </div>
+                  </a>
+                  <a href="<?php echo base_url("home/notifications") ?>" class="list-group-item list-group-item-action">
+                    <div class="d_flex">
+                      <div class="col-auto">
+                        <!-- Avatar -->
+                        <img alt="Image placeholder" src="<?php echo base_url("public/images/team-1.jpg") ?>" class="avatar">
+                      </div>
+                      <div class="col ml10">
+                        <div class="d__flex">
+                          <div>
+                            <h4 class="">John Snow</h4>
+                          </div>
+                          <div class="text-right text-muted">
+                            <small>2 hrs ago</small>
+                          </div>
+                        </div>
+                        <p>A new issue has been reported for Argon.</p>
+                      </div>
+                    </div>
+                  </a>               
+                </div>
+                <!-- View all -->
+                <a href="<?php echo base_url("home/notifications") ?>" class="view_all">View all</a>
+              </div>
                             </li>
                         </ul>
                     </div>

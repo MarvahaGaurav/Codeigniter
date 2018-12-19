@@ -131,6 +131,7 @@ class BaseController extends MY_Controller
             }
 
             $permissionKeys = array_keys($this->employeePermission); 
+            
             foreach ($permissionsToCheck as $permissionToCheck) { 
                 if (!in_array($permissionToCheck, $permissionKeys)) { 
                     show404($this->lang->line('adequate_permission_required'), $redirectUrl);

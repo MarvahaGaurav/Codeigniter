@@ -1,17 +1,35 @@
 <div class="inner-container">
     <div class="container">
-    <?php if($request_status!=QUOTATION_STATUS_REJECTED && $request_status!=QUOTATION_STATUS_APPROVED) { 
+    <?php if($request_status!=QUOTATION_STATUS_REJECTED && $request_status!=QUOTATION_STATUS_APPROVED && $request_status!=QUOTATION_STATUS_QUOTED) { 
         $textType ='text';
     } else { 
         $textType ='readonly';
     }?>
-
+    
+    <?php 
+    $quotes ='';
+    $url = 'javascript:void(0)';
+    if($request_status==QUOTATION_STATUS_QUOTED) {
+        $quotes = 'Submitted Quotes';
+        $url = 'home/quotes/submitted';
+    } else if($request_status==QUOTATION_STATUS_APPROVED) {
+        $quotes = 'Approved Quotes';
+        $url = 'home/quotes/approved';
+    } else if($request_status==QUOTATION_STATUS_REJECTED) {
+        $quotes = 'Submitted Quotes';
+        $url = 'home/quotes/submitted';
+    }else {
+        $quotes = 'Awaiting Quotes';
+        $url = 'home/quotes/awaiting';
+    }
+    ?>
+    
         <!-- breadcrumb -->
         <ul class="breadcrumb">
             <li><a href="javascript:void(0)">Home</a></li>
-            <li><a href="javascript:void(0)">Project</a></li>
-            <li><a href="javascript:void(0)">Rooms</a></li>
-            <li><a href="javascript:void(0)">Result</a></li>
+            <li><a href="<?php echo base_url($url) ?>"><?php echo $quotes ?></a></li>
+            <li><a href="<?php echo base_url('home/quotes/projects/' . encryptDecrypt($roomData['project_id'], "encrypt").'/'.$request_id) ?>"> Project Details</a></li>
+            <li><a href="<?php echo base_url('home/quotes/projects/' .  encryptDecrypt($roomData['project_id'], "encrypt").'/'.$request_id.'/levels/'.$roomData['level'].'/rooms') ?>"> Rooms</a></li>
             <li class="active">TCO</li>
         </ul>
         <!-- //breadcrumb -->
@@ -67,8 +85,8 @@
                             </div>
                         </td>
                         <td>
-                            <div class="price-comparison competitor" style="display: none;">
-                                <input type="<?php echo $textType ?>" value="" >
+                            <div class="price-comparison competitor number-only-field restrict-characters" data-restrict-to="10"  style="display: none;">
+                                <input type="<?php echo $textType ?>" readonly value="" >
                             </div>
                         </td>
                     </tr>
@@ -85,8 +103,8 @@
                             </div>
                         </td>
                         <td>
-                            <div class="price-comparison competitor" style="display: none;">
-                                <input type="<?php echo $textType ?>" value="" >
+                            <div class="price-comparison competitor number-only-field restrict-characters" data-restrict-to="10"  style="display: none;">
+                                <input type="<?php echo $textType ?>" readonly value="" >
                             </div>
                         </td>
                     </tr>
@@ -103,8 +121,8 @@
                             </div>
                         </td>
                         <td>
-                            <div class="price-comparison competitor" style="display: none;">
-                                <input type="<?php echo $textType ?>" value="" >
+                            <div class="price-comparison competitor number-only-field restrict-characters" data-restrict-to="10"  style="display: none;">
+                                <input type="<?php echo $textType ?>" readonly value="" >
                             </div>
                         </td>
                     </tr>
@@ -121,8 +139,8 @@
                             </div>
                         </td>
                         <td>
-                            <div class="price-comparison competitor" style="display: none;">
-                                <input type="<?php echo $textType ?>" value="" >
+                            <div class="price-comparison competitor number-only-field restrict-characters" data-restrict-to="10"  style="display: none;">
+                                <input type="<?php echo $textType ?>" readonly value="" >
                             </div>
                         </td>
                     </tr>
@@ -139,8 +157,8 @@
                             </div>
                         </td>
                         <td>
-                            <div class="price-comparison competitor" style="display: none;">
-                                <input type="<?php echo $textType ?>" value="" >
+                            <div class="price-comparison competitor number-only-field restrict-characters" data-restrict-to="10"  style="display: none;">
+                                <input type="<?php echo $textType ?>" readonly value="" >
                             </div>
                         </td>
                     </tr>
@@ -157,8 +175,8 @@
                             </div>
                         </td>
                         <td>
-                            <div class="price-comparison competitor" style="display: none;">
-                                <input type="<?php echo $textType ?>" value="" >
+                            <div class="price-comparison competitor number-only-field restrict-characters" data-restrict-to="10" style="display: none;">
+                                <input type="<?php echo $textType ?>" readonly value="" >
                             </div>
                         </td>
                     </tr>
@@ -175,8 +193,8 @@
                             </div>
                         </td>
                         <td>
-                            <div class="price-comparison competitor" style="display: none;">
-                                <input type="<?php echo $textType ?>" value="" >
+                            <div class="price-comparison competitor number-only-field restrict-characters" data-restrict-to="10"  style="display: none;">
+                                <input type="<?php echo $textType ?>" readonly value="" >
                             </div>
                         </td>
                     </tr>
@@ -193,8 +211,8 @@
                             </div>
                         </td>
                         <td>
-                            <div class="price-comparison competitor" style="display: none;">
-                                <input type="<?php echo $textType ?>" value="" >
+                            <div class="price-comparison competitor number-only-field restrict-characters" data-restrict-to="10"  style="display: none;">
+                                <input type="<?php echo $textType ?>" readonly value="" >
                             </div>
                         </td>
                     </tr>
@@ -210,7 +228,7 @@
                             </div>
                         </td>
                         <td>
-                            <div class="price-comparison competitor" style="display: none;">
+                            <div class="price-comparison competitor number-only-field restrict-characters" data-restrict-to="10"  style="display: none;">
                             </div>
                         </td>
                     </tr>
@@ -222,10 +240,14 @@
         <!-- Caption before section -->
         <div class="section-title clearfix">
             <div class="button-wrapper">
-                <a href="javascript:void(0)" class="custom-btn btn-margin btn-width save">
+                <!-- <a href="javascript:void(0)" class="custom-btn btn-margin btn-width save">
                     Next Room
-                </a>
-                <input type="submit" value="Done" class="custom-btn btn-margin btn-width save">
+                </a> -->
+                
+                <?php if($request_status!=QUOTATION_STATUS_REJECTED && $request_status!=QUOTATION_STATUS_APPROVED && $request_status!=QUOTATION_STATUS_QUOTED) { ?> 
+                    <input type="submit" value="Done" class="custom-btn btn-margin btn-width save">
+                    <?php } ?>
+                
             </div>
         </div>
         <?php echo form_close() ?>

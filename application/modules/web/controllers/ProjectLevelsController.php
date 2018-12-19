@@ -120,13 +120,14 @@ class ProjectLevelsController extends BaseController
             $this->data['hasAddedAllPrice'] = false;
             $this->data['projectRoomPrice'] = [];
             $this->data['hasAddedFinalPrice'] = false;
+            $this->data['permission'] = $permissions;
             if (in_array((int)$this->userInfo['user_type'], [INSTALLER], true)) {
                 $this->load->helper(['utility']);
                 $this->data['hasAddedAllPrice'] = $this->projectCheckPrice($projectId);
                 $this->data['projectRoomPrice'] = (array)$this->quotationTotalPrice((int)$this->userInfo['user_type'], $projectId);
                 $this->data['hasAddedFinalPrice'] = $this->hasTechnicianAddedFinalPrice($projectId);
             }
-
+            //pr($this->data);
             website_view('projects/levels-listing', $this->data);
         } catch (\Exception $error) {
         }

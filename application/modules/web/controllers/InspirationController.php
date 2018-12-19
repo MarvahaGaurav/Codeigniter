@@ -33,6 +33,7 @@ class InspirationController extends BaseController
 
         $permissions = $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER, ARCHITECT], ['insp_view'], base_url('home/applications'));
 
+        //pr($permissions);
         $options['offset'] = ($page - 1) * $limit;
         $options['limit'] = $limit;
         $options['search'] = $search;
@@ -120,6 +121,7 @@ class InspirationController extends BaseController
             // }
             $permissions = $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER, ARCHITECT], ['insp_add'], base_url('home/applications'));
 
+            
             $this->load->helper(['products']);
             $products = products('en');
             $this->load->config('css_config');

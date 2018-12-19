@@ -75,7 +75,8 @@ trait TotalProjectPrice
                 "accessory_product_price" => $accessoryProductPrice,
                 "subtotal" => $subTotal,
                 "total" => $total,
-                "discounted_price" => sprintf("%.2f", $subTotal - $total)
+                "discounted_price" => sprintf("%.2f", $subTotal - $total),
+                "expiry_date" => $this->priceData['expiry_date']
             ];
 
             // pd($totalPrice);

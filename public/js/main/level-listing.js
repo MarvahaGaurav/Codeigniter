@@ -31,12 +31,13 @@ requirejs(
       }
     });
 
-    $("#final-price-submit").on("click", function () { 
+    $("#final-price-submit").on("click", function () {  
       var self = this,
         $self = $(this),
         $installerSubmitPrice = $("#installer-submit-price");
 
       var formData = getFormData($installerSubmitPrice);
+     
       var text = $self.text();
       $.ajax({
         url: window.location.protocol + "//" + window.location.host + "/xhttp/projects/installer/price",
@@ -67,7 +68,8 @@ requirejs(
       var formData = getFormData($installerSubmitPrice);
       var text = $self.text();
 
-      
+      //console.log(formData);
+      //return false;
   
       $.ajax({
         url: window.location.protocol + "//" + window.location.host + "/xhttp/projects/installer/quotePrice",
@@ -101,39 +103,59 @@ requirejs(
 
       var formData = getFormData($installerSubmitData);
       var text = $self.text();
-      
-      var email = $('contact-email').val();
+      var email = $("#contact-email").val();
 
-      if(formData.email=='') {
-        console.log("please enter email");
-        return false;
-      }
-      $.ajax({
-        url: window.location.protocol + "//" + window.location.host + "/xhttp/projects/installer/sendmail",
-        method: "POST",
-        dataType: "json",
-        data: formData,
-        beforeSend: function () {
-          var html = $self.html().trim();
-          $self.html("<i class='fa fa-circle-o-notch fa-spin'></i> " + html);
-        },
-        success: function(response) {
-          if (response.success) {
-              //window.location.reload();
-              window.location.href=window.location.protocol + "//" + window.location.host+"/home/quotes/awaiting";
+      var emailptrn = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+      
+      if (email.length == 0)
+      {
+          document.getElementById('emails').innerHTML = "Please fill this field";
+          $("#email_error").addClass("commn-animate-error");
+          f = 1;
+          
+          setTimeout(function () {
+              $('#contact-email').text('');
+          }, 5000);
+      } else if (email.match(emailptrn)) {
+        $.ajax({
+          url: window.location.protocol + "//" + window.location.host + "/xhttp/projects/installer/sendmail",
+          method: "POST",
+          dataType: "json",
+          data: formData,
+          beforeSend: function () {
+            var html = $self.html().trim();
+            $self.html("<i class='fa fa-circle-o-notch fa-spin'></i> " + html);
+          },
+          success: function(response) {
+            if (response.success) {
+                //window.location.reload();
+                window.location.href=window.location.protocol + "//" + window.location.host+"/home/quotes/awaiting";
+            }
+          },
+          error: function (error) {
+            console.log(error);
+            $self.html(text);
           }
-        },
-        error: function (error) {
-          console.log(error);
-          $self.html(text);
-        }
-      })
+        })
+
+      }  else {
+        document.getElementById('emails').innerHTML = "Please enter valid email";
+        $("#email_error").addClass("commn-animate-error");
+       
+        setTimeout(function () {
+            $('#emails').text('');
+        }, 5000);
+    }
+      
+      
+
+      
     });
 
-    $( function() {
-      $( "#datepicker" ).datepicker();
-    } );
-
+    
+    
+  
     
 
 
@@ -241,4 +263,6 @@ requirejs(
   function () {
 
   }
+
+  
 );

@@ -5,7 +5,24 @@
         <ul class="breadcrumb">
         <li><a href="javascript:void(0)">Home</a></li>
              <?php if (in_array((int)$userInfo['user_type'], [INSTALLER], true)) { ?>
-            <li><a href="<?php echo base_url('home/quotes/awaiting') ?>">Awaiting Quotes</a></li>
+            <?php 
+            $quotes ='';
+            $url = 'javascript:void(0)';
+            if($request_status==QUOTATION_STATUS_QUOTED) {
+                $quotes = 'Awaiting Quotes';
+                $url = 'home/quotes/submitted';
+            } else if($request_status==QUOTATION_STATUS_APPROVED) {
+                $quotes = 'Approved Quotes';
+                $url = 'home/quotes/approved';
+            } else if($request_status==QUOTATION_STATUS_REJECTED) {
+                $quotes = 'Rejected Quotes';
+                $url = 'home/quotes/submitted';
+            }else {
+                $quotes = 'Awaiting Quotes';
+                $url = 'home/quotes/awaiting';
+            }
+            ?>
+            <li><a href="<?php echo base_url($url) ?>"><?php echo $quotes  ?></a></li>
             <?php } else { ?>
             <li><a href="<?php echo base_url('home/quotes') ?>">Quotes</a></li>
             <?php }?>
@@ -37,7 +54,7 @@
                         <th>Room Dimension</th>
                         <th class="text-center">No. of Rooms</th>
                         <th class="text-center">Additional Products</th>
-                        <?php if (((in_array((int)$userInfo['user_type'], [INSTALLER], true) && $userInfo['is_owner']==ROLE_OWNER) || (in_array((int)$userInfo['user_type'], [INSTALLER], true))) && isset($permission['project_add']) && $permission['project_add']==1) { ?>
+                        <?php if (((in_array((int)$userInfo['user_type'], [INSTALLER], true) && $userInfo['is_owner']==ROLE_OWNER) || (in_array((int)$userInfo['user_type'], [INSTALLER], true) && isset($permission['project_add']) && $permission['project_add']==1 && $userInfo['is_owner']==ROLE_EMPLOYEE))) { ?>
                         <th class="text-center">Installation Price</th>
                         <th class="text-center">Comparison</th>
                         <?php } ?>
@@ -56,15 +73,15 @@
                         <td><?php echo "{$room['length']}M x {$room['width']}M x {$room['height']}M" ?></td>
                         <td class="text-center"><?php echo $room['count'] ?> <?php echo (int)$room['count'] > 1?$this->lang->line('room_count_sets_txt'):$this->lang->line('room_count_set_txt') ?></td>
                         <td class="text-center"><?php echo count($room['products']) - 1 ?></td>
-                        <?php if (((in_array((int)$userInfo['user_type'], [INSTALLER], true) && $userInfo['is_owner']==ROLE_OWNER) || (in_array((int)$userInfo['user_type'], [INSTALLER], true))) && isset($permission['project_add']) && $permission['project_add']==1) { ?>
+                        <?php if (((in_array((int)$userInfo['user_type'], [INSTALLER], true) && $userInfo['is_owner']==ROLE_OWNER) || (in_array((int)$userInfo['user_type'], [INSTALLER], true) && isset($permission['project_add']) && $permission['project_add']==1 && $userInfo['is_owner']==ROLE_EMPLOYEE))) { ?>
                         <td class="text-center">
                         <?php if (empty($room['price'])) { ?>
                             <a href="javascript:void(0)" id="add-price-<?php echo $key ?>" data-modal-text="<?php echo $this->lang->line('add_price_txt') ?>" data-action="add" data-target-value="<?php echo $key ?>" data-room-price='<?php echo $room['price_data'] ?>'' class="tb-view-list project-action installer-add-price" title="<?php echo $this->lang->line('add_price_txt') ?>" data-project-room-id="<?php echo encryptDecrypt($room['project_room_id']) ?>">Add</a>
                             <?php } else {?>
-                            <?php echo $room['price']['total'] ?>$
-                            <?php if (!(bool)$hasAddedFinalPrice || ((bool)$request_status!=QUOTATION_STATUS_APPROVED && (bool)$request_status!=QUOTATION_STATUS_REJECTED)) { ?>
+                            <?php echo $room['price']['total'] ?>
+                            <!-- <?php if (!(bool)$hasAddedFinalPrice || ((bool)$request_status!=QUOTATION_STATUS_APPROVED && (bool)$request_status!=QUOTATION_STATUS_REJECTED)) { ?>
                             <a href="javascript:void(0)" id="add-price-<?php echo $key ?>" data-modal-text="<?php echo $this->lang->line('edit_price_txt') ?>" data-action="edit" data-target-value="<?php echo $key ?>" data-room-price='<?php echo $room['price_data'] ?>'' class="project-action installer-add-price" title="<?php echo $this->lang->line('edit_price_txt') ?>" data-project-room-id="<?php echo encryptDecrypt($room['project_room_id']) ?>"><i class="fa fa-pencil"></i></a>
-                            <?php }?>
+                            <?php }?> -->
                         <?php  } ?>
                         </td>
                         <td class="text-center">
@@ -77,7 +94,7 @@
                     </tr>
                     <?php endforeach ?>
                 </tbody>
-                <?php if (((in_array((int)$userInfo['user_type'], [INSTALLER], true) && $userInfo['is_owner']==ROLE_OWNER) || (in_array((int)$userInfo['user_type'], [INSTALLER], true))) && isset($permission['project_add']) && $permission['project_add']==1) { ?>
+                <?php if (((in_array((int)$userInfo['user_type'], [INSTALLER], true) && $userInfo['is_owner']==ROLE_OWNER) || (in_array((int)$userInfo['user_type'], [INSTALLER], true) && isset($permission['project_add']) && $permission['project_add']==1 && $userInfo['is_owner']==ROLE_EMPLOYEE))) { ?>
                 <tfoot>
                     <tr>
                     <td colspan="7">
@@ -114,7 +131,7 @@
             
             <div class="button-wrapper clearfix">
             
-            <?php if (((in_array((int)$userInfo['user_type'], [INSTALLER], true) && $userInfo['is_owner']==ROLE_OWNER) || (in_array((int)$userInfo['user_type'], [INSTALLER], true))) && isset($permission['project_add']) && $permission['project_add']==1 && !empty($room['price'])) { ?>
+            <?php if (((in_array((int)$userInfo['user_type'], [INSTALLER], true) && $userInfo['is_owner']==ROLE_OWNER) || (in_array((int)$userInfo['user_type'], [INSTALLER], true) && isset($permission['project_add']) && $permission['project_add']==1 && $userInfo['is_owner']==ROLE_EMPLOYEE)) && !empty($room['price'])) { ?>
                 <div class="request-quotation-btn-wrapper">
                 <button class="col-md-2 custom-btn save redirectable" data-redirect-to="<?php echo base_url('/home/quotes/projects/' . $projectId.'/'.$request_id) ?>" id="view-installer-button" type="button" >Submit</button>
             </div>

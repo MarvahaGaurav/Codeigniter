@@ -308,6 +308,8 @@ class ProjectRoomsController extends BaseController
                 $this->data['hasAddedFinalPrice'] = $this->hasTechnicianAddedFinalPrice($projectId);
             }
 
+            $this->data['permission'] = $permissions;
+
             website_view('projects/result_room_list', $this->data);
         } catch (\Exception $error) {
             show404($this->lang->line('internal_server_error'), base_url('/home/applications'));
