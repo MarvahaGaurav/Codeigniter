@@ -231,7 +231,7 @@ class RequestController extends BaseController
             $params['search_radius'] = $searchRadius;
 
             if (!empty($search)) {
-                $params['where']["(users.first_name LIKE '%{$search}%' OR users.email LIKE '%{$search}%')"] = null;
+                $params['where']["(users.first_name LIKE '%{$search}%' OR users.email LIKE '%{$search}%' OR company_name LIKE '%{$search}%')"] = null;
             }
 
             if (isset($this->requestData['company_id']) && is_numeric($this->requestData['company_id'])) {

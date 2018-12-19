@@ -23,6 +23,8 @@ class QuotationController extends BaseController
 
     public function __construct()
     {
+        // error_reporting(-1);
+        // ini_set('display_errors', 1);
         parent::__construct();
         $this->load->library('form_validation');
     }

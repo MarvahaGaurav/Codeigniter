@@ -373,7 +373,7 @@ class Employee extends REST_Controller
                         
                     if($user_info['company_id'] > 0 && $user_info['is_owner'] == '2' && $user_info['company_id'] == $myEmployeeDetail['company_id']) {
                         $this->response(array('code' => SUCCESS_CODE, 'msg' => $this->lang->line('process_success'), 'result' => $myEmployeeDetail));
-                    }else{
+                    }else {
                         $myEmployeeDetail = [];
                         $this->response(array('code' => NO_DATA_FOUND, 'msg' => $this->lang->line('no_data_found'), 'result' => (object)$myEmployeeDetail));
                     }

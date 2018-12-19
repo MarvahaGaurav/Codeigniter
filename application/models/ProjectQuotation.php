@@ -64,10 +64,13 @@ class ProjectQuotation extends BaseModel
             ->from("project_quotations as pq")
             ->join('project_requests as pr', 'pr.id=pq.request_id')
             ->join("ai_user as u", "u.user_id=pq.user_id")
-            ->join("company_master as c", 'c.company_id=pq.company_id')
-            ->where('pr.project_id', $params['project_id']);
+            ->join("company_master as c", 'c.company_id=pq.company_id');
 
-        if ($params['search'] != '') {
+        if (isset($params['project_id'])) {
+            $this->db->where('pr.project_id', $params['project_id']);
+        }
+
+        if (isset($params['search']) && $params['search'] != '') {
             $search = $params['search'];
             $this->db->where("(company_name LIKE '%{$search}%')");
         }
@@ -81,12 +84,14 @@ class ProjectQuotation extends BaseModel
             $this->db->offset((int)$params['offset']);
         }
 
+        if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
+            foreach ($params['where'] as $tableColumn => $searchValue) {
+                $this->db->where($tableColumn, $searchValue);
+            }
+        }
 
 
         $query = $this->db->get();
-
-        
-        //echo $this->db->last_query();die;
 
         $result['data'] = $query->result_array();
         $result['count'] = $this->db->query("SELECT FOUND_ROWS() as count")->row()->count;
@@ -202,7 +207,7 @@ class ProjectQuotation extends BaseModel
     {
         $this->db->select('sum(price_per_luminaries) as price_per_luminaries,
         sum(installation_charges) as installation_charges, avg(discount_price) as discount_price,
-        SUM(((installation_charges + price_per_luminaries) * ((100 - discount_price)/ 100))) as discounted_price
+        SUM(((installation_charges + price_per_luminaries) * ((100 - discount_price)/ 100))) as discounted_price,
         IFNULL(additional_product_charges, 0.00) as additional_product_charges,
         IFNULL(discount, 0.00) as discount')
             ->from("project_room_quotations as prq")

@@ -99,7 +99,7 @@
                 $result = array_map(function ($quotation) {
                     $sum = $quotation['installation_charges'] + $quotation['price_per_luminaries'];
                     $quotation['discounted_price'] = sprintf('%.2f', $quotation['discounted_price']);
-                    $quotation['discount_price'] = $sum>0?sprintf("%.2f", (1 - ($quotation['discounted_price'] / $sum)) * 100):0;
+                    $quotation['discount_price'] = $sum > 0 ? sprintf("%.2f", (1 - ($quotation['discounted_price'] / $sum)) * 100) : 0;
                     $quotation['discount_percent'] = $quotation['discount_price'];
                     $sum += $quotation['additional_product_charges'];
                     $quotation['subtotal'] = $sum;
@@ -230,7 +230,7 @@
             projects.address as project_address, projects.id as project_id, projects.lat as project_lat,
             projects.lng as project_lng, pr.created_at as request_created_at, projects.levels,
             pr.created_at_timestamp as request_created_at_timestamp,
-            pqR.additional_product_charges, pq.discount,
+            pq.additional_product_charges, pq.discount,
             totalQuotationChargesPerRoom(projects.id, pq.company_id) as price, pq.status as quotation_status,
             pq.created_at as quotation_created_at,
             pq.created_at_timestamp as quotation_created_at_timestamp';
@@ -245,6 +245,7 @@
                 ->join('ai_user as user', 'user.user_id=projects.user_id')
                 ->where('pr.language_code', $params['language_code'])
                 ->order_by("pq.id", "DESC");
+            $this->db->where('pq.company_id', $params['company_id']);
             $this->db->where("(pq.status=" . QUOTATION_STATUS_QUOTED . " or pq.status=" . QUOTATION_STATUS_REJECTED . ")", null);
 
             if (isset($params['user_id']) && is_numeric($params['user_id'])) {

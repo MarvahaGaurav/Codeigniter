@@ -103,10 +103,12 @@ class EmployeeController extends BaseController
                 $params['where']["(u.first_name LIKE '%{$search}%' OR u.email LIKE '%{$search}%')"] = null;
             }
             $myEmployeeList = $this->Employee->employeeList($params);
-            $offset = $myEmployeeList['count'] + RECORDS_PER_PAGE;
+            $offset = $offset + RECORDS_PER_PAGE;
+
             if ((int)$myEmployeeList['count'] <= (int)$offset) {
                 $offset = -1;
             }
+
             if (empty($myEmployeeList['data'])) {
                 $this->response(
                     [

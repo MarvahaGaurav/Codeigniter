@@ -63,6 +63,56 @@ class Project extends BaseModel
         return $result;
     }
 
+
+    public function getAtAdmin($params)
+    {
+        $this->db->select("SQL_CALC_FOUND_ROWS id as project_id, name, number, levels, address, lat, lng, created_at, 
+                    created_at_timestamp, version,
+                    IF((SELECT count(id) FROM project_requests WHERE project_id = projects.id) > 0, 1, 0) as is_quotation_requested", false)
+            ->from($this->tableName)
+            ->order_by('id', 'DESC');
+        
+        if (isset($params['limit']) && is_numeric($params['limit']) && (int)$params['limit'] > 0) {
+            $this->db->limit((int)$params['limit']);
+        }
+        
+        if (isset($params['offset']) && is_numeric($params['offset']) && (int)$params['offset'] > 0) {
+            $this->db->offset((int)$params['offset']);
+        }
+
+        if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
+            foreach ($params['where'] as $tableColumn => $searchValue) {
+                $this->db->where($tableColumn, $searchValue);
+            }
+        }
+
+        if (isset($params['like']) && is_array($params['like']) && !empty($params['like'] ) ) {
+            foreach ($params['like'] as $tableColumn => $searchValue) {
+                $this->db->like($tableColumn, $searchValue);
+            }
+        }
+
+        $query = $this->db->get();
+
+        $result['data'] = $this->getQuotesOnProject ( $query->result_array() );
+        $result['count'] = $this->db->query('SELECT FOUND_ROWS() as count')->row()->count;
+
+        return $result;
+    }
+
+
+    public function getQuotesOnProject($data){
+        $this->load->model('Admin_ProjectQuotations');
+        foreach ($data as $key => $value) {
+            $params['where'] = [
+                'pr.project_id' => $value['project_id'],
+            ];
+            $data[$key]['quotes'] = $this->Admin_ProjectQuotations->getQuotationOnRequest($params);
+        }
+        return $data;
+    }
+
+
     public function details($params)
     {
         $this->db->select("id as project_id, projects.name, projects.number, projects.levels, projects.address, projects.lat, projects.lng, projects.created_at, 
