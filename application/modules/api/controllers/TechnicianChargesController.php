@@ -116,12 +116,12 @@ class TechnicianChargesController extends BaseController
             ];
 
             if (isset($this->requestData['expiry_time'])) {
-                $quotationData['expire_at'] = date("Y-m-d H:i:s", $this->requestData['expiry_time']);
-                $quotationData['expire_at_timestamp'] = $this->requestData['expiry_time'];
+                $insertData['expire_at'] = date("Y-m-d H:i:s", $this->requestData['expiry_time']);
+                $insertData['expire_at_timestamp'] = $this->requestData['expiry_time'];
             } else {
                 $expiryMonths = strtotime("+" . QUOTATION_EXPIRY_MONTH . " months");
-                $quotationData['expire_at'] = date("Y-m-d H:i:s", $expiryMonths);
-                $quotationData['expire_at_timestamp'] = $expiryMonths;
+                $insertData['expire_at'] = date("Y-m-d H:i:s", $expiryMonths);
+                $insertData['expire_at_timestamp'] = $expiryMonths;
             }
 
             $this->UtilModel->insertTableData($insertData, 'project_technician_charges');

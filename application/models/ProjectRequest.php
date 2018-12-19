@@ -52,6 +52,17 @@ class ProjectRequest extends BaseModel
         return $result;
     }
 
+    public function requestInfoWithPrice($projectIds)
+    {
+        $this->db->select()
+            ->from("project_request_installers as pri")
+            ->join("project_requests as pr", "pr.id=pri.request_id")
+            ->join("project_rooms as pr", "pr")
+            ->join("project_quotations as pq", "pq.request_id=pr.request_id")
+            ->group_by("pri.company_id")
+            ->group_by("pr.project_id");
+    }
+
     /**
      * Customer Request
      *
@@ -185,7 +196,7 @@ class ProjectRequest extends BaseModel
             ->join('projects', 'projects.id=pr.project_id')
             ->join('ai_user as user', 'user.user_id=projects.user_id')
             ->where('pr.language_code', $params['language_code'])
-            ->order_by("pr.id", "DESC");
+            ->order_by("pq.id", "DESC");
         $this->db->where("(pq.status=" . QUOTATION_STATUS_QUOTED ." or pq.status=". QUOTATION_STATUS_REJECTED .")", null);
         
         if (isset($params['user_id']) && is_numeric($params['user_id'])) {
@@ -240,7 +251,7 @@ class ProjectRequest extends BaseModel
         ->where('pq.status', QUOTATION_STATUS_APPROVED)
         ->where('pq.company_id', $params['company_id'])
         ->where('pq.language_code', $params['language_code'])
-        ->order_by("pr.id", "DESC");
+        ->order_by("pq.id", "DESC");
         
         if (isset($params['user_id']) && is_numeric($params['user_id'])) {
             $this->db->where('projects.user_id', $params['user_id']);
