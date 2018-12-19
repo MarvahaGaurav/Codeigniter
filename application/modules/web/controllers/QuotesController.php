@@ -2,15 +2,16 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 require_once "BaseController.php";
 require_once APPPATH . "/libraries/Traits/LevelRoomCheck.php";
-require_once APPPATH . "/libraries/Traits/TotalProjectPrice.php";
+//require_once APPPATH . "/libraries/Traits/TotalProjectPrice.php";
 require_once APPPATH . "/libraries/Traits/TechnicianChargesCheck.php";
 require_once APPPATH . "/libraries/Traits/InstallerPriceCheck.php";
 require_once APPPATH . "/libraries/Traits/QuickCalc.php";
+require_once APPPATH . "/libraries/Traits/TotalQuotationPrice.php";
 
 
 class QuotesController extends BaseController
 {
-    use LevelRoomCheck, InstallerPriceCheck, TotalProjectPrice, TechnicianChargesCheck,QuickCalc;
+    use LevelRoomCheck, InstallerPriceCheck, TotalQuotationPrice, TechnicianChargesCheck,QuickCalc;
     
     private $validationData;
 

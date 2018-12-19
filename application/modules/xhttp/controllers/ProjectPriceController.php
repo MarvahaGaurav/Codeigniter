@@ -57,6 +57,8 @@ class ProjectPriceController extends BaseController
                 'created_at_timestamp' => $this->timestamp,
                 'updated_at' => $this->datetime,
                 'updated_at_timestamp' => $this->timestamp,
+                'expire_at' => $this->requestData['expiry_date'],
+                'expire_at_timestamp' => strtotime($this->requestData['expiry_date'])
             ];
 
             $this->UtilModel->insertTableData($insertData, 'project_technician_charges');
@@ -121,6 +123,8 @@ class ProjectPriceController extends BaseController
                 'created_at_timestamp' => $this->timestamp,
                 'updated_at' => $this->datetime,
                 'updated_at_timestamp' => $this->timestamp,
+                'expire_at' =>$this->requestData['expiry_date'],
+                'expire_at_timestamp' => strtotime($this->requestData['expiry_date'])
             ];         
 
             $this->UtilModel->insertTableData($insertData, 'project_quotations');

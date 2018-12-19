@@ -127,7 +127,7 @@ class ProjectLevelsController extends BaseController
                 $this->data['projectRoomPrice'] = (array)$this->quotationTotalPrice((int)$this->userInfo['user_type'], $projectId);
                 $this->data['hasAddedFinalPrice'] = $this->hasTechnicianAddedFinalPrice($projectId);
             }
-
+            //pr($this->data);
             website_view('projects/levels-listing', $this->data);
         } catch (\Exception $error) {
         }
