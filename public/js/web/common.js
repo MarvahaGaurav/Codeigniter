@@ -26,8 +26,8 @@ $window.on('scroll', function () {
 // on hover menu open after and on click menu open before 992
 if ($(window).width() > 992) {
     $('ul.nav li.dropdown').hover(function () {
-        $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(300);
-    },
+            $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(300);
+        },
         function () {
             $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(300);
         });
@@ -100,8 +100,7 @@ $(document).ready(function () {
         if ($(this).val()) {
             $('#search-default').hide();
             $('#search-ico-close').show();
-        }
-        else {
+        } else {
             $('#search-default').show();
             $('#search-ico-close').hide();
         }
@@ -169,8 +168,7 @@ $(document).ready(function () {
             $submitBtn.prop("disabled", true);
             $searchBox.prop('readonly', true);
             $('.close-ico').show();
-        }
-        else {
+        } else {
             $('.close-ico').hide();
         }
     }
@@ -178,8 +176,7 @@ $(document).ready(function () {
     $("#search-box").keyup(function () {
         if ($(this).val()) {
             $('.close-ico').show();
-        }
-        else {
+        } else {
             $('.close-ico').hide();
         }
     });
@@ -254,7 +251,7 @@ $(document).ready(function () {
 
         });
 
-        $("#confirmation-ok").on("click", function () { 
+        $("#confirmation-ok").on("click", function () {
             var $self = $(this),
                 dataJson = $self.attr("data-json"),
                 dataUrl = $self.attr("data-url"),
@@ -262,8 +259,8 @@ $(document).ready(function () {
                 dataRedirect = $self.attr("data-redirect"),
                 dataTarget = $self.attr("data-target");
 
-               
-               
+
+
             $.ajax({
                 url: dataUrl,
                 method: "POST",
@@ -297,7 +294,7 @@ $(document).ready(function () {
                             $confirmationModal.modal("hide");
                             window.location.reload();
                         }
-                    } 
+                    }
                 }
             });
         });
@@ -360,6 +357,7 @@ function alphaNumericOnly(e) {
         e.preventDefault();
     }
 }
+
 function alphaNumericSpacesOnly(e) {
     //console.log(String.fromCharCode(e.keyCode));
     // Allow: backspace, delete, tab, escape, enter and  +
@@ -402,5 +400,3 @@ function restrictCharacters(e) {
 }
 
 $(".restrict-characters").on('keydown', restrictCharacters);
-
-
