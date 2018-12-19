@@ -72,7 +72,7 @@
             </div>
             <?php } ?>
             <?php } ?>
-            <?php if (in_array((int)$userInfo['user_type'], [INSTALLER], true) && !empty($projectLevels) && (bool)$all_levels_done && (bool)$hasAddedAllPrice) { ?>
+            <?php if (((in_array((int)$userInfo['user_type'], [INSTALLER], true) && isset($permission['project_add']) && $permission['project_add']==1 && $userInfo['is_owner']=ROLE_EMPLOYEE) || (in_array((int)$userInfo['user_type'], [INSTALLER], true) && $userInfo['is_owner']==ROLE_OWNER )) && !empty($projectLevels) && (bool)$all_levels_done && (bool)$hasAddedAllPrice) { ?>
             <div class="request-quotation-btn-wrapper">
                 <?php if (!(bool)$hasAddedFinalPrice) { ?>
                 <button class="col-md-2 custom-btn save" id="add-price-installer-button" type="button" data-toggle="modal" data-target="#project-final-price-modal"><?php echo $this->lang->line('add_final_price_button_txt') ?></button>

@@ -53,7 +53,7 @@
                         <td><?php echo "{$room['length']}M x {$room['width']}M x {$room['height']}M" ?></td>
                         <td class="text-center"><?php echo $room['count'] ?> <?php echo (int)$room['count'] > 1?$this->lang->line('room_count_sets_txt'):$this->lang->line('room_count_set_txt') ?></td>
                         <td class="text-center"><?php echo count($room['products']) - 1 ?></td>
-                        <?php if (in_array((int)$userInfo['user_type'], [INSTALLER], true)) { ?>
+                        <?php if (((in_array((int)$userInfo['user_type'], [INSTALLER], true) && $userInfo['is_owner']==ROLE_OWNER) || (in_array((int)$userInfo['user_type'], [INSTALLER], true) && $userInfo['is_owner']==ROLE_EMPLOYEE && $permission['project_add']==1))) { ?>
                         <td class="text-center">
                         <?php if (empty($room['price'])) { ?>
                             <a href="javascript:void(0)" id="add-price-<?php echo $key ?>" data-modal-text="<?php echo $this->lang->line('add_price_txt') ?>" data-action="add" data-target-value="<?php echo $key ?>" data-room-price='<?php echo $room['price_data'] ?>'' class="tb-view-list project-action installer-add-price" title="<?php echo $this->lang->line('add_price_txt') ?>" data-project-room-id="<?php echo encryptDecrypt($room['project_room_id']) ?>">Add</a>
@@ -74,7 +74,7 @@
                     </tr>
                     <?php endforeach ?>
                 </tbody>
-                <?php if (in_array((int)$userInfo['user_type'], [INSTALLER], true)) { ?>
+                <?php if (((in_array((int)$userInfo['user_type'], [INSTALLER], true) && $userInfo['is_owner']==ROLE_OWNER) || (in_array((int)$userInfo['user_type'], [INSTALLER], true) && $userInfo['is_owner']==ROLE_EMPLOYEE && $permission['project_add']==1))) { ?>
                 <tfoot>
                     <tr>
                     <td colspan="7">
@@ -112,8 +112,10 @@
         <?php if (empty($rooms)) : ?>
         <div class="no-record text-center">
             <img src="<?php echo base_url("public/images/placeholder/no-found-ico-2.svg"); ?>" alt="Note Paper">
+            <?php if (((in_array((int)$userInfo['user_type'], [INSTALLER], true) && $userInfo['is_owner']==ROLE_OWNER) || (in_array((int)$userInfo['user_type'], [INSTALLER], true) && $userInfo['is_owner']==ROLE_EMPLOYEE && $permission['project_add']==1))) { ?>
             <p>You have no room.</p>
             <p>Tap on <a href="<?php echo base_url("home/projects/" . $projectId . "/levels/{$level}/rooms/applications"); ?>" class="page-link">Add Room</a> button to add a room.</p>
+            <?php } ?>
         </div>
         <?php endif ?>
         <div class="pagination-wrap">
