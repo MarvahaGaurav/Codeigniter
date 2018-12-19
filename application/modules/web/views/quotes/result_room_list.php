@@ -5,7 +5,21 @@
         <ul class="breadcrumb">
         <li><a href="javascript:void(0)">Home</a></li>
              <?php if (in_array((int)$userInfo['user_type'], [INSTALLER], true)) { ?>
-            <li><a href="<?php echo base_url('home/quotes/awaiting') ?>">Awaiting Quotes</a></li>
+            <?php 
+            $quotes ='';
+            $url = 'javascript:void(0)';
+            if($request_status==QUOTATION_STATUS_QUOTED) {
+                $quotes = 'Awaiting Quotes';
+                $url = 'home/quotes/submitted';
+            } else if($request_status==QUOTATION_STATUS_APPROVED) {
+                $quotes = 'Approved Quotes';
+                $url = 'home/quotes/approved';
+            } else if($request_status==QUOTATION_STATUS_REJECTED) {
+                $quotes = 'Rejected Quotes';
+                $url = 'home/quotes/submitted';
+            }
+            ?>
+            <li><a href="<?php echo base_url($url) ?>"><?php echo $quotes  ?></a></li>
             <?php } else { ?>
             <li><a href="<?php echo base_url('home/quotes') ?>">Quotes</a></li>
             <?php }?>
@@ -61,10 +75,10 @@
                         <?php if (empty($room['price'])) { ?>
                             <a href="javascript:void(0)" id="add-price-<?php echo $key ?>" data-modal-text="<?php echo $this->lang->line('add_price_txt') ?>" data-action="add" data-target-value="<?php echo $key ?>" data-room-price='<?php echo $room['price_data'] ?>'' class="tb-view-list project-action installer-add-price" title="<?php echo $this->lang->line('add_price_txt') ?>" data-project-room-id="<?php echo encryptDecrypt($room['project_room_id']) ?>">Add</a>
                             <?php } else {?>
-                            <?php echo $room['price']['total'] ?>$
-                            <?php if (!(bool)$hasAddedFinalPrice || ((bool)$request_status!=QUOTATION_STATUS_APPROVED && (bool)$request_status!=QUOTATION_STATUS_REJECTED)) { ?>
+                            <?php echo $room['price']['total'] ?>
+                            <!-- <?php if (!(bool)$hasAddedFinalPrice || ((bool)$request_status!=QUOTATION_STATUS_APPROVED && (bool)$request_status!=QUOTATION_STATUS_REJECTED)) { ?>
                             <a href="javascript:void(0)" id="add-price-<?php echo $key ?>" data-modal-text="<?php echo $this->lang->line('edit_price_txt') ?>" data-action="edit" data-target-value="<?php echo $key ?>" data-room-price='<?php echo $room['price_data'] ?>'' class="project-action installer-add-price" title="<?php echo $this->lang->line('edit_price_txt') ?>" data-project-room-id="<?php echo encryptDecrypt($room['project_room_id']) ?>"><i class="fa fa-pencil"></i></a>
-                            <?php }?>
+                            <?php }?> -->
                         <?php  } ?>
                         </td>
                         <td class="text-center">

@@ -2,7 +2,7 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 require_once "BaseController.php";
 require_once APPPATH . "/libraries/Traits/LevelRoomCheck.php";
-//require_once APPPATH . "/libraries/Traits/TotalProjectPrice.php";
+require_once APPPATH . "/libraries/Traits/TotalProjectPrice.php";
 require_once APPPATH . "/libraries/Traits/TechnicianChargesCheck.php";
 require_once APPPATH . "/libraries/Traits/InstallerPriceCheck.php";
 require_once APPPATH . "/libraries/Traits/QuickCalc.php";
@@ -11,7 +11,8 @@ require_once APPPATH . "/libraries/Traits/TotalQuotationPrice.php";
 
 class QuotesController extends BaseController
 {
-    use LevelRoomCheck, InstallerPriceCheck, TotalQuotationPrice, TechnicianChargesCheck,QuickCalc;
+    use LevelRoomCheck, InstallerPriceCheck, TotalProjectPrice, TechnicianChargesCheck,QuickCalc;
+   // use TotalQuotationPrice {TotalQuotationPrice :: quotationTotalPrice as originalQuotationPrice;}
     
     private $validationData;
 
@@ -558,6 +559,7 @@ class QuotesController extends BaseController
             //$this->data['request_status']=2;
             
             if (in_array((int)$this->userInfo['user_type'], [INSTALLER], true)) {
+                
                 $this->load->helper(['utility']);
                 $this->data['hasAddedAllPrice'] = $this->projectCheckPrice($id);
                 $this->data['projectRoomPrice'] = (array)$this->quotationTotalPrice((int)$this->userInfo['user_type'], $id);
@@ -1446,9 +1448,11 @@ class QuotesController extends BaseController
             $this->data['tcoData'] = $tcoData;
             $this->data['roomData'] = $roomData;
             $this->data['productData'] = $productData;
+            $this->data['request_id'] = $requestId;
             $requestId = encryptDecrypt($requestId, "decrypt");
             
             $this->data['request_status'] = $this->getRequestStatus($requestId);
+            
 
             
             //pr($this->data);

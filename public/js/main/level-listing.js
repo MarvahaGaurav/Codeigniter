@@ -68,6 +68,7 @@ requirejs(
       var formData = getFormData($installerSubmitPrice);
       var text = $self.text();
 
+      //console.log(formData);
       //return false;
   
       $.ajax({
