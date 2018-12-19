@@ -134,8 +134,7 @@ class QuotationController extends BaseController
                 ]);
             }
 
-
-            $quotationId = $this->UtilModel->insertTableData([
+            $quotationData = [
                 'language_code' => $language_code,
                 'request_id' => $this->requestData['request_id'],
                 'company_id' => $user_data['company_id'],
@@ -148,7 +147,7 @@ class QuotationController extends BaseController
                 'created_at_timestamp' => time(),
                 'updated_at' => $this->datetime,
                 'updated_at_timestamp' => time()
-            ], 'project_quotations', true);
+            ];
 
             if (isset($this->requestData['expiry_time'])) {
                 $quotationData['expire_at'] = date("Y-m-d H:i:s", $this->requestData['expiry_time']);
@@ -158,6 +157,8 @@ class QuotationController extends BaseController
                 $quotationData['expire_at'] = date("Y-m-d H:i:s", $expiryMonths);
                 $quotationData['expire_at_timestamp'] = $expiryMonths;
             }
+
+            $quotationId = $this->UtilModel->insertTableData($quotationData, 'project_quotations', true);
 
             $this->notifySendQuote($user_data['user_id'], $requestData['user_id'], $requestData['project_id']);
 
