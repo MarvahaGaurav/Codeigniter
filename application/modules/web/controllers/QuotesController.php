@@ -2,15 +2,16 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 require_once "BaseController.php";
 require_once APPPATH . "/libraries/Traits/LevelRoomCheck.php";
-require_once APPPATH . "/libraries/Traits/TotalProjectPrice.php";
+//require_once APPPATH . "/libraries/Traits/TotalProjectPrice.php";
 require_once APPPATH . "/libraries/Traits/TechnicianChargesCheck.php";
 require_once APPPATH . "/libraries/Traits/InstallerPriceCheck.php";
 require_once APPPATH . "/libraries/Traits/QuickCalc.php";
+require_once APPPATH . "/libraries/Traits/TotalQuotationPrice.php";
 
 
 class QuotesController extends BaseController
 {
-    use LevelRoomCheck, InstallerPriceCheck, TotalProjectPrice, TechnicianChargesCheck,QuickCalc;
+    use LevelRoomCheck, InstallerPriceCheck, TotalQuotationPrice, TechnicianChargesCheck,QuickCalc;
     
     private $validationData;
 
@@ -1147,7 +1148,7 @@ class QuotesController extends BaseController
 
             
            
-           // pr($this->data);
+           //pr($this->data);
             website_view('quotes/result_room_list', $this->data);
         } catch (\Exception $error) {
             show404($this->lang->line('internal_server_error'), base_url('/home/applications'));
@@ -1343,6 +1344,7 @@ class QuotesController extends BaseController
             $this->data['hasAddedAllPrice'] = false;
             $this->data['projectRoomPrice'] = [];
             $this->data['hasAddedFinalPrice'] = false;
+            $this->data['permission'] = $permissions;
             if (in_array((int)$this->userInfo['user_type'], [INSTALLER], true)) {
                 $this->load->helper(['utility']);
                 $this->data['hasAddedAllPrice'] = $this->projectCheckPrice($projectId);

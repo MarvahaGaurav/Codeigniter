@@ -73,7 +73,7 @@
             </div>
             <?php } ?>
             <?php } ?>
-            <?php if (in_array((int)$userInfo['user_type'], [INSTALLER], true) && !empty($projectLevels) && (bool)$all_levels_done && (bool)$hasAddedAllPrice) { ?>
+            <?php if ((((in_array((int)$userInfo['user_type'], [INSTALLER], true)) && $userInfo['is_owner']==ROLE_OWNER ) || (in_array((int)$userInfo['user_type'], [INSTALLER], true)  && $userInfo['is_owner']==ROLE_EMPLOYEE && isset($permission['quote_add']) && $permission['quote_add']==1 )) && !empty($projectLevels) && (bool)$all_levels_done && (bool)$hasAddedAllPrice ) { ?>
             <div class="request-quotation-btn-wrapper">
                 <?php if (!(bool)$hasAddedFinalPrice) { ?>
                 <button class="col-md-2 custom-btn save" id="add-price-installer-button" type="button" data-toggle="modal" data-target="#project-final-price-modal"><?php echo $this->lang->line('add_final_price_button_txt') ?></button>
@@ -178,7 +178,7 @@
                 </div>
                 <?php echo form_close() ?>
             </div>
-            <?php if (!(bool)$hasAddedFinalPrice) { ?>
+            <?php if (!(bool)$hasAddedFinalPrice && ((in_array((int)$userInfo['user_type'], [INSTALLER], true) && $userInfo['is_owner']=ROLE_EMPLOYEE)|| ((in_array((int)$userInfo['user_type'], [INSTALLER], true)) && $userInfo['is_owner']=ROLE_OWNER && isset($permission['quote_add']) && $permission['quote_add']==1 )) ) { ?>
             <div class="modal-footer">
                 <div class="text-center button-wrapper">
                     <button type="button" class="custom-btn btn-margin btn-width save" data-csrf='<?php echo $csrf ?>' data-text="<?php echo $this->lang->line('select') ?>" id="final-price-submit" data-clone=""><?php echo $this->lang->line('add_final_price_button_txt') ?></button>

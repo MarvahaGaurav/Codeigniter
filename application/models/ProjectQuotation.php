@@ -187,6 +187,8 @@ class ProjectQuotation extends BaseModel
 
         $query = $this->db->get();
 
+        
+
         $data = $query->row_array();
 
         return $data;
@@ -202,9 +204,9 @@ class ProjectQuotation extends BaseModel
     {
         $this->db->select('sum(price_per_luminaries) as price_per_luminaries,
         sum(installation_charges) as installation_charges, avg(discount_price) as discount_price,
-        SUM(((installation_charges + price_per_luminaries) * ((100 - discount_price)/ 100))) as discounted_price
+        SUM(((installation_charges + price_per_luminaries) * ((100 - discount_price)/ 100))) as discounted_price,
         IFNULL(additional_product_charges, 0.00) as additional_product_charges,
-        IFNULL(discount, 0.00) as discount')
+        IFNULL(discount, 0.00) as discount,DATE(expire_at) as expiry_date')
             ->from("project_room_quotations as prq")
             ->join("project_rooms as pr", 'pr.id=prq.project_room_id')
             ->join('project_requests as preq', 'preq.project_id=pr.project_id')
@@ -219,6 +221,7 @@ class ProjectQuotation extends BaseModel
         }
 
         $query = $this->db->get();
+        
 
         $data = $query->row_array();
 

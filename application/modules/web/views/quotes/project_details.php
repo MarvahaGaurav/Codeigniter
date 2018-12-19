@@ -149,7 +149,7 @@
 
             
             
-            <?php if (((in_array((int)$userInfo['user_type'], [INSTALLER], true) && $userInfo['is_owner']==ROLE_OWNER) || (in_array((int)$userInfo['user_type'], [INSTALLER], true)))  && ($request_status!=QUOTATION_STATUS_APPROVED && $request_status!=QUOTATION_STATUS_REJECTED) && isset($permission['quote_add']) && $permission['quote_add']==1 && !empty($projectLevels) && (bool)$all_levels_done && (bool)$hasAddedAllPrice) { ?>
+            <?php if (((in_array((int)$userInfo['user_type'], [INSTALLER], true) && $userInfo['is_owner']==ROLE_OWNER) || (in_array((int)$userInfo['user_type'], [INSTALLER], true) && isset($permission['quote_add']) && $permission['quote_add']==1 && $userInfo['is_owner']==ROLE_EMPLOYEE ))  && ($request_status!=QUOTATION_STATUS_APPROVED && $request_status!=QUOTATION_STATUS_REJECTED) && !empty($projectLevels) && (bool)$all_levels_done && (bool)$hasAddedAllPrice) { ?>
             <div class="request-quotation-btn-wrapper">
                 <?php if (!(bool)$hasFinalQuotePriceAdded) { ?>
                 <button class="col-md-2 custom-btn save" id="add-price-installer-button" type="button" data-toggle="modal" data-target="#project-final-price-modal"><?php echo $this->lang->line('add_final_quote_price_button_txt') ?></button>
@@ -259,6 +259,12 @@
                         <input type="text" <?php echo (bool)$hasFinalQuotePriceAdded && ($request_status==QUOTATION_STATUS_APPROVED ||$request_status==QUOTATION_STATUS_REJECTED)?'disabled="disabled"':'name="discount"' ?> class="modal-price-fields restrict-characters number-only-field" id="discount" data-restrict-to="15" value="<?php echo isset($projectRoomPrice['discount'])?$projectRoomPrice['discount']:'' ?>">
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="expiry_date" class="priceTxt">Expiry Date</label>
+                    <div class="inputField">
+                        <input type="date" <?php echo (bool)$hasFinalQuotePriceAdded && ($request_status==QUOTATION_STATUS_APPROVED ||$request_status==QUOTATION_STATUS_REJECTED)?'disabled="disabled"':'name="expiry_date"' ?> class="modal-price-fields restrict-characters number-only-field" id="expiry_date"  value="<?php echo isset($projectRoomPrice['expiry_date'])?$projectRoomPrice['expiry_date']:'' ?>">
+                    </div>
+                </div>
                 <hr>
                 <div class="form-group">
                     <label for="discount" class="priceTxt">Subtotal</label>
@@ -277,7 +283,7 @@
                 </div>
                 <?php echo form_close() ?>
             </div>
-            <?php if (((in_array((int)$userInfo['user_type'], [INSTALLER], true) && $userInfo['is_owner']==ROLE_OWNER) || (in_array((int)$userInfo['user_type'], [INSTALLER], true)))  && ($request_status!=QUOTATION_STATUS_APPROVED && $request_status!=QUOTATION_STATUS_REJECTED) && isset($permission['quote_add']) && $permission['quote_add']==1) { ?>
+            <?php if (((in_array((int)$userInfo['user_type'], [INSTALLER], true) && $userInfo['is_owner']==ROLE_OWNER) || (in_array((int)$userInfo['user_type'], [INSTALLER], true) && isset($permission['quote_add']) && $permission['quote_add']==1 && $userInfo['is_owner']==ROLE_EMPLOYEE))  && ($request_status!=QUOTATION_STATUS_APPROVED && $request_status!=QUOTATION_STATUS_REJECTED) ) { ?>
             
             <div class="modal-footer">
                 <div class="text-center button-wrapper">

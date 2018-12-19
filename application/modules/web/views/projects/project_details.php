@@ -42,7 +42,7 @@
                         <td class="op-semibold text-center"><?php echo $project['levels']; ?></td>
                         <td class=""><?php echo $project['address'] ?></td>
                         
-                        <?php if (empty($project['requests']) && ((in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true)) || ((in_array((int)$userInfo['user_type'], [INSTALLER, ELECTRICAL_PLANNER,WHOLESALER], true) && $userInfo['is_owner']==ROLE_OWNER )) || ((in_array((int)$userInfo['user_type'], [INSTALLER, ELECTRICAL_PLANNER,WHOLESALER], true) && $permission['project_edit']==1))) && $isRequested) { ?>
+                        <?php if (empty($project['requests']) && ((in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) ) || ((in_array((int)$userInfo['user_type'], [INSTALLER, ELECTRICAL_PLANNER,WHOLESALER], true) && $userInfo['is_owner']==ROLE_OWNER )) || ((in_array((int)$userInfo['user_type'], [INSTALLER, ELECTRICAL_PLANNER,WHOLESALER], true) && $permission['project_edit']==1 && $userInfo['is_owner']=ROLE_EMPLOYEE))) && $isRequested) { ?>
                         <td class="op-semibold text-center"><?php echo $quoteCount ?> Quote(s)</td>
                         <?php } ?>
                         <td class="op-semibold">

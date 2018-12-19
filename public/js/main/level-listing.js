@@ -31,12 +31,13 @@ requirejs(
       }
     });
 
-    $("#final-price-submit").on("click", function () { 
+    $("#final-price-submit").on("click", function () {  
       var self = this,
         $self = $(this),
         $installerSubmitPrice = $("#installer-submit-price");
 
       var formData = getFormData($installerSubmitPrice);
+     
       var text = $self.text();
       $.ajax({
         url: window.location.protocol + "//" + window.location.host + "/xhttp/projects/installer/price",
@@ -67,7 +68,7 @@ requirejs(
       var formData = getFormData($installerSubmitPrice);
       var text = $self.text();
 
-      
+      //return false;
   
       $.ajax({
         url: window.location.protocol + "//" + window.location.host + "/xhttp/projects/installer/quotePrice",
@@ -130,9 +131,7 @@ requirejs(
       })
     });
 
-    $( function() {
-      $( "#datepicker" ).datepicker();
-    } );
+    
 
     
 
