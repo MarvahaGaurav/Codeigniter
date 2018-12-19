@@ -188,6 +188,13 @@
                                     </i>
                                 </button>
                             </li>
+                            <li>
+                                <a href="<?php echo base_url("home/notifications") ?>" class="btn-basket basket">
+                                    <i class="fa fa-bell" style="zoom: 100%;">
+                                        <span class="badge badge-icon">0</span>
+                                    </i>
+                                </a>
+                            </li>
                         </ul>
                     </div>
 

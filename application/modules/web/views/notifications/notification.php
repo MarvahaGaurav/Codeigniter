@@ -12,6 +12,25 @@
             <h1 class="page-title">Notifications</h1>
             <p class="prj-description"></p>
         </div>
+
+
+<?php foreach ($notifications as $notification) { ?> 
+<div class="notificationDetails">
+<a href="<?php echo !empty($notification['redirection'])?$notification['redirection']:'javascript:void(0)' ?>">
+<div class="media">    
+    <div class="media-left">
+       <img src="<?php echo empty($notification['sender']['image'])?base_url('public/images/user-placeholder.png'):$notification['sender']['image'] ?>" alt="<?php $notification['id'] ?>" class="media-object">
+    </div>
+    <div class="media-body">
+    <h4 class="media-heading">John Doe <small><i><?php echo convert_date_time_format("Y-m-d H:i:s", $notification['created_at'], 'g:i A, M d Y') ?></i></small></h4>
+    <p><?php echo $notification['message'] ?></p>
+    </div>
+</div>
+</a>
+</div>
+
+<?php }?>
+
     
         <?php foreach ($notifications as $notification) { ?>
             <div class="well well-lg">

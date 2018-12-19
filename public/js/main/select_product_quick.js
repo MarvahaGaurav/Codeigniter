@@ -50,17 +50,17 @@ requirejs(
                             var temp = '';
                             var redirect_url = window.location.protocol + "//" + window.location.hostname + "/home/application-detail/" + application_id + "/rooms/" + room_id + "/mounting/" + 1 + "/articles/" + currentValue.product_id + "/code/" + currentValue.articlecode;
                             temp += '<div class="col-sm-6 col-md-4">' +
-                                        '<a href="'+ redirect_url +'">' +
-                                            '<div class="thumbnail">' +
-                                                '<img src="'+ currentValue.image +'" alt="'+ currentValue.product_name +'">' +
-                                                '<div class="caption">' +
-                                                    '<h2>'+ currentValue.product_name +'</h2>' +
-                                                    '<p><div class="article-code-div">'+ currentValue.articlecode +'</div></p>' +
-                                                    '<p>' + currentValue.title + '</p>' +
-                                                '</div>' +
-                                            '</div>' +
-                                        '</a>' +
-                                    '</div>';
+                                '<a href="' + redirect_url + '">' +
+                                '<div class="thumbnail">' +
+                                '<img src="' + currentValue.image + '" alt="' + currentValue.product_name + '">' +
+                                '<div class="caption">' +
+                                '<h2>' + currentValue.product_name + '</h2>' +
+                                '<p><div class="article-code-div">' + currentValue.articlecode + '</div></p>' +
+                                '<p>' + currentValue.title + '</p>' +
+                                '</div>' +
+                                '</div>' +
+                                '</a>' +
+                                '</div>';
 
                             return previousValue + temp;
                         }, html);
@@ -176,4 +176,3 @@ requirejs(
 
     }
 );
-
