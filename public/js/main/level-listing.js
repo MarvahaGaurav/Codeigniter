@@ -6,22 +6,26 @@ requirejs.config({
     bootstrap: "bootstrap.min",
     common: "web/common",
     jqueryScrollbar: "plugin/jquery.scrollbar.min",
-    jqueryStickyTable: "jquery.stickytable.min"  
+    jqueryStickyTable: "jquery.stickytable.min", 
+    datetime: "bootstrap-datetimepicker",
+    moment_js: "moment" 
   },
   shim: {
     //dependencies
     bootstrap: ['jquery'],
     common: ['bootstrap'],
     jqueryScrollbar: ['jquery'],
-    jqueryStickyTable: ['bootstrap']      
+    jqueryStickyTable: ['bootstrap'], 
+    datetime : ['bootstrap'],
+    moment_js: ["datetime"]    
   }
 });
 
 requirejs(
-  ["jquery", "bootstrap", "common", "jqueryScrollbar", "jqueryStickyTable"],
+  ["jquery", "bootstrap", "common", "jqueryScrollbar", "jqueryStickyTable", "datetime", "moment"],
   function ($) {
     //jquery table here  
-      
+    $('#datetimepicker1').datetimepicker();
     $(".levels-listing-wrapper").on('click', function (event) {
       var targetEvent = $(event.target);
       if (targetEvent.hasClass('level-btn')) {
