@@ -123,6 +123,8 @@ $lang['invalid_language_code'] = "Provided language code is invalid";
 $lang['invalid_currency_code'] = "Provided currency is invalid";
 $lang['internal_server_error'] = "Internal Server Error";
 $lang['something_went_wrong'] = 'Something went wrong please try again';
+$lang['email_taken'] = "Email already taken";
+$lang['phone_number_taken'] = 'Phone number already taken';
 
 //Products
 $lang['invalid_mounting_type'] = 'Invalid mounting type';

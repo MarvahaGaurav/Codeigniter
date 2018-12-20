@@ -219,7 +219,7 @@ class Index extends BaseController
 
                 //If the user is of technician types add more relavent validation
                 $isCompanyOwner = $this->input->post('is_company_owner');
-                if (in_array((int)$userType, [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER, WHOLESALER], true)) {
+                if (in_array((int)$userType, [INSTALLER, ELECTRICAL_PLANNER, WHOLESALER], true)) {
                     $this->form_validation->set_rules($this->technicianEmployeeRules());
                     $isCompanyOwner = $this->input->post('is_company_owner');
 
@@ -228,7 +228,7 @@ class Index extends BaseController
                         $this->form_validation->set_rules($this->compannyOwnerRules());
                     }
                 }
-                if ((int)$userType === BUSINESS_USER) {
+                if ((int)$userType === BUSINESS_USER || (int)$userType === ARCHITECT) {
                     $this->form_validation->set_rules($this->businessUserRules());
                 }
                 if ((int)$userType === INSTALLER && is_numeric($isCompanyOwner) && (int)$isCompanyOwner === 1) {
@@ -256,7 +256,7 @@ class Index extends BaseController
                     $companyInsert = false;
                     $isEmployee = false;
                     if (in_array((int)$userType, [INSTALLER, ARCHITECT, ELECTRICAL_PLANNER, WHOLESALER, BUSINESS_USER], true)) {
-                        if ((int)$userType === BUSINESS_USER) {
+                        if ((int)$userType === BUSINESS_USER || (int)$userType === ARCHITECT) {
                             $userData['is_owner'] = ROLE_OWNER;
                         } else {
                             $userData['is_owner'] = (int)$postData['is_company_owner'] === 1 ? ROLE_OWNER : ROLE_EMPLOYEE;

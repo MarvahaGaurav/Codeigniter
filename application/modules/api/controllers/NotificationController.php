@@ -47,8 +47,15 @@ class NotificationController extends BaseController
                         $this->lang->line('notification_permission_granted'),
                         isset($notification['messages'], $notification['messages']['message'])? $notification['messages']['message']: ''
                     );
-                    unset($notification['messages']);
+                } else if ((int)$notification['type'] === NOTIFICATION_ADMIN_NOTIFICATION && isset($notification['admin_messages'], $notification['admin_messages']['title'])) {
+                    $notification['message'] = $notification['admin_messages']['title'];
                 }
+
+                if ((int)$notification['type'] === NOTIFICATION_ADMIN_NOTIFICATION) {
+                    unset($notification['sender_id']);
+                }
+                $notification['sender'] = empty($notification['sender'])?(object)$notification['sender']:$notification['sender'];
+                unset($notification['messages'], $notification['admin_messages']);
                 return $notification;
             }, $notifications);
 

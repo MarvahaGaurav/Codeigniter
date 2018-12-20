@@ -78,7 +78,6 @@ $route['home/projects'] = 'web/ProjectController';
 $route['home/projects/create'] = 'web/ProjectController/create';
 $route['home/projects/get-porduct'] = 'web/ProjectController/get_product/$1';
 $route['home/projects/view-result/(:any)'] = 'web/ProjectController/view_result/$1';
-$route['home/projects/(:any)/quotations'] = 'web/QuotesController/customerQuotesListViaProject/$1';
 $route['home/projects/(:any)/(:any)/quotations'] = 'web/QuotesController/customerQuotesList/$1/$2';
 $route['home/projects/(:any)/edit'] = 'web/ProjectController/edit/$1';
 $route['home/projects/(:any)'] = 'web/ProjectController/project_details/$1';

@@ -20,9 +20,9 @@ class TestController extends BaseController
 
     public function test_get()
     {
-        $this->load->model("ProjectQuotation");
+        $this->load->model("ProjectRequest");
 
-        $data = $this->ProjectQuotation->quotationPriceByProjects([234]);
+        $data = $this->ProjectRequest->requestInfoWithPrice([234]);
 
         print_r($data);
     }
