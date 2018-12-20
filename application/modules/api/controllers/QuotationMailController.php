@@ -59,6 +59,24 @@ class QuotationMailController extends BaseController
 
             $this->validationRun();
 
+            $this->requestData = trim_input_parameters($this->requestData);
+
+            $projectData = $this->UtilModel->selectQuery('*', 'projects', [
+                'where' => ['id' => $this->requestData['project_id'] ]
+            ]);
+
+            if (empty($projectData)) {
+
+            }
+
+
+            $this->load->library(['Generate_pdf', 'Commonfn']);
+
+
+
+            $this->generate_pdf->getPdf($this->requestData['project_id'], '');
+
+
             $this->response([
                 'code' => HTTP_OK,
                 'msg' => $this->lang->line('quotation_mail_success')

@@ -2,7 +2,7 @@
     <div class="footer-inner">
         <div class="pull-left">
             <div class="logo-footer">
-                <a href="#"><img src="<?php echo BASE_URL . '/public/images/sg.png'; ?>" alt="Logo" title="Logo"></a>
+                <a href="#"><img src="<?php echo BASE_URL . '/public/images/logo.png'; ?>" alt="Logo" title="Logo"></a>
             </div>
 
             <div class="footer-content">

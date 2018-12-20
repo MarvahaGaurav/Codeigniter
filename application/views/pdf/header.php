@@ -9,9 +9,7 @@
     <div class="pull-right">
         <div class="logo">
             <a href="#">
-                <?php
-                if ('' != $company['company_image']) {
-                    ?>
+                <?php if ('' != $company['company_image']) { ?>
                     <img src="<?php echo $company['company_image']; ?>" alt="Logo" title="Logo">
                 <?php } ?>
             </a>
