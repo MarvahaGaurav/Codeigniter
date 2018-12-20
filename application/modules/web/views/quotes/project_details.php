@@ -328,7 +328,8 @@
                     <label for="contact-email" class="col-sm-6 control-label" id="email_error">E-mail:</label>
                             <div class="col-sm-10">
                             	<input type="text" name="email" required class="form-control" id="contact-email" placeholder="you@example.com">
-                                <?php echo isset($error) ? '<label class="alert-danger">' . $error . '</label>' : form_error('email', '<label class="alert-danger">', '</label>'); ?>
+                                
+                                <div class="has-error" id="emails"></div>
                             </div>
                         </div>            
                 </div>
@@ -337,7 +338,7 @@
             </div>
 
             <div class="text-center button-wrapper">
-                    <button type="button" class="custom-btn btn-margin btn-width save" data-csrf='<?php echo $csrf ?>' data-text="<?php echo $this->lang->line('select') ?>" id="send-email-to-customer" data-clone=""><?php echo $this->lang->line('send_email') ?></button>
+                    <button type="button" class="custom-btn btn-margin btn-width save" data-csrf='<?php echo $csrf ?>' data-text="<?php echo $this->lang->line('select') ?>" value="<?php echo $this->lang->line('send_email') ?>" id="send-email-to-customer" data-clone=""><?php echo $this->lang->line('send_email') ?></button>
             </div>
         </div>
 

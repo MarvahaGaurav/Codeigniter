@@ -30,9 +30,13 @@ class ProjectTechnicianCharges extends BaseModel
         }   
 
         $query = $this->db->get();
-         //echo $this->db->last_query();die;
+
+       
+        //  echo $this->db->last_query();die;
 
         $result = $query->row_array();
+
+        
 
         return $result;
     }

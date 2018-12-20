@@ -271,6 +271,8 @@ $(document).ready(function () {
                     $self.prepend("<span class='fa fa-circle-o-notch fa-spin'></span>");
                 },
                 success: function (response) {
+                    console.log(response);
+                    return false;
                     $self.find("span.fa-circle-o-notch").remove();
                     if (response.success) {
                         if (dataAction == "remove") {

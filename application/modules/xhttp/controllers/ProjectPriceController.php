@@ -112,22 +112,51 @@ class ProjectPriceController extends BaseController
             
             $this->handleTechnicianChargesCheck($projectId, 'xhr');
 
-            $insertData = [
-                'request_id' => (int)$this->requestData['request_id'],
-                'company_id' => $this->userInfo['company_id'],
-                'user_id' => $this->userInfo['user_id'],
-                'language_code' => 'en',
-                'additional_product_charges' => isset($this->requestData['additional_product_charges'])?$this->requestData['additional_product_charges']:0.00,
-                'discount' => isset($this->requestData['discount'])?$this->requestData['discount']:0.00,
-                'created_at' => $this->datetime,
-                'created_at_timestamp' => $this->timestamp,
-                'updated_at' => $this->datetime,
-                'updated_at_timestamp' => $this->timestamp,
-                'expire_at' =>$this->requestData['expiry_date'],
-                'expire_at_timestamp' => strtotime($this->requestData['expiry_date'])
-            ];         
+            // check existing quotation
 
-            $this->UtilModel->insertTableData($insertData, 'project_quotations');
+            $quotationData = $this->UtilModel->selectQuery('id','project_quotations', [
+                'where' => ['request_id' => (int)$this->requestData['request_id'], 'company_id'=>$this->userInfo['company_id'],'user_id'=>$this->userInfo['user_id']], 'single_row' => true
+            ]);
+
+            
+
+            if(empty($quotationData)) {
+                $insertData = [
+                    'request_id' => (int)$this->requestData['request_id'],
+                    'company_id' => $this->userInfo['company_id'],
+                    'user_id' => $this->userInfo['user_id'],
+                    'language_code' => 'en',
+                    'additional_product_charges' => isset($this->requestData['additional_product_charges'])?$this->requestData['additional_product_charges']:0.00,
+                    'discount' => isset($this->requestData['discount'])?$this->requestData['discount']:0.00,
+                    'created_at' => $this->datetime,
+                    'created_at_timestamp' => $this->timestamp,
+                    'updated_at' => $this->datetime,
+                    'updated_at_timestamp' => $this->timestamp,
+                    'expire_at' =>$this->requestData['expiry_date'],
+                    'expire_at_timestamp' => strtotime($this->requestData['expiry_date'])
+                ];         
+    
+                $this->UtilModel->insertTableData($insertData, 'project_quotations');
+            } else {
+                // update the quotations
+
+                $updateData = [
+                    'language_code' => 'en',
+                    'additional_product_charges' => isset($this->requestData['additional_product_charges'])?$this->requestData['additional_product_charges']:0.00,
+                    'discount' => isset($this->requestData['discount'])?$this->requestData['discount']:0.00,
+                    'created_at' => $this->datetime,
+                    'created_at_timestamp' => $this->timestamp,
+                    'updated_at' => $this->datetime,
+                    'updated_at_timestamp' => $this->timestamp,
+                    'expire_at' =>$this->requestData['expiry_date'],
+                    'expire_at_timestamp' => strtotime($this->requestData['expiry_date'])
+                ];         
+    
+                $this->UtilModel->updateTableData($updateData, 'project_quotations', ['id' =>$quotationData['id'] ]);
+                
+            }
+            
+            
             
             // send push to requester
 
@@ -142,6 +171,7 @@ class ProjectPriceController extends BaseController
                 'message' => $this->lang->line('final_quote_price_added')
             ]);
         } catch (\Exception $error) {
+            echo $error;
             json_dump(
                 [
                     "success" => false,

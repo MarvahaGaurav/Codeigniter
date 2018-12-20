@@ -103,8 +103,8 @@ requirejs(
         $self = $(this),
         $installerSubmitData = $("#installer-send-email");
 
-        //console.log($installerSubmitData);
-
+        console.log($('#send-email-to-customer').text().trim());
+        
       var formData = getFormData($installerSubmitData);
       var text = $self.text();
       var email = $("#contact-email").val();
@@ -115,13 +115,12 @@ requirejs(
       if (email.length == 0)
       {
           document.getElementById('emails').innerHTML = "Please fill this field";
-          $("#email_error").addClass("commn-animate-error");
-          f = 1;
-          
+          $("#emails").css("color","red");
+         
           setTimeout(function () {
-              $('#contact-email').text('');
-          }, 5000);
-      } else if (email.match(emailptrn)) {
+              $('#emails').text('');
+          }, 2000);
+      } else if (email.match(emailptrn) ) {
         $.ajax({
           url: window.location.protocol + "//" + window.location.host + "/xhttp/projects/installer/sendmail",
           method: "POST",
@@ -143,13 +142,15 @@ requirejs(
           }
         })
 
-      }  else {
+      }  else if(!email.match(emailptrn)) { 
         document.getElementById('emails').innerHTML = "Please enter valid email";
-        $("#email_error").addClass("commn-animate-error");
+        $("#emails").css("color","red");
        
         setTimeout(function () {
             $('#emails').text('');
-        }, 5000);
+        }, 2000);
+    } else{
+      alert("11111")
     }
       
       
