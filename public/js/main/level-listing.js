@@ -25,7 +25,9 @@ requirejs(
   ["jquery", "bootstrap", "common", "jqueryScrollbar", "jqueryStickyTable", "datetime", "moment"],
   function ($) {
     //jquery table here  
-    $('#datetimepicker1').datetimepicker();
+    $('#dateTimePicker').datetimepicker({
+      format: 'L'
+    });
     $(".levels-listing-wrapper").on('click', function (event) {
       var targetEvent = $(event.target);
       if (targetEvent.hasClass('level-btn')) {
