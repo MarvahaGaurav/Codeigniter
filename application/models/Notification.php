@@ -30,6 +30,10 @@ class Notification extends BaseModel
             ->where('receiver_id', $params['user_id'])
             ->order_by('id', 'DESC');
 
+        if (isset($params['is_read']) && in_array((int)$params['is_read'], [0,1], true)) {
+            $this->db->where('is_read', $params['is_read']);
+        }
+
         if (isset($params['limit']) && is_numeric($params['limit']) && (int)$params['limit'] > 0) {
             $this->db->limit((int)$params['limit']);
         }
@@ -51,12 +55,19 @@ class Notification extends BaseModel
 
         if (!empty($result['data'])) {
             $this->load->helper(['db']);
-            $this->load->model(['User']);
+            $this->load->model(['User', 'UtilModel']);
             $sender = array_unique(array_column($result['data'], 'sender_id'));
             $sender = $this->User->basicUserInfo($sender);
             $result['data'] = getDataWith($result['data'], $sender, 'sender_id', 'user_id', 'sender', '', true);
             $notificationMessages = $this->getNotificationMessages(array_column($result['data'], 'id'));
             $result['data'] = getDataWith($result['data'], $notificationMessages, 'id', 'notification_id', 'messages', '', true);
+            $adminNotificationIds = array_filter(array_unique(array_column($result['data'], 'admin_notification_id')));
+            if (!empty($adminNotificationIds)) {
+                $adminMessages = $this->UtilModel->selectQuery('id, title, message', 'admin_notification', [
+                    'where_in' => ['id' => $adminNotificationIds]
+                ]);
+                $result['data'] = getDataWith($result['data'], $adminMessages, 'admin_notification_id', 'id', 'admin_messages', '', true);
+            }
         }
 
         return $result;

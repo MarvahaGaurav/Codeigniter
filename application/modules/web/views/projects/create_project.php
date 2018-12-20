@@ -29,7 +29,7 @@
             <div class="row form-inline-wrapper">
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                     <div class="form-group">
-                        <label class="labelTxt">Project Number <span>(Optional)</span></label>
+                        <label class="labelTxt">Project Number <span></span></label>
                         <div class="form-group-field">
                             <input class="alphanum-only-field restrict-characters" data-restrict-to="20" name="project_number" id="project_number" type="text" placeholder="242388">
                         </div>

@@ -13,11 +13,31 @@ class User extends BaseModel
         $this->tableName = "ai_user";
     }
 
+    public function fetchUser($params, $single_row = false)
+    {
+        $this->db->select("email")
+            ->from($this->tableName);
+
+        if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
+            foreach ($params['where'] as $tableColumn => $searchValue) {
+                $this->db->where($tableColumn, $searchValue);
+            }
+        }
+
+        if ((bool)$single_row) {
+            $result = $this->db->get()->row_array();
+        } else {
+            $result = $this->db->get()->result_array();
+        }
+
+        return $result;
+    }
+
     public function basicUserInfo($userId, $single_row = false)
     {
         $this->db->select("user_id, first_name as full_name, email, image")
             ->from($this->tableName);
-        
+
         if (is_array($userId)) {
             $this->db->where_in('user_id', $userId);
         } else {
@@ -32,20 +52,20 @@ class User extends BaseModel
 
         return $result;
     }
-    
+
     public function login($email, $password)
     {
-        $this->db->select('company_id, ai_user.user_id,first_name as full_name,email,'.
-        'image, image_thumb,'.
-        'ai_user.language, ai_user.currency,' .
-        'ai_user.status,user_type,is_owner,'.
-        'country.name as country_name,' .
-        'IFNULL(quote_view, 0) as quote_view, IFNULL(quote_add, 0) as quote_add,'.
-        'IFNULL(quote_edit, 0) as quote_edit, IFNULL(quote_delete, 0) as quote_delete,'.
-        'IFNULL(insp_view, 0) as insp_view,'.
-        'IFNULL(insp_add, 0) as insp_add, IFNULL(insp_edit, 0) as insp_edit,'.
-        'IFNULL(insp_delete, 0) as insp_delete, IFNULL(project_view, 0) as project_view,'.
-        'IFNULL(project_add, 0) as project_add, IFNULL(project_edit, 0) as project_edit, IFNULL(project_delete, 0) as project_delete')
+        $this->db->select('company_id, ai_user.user_id,first_name as full_name,email,' .
+            'image, image_thumb,' .
+            'ai_user.language, ai_user.currency,' .
+            'ai_user.status,user_type,is_owner,' .
+            'country.name as country_name,' .
+            'IFNULL(quote_view, 0) as quote_view, IFNULL(quote_add, 0) as quote_add,' .
+            'IFNULL(quote_edit, 0) as quote_edit, IFNULL(quote_delete, 0) as quote_delete,' .
+            'IFNULL(insp_view, 0) as insp_view,' .
+            'IFNULL(insp_add, 0) as insp_add, IFNULL(insp_edit, 0) as insp_edit,' .
+            'IFNULL(insp_delete, 0) as insp_delete, IFNULL(project_view, 0) as project_view,' .
+            'IFNULL(project_add, 0) as project_add, IFNULL(project_edit, 0) as project_edit, IFNULL(project_delete, 0) as project_delete')
             ->from("ai_user")
             ->join("user_employee_permission as uep", "uep.employee_id=ai_user.user_id", 'left')
             ->join("country_list as country", "country.country_code1=ai_user.country_id")
@@ -83,12 +103,12 @@ class User extends BaseModel
         $this->db->select("company_name, company.company_id, first_name as user_name, user_lat, user_long as user_lng,
         lat as company_lat, lng as company_lng, users.email,
         GeoDistDiff('km', lat, lng, {$params['lat']}, {$params['lng']}) as distance", false)
-                ->from('ai_user as users')
-                ->join('company_master as company', 'company.company_id=users.company_id')
-                ->having('distance <', $params['search_radius'])
-                ->where('user_type', INSTALLER)
-                ->where('is_owner', ROLE_OWNER);
-                
+            ->from('ai_user as users')
+            ->join('company_master as company', 'company.company_id=users.company_id')
+            ->having('distance <', $params['search_radius'])
+            ->where('user_type', INSTALLER)
+            ->where('is_owner', ROLE_OWNER);
+
         if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
             foreach ($params['where'] as $tableColumn => $searchValue) {
                 $this->db->where($tableColumn, $searchValue);
@@ -108,7 +128,7 @@ class User extends BaseModel
             ->where_in('user_id', $userIds)
             ->where('endpoint_arn !=', "''")
             ->from('ai_session');
-        
+
         $query = $this->db->get();
 
         $result = $query->result_array();

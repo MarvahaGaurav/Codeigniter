@@ -15,7 +15,7 @@ class Employee extends BaseModel
 
     public function employeeList($params)
     {
-        $this->db->select('u.user_id,u.first_name as full_name, u.email,u.user_type,u.is_owner,IF(u.image !="",u.image,"") as image,IF(u.image_thumb !="",u.image_thumb,"") as image_thumb')
+        $this->db->select('SQL_CALC_FOUND_ROWS u.user_id,u.first_name as full_name, u.email,u.user_type,u.is_owner,IF(u.image !="",u.image,"") as image,IF(u.image_thumb !="",u.image_thumb,"") as image_thumb', false)
             ->from("ai_user as u")
             ->join("employee_request_master as erm", "erm.requested_by=u.user_id")
             ->where("erm.status", EMPLOYEE_REQUEST_ACCEPTED)

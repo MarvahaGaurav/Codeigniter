@@ -1,7 +1,7 @@
 (function ($) {
     var $technicianDiv = $("#technician-div"),
         $ownerPrompt = $(".owner-prompt"),
-        technicianTypes = ["2", "3", "4", "5"],
+        technicianTypes = ["2", "4", "5"],
         $technicianFields = $(".technician-fields"),
         $companyOwnerField = $('.company-owner-field'),
         $companyOwnerWrapper = $(".company-owner-wrapper"),
@@ -12,7 +12,7 @@
         $companyNameWrapper = $("#company-name-wrapper"),
         $addressBox = $("#address-box-wrapper"),
         $address = $("#address")
-        $contactNumber1 = $("#contact-number-1"),
+    $contactNumber1 = $("#contact-number-1"),
         $contactNumber2 = $("#contact-number-2"),
         $userCountry = $("#user-country");
 
@@ -40,7 +40,25 @@
         email: {
             required: true,
             normalizer: normalizer,
-            email: true
+            email: true,
+            remote: {
+                url: window.location.protocol + "//" + window.location.host + "/xhttp/check-email",
+                method: "POST",
+                data: {
+                    email: function () {
+                        return $("[name='email']").val();
+                    }
+                },
+                dataType: "json",
+                success: function (response) {
+                    var validator = $("#signup-form").data("validator"),
+                        element = $("[name='email']")[0],
+                        valid = response.success,
+                        errorMessage = response.msg;
+
+                    remoteValidationHandler(validator, element, valid, errorMessage);
+                }
+            }
         },
         password: {
             required: true,
@@ -58,7 +76,27 @@
             normalizer: normalizer,
             minlength: 6,
             maxlength: 20,
-            number: true
+            number: true,
+            remote: {
+                url: window.location.protocol + "//" + window.location.host + "/xhttp/check-phone-number",
+                method: "POST",
+                data: {
+                    country_code: function () {
+                        return $("[name='contact_number_code']").val();
+                    },
+                    phone_number: function () {
+                        return $("[name='contact_number']").val();
+                    }
+                },
+                success: function (response) {
+                    var validator = $("#signup-form").data("validator"),
+                        element = $("[name='contact_number']")[0],
+                        valid = response.success,
+                        errorMessage = response.msg;
+
+                    remoteValidationHandler(validator, element, valid, errorMessage);
+                }
+            }
         },
         alternate_contact_number_code: {
             required: true,
@@ -69,7 +107,27 @@
             normalizer: normalizer,
             minlength: 6,
             maxlength: 20,
-            number: true
+            number: true,
+            remote: {
+                url: window.location.protocol + "//" + window.location.host + "/xhttp/check-alternate-phone-number",
+                method: "POST",
+                data: {
+                    country_code: function () {
+                        return $("[name='alternate_contact_number_code']").val();
+                    },
+                    phone_number: function () {
+                        return $("[name='alternate_contact_number']").val();
+                    }
+                },
+                success: function (response) {
+                    var validator = $("#signup-form").data("validator"),
+                        element = $("[name='alternate_contact_number']")[0],
+                        valid = response.success,
+                        errorMessage = response.msg;
+
+                    remoteValidationHandler(validator, element, valid, errorMessage);
+                }
+            }
         },
         country: {
             required: true,
@@ -118,12 +176,12 @@
         });
 
         if ($("input[name='alternate_contact_number']").val().length == 0) {
-            $("#contact-number-2 option[value='"+ value +"']").attr('selected', "selected");
+            $("#contact-number-2 option[value='" + value + "']").attr('selected', "selected");
             $contactNumber2.selectpicker('destroy');
             $contactNumber2.selectpicker();
         }
         if ($("#select-city").val().length == 0) {
-            $("#user-country option[value='"+ countryCode +"']").attr('selected', 'selected');
+            $("#user-country option[value='" + countryCode + "']").attr('selected', 'selected');
             $userCountry.trigger('change');
             $userCountry.selectpicker('destroy');
             $userCountry.selectpicker();
@@ -180,7 +238,7 @@
                 required: true,
             });
             $technicianFields.removeAttr("disabled");
-        } else if (currentUserType == 6) {
+        } else if (currentUserType == 6 || currentUserType == 3) {
             companyNameView('owner');
             $ownerPrompt.hide();
             $technicianDiv.show();
@@ -278,7 +336,28 @@
     $("input[name='company_logo']").on('change', function (event) {
         var files = event.target.files;
         $("#uploadfile").val(files[0].name);
-    })
+    });
+
+    function remoteValidationHandler(validator, element, valid, errorMessage) {
+        var previous = validator.previousValue(element);
+        validator.settings.messages[element.name].remote = previous.originalMessage;
+        if (valid) {
+            submitted = validator.formSubmitted;
+            validator.prepareElement(element);
+            validator.formSubmitted = submitted;
+            validator.successList.push(element);
+            delete validator.invalid[element.name];
+            validator.showErrors();
+        } else {
+            errors = {};
+            message = errorMessage || validator.defaultMessage(element, "remote");
+            errors[element.name] = previous.message = $.isFunction(message) ? message(value) : message;
+            validator.invalid[element.name] = true;
+            validator.showErrors(errors);
+        }
+        previous.valid = valid;
+        validator.stopRequest(element, valid);
+    }
 
     function companyNameView(type) {
         if (type == 'owner') {

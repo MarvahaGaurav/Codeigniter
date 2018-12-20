@@ -54,7 +54,7 @@ $("#mounting_type").change(function () {
     });
 });
 
-$("#product-search").on('keydown', function () {
+$("#product-search").on('keyup', function () {
     var self = this,
         $self = $(self),
         searchData = JSON.parse($self.attr("data-search-data")),

@@ -3,10 +3,11 @@
 defined("BASEPATH") or exit("No direct script access allowed");
 require_once "BaseController.php";
 require_once APPPATH . "/libraries/Traits/QuickCalc.php";
+require_once APPPATH . "/libraries/Traits/ProjectDelete.php";
 class ProjectController extends BaseController
 {
 
-    use QuickCalc;
+    use QuickCalc,ProjectDelete;
 
     public function __construct()
     {
@@ -284,6 +285,74 @@ class ProjectController extends BaseController
             }
             $this->data['js'] = 'project_edit';
             website_map_modal_view("projects/edit_project", $this->data);
+        } catch (Exception $ex) {
+            $this->db->trans_rollback();
+        }
+    }
+
+
+    /**
+     * delete project
+     *
+     * @return void
+     */
+    public function delete($projectId)
+    {
+        $this->activeSessionGuard();
+        $this->data['userInfo'] = $this->userInfo;
+        $this->load->config('css_config');
+        $this->data['css'] = $this->config->item('create-project');
+
+        $this->userTypeHandling([INSTALLER, PRIVATE_USER, BUSINESS_USER, WHOLESALER, ELECTRICAL_PLANNER], base_url('home/applications'));
+
+        $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['project_delete'], base_url('home/applications'));
+
+        $languageCode = "en";
+
+        $this->data['projectId'] = $projectId;
+
+        $projectId = encryptDecrypt($projectId, 'decrypt');
+        $this->load->model("UtilModel");
+
+        if (empty($projectId) || !is_numeric($projectId)) {
+            show404($this->lang->line('bad_request'), base_url('/home/applications'));
+        }
+
+        $projectData = $this->UtilModel->selectQuery('*', 'projects', [
+            'where' => ['id' => $projectId, 'language_code' => $languageCode], 'single_row' => true
+        ]);
+
+        if (empty($projectData)) {
+            show404($this->lang->line('project_not_found'), base_url('/home/applications'));
+        }
+
+        if ((in_array((int)$this->userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) &&
+            (int)$this->userInfo['user_id'] !== (int)$projectData['user_id']) || (in_array((int)$this->userInfo['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], true) &&
+            (int)$this->userInfo['company_id'] !== (int)$projectData['company_id'])) {
+            show404($this->lang->line('forbidden_action'), base_url(''));
+        }
+
+        
+
+        $this->data['projectData'] = $projectData;
+
+        try {
+           
+                    $this->projectId = $projectId;
+                    $this->deleteProject();
+
+                    $this->load->model("UtilModel");
+
+                    if ($this->db->trans_status() === true) {
+                        $this->db->trans_commit();
+                        $this->session->set_flashdata("flash-message", $this->lang->line('project_deleted'));
+                        $this->session->set_flashdata("flash-type", "success");
+                        redirect(base_url("home/projects"));
+                    } else {
+                        throw new Exception("Something Went Wrong", 500);
+                    }
+            
+            website_map_modal_view("projects/main", $this->data);
         } catch (Exception $ex) {
             $this->db->trans_rollback();
         }

@@ -24,7 +24,7 @@ class BaseController extends MY_Controller
         error_reporting(-1);
         ini_set('display_errors', 1);
         parent::__construct();
-        $this->load->helper(['url', 'form', 'custom_cookie', 'common', 'debuging']);
+        $this->load->helper(['url', 'form', 'custom_cookie', 'common', 'debuging', 'datetime']);
         $this->load->model('Common_model');
         $this->load->library('session');
         $this->lang->load('common', "english");
@@ -40,7 +40,16 @@ class BaseController extends MY_Controller
         // $this->data['employee_permission'] = $this->employeePermission;
     }
 
-
+    private function getNotifications($userId)
+    {
+        $this->load->model(['Notification']);
+        $params['user_id'] = $userId;
+        $params['is_read'] = "0";
+        $params['limit'] = 5;
+        $notifications = $this->Notification->getNotifications($params);
+        $notifications['data'] = $this->processNotifications($notifications['data']);
+        return $notifications;
+    }
 
     /**
      * Active session guard
@@ -58,6 +67,11 @@ class BaseController extends MY_Controller
             $this->userInfo = $this->Common_model->fetch_data('ai_user', $this->user_query_fields, array ('where' => array ('user_id' => $sg_userinfo['user_id'], 'status' => 1)), true);
             $this->data['userInfo'] = $this->userInfo;
             $this->data['permission'] = [];
+
+            $notifications = $this->getNotifications($this->userInfo['user_id']);
+            $this->data['siteNotifications'] = $notifications['data'];
+            $this->data['notificationCount'] = $notifications['count'];
+
             if ((int)$this->userInfo['is_owner'] === ROLE_EMPLOYEE) {
                 $this->employeePermission = retrieveEmployeePermission($this->userInfo['user_id']);
                 $this->data['permission'] = $this->employeePermission;
@@ -95,6 +109,11 @@ class BaseController extends MY_Controller
             $this->userInfo = $this->Common_model->fetch_data('ai_user', $this->user_query_fields, array ('where' => array ('user_id' => $sg_userinfo['user_id'], 'status' => 1)), true);
             $this->data['userInfo'] = $this->userInfo;
             $this->data['permission'] = [];
+
+            $notifications = $this->getNotifications($this->userInfo['user_id']);
+            $this->data['siteNotifications'] = $notifications['data'];
+            $this->data['notificationCount'] = $notifications['count'];
+
             if ((int)$this->userInfo['is_owner'] === ROLE_EMPLOYEE) {
                 $this->employeePermission = retrieveEmployeePermission($this->userInfo['user_id']);
                 $this->data['permission'] = $this->employeePermission;
@@ -181,5 +200,64 @@ class BaseController extends MY_Controller
             // $errorMessage = $this->form_validation->error_array();
         }
         return $valid;
+    }
+
+    protected function processNotifications($notifications)
+    {
+        $notifications = array_map(function ($notification) {
+            $notification['name'] = isset($notification['sender']['full_name'])? $notification['sender']['full_name']:'';
+            $notification['message'] = sprintf($this->notificationMessagesHandler($notification['type']), $notification['name']);
+            if ((int)$notification['type'] === NOTIFICATION_PERMISSION_GRANTED) {
+                $notification['message'] = sprintf(
+                    $this->lang->line('notification_permission_granted'),
+                    isset($notification['messages'], $notification['messages']['message'])? $notification['messages']['message']: ''
+                );
+                unset($notification['messages']);
+            } else if ((int)$notification['type'] === NOTIFICATION_ADMIN_NOTIFICATION && isset($notification['admin_messages'], $notification['admin_messages']['title'])) {
+                $notification['message'] = $notification['admin_messages']['title'];
+            }
+            if ((int)$notification['type'] === NOTIFICATION_SEND_QUOTES) {
+                $notification['redirection'] = sprintf($this->notificationRedirectionHandler()[NOTIFICATION_SEND_QUOTES], encryptDecrypt($notification['project_id']));
+            } else {
+                $notification['redirection'] = $this->notificationRedirectionHandler()[$notification['type']];
+            }
+            $notification['redirection'] = !empty($notification['redirection'])?base_url($notification['redirection']):null;
+            return $notification;
+        }, $notifications);
+
+        return $notifications;
+    }
+
+    protected function notificationRedirectionHandler()
+    {
+        return [
+            NOTIFICATION_EMPLOYEE_REQUEST_RECEIVED => "home/technicians/requests",
+            NOTIFICATION_RECEIVED_QUOTES => "home/quotes/awaiting",
+            NOTIFICATION_PERMISSION_GRANTED => null,
+            NOTIFICATION_SEND_QUOTES => "/home/projects/%s/quotations",
+            NOTIFICATION_ACCEPT_QUOTE => "home/quotes/approved",
+            NOTIFICATION_EDIT_QUOTE_PRICE => null,
+            NOTIFICATION_EMPLOYEE_APPROVED => null
+        ];
+    }
+
+    /**
+     * Get message based on the type of notifications
+     *
+     * @param int $type
+     * @return string
+     */
+    private function notificationMessagesHandler($type)
+    {
+        $typeMessageMapping = [
+            NOTIFICATION_EMPLOYEE_REQUEST_RECEIVED => $this->lang->line('notification_employee_request_received'),
+            NOTIFICATION_RECEIVED_QUOTES => $this->lang->line('notification_received_quotes'),
+            NOTIFICATION_PERMISSION_GRANTED => $this->lang->line('notification_permission_granted'),
+            NOTIFICATION_SEND_QUOTES => $this->lang->line('notification_send_quotes'),
+            NOTIFICATION_ACCEPT_QUOTE => $this->lang->line('notification_accept_quote'),
+            NOTIFICATION_EDIT_QUOTE_PRICE => $this->lang->line('notification_edit_quote_price'),
+        ];
+
+        return isset($typeMessageMapping[$type])?$typeMessageMapping[$type]:'';
     }
 }

@@ -149,7 +149,7 @@
 
             
             
-            <?php if (((in_array((int)$userInfo['user_type'], [INSTALLER], true) && $userInfo['is_owner']==ROLE_OWNER) || (in_array((int)$userInfo['user_type'], [INSTALLER], true) && isset($permission['quote_add']) && $permission['quote_add']==1 && $userInfo['is_owner']==ROLE_EMPLOYEE ))  && ($request_status!=QUOTATION_STATUS_APPROVED && $request_status!=QUOTATION_STATUS_REJECTED) && !empty($projectLevels) && (bool)$all_levels_done && (bool)$hasAddedAllPrice) { ?>
+            <?php if (((in_array((int)$userInfo['user_type'], [INSTALLER], true) && $userInfo['is_owner']==ROLE_OWNER) || (in_array((int)$userInfo['user_type'], [INSTALLER], true) && isset($permission['quote_add']) && $permission['quote_add']==1 && $userInfo['is_owner']==ROLE_EMPLOYEE ))  && ($request_status!=QUOTATION_STATUS_APPROVED && $request_status!=QUOTATION_STATUS_REJECTED) && !empty($projectLevels)  && (bool)$hasAddedAllPrice) { ?>
             <div class="request-quotation-btn-wrapper">
                 <?php if (!(bool)$hasFinalQuotePriceAdded) { ?>
                 <button class="col-md-2 custom-btn save" id="add-price-installer-button" type="button" data-toggle="modal" data-target="#project-final-price-modal"><?php echo $this->lang->line('add_final_quote_price_button_txt') ?></button>
@@ -250,13 +250,13 @@
                     <label for="additional_product_charges" class="priceTxt">Additional Product Charges</label>
                     <div class="inputField">
                    
-                        <input type="text" <?php echo (bool)$hasFinalQuotePriceAdded && ($request_status==QUOTATION_STATUS_APPROVED ||$request_status==QUOTATION_STATUS_REJECTED)?'disabled="disabled"':'name="additional_product_charges"' ?> class="modal-price-fields restrict-characters number-only-field" data-restrict-to="15" id="additional_product_charges" value="<?php echo isset($projectRoomPrice['additional_product_charges'])?$projectRoomPrice['additional_product_charges']:'' ?>">
+                        <input type="text" <?php echo (bool)$hasFinalQuotePriceAdded && ($request_status==QUOTATION_STATUS_APPROVED ||$request_status==QUOTATION_STATUS_REJECTED)?'disabled="disabled"':'name="additional_product_charges"' ?> class="modal-price-fields restrict-characters number-only-field" data-restrict-to="15" id="additional_product_charges" value="<?php echo isset($projectRoomPrice['additional_product_charges']) && $projectRoomPrice['additional_product_charges']!='0.00'?$projectRoomPrice['additional_product_charges']:'' ?>">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="discount" class="priceTxt">Discount&nbsp;(%)</label>
                     <div class="inputField">
-                        <input type="text" <?php echo (bool)$hasFinalQuotePriceAdded && ($request_status==QUOTATION_STATUS_APPROVED ||$request_status==QUOTATION_STATUS_REJECTED)?'disabled="disabled"':'name="discount"' ?> class="modal-price-fields restrict-characters number-only-field" id="discount" data-restrict-to="15" value="<?php echo isset($projectRoomPrice['discount'])?$projectRoomPrice['discount']:'' ?>">
+                        <input type="text" <?php echo (bool)$hasFinalQuotePriceAdded && ($request_status==QUOTATION_STATUS_APPROVED ||$request_status==QUOTATION_STATUS_REJECTED)?'disabled="disabled"':'name="discount"' ?> class="modal-price-fields restrict-characters number-only-field" id="discount" data-restrict-to="15" value="<?php echo isset($projectRoomPrice['discount']) && $projectRoomPrice['discount']!='0.00' ?$projectRoomPrice['discount']:'' ?>">
                     </div>
                 </div>
                 <div class="form-group">
@@ -291,7 +291,7 @@
                 </div>
                 <?php echo form_close() ?>
             </div>
-            <?php if (((in_array((int)$userInfo['user_type'], [INSTALLER], true) && $userInfo['is_owner']==ROLE_OWNER) || (in_array((int)$userInfo['user_type'], [INSTALLER], true) && isset($permission['quote_add']) && $permission['quote_add']==1 && $userInfo['is_owner']==ROLE_EMPLOYEE))  && ($request_status!=QUOTATION_STATUS_APPROVED && $request_status!=QUOTATION_STATUS_REJECTED) ) { ?>
+            <?php if (((in_array((int)$userInfo['user_type'], [INSTALLER], true) && $userInfo['is_owner']==ROLE_OWNER) || (in_array((int)$userInfo['user_type'], [INSTALLER], true) && isset($permission['quote_add']) && $permission['quote_add']==1 && $userInfo['is_owner']==ROLE_EMPLOYEE))  && ($request_status!=QUOTATION_STATUS_APPROVED && $request_status!=QUOTATION_STATUS_REJECTED ) ) { ?>
             
             <div class="modal-footer">
                 <div class="text-center button-wrapper">
@@ -325,9 +325,11 @@
                 <div class="projectPric">
                 <div class="form-group">
                         	
-                    <label for="contact-email" class="col-sm-6 control-label">E-mail:</label>
+                    <label for="contact-email" class="col-sm-6 control-label" id="email_error">E-mail:</label>
                             <div class="col-sm-10">
-                            	<input type="email" name="email" class="form-control" id="contact-email" placeholder="you@example.com">
+                            	<input type="text" name="email" required class="form-control" id="contact-email" placeholder="you@example.com">
+                                
+                                <div class="has-error" id="emails"></div>
                             </div>
                         </div>            
                 </div>
@@ -336,7 +338,7 @@
             </div>
 
             <div class="text-center button-wrapper">
-                    <button type="button" class="custom-btn btn-margin btn-width save" data-csrf='<?php echo $csrf ?>' data-text="<?php echo $this->lang->line('select') ?>" id="send-email-to-customer" data-clone=""><?php echo $this->lang->line('send_email') ?></button>
+                    <button type="button" class="custom-btn btn-margin btn-width save" data-csrf='<?php echo $csrf ?>' data-text="<?php echo $this->lang->line('select') ?>" value="<?php echo $this->lang->line('send_email') ?>" id="send-email-to-customer" data-clone=""><?php echo $this->lang->line('send_email') ?></button>
             </div>
         </div>
 

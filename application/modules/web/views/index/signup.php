@@ -143,7 +143,7 @@
                     <?php ?>
                     <!-- wholesaler -->
                     <div class="<?php echo $isCustomerUser ? "wholesaler-field" : "" ?>" id="technician-div">
-                        <div class="clearfix owner-prompt <?php echo set_value('user_type') == BUSINESS_USER?'concealable':'' ?>">
+                        <div class="clearfix owner-prompt <?php echo in_array(set_value('user_type'),[BUSINESS_USER, ARCHITECT])?'concealable':'' ?>">
                             <label>Are you the owner of this company?</label>
                             <div class="clearfix"></div>
                             <div class="custom-radio-wrapper">

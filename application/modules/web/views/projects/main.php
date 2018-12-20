@@ -56,7 +56,7 @@
                                 <a href="<?php echo base_url("home/projects/" . encryptDecrypt($project['project_id'])) ?>" class="project-action" title="<?php echo $this->lang->line('view') ?>">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                 </a>
-                                <?php if (empty($project['requests'])) { ?>
+                                <?php if (empty($project['requests']) && ((in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) ) || ((in_array((int)$userInfo['user_type'], [INSTALLER, ELECTRICAL_PLANNER,WHOLESALER], true) && $userInfo['is_owner']==ROLE_OWNER )) || ((in_array((int)$userInfo['user_type'], [INSTALLER, ELECTRICAL_PLANNER,WHOLESALER], true) && $permission['project_edit']==1 && $userInfo['is_owner']=ROLE_EMPLOYEE)))) { ?>
                                 <a href="<?php echo base_url('home/projects/' . encryptDecrypt($project['project_id']) . '/edit') ?>" class="project-action" title="<?php echo $this->lang->line("edit") ?>">
                                     <i class="fa fa-pencil" aria-hidden="true"></i>
                                 </a>
@@ -64,6 +64,12 @@
                                 <a href="javascript:void(0)" class="confirmation-action-xhttp project-action" title="<?php echo $this->lang->line('clone') ?>" data-url="<?php echo base_url("xhttp/projects/clone") ?>" data-target="#project-<?php echo $key ?>" data-json='<?php echo $project['clone_data'] ?>' data-action="clone" data-redirect="<?php echo base_url(uri_string()) ?>" data-title="<?php echo $this->lang->line('clone_project_tilte') ?>" data-message="<?php echo $this->lang->line('clone_project_confirmation') ?>">
                                     <i class="fa fa-clone"></i>
                                 </a>
+
+                                 <?php if (empty($project['requests']) && ((in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) ) || ((in_array((int)$userInfo['user_type'], [INSTALLER, ELECTRICAL_PLANNER,WHOLESALER], true) && $userInfo['is_owner']==ROLE_OWNER )) || ((in_array((int)$userInfo['user_type'], [INSTALLER, ELECTRICAL_PLANNER,WHOLESALER], true) && $permission['project_delete']==1 && $userInfo['is_owner']=ROLE_EMPLOYEE)))) { ?>
+                                <a href="javascript:void(0)" class="confirmation-action-xhttp project-action"  title="<?php echo $this->lang->line('delete_text') ?>"  data-redirect="<?php echo base_url(uri_string()) ?>" data-target="#project-<?php echo $key ?>" data-json='<?php echo $project['clone_data'] ?>' data-url="<?php echo base_url('home/projects/' . encryptDecrypt($project['project_id']) . '/delete') ?>" data-title="<?php echo $this->lang->line('delete_project') ?>" data-message="<?php echo $this->lang->line('delete_project_confirmation') ?>">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                </a>
+                                <?php }?>
                             </td>
                         </tr>
                         <?php } ?>

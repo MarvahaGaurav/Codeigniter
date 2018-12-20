@@ -7,7 +7,7 @@ requirejs.config({
     common: "web/common",
     jqueryScrollbar: "plugin/jquery.scrollbar.min",
     jqueryStickyTable: "jquery.stickytable.min",
-    datetimepicker: "bootstrap-datetimepicker",
+    datetime: "bootstrap-datetimepicker",
     moment_js: "moment"
   },
   shim: {
@@ -16,17 +16,16 @@ requirejs.config({
     common: ['bootstrap'],
     jqueryScrollbar: ['jquery'],
     jqueryStickyTable: ['bootstrap'],
-    datetimepicker: ['bootstrap'],
-    moment_js: ["datetimepicker"]
+    datetime: ['bootstrap'],
+    moment_js: ["datetime"]
   }
 });
 
 requirejs(
-  ["jquery", "bootstrap", "common", "jqueryScrollbar", "jqueryStickyTable", "datetimepicker", "moment_js"],
+  ["jquery", "bootstrap", "common", "jqueryScrollbar", "jqueryStickyTable", "datetime", "moment"],
   function ($) {
     //jquery table here  
     $('#datetimepicker1').datetimepicker();
-
     $(".levels-listing-wrapper").on('click', function (event) {
       var targetEvent = $(event.target);
       if (targetEvent.hasClass('level-btn')) {
@@ -73,6 +72,7 @@ requirejs(
       var formData = getFormData($installerSubmitPrice);
       var text = $self.text();
 
+      //console.log(formData);
       //return false;
 
       $.ajax({
@@ -103,38 +103,60 @@ requirejs(
         $self = $(this),
         $installerSubmitData = $("#installer-send-email");
 
-      //console.log($installerSubmitData);
+      console.log($('#send-email-to-customer').text().trim());
 
       var formData = getFormData($installerSubmitData);
       var text = $self.text();
+      var email = $("#contact-email").val();
 
-      var email = $('contact-email').val();
+      var emailptrn = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-      if (formData.email == '') {
-        console.log("please enter email");
-        return false;
-      }
-      $.ajax({
-        url: window.location.protocol + "//" + window.location.host + "/xhttp/projects/installer/sendmail",
-        method: "POST",
-        dataType: "json",
-        data: formData,
-        beforeSend: function () {
-          var html = $self.html().trim();
-          $self.html("<i class='fa fa-circle-o-notch fa-spin'></i> " + html);
-        },
-        success: function (response) {
-          if (response.success) {
-            //window.location.reload();
-            window.location.href = window.location.protocol + "//" + window.location.host + "/home/quotes/awaiting";
+
+      if (email.length == 0) {
+        document.getElementById('emails').innerHTML = "Please fill this field";
+        $("#emails").css("color", "red");
+
+        setTimeout(function () {
+          $('#emails').text('');
+        }, 2000);
+      } else if (email.match(emailptrn)) {
+        $.ajax({
+          url: window.location.protocol + "//" + window.location.host + "/xhttp/projects/installer/sendmail",
+          method: "POST",
+          dataType: "json",
+          data: formData,
+          beforeSend: function () {
+            var html = $self.html().trim();
+            $self.html("<i class='fa fa-circle-o-notch fa-spin'></i> " + html);
+          },
+          success: function (response) {
+            if (response.success) {
+              //window.location.reload();
+              window.location.href = window.location.protocol + "//" + window.location.host + "/home/quotes/awaiting";
+            }
+          },
+          error: function (error) {
+            console.log(error);
+            $self.html(text);
           }
-        },
-        error: function (error) {
-          console.log(error);
-          $self.html(text);
-        }
-      })
+        })
+
+      } else if (!email.match(emailptrn)) {
+        document.getElementById('emails').innerHTML = "Please enter valid email";
+        $("#emails").css("color", "red");
+
+        setTimeout(function () {
+          $('#emails').text('');
+        }, 2000);
+      } else {
+        alert("11111")
+      }
+
+
+
+
     });
+
 
 
 
@@ -245,4 +267,6 @@ requirejs(
   function () {
 
   }
+
+
 );

@@ -19,9 +19,10 @@
                 <span class="fawe-icon fawe-icon-position-right close-ico">
                     <i class="fa fa-times"></i>
                 </span>
-                <form id="search-form" method="GET" action="">
-                    <input type="text" data-search-data='<?php echo $searchData ?>' name="search" class="search-product-box search-box" value="" id="product-search"  placeholder="Search Products...">
-                </form>
+                <div class="searchBtn">
+                    <input type="text" id="product-search-text" name="search" class="search-box" value="" placeholder="Search Companies">
+                    <input type="button" id="product-search-button" value="Search" class="search-btn">
+                </div>
             </div>
             <p class="prj-description">This room requires different forms of lighting. When we go to the bathroom at night, we want as little light as possible, whereas when we’re doing our makeup, etc., we want
                 very good lighting. The tiles are key when it comes to bathroom lighting. For example, if dark floor tiles are used, the lighting must take this into account.</p>
@@ -70,21 +71,33 @@
         </div>
 
         <hr>
-        <div class="project-list-wrapper clearfix">
-            <h2 class="project-listtxt">Search Products</h2>
-        </div>
+    </div>
+</div>
 
-        <div class="thumb-wrapper">
-            <div class="row" id="search_product_div">
-                <!-- no record found -->
-                <!-- no record found -->
+<div id="productModal" class="modal fade" role="dialog">    
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- <form id="search-form" method="GET" action=""> -->
+                    <input type="text" data-search-data='<?php echo $searchData ?>' name="search" class="search-product-box search-box" value="" id="product-search"  placeholder="Search Products...">
+                <!-- </form> -->
+                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button> -->
             </div>
-        </div>
-        <div class="no-record text-center no-article-found-container">
+            <div class="modal-body">
+                <div class="thumb-wrapper">
+                    <div class="row" id="search_product_div">
+                    <!-- no record found -->
+                    <!-- no record found -->
+                    </div> 
+                            <div class="no-record text-center no-article-found-container">
             <img src="<?php echo base_url('public/images/svg/sg_logo_placeholder.svg') ?>" alt="Note Paper">
             <p><?php echo $this->lang->line('no_product_found') ?></p>
             <p><?php echo $this->lang->line('search_products_prompt') ?></p>
+        </div>                   
+                </div>
+            </div>            
         </div>
-
     </div>
 </div>

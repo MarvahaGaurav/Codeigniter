@@ -87,7 +87,7 @@ $config = [
         base_url("public/css/web/style.css"),
         base_url("public/css/web/sgmedia.css"),
     ],
-    'quotes-project-details' => [
+    'quotes-project-detail' => [
         base_url("public/css/bootstrap.min.css"),
         base_url("public/css/bootstrap-datetimepicker.css"),
         base_url("public/css/jquery.scrollbar.css"),
