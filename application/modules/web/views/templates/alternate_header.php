@@ -51,6 +51,7 @@
     <body>
         <!-- header -->
         <header>
+            <span id="something-went-wrong" data-message="<?php echo $this->lang->line('something_went_wrong') ?>"></span>
             <nav class="navbar navbar-default navbar-inverse" role="navigation">
                 <div class="container">
 
@@ -65,7 +66,7 @@
                                 <span class="icon-bar"></span>
                             </button>
                             <a class="navbar-brand" href="<?php echo base_url(); ?>">
-                                <img src="public/images/logo.png" alt="logo" />
+                                <img src="<?php echo base_url("public/images/logo.png") ?>" alt="logo" />
                             </a>
                         </div>
 
@@ -78,6 +79,23 @@
                                     <li><a href="javascript:void(0)">RESIDENTIAL LIGHTING</a></li>
                                 </ul>
                             -->
+                            <div class="sl-nav navbar-right">
+                                <ul>
+                                <li><b>Language</b><i class="fa fa-angle-down" aria-hidden="true"></i>
+                                    <div class="triangle"></div>
+                                    <ul>
+                                    <li><a href="#!"><i class="sl-flag flag-gb"></i> <span>English</span></a></li>
+                                    <li><a href="#!"><i class="sl-flag flag-no"></i> <span>Norsk</span></a></li>
+                                    <li><a href="#!"><i class="sl-flag flag-se"></i> <span>Svenska</span></a></li>
+                                    <li><a href="#!"><i class="sl-flag flag-dk"></i> <span>Dansk</span></a></li>
+                                    <li><a href="#!"><i class="sl-flag flag-de"></i> <span>Deutsch</span></a></li>
+                                    <li><a href="#!"><i class="sl-flag flag-nl"></i> <span>Nederlands</span></a></li>
+                                    <li><a href="#!"><i class="sl-flag flag-fr"></i> <span>Français</span></a></li>
+                                    <li><a href="#!"><i class="sl-flag flag-fi"></i> <span>Suomi</span></a></li>
+                                    </ul>
+                                </li>
+                                </ul>
+                            </div>
                                 <ul class="nav navbar-nav navbar-right">
 
                                     <?php if ( ! empty($userInfo['user_id'])) { ?>
@@ -92,7 +110,10 @@
                                                 <li><a href="javascript:void(0)" id="user-logout">Logout</a></li>
                                             </ul>
                                         </li>
-                                        <?php } else { ?>
+                                        <?php
+                                    }
+                                    else {
+                                        ?>
                                         <li>
                                             <a href="javascript:void(0)" class="guest"><cite>Hi!</cite> &nbsp;
                                                 <span class="user-name">Guest</span>
@@ -167,15 +188,15 @@
                                         </ul>
                                     </li>
                                 <?php } ?>
-                            </ul>
+                            </ul>                             
                         </div>
 
                         <ul class="nav navbar-nav navbar-right navbar-search-link">
                             <li>
                                 <span id="searchico-for-mob"><i class="fa fa-search"></i></span>
-                                <form role="search" method="GET" action="/search" class="app-search">
+                                <form role="search" method="GET" action="/home/search" class="app-search">
                                     
-                                    <input type="text" placeholder="Search..." class="form-control" id="search-input-field" name="search_text" value="<?php echo $this->input->get('search_text')?>" autocomplete="off">
+                                    <input type="text" placeholder="Search..." class="form-control" id="search-input-field" name="search" value="<?php echo $this->input->get('search_text')?>" autocomplete="off">
 
                                     <span class="fa fa-search search-ico-default" id="search-default"></span>
                                     <span class="fa fa-times" id="search-ico-close"></span>
@@ -188,12 +209,50 @@
                                     </i>
                                 </button>
                             </li>
-                            <li>
-                                <a href="<?php echo base_url("home/notifications") ?>" class="btn-basket basket">
+                            <?php if (isset($siteNotifications)) { ?>
+                            <li class="dropdown notification">
+                                <a href="javascript:void(0)" class="btn-basket basket">
                                     <i class="fa fa-bell" style="zoom: 100%;">
-                                        <span class="badge badge-icon">0</span>
+                                        <span class="badge badge-icon"><?php echo $notificationCount ?></span>
                                     </i>
                                 </a>
+                            <?php } ?>
+                                <?php if (isset($siteNotifications)) { ?>
+                                <div class="dropdown-menu dropdown-menu-xl">
+                                <!-- Dropdown header -->
+                                <div class="padd10">
+                                <h6 class="text-sm">You have <strong class="text-primary"><?php echo $notificationCount ?></strong> notifications.</h6>
+                                </div>
+                                <!-- List group -->
+                            
+                                <div class="list-group list-group-flush">
+                                    <?php foreach($siteNotifications as $notification) { ?>
+                                    <a href="<?php echo $notification['redirection']  ?>" class="list-group-item list-group-item-action">
+                                        <div class="d_flex">
+                                        <div class="col-auto">
+                                            <!-- Avatar -->
+                                            <img alt="Image placeholder" src="<?php echo empty($notification['sender']['image'])?base_url('public/images/user-placeholder.png'):$notification['sender']['image'] ?>" class="avatar">
+                                        </div>
+                                        <div class="col ml10">
+                                            <div class="d__flex">
+                                            <div>
+                                                <h4 class=""><?php echo $notification['name'] ?></h4>
+                                            </div>
+                                            <div class="text-right text-muted">
+                                                <small><?php echo convert_date_time_format("Y-m-d H:i:s", $notification['created_at'], 'g:i A, M d Y') ?></small>
+                                            </div>
+                                            </div>
+                                            <p><?php echo $notification['message'] ?></p>
+                                        </div>
+                                        </div>
+                                    </a>
+                                    <?php } ?>
+                                </div>
+                            
+                                <!-- View all -->
+                                <a href="<?php echo base_url("home/notifications") ?>" class="view_all">View all</a>
+                                </div>
+                                <?php } ?>
                             </li>
                         </ul>
                     </div>

@@ -111,8 +111,6 @@ class BaseController extends REST_Controller
             );
         }
 
-
-
         if ($userData) {
             if ($userData['user_status'] == BLOCKED) {
                 $this->response(
