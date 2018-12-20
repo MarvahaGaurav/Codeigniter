@@ -422,7 +422,7 @@ class QuotesController extends BaseController
             $id = encryptDecrypt($project_id, "decrypt");
             $this->load->model(["Project", "ProjectRooms", "UtilModel"]);
             $this->load->config('css_config');
-            $this->data['css'] = $this->config->item('basic-with-font-awesome');
+            $this->data['css'] = $this->config->item('quotes-project-details');
             $this->data['js'] = 'level-listing';
             $this->data['userInfo'] = $this->userInfo;
             $roomParams['where']['project_id'] = $id;

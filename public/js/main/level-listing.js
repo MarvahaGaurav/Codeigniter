@@ -6,22 +6,27 @@ requirejs.config({
     bootstrap: "bootstrap.min",
     common: "web/common",
     jqueryScrollbar: "plugin/jquery.scrollbar.min",
-    jqueryStickyTable: "jquery.stickytable.min"  
+    jqueryStickyTable: "jquery.stickytable.min",
+    datetimepicker: "bootstrap-datetimepicker",
+    moment_js: "moment"
   },
   shim: {
     //dependencies
     bootstrap: ['jquery'],
     common: ['bootstrap'],
     jqueryScrollbar: ['jquery'],
-    jqueryStickyTable: ['bootstrap']      
+    jqueryStickyTable: ['bootstrap'],
+    datetimepicker: ['bootstrap'],
+    moment_js: ["datetimepicker"]
   }
 });
 
 requirejs(
-  ["jquery", "bootstrap", "common", "jqueryScrollbar", "jqueryStickyTable"],
+  ["jquery", "bootstrap", "common", "jqueryScrollbar", "jqueryStickyTable", "datetimepicker", "moment_js"],
   function ($) {
     //jquery table here  
-      
+    $('#datetimepicker1').datetimepicker();
+
     $(".levels-listing-wrapper").on('click', function (event) {
       var targetEvent = $(event.target);
       if (targetEvent.hasClass('level-btn')) {
@@ -31,13 +36,13 @@ requirejs(
       }
     });
 
-    $("#final-price-submit").on("click", function () {  
+    $("#final-price-submit").on("click", function () {
       var self = this,
         $self = $(this),
         $installerSubmitPrice = $("#installer-submit-price");
 
       var formData = getFormData($installerSubmitPrice);
-     
+
       var text = $self.text();
       $.ajax({
         url: window.location.protocol + "//" + window.location.host + "/xhttp/projects/installer/price",
@@ -48,9 +53,9 @@ requirejs(
           var html = $self.html().trim();
           $self.html("<i class='fa fa-circle-o-notch fa-spin'></i> " + html);
         },
-        success: function(response) {
+        success: function (response) {
           if (response.success) {
-              window.location.reload();
+            window.location.reload();
           }
         },
         error: function (error) {
@@ -59,17 +64,17 @@ requirejs(
       })
     });
 
-    $("#final-quote-email-now").on("click", function () { 
+    $("#final-quote-email-now").on("click", function () {
       var self = this,
         $self = $(this),
         $installerSubmitPrice = $("#installer-submit-price");
-        
+
 
       var formData = getFormData($installerSubmitPrice);
       var text = $self.text();
 
       //return false;
-  
+
       $.ajax({
         url: window.location.protocol + "//" + window.location.host + "/xhttp/projects/installer/quotePrice",
         method: "POST",
@@ -79,11 +84,11 @@ requirejs(
           var html = $self.html().trim();
           $self.html("<i class='fa fa-circle-o-notch fa-spin'></i> " + html);
         },
-        success: function(response) {
+        success: function (response) {
           if (response.success) {
-              //window.location.reload();
-              $('#project-final-price-modal').modal('hide');
-              $('#send-email-to-customer').modal('show');
+            //window.location.reload();
+            $('#project-final-price-modal').modal('hide');
+            $('#send-email-to-customer').modal('show');
 
           }
         },
@@ -93,19 +98,19 @@ requirejs(
       })
     });
 
-    $("#send-email-to-customer").on("click", function () { 
+    $("#send-email-to-customer").on("click", function () {
       var self = this,
         $self = $(this),
         $installerSubmitData = $("#installer-send-email");
 
-        //console.log($installerSubmitData);
+      //console.log($installerSubmitData);
 
       var formData = getFormData($installerSubmitData);
       var text = $self.text();
-      
+
       var email = $('contact-email').val();
 
-      if(formData.email=='') {
+      if (formData.email == '') {
         console.log("please enter email");
         return false;
       }
@@ -118,10 +123,10 @@ requirejs(
           var html = $self.html().trim();
           $self.html("<i class='fa fa-circle-o-notch fa-spin'></i> " + html);
         },
-        success: function(response) {
+        success: function (response) {
           if (response.success) {
-              //window.location.reload();
-              window.location.href=window.location.protocol + "//" + window.location.host+"/home/quotes/awaiting";
+            //window.location.reload();
+            window.location.href = window.location.protocol + "//" + window.location.host + "/home/quotes/awaiting";
           }
         },
         error: function (error) {
@@ -131,9 +136,9 @@ requirejs(
       })
     });
 
-    
 
-    
+
+
 
 
 
@@ -209,7 +214,7 @@ requirejs(
         dataType: "json",
         beforeSend: function () {
           var html = $self.html().trim();
-          $self.html("<i class='fa fa-circle-o-notch fa-spin'></i> "+html);
+          $self.html("<i class='fa fa-circle-o-notch fa-spin'></i> " + html);
         },
         success: function (response) {
           if (response.success) {
