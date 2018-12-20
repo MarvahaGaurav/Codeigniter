@@ -187,7 +187,7 @@ class EmployeeController extends BaseController
 
         $fields = 'SQL_CALC_FOUND_ROWS erm.*,u.user_id,u.first_name as full_name,email,user_type,is_owner,IF(image !="",image,"") as image,IF(image_thumb !="",image_thumb,"") as image_thumb';
         $myemployeerequests = $this->Common_model->EemployeeRequestsbyUser($fields, $userData['user_id'], $userData['company_id'], 0, $offset);
-        $offset = $myemployeerequests['count'] + RECORDS_PER_PAGE;
+        $offset = $offset + RECORDS_PER_PAGE;
         if ((int)$myemployeerequests['count'] <= (int)$offset) {
             $offset = -1;
         }

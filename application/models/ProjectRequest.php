@@ -15,6 +15,28 @@
             $this->tableName = "project_requests as pr";
         }
 
+        /**
+         * Check for Installer for a given request
+         *
+         * @param int $projectId
+         * @param int $companyId
+         * @return array
+         */
+        public function checkRequestForInstaller($projectId, $companyId)
+        {
+            $this->db->select("company_id")
+                ->from($this->tableName)
+                ->join("project_request_installers as pri", "pri.request_id=pr.id")
+                ->where('pr.project_id', $projectId)
+                ->where('pri.company_id', $companyId)
+                ->limit(1);
+
+            $query = $this->db->get();
+
+            $result = $query->row_array();
+
+            return $result;
+        }
 
 
         /**

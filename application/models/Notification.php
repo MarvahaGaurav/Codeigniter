@@ -30,6 +30,10 @@ class Notification extends BaseModel
             ->where('receiver_id', $params['user_id'])
             ->order_by('id', 'DESC');
 
+        if (isset($params['is_read']) && in_array((int)$params['is_read'], [0,1], true)) {
+            $this->db->where('is_read', $params['is_read']);
+        }
+
         if (isset($params['limit']) && is_numeric($params['limit']) && (int)$params['limit'] > 0) {
             $this->db->limit((int)$params['limit']);
         }

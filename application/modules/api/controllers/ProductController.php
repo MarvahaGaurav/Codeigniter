@@ -727,7 +727,7 @@ class ProductController extends BaseController
 
         $this->load->model(['ProductSpecification', 'ProductMountingTypes']);
         $this->load->helper(['db']);
-
+        
         $this->benchmark->mark('start');
         $additionalFields = '';
         if ($isLogin) {

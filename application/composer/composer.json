@@ -1,14 +1,17 @@
 {
     "autoload": {
         "psr-4": {
-            "DatabaseExceptions\\" : "database/src",
-            "Encryption\\" : "encryption/src"
+            "DatabaseExceptions\\": "database/src",
+            "Encryption\\": "encryption/src"
         }
     },
     "require": {
         "aws/aws-sdk-php": "3.52",
         "guzzlehttp/guzzle": "^6.3",
-        "php-ffmpeg/php-ffmpeg": "^0.13.0"
+        "php-ffmpeg/php-ffmpeg": "^0.13.0",
+        "mpdf/mpdf": "^7.1",
+        "paragonie/random_compat": "<9.99",
+        "phpoffice/phpexcel": "^1.8"
     },
     "require-dev": {
         "vlucas/phpdotenv": "^2.5"

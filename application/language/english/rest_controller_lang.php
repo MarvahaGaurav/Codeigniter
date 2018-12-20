@@ -229,3 +229,4 @@ $lang['view_text'] = 'View';
 $lang['add_text'] = 'Add';
 $lang['edit_text'] = 'Edit';
 $lang['delete_text'] = 'Delete';
+$lang['quotation_mail_success'] = 'You quotation has been sent to %s';
