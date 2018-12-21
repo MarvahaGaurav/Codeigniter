@@ -26,6 +26,7 @@ $route['xhttp/projects/installer/sendmail']   = "ProjectPriceController/sendMail
 $route['xhttp/projects/rooms/decrement-count'] = 'ProjectRoomController/decrementRoomCount';
 $route['xhttp/projects/rooms/increment-count'] = 'ProjectRoomController/incrementRoomCount';
 $route['xhttp/projects/rooms/products/articles'] =  'ProjectProductController/searchProductArticlesByRoom';
+$route['xhttp/projects/rooms/products/allarticles'] = 'ProjectProductController/searchProductAssessories';
 $route['xhttp/check-email'] = 'UserController/checkEmail';
 $route['xhttp/check-phone-number'] = 'UserController/checkPrimaryPhoneNumber';
 $route['xhttp/check-alternate-phone-number'] = 'UserController/checkAlternatePhoneNumber';

@@ -442,6 +442,7 @@ class ProjectProductController extends BaseController
 
             $this->load->config('css_config');
             $this->data['css'] = $this->config->item('basic-with-font-awesome');
+            $this->data['js'] = 'search_assessories_quick';
 
             $projectId = encryptDecrypt($projectId, "decrypt");
             $roomId = encryptDecrypt($roomId, "decrypt");
@@ -502,9 +503,14 @@ class ProjectProductController extends BaseController
                 $this->handleTechnicianChargesCheck($projectId, 'web');
             }
 
+
+            $this->data['searchData'] = json_encode([
+                'room_id' => $roomId
+            ]);
             $params['room_id'] = $roomId;
 
             $data = $this->Product->roomProducts($params);
+
 
             if (isset($projectRoomId) && !empty($projectRoomId)) {
                 $projectRoomProductData = $this->UtilModel->selectQuery('product_id', 'project_room_products', [

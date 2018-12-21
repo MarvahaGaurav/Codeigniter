@@ -251,6 +251,7 @@ class ProjectController extends BaseController
                 if ($this->form_validation->run()) {
                     $update = [
                         "number" => trim($post['project_number']),
+                        "levels" =>  (int)trim($post['levels']),
                         "name" => trim($post['project_name']),
                         "address" => trim($post['address']),
                         "lat" => trim($post['address_lat']),
@@ -272,6 +273,33 @@ class ProjectController extends BaseController
                     ]);
 
                     $this->load->model("UtilModel");
+
+                    $levelsCount = (int)trim($post['levels']);
+                    //echo $levelsCount;die;
+                    $levelsData = [];
+
+                    if (in_array((int)$this->userInfo['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], true)) {
+                        $insert['company_id'] = (int)$this->userInfo['company_id'];
+                    }
+
+                    if ((int)$this->userInfo['user_type'] === INSTALLER &&
+                        (int)$this->userInfo['is_owner'] === ROLE_OWNER
+                        && strlen(trim($post['installers'])) > 0) {
+                        $insert['installer_id'] = encryptDecrypt(trim($post['installers']), 'decrypt');
+                    }
+
+                    
+
+                    foreach (range(1, $levelsCount) as $key => $level) {
+                        $levelsData[$key] = [
+                            'project_id' => $projectId,
+                            'level' => $level
+                        ];
+                    }
+
+                    $this->load->model("UtilModel");
+
+                    $this->UtilModel->insertBatch('project_levels', $levelsData);
 
                     if ($this->db->trans_status() === true) {
                         $this->db->trans_commit();
@@ -298,6 +326,8 @@ class ProjectController extends BaseController
      */
     public function delete($projectId)
     {
+        $this->load->helper('json_helper');
+        
         $this->activeSessionGuard();
         $this->data['userInfo'] = $this->userInfo;
         $this->load->config('css_config');
@@ -326,6 +356,7 @@ class ProjectController extends BaseController
             show404($this->lang->line('project_not_found'), base_url('/home/applications'));
         }
 
+        
         if ((in_array((int)$this->userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) &&
             (int)$this->userInfo['user_id'] !== (int)$projectData['user_id']) || (in_array((int)$this->userInfo['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], true) &&
             (int)$this->userInfo['company_id'] !== (int)$projectData['company_id'])) {
@@ -347,7 +378,11 @@ class ProjectController extends BaseController
                         $this->db->trans_commit();
                         $this->session->set_flashdata("flash-message", $this->lang->line('project_deleted'));
                         $this->session->set_flashdata("flash-type", "success");
-                        redirect(base_url("home/projects"));
+                        json_dump([
+                            'success' => true,
+                            'message' => $this->lang->line('project_deleted')
+                        ]);
+                        //redirect(base_url("home/projects"));
                     } else {
                         throw new Exception("Something Went Wrong", 500);
                     }

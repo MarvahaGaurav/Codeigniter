@@ -67,7 +67,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($quotations as $quotation) { ?>
+                        <?php foreach ($quotations as $key=>$quotation) { ?>
                         <tr>
                             <td class="op-semibold"><?php echo $quotation['project_name'] ?></td>
                             <td><?php echo $quotation['customer_name'] ?></td>
@@ -84,7 +84,13 @@
                                 <a href="<?php echo base_url("home/quotes/projects/" . encryptDecrypt($quotation['project_id'])."/".encryptDecrypt($quotation['request_id'])) ?>" class="tb-view-list" title="View">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                 </a>
+                                <?php if ((((in_array((int)$userInfo['user_type'], [INSTALLER], true) && $userInfo['is_owner']==ROLE_OWNER )) || ((in_array((int)$userInfo['user_type'], [INSTALLER], true) && $permission['quote_delete']==1 && $userInfo['is_owner']=ROLE_EMPLOYEE)))) { ?>
+                                <a href="javascript:void(0)" class="confirmation-action-xhttp project-action"  title="<?php echo $this->lang->line('delete_text') ?>"  data-redirect="<?php echo base_url(uri_string()) ?>" data-target="#quote-<?php echo $key ?>" data-json='<?php echo $quotation['quotation_data'] ?>' data-url="<?php echo base_url('home/quotes/' . encryptDecrypt($quotation['request_id']) . '/delete') ?>" data-title="<?php echo $this->lang->line('delete_quote') ?>" data-message="<?php echo $this->lang->line('delete_quote_confirmation') ?>">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                </a>
+                                <?php }?>
                             </td>
+                            
                         </tr>
                         <?php } ?>
                     </tbody>

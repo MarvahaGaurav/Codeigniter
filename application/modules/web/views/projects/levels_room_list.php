@@ -26,13 +26,13 @@
                 (in_array((int)$userInfo['user_type'], [INSTALLER], true) && !(bool)$hasAddedFinalPrice) ||
                 (in_array((int)$userInfo['user_type'], [WHOLESALER, ELECTRICAL_PLANNER], true))
             ) { ?>
-            <?php if(((in_array((int)$userInfo['user_type'], [INSTALLER], true) && $userInfo['is_owner']==ROLE_OWNER) || (in_array((int)$userInfo['user_type'], [INSTALLER], true) && isset($permission['project_add']) && $permission['project_add']==1 && $userInfo['is_owner']==ROLE_EMPLOYEE))) { ?>
+            
                 <div class="button-wrapper-two pull-right">
                 <a href="<?php echo base_url("home/projects/" . $projectId . "/levels/{$level}/rooms/applications"); ?>" class="custom-btn btn-width save">
                     <i class="fa fa-plus fa-p-circle"></i>Add Room
                 </a>
             </div>
-           <?php  } ?>
+           
            
             <?php }?>
         </div>

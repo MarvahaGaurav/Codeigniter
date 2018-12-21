@@ -221,7 +221,7 @@ class ProjectProductController extends BaseController
                 ];
             }
 
-            $articleData = $this->ProductSpecification->articlesByRooms($this->requestData['room_id'], $params);
+            $articleData = $this->ProductSpecification->fetchArticles($this->requestData['room_id'], $params);
 
             if (empty($articleData)) {
                 json_dump([
@@ -235,6 +235,83 @@ class ProjectProductController extends BaseController
                 $product['product_id'] = encryptDecrypt($product['product_id']);
                 return $product;
             }, $articleData);
+
+            json_dump([
+                'code' => HTTP_OK,
+                'success' => true,
+                'data' => $articleData,
+                'message' => $this->lang->line('product_found')
+            ]);
+        } catch (\Exception $error) {
+            json_dump(
+                [
+                    "code" => HTTP_INTERNAL_SERVER_ERROR,
+                    "success" => false,
+                    "error" => "Internal Server Error",
+                ]
+            );
+        }
+    }
+
+    /**
+     * Search Product assessories for a given room
+     *
+     * @return void
+     */
+    public function searchProductAssessories()
+    {
+        try {
+            $this->requestData = $this->input->get();
+
+            
+
+            $this->validateArticlesByRoom();
+
+            $this->load->model(['ProductSpecification']);
+
+            $search = isset($this->requestData['search'])&&is_string($this->requestData['search'])&&strlen(trim($this->requestData['search'])) > 0?
+                            trim($this->requestData['search']):'';
+
+            $params = [];
+
+            if (strlen($search) > 0) {
+                $params = [
+                    'where' => ["(product_specifications.title LIKE '%{$search}%')" => null]
+                ];
+            }
+
+            $additionalFields = '';
+        
+            $params['left_join']['project_room_products as prp'] = 'prp.article_code=product_specifications.articlecode AND prp.product_id=product_specifications.product_id ';
+            //$params['left_join']['products as p'] = 'p.id=prp.product_id ';
+            $additionalFields = ', IFNULL(prp.id, 0) as is_selected';
+            $params['limit'] = 20;
+        
+
+            $articleData = $this->ProductSpecification->fetchArticlesData($params, $additionalFields);
+            $articleData = $articleData['data'];
+
+            
+
+            $articleData = array_map(function($product) {
+                $product['product_id'] = encryptDecrypt($product['product_id']);
+                return $product;
+            }, $articleData);
+
+            //pr($articleData);
+
+            if (empty($articleData)) {
+                json_dump([
+                    'code' => HTTP_NOT_FOUND,
+                    'success' => false,
+                    'message' => $this->lang->line('no_data_found')
+                ]);
+            }   
+
+            // $articleData = array_map(function($product) {
+            //     $product['product_id'] = encryptDecrypt($product['product_id']);
+            //     return $product;
+            // }, $articleData);
 
             json_dump([
                 'code' => HTTP_OK,

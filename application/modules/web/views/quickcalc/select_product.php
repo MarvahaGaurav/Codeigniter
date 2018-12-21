@@ -168,7 +168,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <!-- <form id="search-form" method="GET" action=""> -->
-                    <input type="text" data-search-data='<?php echo $searchData ?>' name="search" class="search-product-box search-box" value="" id="product-search"  placeholder="Search Products...">
+                    <input type="text" data-search-data='<?php echo $searchData ?>' name="search" class="search-product-box search-box" value="" id="product-search-accessories"  placeholder="Search Products...">
                 <!-- </form> -->
                 <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>

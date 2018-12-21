@@ -14,6 +14,12 @@
 
         <div class="page-heading">
             <h1 class="page-title">Accessory Products</h1>
+            <div class="search-wrapper search-wrapper-width-2 fawe-icon-position">
+            <div class="searchBtn">
+                    <input type="text" id="product-search-text-accessories" name="search" class="search-box" value="" placeholder="Search Companies">
+                    <input type="button" id="product-search-button-assessories" value="Search" class="search-btn">
+                </div>
+            </div>
         </div>
 
         <!-- Title Section and Search -->
@@ -59,5 +65,33 @@
         </div> -->
         <!-- no record found end -->
 
+    </div>
+</div>
+
+<div id="productModal" class="modal fade" role="dialog">    
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- <form id="search-form" method="GET" action=""> -->
+                    <input type="text" data-search-data='<?php echo $searchData ?>' name="search" class="search-product-box search-box" value="" id="product-search-accessories"  placeholder="Search Products...">
+                <!-- </form> -->
+                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button> -->
+            </div>
+            <div class="modal-body">
+                <div class="thumb-wrapper">
+                    <div class="row" id="search_product_div">
+                    <!-- no record found -->
+                    <!-- no record found -->
+                    </div> 
+                            <div class="no-record text-center no-article-found-container">
+            <img src="<?php echo base_url('public/images/svg/sg_logo_placeholder.svg') ?>" alt="Note Paper">
+            <p><?php echo $this->lang->line('no_product_found') ?></p>
+            <p><?php echo $this->lang->line('search_products_prompt') ?></p>
+        </div>                   
+                </div>
+            </div>            
+        </div>
     </div>
 </div>

@@ -137,6 +137,7 @@ $route['home/quotes'] = 'web/QuotesController';
 $route['home/quotes/awaiting'] = 'web/QuotesController/awaiting';
 $route['home/quotes/submitted'] = 'web/QuotesController/submitted';
 $route['home/quotes/approved'] = 'web/QuotesController/approved';
+$route['home/quotes/(:any)/delete'] = 'web/QuotesController/delete/$1';
 $route['home/quotes/projects/(:any)/(:any)'] = 'web/QuotesController/project_details/$1/$2'; 
 $route['home/quotes/projects/(:any)/(:any)/quotations/levels'] = 'web/QuotesController/levelsListing/$1/$2';
 $route['home/quotes/projects/(:any)/(:any)/edit']='web/QuotesController/editProject/$1/$2';
