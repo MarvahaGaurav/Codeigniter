@@ -71,8 +71,6 @@ class QuotesController extends BaseController
     public function customerQuotesList($projectId,$requestId)
     {
         try {
-
-           
             $this->activeSessionGuard();
             $this->userTypeHandling([PRIVATE_USER, BUSINESS_USER], base_url('home/applications'));
 
@@ -104,14 +102,10 @@ class QuotesController extends BaseController
             $params['search'] = $search;
             $params['project_id'] = $projectId;
 
-            
-            
             $data = $this->ProjectQuotation->quotations($params);
 
             $this->load->helper(['utility']);
             $data['data'] = $this->parseQuotationData($data['data']);
-
-            
 
             $this->data['quotes'] = $data['data'];
             $this->data['search'] = $search;
@@ -445,7 +439,7 @@ class QuotesController extends BaseController
             $id = encryptDecrypt($project_id, "decrypt");
             $this->load->model(["Project", "ProjectRooms", "UtilModel"]);
             $this->load->config('css_config');
-            $this->data['css'] = $this->config->item('basic-with-font-awesome');
+            $this->data['css'] = $this->config->item('quotes-project-detail');
             $this->data['js'] = 'level-listing';
             $this->data['userInfo'] = $this->userInfo;
             $roomParams['where']['project_id'] = $id;

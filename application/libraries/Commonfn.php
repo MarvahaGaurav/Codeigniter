@@ -171,6 +171,23 @@ class Commonfn {
         return (bool)$status ? true : false;
     }
 
+    public function sendMailWithAttachment($subject, $data, $mailtemplate, $attachments) {
+        $this->CI->email->from($this->CI->config->item('from'), $this->CI->config->item('from_name'));
+        $this->CI->email->reply_to($this->CI->config->item('reply_to'), $this->CI->config->item('reply_to_name'));
+        $this->CI->email->to($data['email']);
+        $this->CI->email->subject($subject);
+        $body = $this->CI->load->view('mail/' . $mailtemplate, $data, TRUE);
+        $this->CI->email->message($body);
+
+        foreach ($attachments as $attachment) {
+            $this->CI->email->attach($attachment['attachment'], '', $attachment['name'], $attachment['mime']);
+        }
+
+        $status = $this->CI->email->send();
+        
+        return (bool)$status ? true : false;
+    }
+
     public function thumb_create($filename, $filepath, $targetpath, $width = 150, $height = 150) {
         try {
 

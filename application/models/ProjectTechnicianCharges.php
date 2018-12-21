@@ -40,4 +40,18 @@ class ProjectTechnicianCharges extends BaseModel
 
         return $result;
     }
+
+    public function technicianProjectCharges($projectId)
+    {
+        $this->db->select('id')
+            ->from('project_technician_charges as ptc')
+            ->where("ptc.project_id", $projectId)
+            ->limit(1);
+
+        $query = $this->db->get();
+
+        $result = $query->row_array();
+
+        return $result;
+    }
 }

@@ -157,6 +157,28 @@ class ProjectQuotation extends BaseModel
     }
 
     /**
+     * Quotation
+     *
+     * @param int $projectId
+     * @return array
+     */
+    public function quotation($projectId, $companyId)
+    {
+        $this->db->select('pq.*')
+            ->from('project_quotations as pq')
+            ->join('project_requests as pr', 'pr.id=pq.request_id')
+            ->where('pr.project_id', $projectId)
+            ->where('pq.company_id', $companyId)
+            ->limit(1);
+
+        $query = $this->db->get();
+
+        $result = $query->row_array();
+
+        return $result;
+    }
+
+    /**
      * Get quotation price by installer
      *
      * @param array $params

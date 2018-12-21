@@ -27,6 +27,18 @@ class TestController extends BaseController
         print_r($data);
     }
 
+    public function pdf_get()
+    {
+        $this->load->library(['Generate_pdf', "Commonfn", "Excel"]);
+
+        // $content = $this->generate_pdf->getPdf(325, 1, time() . '.pdf', "string");
+        $path = $this->excel->generateXls(325, 1);
+
+        $this->commonfn->sendMailWithAttachment('PDF', ['email' => 'rana.amritanshu@appinventiv.com'], 'sendquote', $path, time() . '.xls','');
+
+        unlink($path);
+    }
+
     public function index_post()
     {
         $url = generate_video_thumbnail("https://s3.amazonaws.com/appinventiv-development/smartguide_sample_video.mp4");
