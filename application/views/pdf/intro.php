@@ -21,7 +21,7 @@
         </div>
         <div class="pull-right">
             <div class="logo">
-                <a href="#"><img src="<?php echo BASE_URL . '/smart/public/images/sg.png'; ?>" alt="Logo" title="Logo"></a>
+                <a href="#"><img src="<?php echo BASE_URL . '/public/images/logo.png'; ?>" alt="Logo" title="Logo"></a>
             </div>
         </div>
 

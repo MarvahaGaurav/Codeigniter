@@ -6,6 +6,7 @@ requirejs.config({
         bootstrap: "bootstrap.min",
         common: "web/common",
         jqueryScrollbar: "plugin/jquery.scrollbar.min",
+        searchProduct: "web/helpers/select_product_search"
         //        helper: 'web/helpers/select_product_quick'
 
     },
@@ -14,12 +15,13 @@ requirejs.config({
         bootstrap: ['jquery'],
         common: ['bootstrap'],
         jqueryScrollbar: ['jquery'],
+        searchProduct: ['bootstrap']
         //        helper: [ 'jquery' ]
     }
 });
 
 requirejs(
-    ["jquery", "bootstrap", "common", "jqueryScrollbar"],
+    ["jquery", "bootstrap", "common", "jqueryScrollbar", "searchProduct"],
     function ($) {
 
         var project_room_id = $("#project_room_id").val();
@@ -80,7 +82,7 @@ requirejs(
             });
         });
 
-        $("#product-search").on('keydown', function () {
+        $("#product-search").on('keyup', function () {
             var self = this,
                 $self = $(self),
                 searchData = JSON.parse($self.attr("data-search-data")),

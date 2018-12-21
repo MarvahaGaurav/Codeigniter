@@ -21,8 +21,6 @@ class Test extends MY_Controller {
     {
         parent::__construct();
         $this->load->model('generatePdf');
-        $this->admininfo         = $this->session->userdata('admininfo');
-        $this->data['admininfo'] = $this->admininfo;
     }
 
 
@@ -46,8 +44,6 @@ class Test extends MY_Controller {
         $this->pdf->use_kwt              = true;
 
     }
-
-
 
     /**
      *
