@@ -12,19 +12,20 @@ class Excel extends MY_Controller {
     private $company_id  = 0;
     private $leveData    = [];
     private $UserDetails = null;
+    private $ci;
 
     function __construct()
     {
-        parent::__construct();
-        $this->load->model('GeneratePdf');
+        $this->ci =&get_instance();
+        $this->ci->load->model('GeneratePdf');
     }
 
 
 
     private function __data()
     {
-        $allProducts       = $this->generatePdf->getProjectAllProduct($this->project_id);
-        $this->UserDetails = $this->generatePdf->getUserDetails($this->project_id);
+        $allProducts       = $this->ci->GeneratePdf->getProjectAllProduct($this->project_id);
+        $this->UserDetails = $this->ci->GeneratePdf->getUserDetails($this->project_id);
 
         foreach ($allProducts as $values) {
             //Temp Arrays
@@ -46,7 +47,7 @@ class Excel extends MY_Controller {
 
 
 
-    public function index($project_id, $company_id)
+    public function generateXls($project_id, $company_id)
     {
         try {
             $this->project_id = $project_id;
@@ -108,10 +109,14 @@ class Excel extends MY_Controller {
             }
             // set active sheet
             $doc->setActiveSheetIndex(0);
-            $objWriter = PHPExcel_IOFactory::createWriter($doc, 'Excel5');
+            $objWriter = PHPExcel_IOFactory::createWriter($doc, 'Excel2007');
 
             //force user to download the Excel file without writing it to server's HD
-            $objWriter->save('php://output');
+            $path = getcwd() . '/upload/' . $project_id . $company_id . '.xls';
+
+            $objWriter->save($path);
+
+            return $path;
         }
         catch (Exception $ex) {
 
@@ -305,7 +310,7 @@ class Excel extends MY_Controller {
     private function generateRandomName()
     {
         $randName = substr(md5(date('m/d/y h:i:s:u')), 0, 8);
-        if (file_exists(TMP_FILES . $randName . '.html')) {
+        if (file_exists(getcwd() . '/upload/' . $randName . '.html')) {
             return $this->generateRandomName();
         }
         return $randName;

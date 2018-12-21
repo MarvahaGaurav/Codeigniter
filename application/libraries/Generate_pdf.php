@@ -194,27 +194,28 @@ class Generate_pdf {
 
                 $cals      = $calc['cal'];
                 $calsArray = json_decode($cals, true);
-
                 /**
                  * Main calculation
                  */
-                $this->pdf->AddPageByArray([
-                    "orientation" => "P"
-                ]);
-                $introHtml = $this->ci->load->view('pdf/lightcalculations', ['calc' => $calc], TRUE);
-                $svg_pdf   = str_replace('"', '\'', $introHtml);
-                $this->pdf->WriteHTML($svg_pdf);
+                if (isset($calsArray['projectionTop'], $calsArray['projectionSide'], $calsArray['projectionFront'])) {
+                    $this->pdf->AddPageByArray([
+                        "orientation" => "P"
+                    ]);
+                    $introHtml = $this->ci->load->view('pdf/lightcalculations', ['calc' => $calc], TRUE);
+                    $svg_pdf   = str_replace('"', '\'', $introHtml);
+                    $this->pdf->WriteHTML($svg_pdf);
 
-                $this->pdf->AddPageByArray([
-                    "orientation" => "P"
-                ]);
+                    $this->pdf->AddPageByArray([
+                        "orientation" => "P"
+                    ]);
 
-                $introHtml = $this->ci->load->view('pdf/views/top',
-                                               ['projectionTop' => $calsArray['projectionTop'], 'projectionSide' => $calsArray['projectionSide'], 'projectionFront' => $calsArray['projectionFront']],
-                                               TRUE);
-                $svg_pdf   = str_replace('"', '\'', $introHtml);
+                    $introHtml = $this->ci->load->view('pdf/views/top',
+                                                ['projectionTop' => $calsArray['projectionTop'], 'projectionSide' => $calsArray['projectionSide'], 'projectionFront' => $calsArray['projectionFront']],
+                                                TRUE);
+                    $svg_pdf   = str_replace('"', '\'', $introHtml);
 
-                $this->pdf->WriteHTML($svg_pdf);
+                    $this->pdf->WriteHTML($svg_pdf);
+                }
             }
         }
         catch (Exception $ex) {

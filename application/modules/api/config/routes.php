@@ -40,6 +40,9 @@ $route['api/v1/products/mounting-types'] = 'ProductController/mountingTypes';
 $route['api/v1/rooms/(:any)/mounting-types/(:any)/products'] =
 'ProductController/roomProducts/room_id/$1/mounting_type/$2';
 
+$route['api/v1/projects/mail'] = 'QuotationMailController/sendProjectQuotationMail';
+$route['api/v1/requests/mail'] = 'QuotationMailController/sendRequestQuotationMail';
+
 $route['api/v1/requests/rooms/(:any)/fast-calc'] = 'ProjectRoomController/roomQuickCalcResponse/project_room_id/$1';
 $route['api/v1/requests/(:any)/projects/(:any)/levels'] =  'RequestLevelsController/index/request_id/$1/project_id/$2';
 $route['api/v1/requests/(:any)/projects/(:any)/levels/(:any)/rooms'] =  'RequestRoomsController/quotationRooms/request_id/$1/project_id/$2/levels/$3';

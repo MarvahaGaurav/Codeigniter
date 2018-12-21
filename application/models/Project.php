@@ -100,6 +100,26 @@ class Project extends BaseModel
         return $result;
     }
 
+    /**
+     * Fetch product
+     *
+     * @param int $projectId
+     * @return array
+     */
+    public function project($projectId)
+    {
+        $this->db->select('*')
+            ->from('projects')
+            ->where('id', $projectId)
+            ->limit(1);
+        
+        $query = $this->db->get();
+
+        $result = $query->row_array();
+
+        return $result;
+    }
+
 
     public function getQuotesOnProject($data){
         $this->load->model('Admin_ProjectQuotations');

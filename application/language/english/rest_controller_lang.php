@@ -234,3 +234,6 @@ $lang['delete_project_confirmation'] = 'Are you sure want to delete this project
 
 $lang['quotation_mail_success'] = 'You quotation has been sent to %s';
 
+$lang['quotations_for_project'] = 'Quotations: %s';
+$lang['quotation_file_name'] = '%s Quotes';
+

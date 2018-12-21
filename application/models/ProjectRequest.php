@@ -24,11 +24,25 @@
          */
         public function checkRequestForInstaller($projectId, $companyId)
         {
-            $this->db->select("company_id")
+            $this->db->select("company_id, project_id")
                 ->from($this->tableName)
                 ->join("project_request_installers as pri", "pri.request_id=pr.id")
                 ->where('pr.project_id', $projectId)
                 ->where('pri.company_id', $companyId)
+                ->limit(1);
+
+            $query = $this->db->get();
+
+            $result = $query->row_array();
+
+            return $result;
+        }
+
+        public function request($requestId)
+        {
+            $this->db->select('*')
+                ->from('project_requests as pr')
+                ->where('id', $requestId)
                 ->limit(1);
 
             $query = $this->db->get();
