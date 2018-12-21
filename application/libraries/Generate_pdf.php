@@ -1,22 +1,23 @@
 <?php
 defined("BASEPATH") or exit("No direct access script allowed");
 
-class Generate_pdf {
-    private $admininfo  = "";
-    private $data       = [];
-    private $pdf        = null;
+class Generate_pdf
+{
+    private $admininfo = "";
+    private $data = [];
+    private $pdf = null;
     private $project_id = 0;
-    private $details    = [];
+    private $details = [];
     private $calculated = [];
-    private $products   = [];
+    private $products = [];
     private $allDetails = [];
-    private $company    = [];
-    private $user       = [];
+    private $company = [];
+    private $user = [];
     private $ci;
 
     function __construct()
     {
-        $this->ci =&get_instance();
+        $this->ci = &get_instance();
         $this->ci->load->model('generatePdf');
     }
 
@@ -29,23 +30,24 @@ class Generate_pdf {
     {
 
         $this->pdf = new Mpdf\Mpdf([
-            'setAutoTopMargin'    => 'stretch',
-            'autoMarginPadding'   => 3,
+            'setAutoTopMargin' => 'stretch',
+            'autoMarginPadding' => 3,
             'setAutoBottomMargin' => 'stretch',
-            'tempDir'             => getcwd() . '/temp',
-            'mode'                => 'utf-8',
-            'format'              => 'A4-P']);
+            'tempDir' => getcwd() . '/temp',
+            'mode' => 'utf-8',
+            'format' => 'A4-P'
+        ]);
 
         $this->pdf->shrink_tables_to_fit = 1;
-        $this->pdf->table_error_report   = false;
-        $this->pdf->use_kwt              = true;
+        $this->pdf->table_error_report = false;
+        $this->pdf->use_kwt = true;
 
     }
 
     /**
      *
      */
-    public function getPdf($project_id, $company_id, $fileName, $mode)
+    public function getPdf($project_id, $company_id, $fileName, $mode, $flow = "project", $tcoOn = false)
     {
         try {
             $this->project_id = $project_id;
@@ -102,7 +104,9 @@ class Generate_pdf {
             /**
              * Light Product Details
              */
-            $this->tcoDetails();
+            if ((bool)$tcoOn) {
+                $this->tcoDetails();
+            }
 
 
             /**
@@ -123,9 +127,10 @@ class Generate_pdf {
             if ($mode === "string") {
                 $content = $this->pdf->Output($fileName, 'S');
                 return $content;
+            } else if ($mode === "download") {
+                $this->pdf->Output($fileName, 'D');
             }
-        }
-        catch (Exception $ex) {
+        } catch (Exception $ex) {
             print_r($ex->getMessage());
         }
 
@@ -153,26 +158,26 @@ class Generate_pdf {
 
     private function __hitCalculation($detail)
     {
-        $temp['details']    = $detail;
-        $curlData           = [
-            "authToken"          => "28c129e0aca88efb6f29d926ac4bab4d",
-            "roomLength"         => floatval($detail['room_length']),
-            "roomWidth"          => floatval($detail['room_width']),
-            "roomHeight"         => floatval($detail['room_height']),
-            "roomType"           => $detail['room_name'],
+        $temp['details'] = $detail;
+        $curlData = [
+            "authToken" => "28c129e0aca88efb6f29d926ac4bab4d",
+            "roomLength" => floatval($detail['room_length']),
+            "roomWidth" => floatval($detail['room_width']),
+            "roomHeight" => floatval($detail['room_height']),
+            "roomType" => $detail['room_name'],
             "workingPlaneHeight" => floatval($detail['working_plane_height']),
-            "suspension"         => floatval($detail['suspension_height']),
-            "illuminance"        => floatval($detail['lux_value']),
-            "luminaireCountInX"  => floatval($detail['luminaries_count_x']),
-            "luminaireCountInY"  => floatval($detail['luminaries_count_y']),
-            "rhoCeiling"         => floatval($detail['rho_ceiling']),
-            "rhoWall"            => floatval($detail['rho_wall']),
-            "rhoFloor"           => floatval($detail['rho_floor']),
-            "maintenanceFactor"  => floatval($detail['maintainance_factor']),
-            "uldUri"             => $detail['uld']
+            "suspension" => floatval($detail['suspension_height']),
+            "illuminance" => floatval($detail['lux_value']),
+            "luminaireCountInX" => floatval($detail['luminaries_count_x']),
+            "luminaireCountInY" => floatval($detail['luminaries_count_y']),
+            "rhoCeiling" => floatval($detail['rho_ceiling']),
+            "rhoWall" => floatval($detail['rho_wall']),
+            "rhoFloor" => floatval($detail['rho_floor']),
+            "maintenanceFactor" => floatval($detail['maintainance_factor']),
+            "uldUri" => $detail['uld']
         ];
         $this->ci->load->helper("quick_calc_helper");
-        $temp['cal']        = hitCulrQuickCal($curlData);
+        $temp['cal'] = hitCulrQuickCal($curlData);
         $this->calculated[] = $temp;
 
     }
@@ -192,7 +197,7 @@ class Generate_pdf {
 
             foreach ($this->calculated as $calc) {
 
-                $cals      = $calc['cal'];
+                $cals = $calc['cal'];
                 $calsArray = json_decode($cals, true);
                 /**
                  * Main calculation
@@ -201,24 +206,25 @@ class Generate_pdf {
                     $this->pdf->AddPageByArray([
                         "orientation" => "P"
                     ]);
-                    $introHtml = $this->ci->load->view('pdf/lightcalculations', ['calc' => $calc], TRUE);
-                    $svg_pdf   = str_replace('"', '\'', $introHtml);
+                    $introHtml = $this->ci->load->view('pdf/lightcalculations', ['calc' => $calc], true);
+                    $svg_pdf = str_replace('"', '\'', $introHtml);
                     $this->pdf->WriteHTML($svg_pdf);
 
                     $this->pdf->AddPageByArray([
                         "orientation" => "P"
                     ]);
 
-                    $introHtml = $this->ci->load->view('pdf/views/top',
-                                                ['projectionTop' => $calsArray['projectionTop'], 'projectionSide' => $calsArray['projectionSide'], 'projectionFront' => $calsArray['projectionFront']],
-                                                TRUE);
-                    $svg_pdf   = str_replace('"', '\'', $introHtml);
+                    $introHtml = $this->ci->load->view(
+                        'pdf/views/top',
+                        ['projectionTop' => $calsArray['projectionTop'], 'projectionSide' => $calsArray['projectionSide'], 'projectionFront' => $calsArray['projectionFront']],
+                        true
+                    );
+                    $svg_pdf = str_replace('"', '\'', $introHtml);
 
                     $this->pdf->WriteHTML($svg_pdf);
                 }
             }
-        }
-        catch (Exception $ex) {
+        } catch (Exception $ex) {
             echo $ex->getMessage();
         }
 
@@ -229,9 +235,9 @@ class Generate_pdf {
     private function setTableOfContent()
     {
         $this->pdf->TOCpagebreakByArray([
-            'TOCuseLinking'    => 1,
-            'toc_preHTML'      => '<p>Dear “Name of customer” Product overview Page x Prices and installations cost (only if activated)</p>',
-            'toc_postHTML'     => '<p>I hope that everting is according to agreement, otherwise please contact me accordantly, if you wish to change anything. Please contact me when you are ready to go into the details,
+            'TOCuseLinking' => 1,
+            'toc_preHTML' => '<p>Dear “Name of customer” Product overview Page x Prices and installations cost (only if activated)</p>',
+            'toc_postHTML' => '<p>I hope that everting is according to agreement, otherwise please contact me accordantly, if you wish to change anything. Please contact me when you are ready to go into the details,
 but if I do not here from you within the next days, I will contact
 you to here more about the timeframe.</p>',
             'toc_bookmarkText' => 'SG',
@@ -249,10 +255,10 @@ you to here more about the timeframe.</p>',
         /**
          * Header
          */
-        $header = $this->ci->load->view('pdf/header', ['company' => $this->company], TRUE);
+        $header = $this->ci->load->view('pdf/header', ['company' => $this->company], true);
         $this->pdf->SetHTMLHeader($header, 0, false);
 
-        $footer = $this->ci->load->view('pdf/footer', ['company' => $this->company], TRUE);
+        $footer = $this->ci->load->view('pdf/footer', ['company' => $this->company], true);
         $this->pdf->SetHTMLFooter($footer, 0);
 
     }
@@ -265,21 +271,21 @@ you to here more about the timeframe.</p>',
     private function introPage()
     {
         $this->company = $this->ci->generatePdf->getCompanyDetails($this->company_id);
-        $this->user    = $this->ci->generatePdf->getUserDetails($this->project_id);
+        $this->user = $this->ci->generatePdf->getUserDetails($this->project_id);
 
-        $data      = [
-            "name"           => $this->user['first_name'],
-            "company"        => $this->company['company_name'],
-            "line1"          => $this->company['company_address'],
-            "line2"          => "Noida, Uttar Pradesh - 201301",
-            "att"            => "Smart Guide",
-            "project_name"   => $this->user['project_name'],
+        $data = [
+            "name" => $this->user['first_name'],
+            "company" => $this->company['company_name'],
+            "line1" => $this->company['company_address'],
+            "line2" => "Noida, Uttar Pradesh - 201301",
+            "att" => "Smart Guide",
+            "project_name" => $this->user['project_name'],
             "project_number" => $this->user['project_number'],
-            "valid_date"     => date('Y-m-d h:i:s'),
+            "valid_date" => date('Y-m-d h:i:s'),
             "contact_person" => $this->user['first_name'],
-            "user_type"      => $this->user['user_type']
+            "user_type" => $this->user['user_type']
         ];
-        $introHtml = $this->ci->load->view('pdf/intro', $data, TRUE);
+        $introHtml = $this->ci->load->view('pdf/intro', $data, true);
         $this->pdf->WriteHTML($introHtml);
 
     }
@@ -295,7 +301,7 @@ you to here more about the timeframe.</p>',
             "orientation" => "P"
         ]);
         $this->pdf->TOC_Entry("Warranty details", "Warranty details	", 0);
-        $introHtml = $this->ci->load->view('pdf/warranty', '', TRUE);
+        $introHtml = $this->ci->load->view('pdf/warranty', '', true);
         $this->pdf->WriteHTML($introHtml);
 
     }
@@ -309,7 +315,7 @@ you to here more about the timeframe.</p>',
             "orientation" => "P"
         ]);
         $this->pdf->TOC_Entry("About SG", "About SG", 0);
-        $introHtml = $this->ci->load->view('pdf/about', '', TRUE);
+        $introHtml = $this->ci->load->view('pdf/about', '', true);
         $this->pdf->WriteHTML($introHtml);
 
     }
@@ -337,13 +343,13 @@ you to here more about the timeframe.</p>',
     {
 
         $this->allDetails = $this->ci->generatePdf->getProjectAllProduct($this->project_id);
-        $htmlFinal        = '';
-        $tmp              = [];
+        $htmlFinal = '';
+        $tmp = [];
         foreach ($this->allDetails as $detail) {
             $tmp[$detail['room_id']][] = $detail;
         }
 
-        $htmlFinal .= $this->ci->load->view('pdf/productPrice', ['tmp' => $tmp], TRUE);
+        $htmlFinal .= $this->ci->load->view('pdf/productPrice', ['tmp' => $tmp], true);
         //exit;
 
         return $htmlFinal;
@@ -363,7 +369,7 @@ you to here more about the timeframe.</p>',
                 $this->pdf->AddPageByArray([
                     "orientation" => "P"
                 ]);
-                $introHtml = $this->ci->load->view('pdf/productDetail', $value, TRUE);
+                $introHtml = $this->ci->load->view('pdf/productDetail', $value, true);
                 $this->pdf->WriteHTML($introHtml);
             }
         }
@@ -384,7 +390,7 @@ you to here more about the timeframe.</p>',
             $this->pdf->AddPageByArray([
                 "orientation" => "P"
             ]);
-            $introHtml = $this->ci->load->view('pdf/tco', ['tco' => $t], TRUE);
+            $introHtml = $this->ci->load->view('pdf/tco', ['tco' => $t], true);
             $this->pdf->WriteHTML($introHtml);
         }
 
@@ -397,7 +403,7 @@ you to here more about the timeframe.</p>',
      */
     private function addCss()
     {
-        $css        = BASE_URL . '/public/css/pdf.css';
+        $css = BASE_URL . '/public/css/pdf.css';
         $stylesheet = file_get_contents($css);
         $this->pdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
 

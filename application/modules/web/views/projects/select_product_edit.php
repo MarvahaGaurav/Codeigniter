@@ -91,11 +91,11 @@
                     <!-- no record found -->
                     <!-- no record found -->
                     </div> 
-                            <div class="no-record text-center no-article-found-container">
-            <img src="<?php echo base_url('public/images/svg/sg_logo_placeholder.svg') ?>" alt="Note Paper">
-            <p><?php echo $this->lang->line('no_product_found') ?></p>
-            <p><?php echo $this->lang->line('search_products_prompt') ?></p>
-        </div>                   
+                    <div class="no-record text-center no-article-found-container">
+                        <img src="<?php echo base_url('public/images/svg/sg_logo_placeholder.svg') ?>" alt="Note Paper">
+                        <p><?php echo $this->lang->line('no_product_found') ?></p>
+                        <p><?php echo $this->lang->line('search_products_prompt') ?></p>
+                    </div>                   
                 </div>
             </div>            
         </div>

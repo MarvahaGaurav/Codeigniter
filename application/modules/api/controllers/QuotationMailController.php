@@ -121,12 +121,12 @@ class QuotationMailController extends BaseController
                 [
                     [
                         "attachment" => $content,
-                        "name" => sprintf($this->lang->line('quotation_file_name'), $projectData['name']),
+                        "name" => sprintf($this->lang->line('quotation_file_name'), $projectData['name']) .".pdf",
                         "mime" => "application/pdf"
                     ],
                     [
                         "attachment" => $path,
-                        "name" => sprintf($this->lang->line('quotation_file_name'), $projectData['name']),
+                        "name" => sprintf($this->lang->line('quotation_file_name'), $projectData['name']) . ".xls",
                         "mime" => ""
                     ]
                 ]
