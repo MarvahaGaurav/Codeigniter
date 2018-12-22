@@ -1,17 +1,20 @@
 (function ($) {
-    var $productSearchText = $("#product-search-text"),
-        $productSearchBtn = $("#product-search-button"),
-        $productSearch = $("#product-search"),
+    var $productSearchText = $("#product-search-text-accessories"),
+        $productSearchBtn = $("#product-search-button-assessories"),
+        $productSearch = $("#product-search-accessories"),
         $productModal = $("#productModal");
 
     $productSearchBtn.on("click", function () {
         var productSearch = $productSearchText.val();
+        
+        
 
         productSearch = productSearch.trim();
+        
 
         if (productSearch.length == 0) {
             displayErrorMessage("Search cannot be empty");
-        } else {
+        } else { 
             $productSearch.val(productSearch);
             $productSearch.trigger("keyup");
             $productModal.modal('show');
@@ -33,4 +36,9 @@
         }
     });
 
+    var checkArticle = function(product_id) {
+        
+    }
+
+    window.checkArticle = checkArticle;
 })($);

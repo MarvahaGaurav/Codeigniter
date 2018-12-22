@@ -257,6 +257,11 @@ class QuotesController extends BaseController
 
             $data = $this->ProjectRequest->submittedRequestList($params);
 
+            $this->load->helper(['utility']);
+            $data['data'] = $this->parseQuotationDataPartially($data['data']);
+
+            
+            
             if (!empty($data['data'])) {
                 $projectIds = array_column($data['data'], 'project_id');
                 $price = $this->ProjectRoomQuotation->quotationPrice($this->userInfo['company_id'], $projectIds);
@@ -265,10 +270,13 @@ class QuotesController extends BaseController
                 $data['data'] = $this->processPriceData($data['data']);
             }
 
+           
             $this->data['quotations'] = $data['data'];
             $this->load->library('Commonfn');
             $this->data['links'] = $this->commonfn->pagination(uri_string(), $data['count'], $params['limit']);
             $this->data['search'] = $search;
+
+            
 
             website_view('quotes/submitted', $this->data);
         } catch (\Exception $error) {
@@ -395,6 +403,20 @@ class QuotesController extends BaseController
                                                 );
 
             unset($quotation['discount'], $quotation['additional_product_charges']);
+            return $quotation;
+        }, $data);
+
+        return $data;
+    }
+
+    private function parseQuotationDataPartially($data)
+    {
+        $data = array_map(function ($quotation) {
+            $quotation['quotation_data'] = json_encode([
+                $this->data["csrfName"] = $this->security->get_csrf_token_name() =>
+                    $this->data["csrfToken"] = $this->security->get_csrf_hash(),
+                'quotation_id' => encryptDecrypt($quotation['request_id'])
+            ]);
             return $quotation;
         }, $data);
 
@@ -1454,6 +1476,79 @@ class QuotesController extends BaseController
             website_view('tco/tco_quotes', $this->data);
         } catch (\Exception $error) {
             show404($this->lang->line('internal_server_error'), base_url(''));
+        }
+    }
+
+    /**
+     * delete quote
+     *
+     * @return void
+     */
+    public function delete($requestId)
+    {
+        $this->load->helper('json_helper');
+        
+        $this->activeSessionGuard();
+        $this->data['userInfo'] = $this->userInfo;
+        $this->load->config('css_config');
+        $this->data['css'] = $this->config->item('create-project');
+
+        $this->userTypeHandling([INSTALLER], base_url('home/applications'));
+
+        $this->handleEmployeePermission([INSTALLER], ['quote_delete'], base_url('home/applications'));
+
+        $languageCode = "en";
+
+
+        $requestId = encryptDecrypt($requestId, 'decrypt');
+        $this->load->model("UtilModel");
+
+        if (empty($requestId) || !is_numeric($requestId)) {
+            show404($this->lang->line('bad_request'), base_url('/home/applications'));
+        }
+
+        $quotationData = $this->UtilModel->selectQuery('*', 'project_quotations', [
+            'where' => ['request_id' => $requestId, 'language_code' => $languageCode], 'single_row' => true
+        ]);
+
+        if (empty($quotationData)) {
+            show404($this->lang->line('quote_not_found'), base_url('/home/applications'));
+        }
+
+        
+        if ((in_array((int)$this->userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) &&
+            (int)$this->userInfo['user_id'] !== (int)$quotationData['user_id']) || (in_array((int)$this->userInfo['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], true) &&
+            (int)$this->userInfo['company_id'] !== (int)$quotationData['company_id'])) {
+            show404($this->lang->line('forbidden_action'), base_url(''));
+        }
+
+        
+
+        $this->data['quotesData'] = $quotationData;
+
+        try {
+                    $this->load->model("UtilModel");
+
+                    $this->UtilModel->deleteData('project_quotations', [
+                        'where' => ['request_id' => $requestId]
+                    ]);
+
+                    if ($this->db->trans_status() === true) {
+                        $this->db->trans_commit();
+                        $this->session->set_flashdata("flash-message", $this->lang->line('quote_deleted'));
+                        $this->session->set_flashdata("flash-type", "success");
+                        json_dump([
+                            'success' => true,
+                            'message' => $this->lang->line('quote_deleted')
+                        ]);
+                        //redirect(base_url("home/projects"));
+                    } else {
+                        throw new Exception("Something Went Wrong", 500);
+                    }
+            
+            website_map_modal_view("projects/main", $this->data);
+        } catch (Exception $ex) {
+            $this->db->trans_rollback();
         }
     }
 

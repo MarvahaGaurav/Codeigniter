@@ -122,9 +122,59 @@ class ProductSpecification extends BaseModel
 
         $query = $this->db->get();
 
+        //echo $this->db->last_query();die;
+
         $data['data'] = $query->result_array();
         $data['count'] = $this->db->query('SELECT FOUND_ROWS() as count')->row()->count;
 
         return $data;
     }
+
+    public function fetchArticlesData($params, $additionalFields = '')
+    {
+        if (isset($params['left_join']) && is_array($params['left_join']) && !empty($params['left_join'])) {
+            foreach ($params['left_join'] as $joinTable => $joinCondition) {
+                $this->db->join($joinTable, $joinCondition, 'left');
+            }
+        }
+
+        $this->db->select('SQL_CALC_FOUND_ROWS image, product_specifications.product_id,project_room_id, articlecode, title, uld,
+        product_specifications.type, driver, length, width, height' . $additionalFields, false)
+            ->from($this->tableName)
+            ->order_by('product_specifications.title', 'ASC');
+
+        if (isset($params['limit']) && is_numeric($params['limit']) && (int)$params['limit'] > 0) {
+            $this->db->limit((int)$params['limit']);
+        }
+
+        if (isset($params['offset']) && is_numeric($params['offset']) && (int)$params['offset'] > 0) {
+            $this->db->offset((int)$params['offset']);
+        }
+
+        if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
+            foreach ($params['where'] as $tableColumn => $searchValue) {
+                $this->db->where($tableColumn, $searchValue);
+            }
+        }
+
+        if (isset($params['join']) && is_array($params['join']) && !empty($params['join'])) {
+            foreach ($params['join'] as $joinTable => $joinCondition) {
+                $this->db->join($joinTable, $joinCondition);
+            }
+        }
+
+        
+        
+
+        $query = $this->db->get();
+
+        //echo $this->db->last_query();die;
+
+        $data['data'] = $query->result_array();
+        $data['count'] = $this->db->query('SELECT FOUND_ROWS() as count')->row()->count;
+
+        return $data;
+    }
+
+    
 }

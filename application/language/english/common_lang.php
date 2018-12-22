@@ -259,3 +259,10 @@ $lang['send-quote-later']   = 'Send Quote Later';
 $lang['send-email-now']     = 'Send Email Now';
 $lang['select'] = 'Select';
 $lang['project_deleted'] = 'Your Project has been removed';
+$lang['delete_quote_confirmation'] = 'Are you sure want to delete this quote?';
+$lang['delete_quote'] = 'Delete Quote';
+$lang['quote_not_found'] = 'Quote not found';
+$lang['quote_deleted'] = 'Quote deleted sucessfully';
+
+
+

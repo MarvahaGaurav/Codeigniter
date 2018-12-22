@@ -250,6 +250,7 @@ class ProjectController extends BaseController
                 if ($this->form_validation->run()) {
                     $update = [
                         "number" => trim($post['project_number']),
+                        "levels" =>  (int)trim($post['levels']),
                         "name" => trim($post['project_name']),
                         "address" => trim($post['address']),
                         "lat" => trim($post['address_lat']),
@@ -271,6 +272,33 @@ class ProjectController extends BaseController
                     ]);
 
                     $this->load->model("UtilModel");
+
+                    $levelsCount = (int)trim($post['levels']);
+                    //echo $levelsCount;die;
+                    $levelsData = [];
+
+                    if (in_array((int)$this->userInfo['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], true)) {
+                        $insert['company_id'] = (int)$this->userInfo['company_id'];
+                    }
+
+                    if ((int)$this->userInfo['user_type'] === INSTALLER &&
+                        (int)$this->userInfo['is_owner'] === ROLE_OWNER
+                        && strlen(trim($post['installers'])) > 0) {
+                        $insert['installer_id'] = encryptDecrypt(trim($post['installers']), 'decrypt');
+                    }
+
+                    
+
+                    foreach (range(1, $levelsCount) as $key => $level) {
+                        $levelsData[$key] = [
+                            'project_id' => $projectId,
+                            'level' => $level
+                        ];
+                    }
+
+                    $this->load->model("UtilModel");
+
+                    $this->UtilModel->insertBatch('project_levels', $levelsData);
 
                     if ($this->db->trans_status() === true) {
                         $this->db->trans_commit();

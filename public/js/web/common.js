@@ -273,7 +273,6 @@ $(document).ready(function () {
                     $self.html("<span class='fa fa-circle-o-notch fa-spin'></span>" + html);
                 },
                 success: function (response) {
-                    
                     $self.find("span.fa-circle-o-notch").remove();
                     if (response.success) {
                         if (dataAction == "remove") {

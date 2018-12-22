@@ -30,7 +30,7 @@
             <div class="row form-inline-wrapper">
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                     <div class="form-group">
-                        <label class="labelTxt">Project Number <span>(Optional)</span></label>
+                        <label class="labelTxt">Project Number <span></span></label>
                         <div class="form-group-field">
                             <input value="<?php echo $projectData['number'] ?>" name="project_number" id="project_number" type="text" placeholder="242388">
                         </div>
@@ -47,8 +47,17 @@
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                     <div class="form-group">
                         <label class="labelTxt">Project Level</label>
+                        <!-- <div class="form-group-field">
+                            <input type="text"  value="<?php echo $projectData['levels'] ?>" >
+                        </div> -->
                         <div class="form-group-field">
-                            <input type="text" class="disallow-cursor" value="<?php echo $projectData['levels'] ?>" readonly>
+                            <select name="levels" id="levels">
+                                <?php foreach (range(1, 10) as $num) : ?>
+                                <option value="<?php echo $num ?>" <?php if ($projectData['levels'] == $num) echo ' selected="selected"'; ?>><?php echo $num ?></option>
+                                <?php endforeach ?>
+                                <option value="others">Other</option>
+                            </select>
+                            <span class="customArrow"></span>
                         </div>
                     </div>
                 </div>

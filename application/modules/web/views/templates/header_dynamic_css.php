@@ -60,8 +60,7 @@
                             -->
                             <div class="sl-nav navbar-right">
                                 <ul>
-                                <li><b>Language</b><i class="fa fa-angle-down" aria-hidden="true"></i>
-                                    <div class="triangle"></div>
+                                <li><a href="javascript:void(0)" class="lang"><b>Language</b><i class="fa fa-angle-down" aria-hidden="true"></i></a>
                                     <ul>
                                     <li><a href="#!"><i class="sl-flag flag-gb"></i> <span>English</span></a></li>
                                     <li><a href="#!"><i class="sl-flag flag-no"></i> <span>Norsk</span></a></li>
