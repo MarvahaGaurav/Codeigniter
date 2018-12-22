@@ -18,12 +18,12 @@ class Inspiration extends BaseModel {
     public function inspirations($params)
     {
         $this->db->select('SQL_CALC_FOUND_ROWS id as inspiration_id, title, description, inspirations.status,
-        inspirations.address, inspirations.lat, inspirations.lng, company_name, first_name as user_name,
+        inspirations.address, inspirations.lat, inspirations.lng, IFNULL(company_name, "") as company_name, first_name as user_name,
         inspirations.created_at, inspirations.updated_at,
         inspirations.created_at_timestamp, inspirations.updated_at_timestamp', false)
             ->from('inspirations')
             ->join('ai_user as users', 'users.user_id=inspirations.user_id')
-            ->join("company_master as company", "company.company_id=inspirations.company_id")
+            ->join("company_master as company", "company.company_id=inspirations.company_id", "left")
             ->order_by('id', "DESC");
         
         if (isset($params['limit']) && is_numeric($params['limit']) && (int)$params['limit'] > 0) {
@@ -41,7 +41,7 @@ class Inspiration extends BaseModel {
         }
 
         $query = $this->db->get();
-
+        // echo $this->db->last_query();die;
         $data['data'] = $query->result_array();
         $data['count'] = $this->db->query('SELECT FOUND_ROWS() as count')->row()->count;
 

@@ -305,7 +305,11 @@ class Employee extends REST_Controller
                             'where' => ['company_id' => $companyId]
                         ], true);
                         $companyName = isset($companyInfo['company_name'])?$companyInfo['company_name']:'';
-                        $this->approvePermission($myEmployeedetail['requested_to'], $myEmployeedetail['requested_by'], $companyName);
+                        if ($postDataArr['action'] === 1) {
+                            $this->approvePermission($myEmployeedetail['requested_to'], $myEmployeedetail['requested_by'], $companyName);
+                        } else {
+                            $this->rejectRequest();
+                        }
                         $this->response(array('code' => SUCCESS_CODE, 'msg' => $this->lang->line('process_success'), 'result' => (object)[]));
                     }else{                        
                         $this->response(array('code' => TRY_AGAIN_CODE, 'msg' => $this->lang->line('process_failuare'), 'result' => (object)[]));

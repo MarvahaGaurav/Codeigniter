@@ -146,7 +146,7 @@ class ProjectQuotation extends BaseModel
                 $quotation['discounted_price'] = sprintf('%.2f', $quotation['discounted_price']);
                 $quotation['discount_price'] = sprintf("%.2f",(1 - ($quotation['discounted_price']/$sum))*100);
                 $quotation['discount_percent'] = $quotation['discount_price'];
-                $sum += $quotation['additional_product_charges'];
+                $sum = $quotation['discounted_price'] + $quotation['additional_product_charges'];
                 $quotation['subtotal'] = $sum;
                 $quotation['total'] = sprintf("%.2f",get_percentage($sum, $quotation['discount']));
                 return $quotation;

@@ -260,6 +260,8 @@ class InspirationController extends BaseController
             $params['limit'] = API_RECORDS_PER_PAGE;
             $params['language_code'] = $language_code;
 
+            // pd($params);
+
             $data = $this->getInspirationData($params);
 
             $inspirations = $data['data'];

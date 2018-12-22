@@ -314,13 +314,15 @@ class RequestController extends BaseController
             $request['price']['discount'] = (double)$request['discount'];
             $request['price']['accessory_product_charge'] = 0.00;
             $request['price']['main_product_charge'] = 0.00;
-            $request['price']['total'] = get_percentage(
-                ($request['price']['main_product_charge']
-                + $request['price']['accessory_product_charge']
-                + $request['price']['price_per_luminaries']
-                + $request['price']['installation_charges']
-                + $request['price']['additional_product_charges']),
-                $request['price']['discount_price']
+            $roomCharge = $request['price']['price_per_luminaries']+ $request['price']['installation_charges'];
+
+            $roomCharge = get_percentage($roomCharge, $request['price']['discount_price']);
+
+            $request['price']['total'] = $request['price']['main_product_charge']
+            + $request['price']['accessory_product_charge']
+            + get_percentage(
+                ($roomCharge + $request['price']['additional_product_charges']),
+                $request['price']['discount']
             );
             unset($request['additional_product_charges'], $request['discount']);
             return $request;

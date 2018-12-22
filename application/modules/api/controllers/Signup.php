@@ -131,6 +131,7 @@ class Signup extends REST_Controller
      *     description="Required when user type is Installer, with role owner",
      *     type="string"
      *   ),
+     * 
      * @SWG\Parameter(
      *     name="latitude",
      *     in="formData",

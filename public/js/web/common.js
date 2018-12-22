@@ -267,12 +267,12 @@ $(document).ready(function () {
                 data: JSON.parse(dataJson),
                 dataType: 'json',
                 beforeSend: function () {
+                    $self.find("span.fa-circle-o-notch").remove();
+                    var html = $self.html();
                     $self.attr("disabled", "disabled");
-                    $self.prepend("<span class='fa fa-circle-o-notch fa-spin'></span>");
+                    $self.html("<span class='fa fa-circle-o-notch fa-spin'></span>" + html);
                 },
                 success: function (response) {
-                    //console.log(response);
-                    //return false;
                     $self.find("span.fa-circle-o-notch").remove();
                     if (response.success) {
                         if (dataAction == "remove") {
@@ -297,6 +297,9 @@ $(document).ready(function () {
                             window.location.reload();
                         }
                     }
+                }, 
+                complete: function () {
+                    $self.removeAttr("disabled");
                 }
             });
         });
