@@ -44,7 +44,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 block-div">
                     <div class="form-group">
                         <label class="labelTxt">Project Level</label>
                         <!-- <div class="form-group-field">
@@ -53,9 +53,10 @@
                         <div class="form-group-field">
                             <select name="levels" id="levels">
                                 <?php foreach (range(1, 10) as $num) : ?>
-                                <option value="<?php echo $num ?>" <?php if ($projectData['levels'] == $num) {echo ' selected="selected"'; } ; ?>><?php echo $num ?></option>
+                                <option value="<?php echo $num ?>" <?php if ($projectData['levels'] == $num) {echo ' selected="selected"' ;} ?>><?php echo $num ?></option>
                                 <?php endforeach ?>
-                                <option value="others" <?php if($projectData['levels'] > 10) {echo ' selected="selected"'; } ?>>Other</option>
+                                <option value="others" <?php if ($projectData['levels'] >10) {echo ' selected="selected"' ;} ?>>Other</option>
+                                <input type ="hidden" id="project_level_count" value="<?php echo $projectData['levels'] ?>" >
                             </select>
                             <span class="customArrow"></span>
                         </div>
