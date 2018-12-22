@@ -146,7 +146,7 @@
                 <div class="button-wrapper">
                     <?php if (!empty($rooms)) {?>
                         <button type="button" title="<?php echo !empty($rooms)?$this->lang->line("Evaluate_btn_txt"):"" ?>" class="custom-btn btn-margin btn-width save redirectable" id="evaluate" data-redirect-to="<?php echo base_url('home/projects/' . $projectId . '/levels/'. $level .'/rooms/results') ?>" >
-                        <?php echo $this->lang->line("Evaluate_btn_txt") ?>
+                        Continue
                     </button>
                 <?php } ?>
                 <?php if (is_numeric($levelCheck['status']) && (int)$levelCheck['status'] === 0) { ?>

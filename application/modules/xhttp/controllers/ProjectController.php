@@ -2,9 +2,10 @@
 defined("BASEPATH") or exit("No direct script access allowed");
 
 require_once "BaseController.php";
-
+require_once APPPATH . "/libraries/Traits/ProjectDelete.php";
 class ProjectController extends BaseController
 {
+    use ProjectDelete;
     /**
      * Request Data
      *
@@ -102,6 +103,76 @@ class ProjectController extends BaseController
         }
     }
 
+    /**
+     * delete project
+     *
+     * @return void
+     */
+    public function delete()
+    {
+        $this->activeSessionGuard();
+
+        $languageCode = "en";
+
+        $this->requestData = $this->input->post();
+
+        if (isset($this->requestData['project_id'])) {
+            $this->requestData['project_id'] = encryptDecrypt($this->requestData['project_id'], 'decrypt');
+        }
+
+        $this->validateProjectDelete();
+
+        $projectId = $this->requestData['project_id'];
+
+        $projectData = $this->UtilModel->selectQuery('*', 'projects', [
+            'where' => ['id' => $projectId, 'language_code' => $languageCode], 'single_row' => true
+        ]);
+
+        if (empty($projectData)) {
+            json_dump([
+                'success' => false,
+                'msg' => $this->lang->line('no_project_found')
+            ]);
+        }
+
+        if ((in_array((int)$this->userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) &&
+            (int)$this->userInfo['user_id'] !== (int)$projectData['user_id']) || (in_array((int)$this->userInfo['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], true) &&
+            (int)$this->userInfo['company_id'] !== (int)$projectData['company_id'])) {
+            json_dump([
+                'success' => false,
+                'msg' => $this->lang->line('forbidden_action')
+            ]);
+        }
+
+        try {
+
+            $this->projectId = $this->requestData['project_id'];
+            $this->deleteProject();
+
+            $this->load->model("UtilModel");
+
+            if ($this->db->trans_status() === true) {
+                $this->db->trans_commit();
+
+                $this->session->set_flashdata("flash-message", $this->lang->line('project_deleted'));
+                $this->session->set_flashdata("flash-type", "success");
+
+                json_dump([
+                    'success' => true,
+                    'message' => $this->lang->line('project_deleted')
+                ]);
+            } else {
+                throw new Exception("Something Went Wrong", 500);
+            }
+        } catch (Exception $ex) {
+            json_dump(
+                [
+                    "success" => false,
+                    "error" => $this->lang->line('internal_server_error'),
+                ]
+            );
+        }
+    }
 
     /**
      * Validates project clone
@@ -132,5 +203,38 @@ class ProjectController extends BaseController
                 ]
             );
         }
+
+    }
+
+    /**
+     * Validates project clone
+     *
+     * @return void
+     */
+    private function validateProjectDelete()
+    {
+        $this->load->library('form_validation');
+
+        $this->form_validation->set_data($this->requestData);
+
+        $this->form_validation->set_rules([
+            [
+                'field' => 'project_id',
+                'label' => 'Project',
+                'rules' => 'trim|required|is_natural_no_zero'
+            ]
+        ]);
+
+        $status = $this->form_validation->run();
+
+        if (!$status) {
+            json_dump(
+                [
+                    "success" => false,
+                    "error" => $this->lang->line('bad_request'),
+                ]
+            );
+        }
+
     }
 }

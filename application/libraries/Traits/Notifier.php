@@ -162,6 +162,21 @@ trait Notifier
         $this->sendPushNotification($receiverId, $senderId, NOTIFICATION_EMPLOYEE_APPROVED, '', $message);
     }
 
+    private function rejectRequest()
+    {
+        $this->load->model(['Notification']);
+
+        $notification = [
+            'sender_id' => $senderId,
+            'receiver_id' => $receiverId,
+            'type' => NOTIFICATION_EMPLOYEE_REJECTED
+        ];
+
+        $message = sprintf($this->lang->line('notification_request_rejected'), $companyName);
+        $this->Notification->saveNotification($notification);
+        $this->sendPushNotification($receiverId, $senderId, NOTIFICATION_EMPLOYEE_REJECTED, '', $message);
+    }
+
     /**
      * Send silent push notification
      *

@@ -29,3 +29,4 @@ $route['xhttp/projects/rooms/products/articles'] =  'ProjectProductController/se
 $route['xhttp/check-email'] = 'UserController/checkEmail';
 $route['xhttp/check-phone-number'] = 'UserController/checkPrimaryPhoneNumber';
 $route['xhttp/check-alternate-phone-number'] = 'UserController/checkAlternatePhoneNumber';
+$route['xhttp/project/remove'] = 'ProjectController/delete';

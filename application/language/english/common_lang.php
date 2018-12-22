@@ -258,7 +258,4 @@ $lang['final_quote_price_header'] = 'Final quote price';
 $lang['send-quote-later']   = 'Send Quote Later';
 $lang['send-email-now']     = 'Send Email Now';
 $lang['select'] = 'Select';
-$lang['project_deleted'] = 'Project deleted sucessfully';
-
-
-
+$lang['project_deleted'] = 'Your Project has been removed';

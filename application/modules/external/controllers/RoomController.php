@@ -55,7 +55,7 @@ class RoomController extends BaseController
             $this->response($insertData);
         } catch (\Exception $error) {
             $this->response([
-
+                
             ]);
         }
     }
