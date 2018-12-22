@@ -260,6 +260,8 @@ class ProjectController extends BaseController
                         'updated_at_timestamp' => $this->timestamp,
                     ];
 
+                    
+
                     if ((int)$this->userInfo['user_type'] === INSTALLER &&
                         (int)$this->userInfo['is_owner'] === ROLE_OWNER
                         && strlen(trim($post['installers'])) > 0) {
@@ -288,8 +290,12 @@ class ProjectController extends BaseController
                         $insert['installer_id'] = encryptDecrypt(trim($post['installers']), 'decrypt');
                     }
 
-                    
+                    # delete previous levels
+                    $this->UtilModel->deleteData('project_levels', [
+                        'where' => ['project_id' => $projectId]
+                    ]);
 
+                    # insert new ones
                     foreach (range(1, $levelsCount) as $key => $level) {
                         $levelsData[$key] = [
                             'project_id' => $projectId,
@@ -312,6 +318,7 @@ class ProjectController extends BaseController
                 }
             }
             $this->data['js'] = 'project_edit';
+           
             website_map_modal_view("projects/edit_project", $this->data);
         } catch (Exception $ex) {
             $this->db->trans_rollback();

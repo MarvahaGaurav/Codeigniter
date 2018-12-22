@@ -42,8 +42,14 @@ requirejs(
     function ($) {
         var $otherProjectCount = $("#other-project-count");
 
+        $(document).ready(function() {
+            var level =$('#levels :selected').val();
+            if(level=='others') {
+                $("#other-project-count").val(11);
+            }
+        });
         $otherProjectCount.on('keypress', function () {
-            var self = this,
+            var self = $otherProjectCount,
                 $self = $(this),
                 val = parseInt($self.val());
 
