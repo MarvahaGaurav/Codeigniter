@@ -9,13 +9,13 @@
             $quotes ='';
             $url = 'javascript:void(0)';
             if($request_status==QUOTATION_STATUS_QUOTED) {
-                $quotes = 'Awaiting Quotes';
+                $quotes = 'Submitted Quotes';
                 $url = 'home/quotes/submitted';
             } else if($request_status==QUOTATION_STATUS_APPROVED) {
                 $quotes = 'Approved Quotes';
                 $url = 'home/quotes/approved';
             } else if($request_status==QUOTATION_STATUS_REJECTED) {
-                $quotes = 'Rejected Quotes';
+                $quotes = 'Submitted Quotes';
                 $url = 'home/quotes/submitted';
             }else {
                 $quotes = 'Awaiting Quotes';
@@ -53,7 +53,7 @@
                         <th>Room Type</th>
                         <th>Room Dimension</th>
                         <th class="text-center">No. of Rooms</th>
-                        <th class="text-center">Additional Products</th>
+                        <th class="text-center">Products</th>
                         <?php if (((in_array((int)$userInfo['user_type'], [INSTALLER], true) && $userInfo['is_owner']==ROLE_OWNER) || (in_array((int)$userInfo['user_type'], [INSTALLER], true) && isset($permission['quote_add']) && $permission['quote_add']==1 && $userInfo['is_owner']==ROLE_EMPLOYEE))) { ?>
                         <th class="text-center">Installation Price</th>
                         <th class="text-center">Comparison</th>
@@ -72,7 +72,7 @@
                         </td>
                         <td><?php echo "{$room['length']}M x {$room['width']}M x {$room['height']}M" ?></td>
                         <td class="text-center"><?php echo $room['count'] ?> <?php echo (int)$room['count'] > 1?$this->lang->line('room_count_sets_txt'):$this->lang->line('room_count_set_txt') ?></td>
-                        <td class="text-center"><?php echo count($room['products']) - 1 ?></td>
+                        <td class="text-center"><a href="<?php echo base_url('home/quotes/projects/'.$projectId.'/'.$request_id.'/levels/'.$room['level'].'/rooms/'.encryptDecrypt($room['room_id']).'/project-rooms/'.encryptDecrypt($room['project_room_id']).'/selected-products') ?>" class="tb-view-list" title="View List">View List</a></td>
                         <?php if (((in_array((int)$userInfo['user_type'], [INSTALLER], true) && $userInfo['is_owner']==ROLE_OWNER) || (in_array((int)$userInfo['user_type'], [INSTALLER], true) && isset($permission['quote_add']) && $permission['quote_add']==1 && $userInfo['is_owner']==ROLE_EMPLOYEE))) { ?>
                         <td class="text-center">
                         <?php if (empty($room['price'])) { ?>
@@ -131,7 +131,7 @@
             
             <div class="button-wrapper clearfix">
             
-            <?php if (((in_array((int)$userInfo['user_type'], [INSTALLER], true) && $userInfo['is_owner']==ROLE_OWNER) || (in_array((int)$userInfo['user_type'], [INSTALLER], true) && isset($permission['quote_add']) && $permission['quote_add']==1 && $userInfo['is_owner']==ROLE_EMPLOYEE)) && !empty($room['price'])) { ?>
+            <?php if (((in_array((int)$userInfo['user_type'], [INSTALLER], true) && $userInfo['is_owner']==ROLE_OWNER) || (in_array((int)$userInfo['user_type'], [INSTALLER], true) && isset($permission['quote_add']) && $permission['quote_add']==1 && $userInfo['is_owner']==ROLE_EMPLOYEE)) && !empty($room['price']) && $request_status!=QUOTATION_STATUS_APPROVED && $request_status!=QUOTATION_STATUS_REJECTED) { ?>
                 <div class="request-quotation-btn-wrapper">
                 <button class="col-md-2 custom-btn save redirectable" data-redirect-to="<?php echo base_url('/home/quotes/projects/' . $projectId.'/'.$request_id) ?>" id="view-installer-button" type="button" >Submit</button>
             </div>

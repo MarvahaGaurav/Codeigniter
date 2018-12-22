@@ -911,7 +911,7 @@ class QuotesController extends BaseController
      * @param string projectRoomId
      * @return void
      */
-    public function selectedProjectProducts($projectId, $level, $roomId, $projectRoomId)
+    public function selectedProjectProducts($projectId,$requestId, $level, $roomId, $projectRoomId)
     {
         try {
 
@@ -927,13 +927,17 @@ class QuotesController extends BaseController
             $projectId = encryptDecrypt($projectId, "decrypt");
             $roomId = encryptDecrypt($roomId, "decrypt");
             $projectRoomId = encryptDecrypt($projectRoomId, "decrypt");
+
             $languageCode = $this->languageCode;
 
             $obj->validationData = ['project_id' => $projectId, 'level' => $level, 'room_id' => $roomId, 'project_room_id' => $projectRoomId];
 
+            
             $obj->validateAccessoryProduct();
 
             $status = $obj->validationRun();
+
+            
 
             if (!$status) {
                 show404($this->lang->line('bad_request'), base_url(''));
@@ -1019,6 +1023,13 @@ class QuotesController extends BaseController
                     'where' => ['project_id' => $projectId]
                 ]);
             }
+
+            $this->data['request_id'] = $requestId;
+
+            $requestId= encryptDecrypt($requestId, "decrypt");
+
+            $this->data['request_status'] = $this->getRequestStatus($requestId);
+
 
             website_view('quotes/project_selected_products', $this->data);
         } catch (\Exception $error) {
@@ -1551,6 +1562,8 @@ class QuotesController extends BaseController
             $this->db->trans_rollback();
         }
     }
+
+    
 
     private function tcoFormHandler($requestData, $toInsert, $projectRoomId, $projectId, $level,$requestId)
     {

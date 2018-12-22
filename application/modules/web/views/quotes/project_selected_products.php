@@ -4,9 +4,27 @@
         <!-- breadcrumb -->
         <ul class="breadcrumb">
             <li><a href="javascript:void(0)">Home</a></li>
-            <li><a href="<?php echo base_url('home/projects/' . $projectId.'/'.$request_id) ?>">Project Details</a></li>
-            <li><a href="<?php echo base_url('home/projects/' . $projectId .'/'.$request_id. '/levels') ?>">Levels</a></li>
-            <li><a href="<?php echo base_url('home/projects/' . $projectId .'/'.$request_id. '/levels/' . $level .'/rooms') ?>">Rooms</a></li>
+            <?php 
+
+            $quotes ='';
+            $url = 'javascript:void(0)';
+            if($request_status==QUOTATION_STATUS_QUOTED) {
+                $quotes = 'Submitted Quotes';
+                $url = 'home/quotes/submitted';
+            } else if($request_status==QUOTATION_STATUS_APPROVED) {
+                $quotes = 'Approved Quotes';
+                $url = 'home/quotes/approved';
+            } else if($request_status==QUOTATION_STATUS_REJECTED) {
+                $quotes = 'Submitted Quotes';
+                $url = 'home/quotes/submitted';
+            }else {
+                $quotes = 'Awaiting Quotes';
+                $url = 'home/quotes/awaiting';
+            }
+            ?>
+            <li><a href="<?php echo base_url($url) ?>"><?php echo $quotes  ?></a></li>
+            <li><a href="<?php echo base_url('home/quotes/projects/' . $projectId.'/'.$request_id) ?>">Project Details</a></li>
+            <li><a href="<?php echo base_url('home/quotes/projects/' . $projectId .'/'.$request_id. '/levels/' . $level .'/rooms') ?>">Rooms</a></li>
             <li class="active">Selected Products</li>
         </ul>
         <!-- //breadcrumb -->
