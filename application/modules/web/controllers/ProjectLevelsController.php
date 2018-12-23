@@ -15,7 +15,9 @@ class ProjectLevelsController extends BaseController
     public function __construct()
     {
         parent::__construct();
+        $this->data['activePage'] = 'projects';
     }
+    
 
     /**
      * Level lisitng in project create flow

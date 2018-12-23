@@ -138,8 +138,9 @@ class ProductSpecification extends BaseModel
             }
         }
 
-        $this->db->select('SQL_CALC_FOUND_ROWS image, product_specifications.product_id,project_room_id, articlecode, title, uld,
-        product_specifications.type, driver, length, width, height' . $additionalFields, false)
+        $this->db->select('SQL_CALC_FOUND_ROWS product_specifications.image, product_specifications.product_id,project_room_id,
+        articlecode, product_specifications.title, uld,
+        product_specifications.type, driver, `length`, width, height' . $additionalFields, false)
             ->from($this->tableName)
             ->order_by('product_specifications.title', 'ASC');
 
@@ -163,12 +164,9 @@ class ProductSpecification extends BaseModel
             }
         }
 
-        
-        
-
         $query = $this->db->get();
 
-        //echo $this->db->last_query();die;
+        // echo $this->db->last_query();die;
 
         $data['data'] = $query->result_array();
         $data['count'] = $this->db->query('SELECT FOUND_ROWS() as count')->row()->count;

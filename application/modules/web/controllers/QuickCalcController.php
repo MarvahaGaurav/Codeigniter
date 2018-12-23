@@ -27,6 +27,7 @@ class QuickCalcController extends BaseController
         if (isset($this->userInfo, $this->userInfo['user_id']) && !empty($this->userInfo['user_id'])) {
             $this->data['userInfo'] = $this->userInfo;
         }
+        $this->data['activePage'] = 'quickcalc';
     }
 
 

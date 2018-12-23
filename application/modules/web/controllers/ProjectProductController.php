@@ -19,6 +19,7 @@ class ProjectProductController extends BaseController
     {
         parent::__construct();
         $this->load->library('form_validation');
+        $this->data['activePage'] = 'projects';
     }
 
     /**
@@ -431,7 +432,7 @@ class ProjectProductController extends BaseController
     }
 
     /**
-     * Undocumented function
+     * Accessory product listing function
      *
      * @return void
      */
@@ -503,14 +504,9 @@ class ProjectProductController extends BaseController
                 $this->handleTechnicianChargesCheck($projectId, 'web');
             }
 
-
-            $this->data['searchData'] = json_encode([
-                'room_id' => $roomId
-            ]);
             $params['room_id'] = $roomId;
 
             $data = $this->Product->roomProducts($params);
-
 
             if (isset($projectRoomId) && !empty($projectRoomId)) {
                 $projectRoomProductData = $this->UtilModel->selectQuery('product_id', 'project_room_products', [
@@ -530,6 +526,9 @@ class ProjectProductController extends BaseController
             $this->data['roomId'] = encryptDecrypt($roomId);
             $this->data['projectRoomId'] = encryptDecrypt($projectRoomId);
             $this->data['level'] = $level;
+            $this->data['searchData'] = json_encode([
+                'project_room_id' => $this->data['projectRoomId']
+            ]);
 
             website_view('projects/accessory_products', $this->data);
         } catch (\Exception $error) {

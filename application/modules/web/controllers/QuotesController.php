@@ -21,6 +21,7 @@ class QuotesController extends BaseController
         parent::__construct();
         $this->activeSessionGuard();
         $this->load->helper(['datetime']);
+        $this->data['activePage'] = 'quotes';
     }
 
 

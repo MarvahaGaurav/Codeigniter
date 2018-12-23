@@ -11,7 +11,7 @@ class UserController extends BaseController
     {
         parent::__construct();
         $this->activeSessionGuard();
-        
+        $this->data['activePage'] = 'users';
     }
 
     /**

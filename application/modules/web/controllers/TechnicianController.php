@@ -16,6 +16,7 @@ class TechnicianController extends BaseController
         $this->activeSessionGuard();
         $this->load->model("Employee");
         $this->data['userInfo'] = $this->userInfo;
+        $this->data['activePage'] = 'technicians';
         if (!isset($this->userInfo['user_type']) 
             || !in_array($this->userInfo['user_type'], [INSTALLER, WHOLESALER, ARCHITECT, ELECTRICAL_PLANNER]) 
             || ROLE_OWNER !== (int)$this->userInfo['is_owner']

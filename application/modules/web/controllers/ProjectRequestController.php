@@ -20,6 +20,7 @@ class ProjectRequestController extends BaseController
     {
         parent::__construct();
         $this->load->library('form_validation');
+        $this->data['activePage'] = 'projects';
     }
 
     /**

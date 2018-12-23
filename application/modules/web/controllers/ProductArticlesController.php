@@ -19,6 +19,7 @@ class ProductArticlesController extends BaseController
     {
         parent::__construct();
         $this->load->library('form_validation');
+        $this->data['activePage'] = 'projects';
     }
 
     public function articleDetails($projectId, $level, $applicationId, $roomId, $productId, $mounting, $articleCode)

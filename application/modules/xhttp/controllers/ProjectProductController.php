@@ -14,6 +14,7 @@ class ProjectProductController extends BaseController
     {
         parent::__construct();
         $this->load->helper("location");
+        $this->languageCode = 'en';
     }
 
     /**
@@ -261,9 +262,15 @@ class ProjectProductController extends BaseController
     public function searchProductAssessories()
     {
         try {
+            $this->activeSessionGuard();
+
             $this->requestData = $this->input->get();
 
-            
+            $languageCode = $this->languageCode;
+
+            if (isset($this->requestData['project_room_id'])) {
+                $this->requestData['project_room_id'] = encryptDecrypt($this->requestData['project_room_id'], 'decrypt');
+            }
 
             $this->validateArticlesByRoom();
 
@@ -281,24 +288,21 @@ class ProjectProductController extends BaseController
             }
 
             $additionalFields = '';
-        
-            $params['left_join']['project_room_products as prp'] = 'prp.article_code=product_specifications.articlecode AND prp.product_id=product_specifications.product_id ';
-            //$params['left_join']['products as p'] = 'p.id=prp.product_id ';
-            $additionalFields = ', IFNULL(prp.id, 0) as is_selected';
+
+            $params['join']['products p'] = 'p.product_id=product_specifications.product_id';
+            $params['left_join']['project_room_products as prp'] = 'prp.article_code=product_specifications.articlecode AND prp.product_id=product_specifications.product_id AND prp.project_room_id='. $this->requestData['project_room_id'];
+            $params['where']['product_specifications.language_code'] = $languageCode;
+            $additionalFields = ', IFNULL(prp.id, 0) as is_selected, p.title as product_name';
             $params['limit'] = 20;
         
-
             $articleData = $this->ProductSpecification->fetchArticlesData($params, $additionalFields);
             $articleData = $articleData['data'];
 
-            
-
             $articleData = array_map(function($product) {
                 $product['product_id'] = encryptDecrypt($product['product_id']);
+                $product['is_selected'] = (bool)$product['is_selected'];
                 return $product;
             }, $articleData);
-
-            //pr($articleData);
 
             if (empty($articleData)) {
                 json_dump([
@@ -308,16 +312,15 @@ class ProjectProductController extends BaseController
                 ]);
             }   
 
-            // $articleData = array_map(function($product) {
-            //     $product['product_id'] = encryptDecrypt($product['product_id']);
-            //     return $product;
-            // }, $articleData);
-
             json_dump([
                 'code' => HTTP_OK,
                 'success' => true,
                 'data' => $articleData,
-                'message' => $this->lang->line('product_found')
+                'message' => $this->lang->line('product_found'),
+                "csrf" => [
+                    "name" => $this->data["csrfName"] = $this->security->get_csrf_token_name(),
+                    "token" => $this->data["csrfToken"] = $this->security->get_csrf_hash(),
+                ]
             ]);
         } catch (\Exception $error) {
             json_dump(
@@ -343,8 +346,8 @@ class ProjectProductController extends BaseController
 
         $this->form_validation->set_rules([
             [
-                'field' => 'room_id',
-                'label' => 'Room id',
+                'field' => 'project_room_id',
+                'label' => 'Project Room Id',
                 'rules' => 'trim|required|is_natural_no_zero'
             ]
         ]);

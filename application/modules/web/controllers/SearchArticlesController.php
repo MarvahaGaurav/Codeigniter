@@ -16,6 +16,7 @@ class SearchArticlesController extends BaseController
         $this->load->model("UtilModel");
         $this->load->helper('cookie');
         $this->load->library('session');
+        $this->data['activePage'] = 'search';
 
     }
 

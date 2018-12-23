@@ -16,6 +16,7 @@ class QuickCalcLuminaryController extends BaseController
         parent::__construct();
         $this->load->model(['UtilModel']);
         $this->neutralGuard();
+        $this->data['activePage'] = 'quickcalc';
     }
 
     public function luxValues()
