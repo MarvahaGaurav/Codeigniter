@@ -85,6 +85,10 @@
     flex: 10;
 }
 
+.d_flex .bootstrap-select.btn-group .dropdown-toggle .caret {
+    right: 3px;
+}
+
 @media (max-width: 766px) {
     .contact-number-input {
         margin-left: 0.2%;
