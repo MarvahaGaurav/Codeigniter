@@ -82,6 +82,7 @@ $route['home/projects/(:any)/(:any)/quotations'] = 'web/QuotesController/custome
 $route['home/projects/(:any)/edit'] = 'web/ProjectController/edit/$1';
 $route['home/projects/(:any)/delete'] = 'web/ProjectController/delete/$1';
 $route['home/projects/(:any)'] = 'web/ProjectController/project_details/$1';
+$route['home/projects/(:any)/quotations'] = 'web/QuotesController/customerQuotesListViaProject/$1';
 $route['home/projects/(:any)/levels'] = 'web/ProjectLevelsController/levelsListing/$1';
 $route['home/projects/(:any)/levels/(:num)/rooms'] = 'web/ProjectRoomsController/projectCreateRoomListing/$1/$2';
 $route['home/projects/(:any)/levels/(:num)/rooms/results'] = 'web/ProjectRoomsController/projectResultRoomListing/$1/$2';
