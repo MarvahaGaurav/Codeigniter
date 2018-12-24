@@ -17,7 +17,7 @@ class SearchArticlesController extends BaseController
         $this->load->helper('cookie');
         $this->load->library('session');
         $this->data['activePage'] = 'search';
-
+        $this->neutralGuard();
     }
 
 

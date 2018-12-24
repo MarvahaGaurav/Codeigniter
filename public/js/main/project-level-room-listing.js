@@ -222,6 +222,14 @@ requirejs(
       });
     });
 
+    var $viewResultPop = $("#view-result-pop"),
+       toViewResult = $viewResultPop.attr('data-to-view-result'),
+       $viewResultModal = $("#view-result-modal");
+    console.log(toViewResult);
+    if (toViewResult == "true") {
+      $viewResultModal.modal("show");
+    }
+
     $("#mark-as-done-btn").on("click", function () {
       var self = this,
         $self = $(self),

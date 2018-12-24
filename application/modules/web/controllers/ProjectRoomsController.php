@@ -10,7 +10,7 @@ require_once APPPATH . "/libraries/Traits/InstallerPriceCheck.php";
 class ProjectRoomsController extends BaseController
 {
     use ProjectRequestCheck, InstallerPriceCheck, TotalProjectPrice, TechnicianChargesCheck;
-    
+
     /**
      * Post Request Data
      *
@@ -57,8 +57,8 @@ class ProjectRoomsController extends BaseController
             $this->userTypeHandling([INSTALLER, PRIVATE_USER, BUSINESS_USER, WHOLESALER, ELECTRICAL_PLANNER], base_url('home/applications'));
 
             $permissions = $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['project_view'], base_url('home/applications'));
-            
-            $this->data['permission'] = $permissions; 
+
+            $this->data['permission'] = $permissions;
             $this->load->model(['UtilModel', 'ProjectRooms', 'ProjectRoomProducts']);
             $projectData = $this->UtilModel->selectQuery('*', 'projects', [
                 'where' => ['id' => $projectId, 'language_code' => $languageCode], 'single_row' => true
@@ -149,6 +149,9 @@ class ProjectRoomsController extends BaseController
                 'level' => $level
             ]);
 
+            $this->data['roomViewResult'] = $this->session->flashdata("room-view-result");
+            $this->data['viewResultProjectRoomId'] = $this->session->flashdata("view-result-id");
+
             $this->data['csrf'] = json_encode([
                 $this->data["csrfName"] = $this->security->get_csrf_token_name() =>
                     $this->data["csrfToken"] = $this->security->get_csrf_hash()
@@ -207,7 +210,7 @@ class ProjectRoomsController extends BaseController
             $this->userTypeHandling([INSTALLER, PRIVATE_USER, BUSINESS_USER, WHOLESALER, ELECTRICAL_PLANNER], base_url('home/applications'));
 
             $permissions = $this->handleEmployeePermission([INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], ['project_view'], base_url('home/applications'));
-            
+
             $this->load->model(['UtilModel', 'ProjectRooms', 'ProjectRoomProducts']);
             $projectData = $this->UtilModel->selectQuery('*', 'projects', [
                 'where' => ['id' => $projectId, 'language_code' => $languageCode], 'single_row' => true
@@ -588,7 +591,7 @@ class ProjectRoomsController extends BaseController
                 }
             }
 
-            
+
 
             website_view('projects/add_room_dimensions', $this->data);
         } catch (\Exception $error) {
@@ -836,6 +839,8 @@ class ProjectRoomsController extends BaseController
             delete_cookie('selectd_room');
             delete_cookie('add_room_form_data');
 
+            $this->session->set_flashdata("room-view-result", "true");
+            $this->session->set_flashdata("view-result-id", encryptDecrypt($projectRoomId));
             $this->session->set_flashdata("flash-message", $this->lang->line("room_added"));
             $this->session->set_flashdata("flash-type", "success");
             redirect(base_url('home/projects/' . $projectId . '/levels/' . $this->postRequest['level'] . '/rooms'));
@@ -936,6 +941,8 @@ class ProjectRoomsController extends BaseController
             delete_cookie('edit_room_form_data_' + $projectRoomId);
             delete_cookie('project_selected_product_' + $projectRoomId);
 
+            $this->session->set_flashdata("room-view-result", "true");
+            $this->session->set_flashdata("view-result-id", encryptDecrypt($projectRoomId));
             $this->session->set_flashdata("flash-message", $this->lang->line("room_updated"));
             $this->session->set_flashdata("flash-type", "success");
             redirect(base_url('home/projects/' . $projectId . '/levels/' . $this->postRequest['level'] . '/rooms'));
@@ -952,7 +959,7 @@ class ProjectRoomsController extends BaseController
      */
     public function validateRoomsListing()
     {
-        
+
         $this->form_validation->set_data($this->validationData);
 
         $this->form_validation->set_rules([

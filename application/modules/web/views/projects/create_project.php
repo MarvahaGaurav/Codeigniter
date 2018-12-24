@@ -85,7 +85,7 @@
                 <?php if ((int)$userInfo['user_type'] === INSTALLER && (int)$userInfo['is_owner'] === ROLE_OWNER) { ?>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <div class="form-group">
-                        <label class="labelTxt">Installers</label>
+                        <label class="labelTxt">Installers (optional)</label>
                         <div class="form-group-field">
                             <select name="installers" id="isntallers">
                                 <option value="others">Select</option>
