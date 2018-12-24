@@ -50,6 +50,41 @@
     padding: 6px;
 }
 
+.d_flex {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: center;
+}
+
+.de_flex .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
+    width: auto;
+}
+
+.d_flex .contact-number {
+    display: inline-flex !important;
+    width: auto !important;
+    flex: 2;
+}
+
+.d_flex .contact-number.bootstrap-select>.dropdown-toggle {
+    padding: 2px 15px;
+    border: 1px solid #777777;
+    height: 43px;
+    margin-bottom: 0;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    -ms-border-radius: 0;
+    -o-border-radius: 0;
+}
+
+.d_flex .contact-number-input {
+    width: 100% !important;
+    margin-left: -1px;
+    flex: 10;
+}
+
 @media (max-width: 766px) {
     .contact-number-input {
         margin-left: 0.2%;
