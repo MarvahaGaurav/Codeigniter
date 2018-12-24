@@ -227,9 +227,9 @@ class UserController extends BaseController
 
          if ((int)$this->userInfo['is_owner'] === ROLE_OWNER && (int)$this->userInfo['user_type'] === INSTALLER) {
              $discountPrice = $this->UtilModel->selectQuery('company_discount', 'company_master', [
-                 'where' => ['company_id' => $this->userInfo['company_id']]
+                 'where' => ['company_id' => $this->userInfo['company_id']], "single_row" => true
              ]);
-             $this->data['discount_price'] = $discountPrice;
+             $this->data['discount_price'] = $discountPrice['company_discount'];
          }
         
         load_website_views("users/settings", $this->data);

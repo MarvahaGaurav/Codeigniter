@@ -47,7 +47,7 @@
                         <div class="form-group">
                             <div class="pricing">
                             <button type="button" class="minus btn-danger"><span class="glyphicon glyphicon-minus"></span></button>
-                            <input type="text" class="count number-only-field" name="discount_price" value="0" min="0" max="100">
+                            <input type="text" class="count number-only-field" name="discount_price" value="<?php echo isset($discount_price)?sprintf("%.2f", $discount_price):0.00 ?>" min="0" max="100">
                             <button type="button" class="plus btn-success"><span class="glyphicon glyphicon-plus"></span></button>
                             </div>
                             <label for="discount_price" id="discount-price-error" class="error"></label>
