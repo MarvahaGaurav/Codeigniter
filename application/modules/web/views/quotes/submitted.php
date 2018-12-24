@@ -81,7 +81,7 @@
                             <td><?php echo convert_date_time_format('Y-m-d H:i:s', $quotation['request_created_at'], 'h:i A, M d,Y') ?></td>
                             <td><?php echo convert_date_time_format('Y-m-d H:i:s', $quotation['quotation_created_at'], 'h:i A, M d,Y') ?></td>
                             <td class="op-semibold">
-                                <a href="<?php echo base_url("home/quotes/projects/" . encryptDecrypt($quotation['project_id'])."/".encryptDecrypt($quotation['request_id'])) ?>" class="tb-view-list" title="View">
+                                <a href="<?php echo base_url("home/quotes/projects/" . encryptDecrypt($quotation['project_id'])."/".encryptDecrypt($quotation['request_id'])) ?>" class="" title="View">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                 </a>
                                 <?php if ((((in_array((int)$userInfo['user_type'], [INSTALLER], true) && $userInfo['is_owner']==ROLE_OWNER )) || ((in_array((int)$userInfo['user_type'], [INSTALLER], true) && $permission['quote_delete']==1 && $userInfo['is_owner']=ROLE_EMPLOYEE)))) { ?>
