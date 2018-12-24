@@ -47,7 +47,7 @@
                                 )
                             ) { ?>
                             <span><i class="fa fa-product-hunt" aria-hidden="true"></i></span>
-                            <!-- <span id="delete-thumb" class="selected-accessory-product confirmation-action-xhttp" title="<?php echo $this->lang->line('remove_product') ?>" data-url="<?php echo base_url('xhttp/projects/article/remove') ?>" data-target="#product-<?php echo $key ?>" data-json='<?php echo $product['remove_data'] ?>' data-action="remove-element" data-redirect="<?php echo base_url(uri_string()) ?>" data-title="<?php echo $this->lang->line('remove_product_title') ?>" data-message="<?php echo sprintf($this->lang->line("remove_product_message"), $product['product_name']) ?>"><i class="fa fa-trash"></i></span> -->
+                            <span id="delete-thumb" class="selected-accessory-product confirmation-action-xhttp" title="<?php echo $this->lang->line('remove_product') ?>" data-url="<?php echo base_url('xhttp/projects/article/remove') ?>" data-target="#product-<?php echo $key ?>" data-json='<?php echo $product['remove_data'] ?>' data-action="remove-element" data-redirect="<?php echo base_url(uri_string()) ?>" data-title="<?php echo $this->lang->line('remove_product_title') ?>" data-message="<?php echo sprintf($this->lang->line("remove_product_message"), $product['product_name']) ?>"><i class="fa fa-trash"></i></span>
                             <?php } ?>
                         </div>
                         <div class="thumb-caption clearfix">
