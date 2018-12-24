@@ -256,7 +256,7 @@
                 <div class="form-group">
                     <label for="discount" class="priceTxt">Discount&nbsp;(%)</label>
                     <div class="inputField">
-                        <input type="text" <?php echo (bool)$hasFinalQuotePriceAdded && ($request_status==QUOTATION_STATUS_APPROVED ||$request_status==QUOTATION_STATUS_REJECTED)?'disabled="disabled"':'name="discount"' ?> class="modal-price-fields restrict-characters number-only-field" id="discount" data-restrict-to="15" value="<?php echo isset($projectRoomPrice['discount']) && $projectRoomPrice['discount']!='0.00' ?$projectRoomPrice['discount']:'' ?>">
+                        <input type="text" <?php echo (bool)$hasFinalQuotePriceAdded && ($request_status==QUOTATION_STATUS_APPROVED ||$request_status==QUOTATION_STATUS_REJECTED)?'disabled="disabled"':'name="discount"' ?> class="modal-price-fields restrict-characters number-only-field" id="discount" data-restrict-to="15" value="<?php echo isset($projectRoomPrice['discount']) && $projectRoomPrice['discount']!='0.00' ?$projectRoomPrice['discount']:!(bool)$hasFinalQuotePriceAdded?$company_discount:'' ?>">
                     </div>
                 </div>
                 <div class="form-group">
