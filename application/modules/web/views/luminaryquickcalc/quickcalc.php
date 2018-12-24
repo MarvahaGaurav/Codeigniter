@@ -223,7 +223,7 @@
                             <input id="uploadfile" class="select-filed-name2 chooseFile" type="text" placeholder="Choose File" disabled="display" value="<?php echo isset($selectedProduct['product_name'])?$selectedProduct['product_name']:''; ?>">
                             <label for="product_id" id="product_id-error" class="error"><?php echo form_error('product_id') ?></label>
                             <label class="choosebtn">
-                                <button <?php echo isset($selectedProduct['product_id'], $selectedProduct['articel_id'], $selectedProduct['product_name'])?'':'disabled' ?> data-redirect-to="<?php echo isset($cookieData['application'], $cookieData['room'])?base_url("/home/fast-calc/lux/applications/" . $cookieData['application'] . '/rooms/' . $cookieData['room'] . '/products'):'javascript:void(0)' ?>" class="redirectable" type="button" name="choose_product" id="choose_product">Choose</button>
+                                <button <?php echo isset($selectedProduct['product_id'], $selectedProduct['articel_id'], $selectedProduct['product_name'])?'':'disabled' ?> data-redirect-to="<?php echo isset($cookieData['application'], $cookieData['room'])?base_url("/home/fast-calc/luminary/applications/" . $cookieData['application'] . '/rooms/' . $cookieData['room'] . '/products'):'javascript:void(0)' ?>" class="redirectable" type="button" name="choose_product" id="choose_product">Choose</button>
                             </label>
                         </div>
                     </div>

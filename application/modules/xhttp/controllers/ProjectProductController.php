@@ -207,7 +207,7 @@ class ProjectProductController extends BaseController
                 $this->requestData['room_id'] = encryptDecrypt($this->requestData['room_id'], 'decrypt');
             }
 
-            $this->validateArticlesByRoom();
+            $this->validateArticlesByRoomId();
 
             $this->load->model(['ProductSpecification']);
 
@@ -222,7 +222,7 @@ class ProjectProductController extends BaseController
                 ];
             }
 
-            $articleData = $this->ProductSpecification->fetchArticles($this->requestData['room_id'], $params);
+            $articleData = $this->ProductSpecification->articlesByRooms($this->requestData['room_id'], $params);
 
             if (empty($articleData)) {
                 json_dump([
@@ -348,6 +348,36 @@ class ProjectProductController extends BaseController
             [
                 'field' => 'project_room_id',
                 'label' => 'Project Room Id',
+                'rules' => 'trim|required|is_natural_no_zero'
+            ]
+        ]);
+
+        $status = $this->form_validation->run();
+
+        if (!$status) {
+            json_dump(
+                [
+                    "success" => false,
+                    "error" => $this->lang->line('bad_request'),
+                ]
+            );
+        }
+    }
+    /**
+     * Validate articles by room
+     *
+     * @return void
+     */
+    private function validateArticlesByRoomId()
+    {
+        $this->load->library('form_validation');
+
+        $this->form_validation->set_data($this->requestData);
+
+        $this->form_validation->set_rules([
+            [
+                'field' => 'room_id',
+                'label' => 'Room Id',
                 'rules' => 'trim|required|is_natural_no_zero'
             ]
         ]);

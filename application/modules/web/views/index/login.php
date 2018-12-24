@@ -24,7 +24,7 @@
                     <?php echo isset($error) ? '<label class="alert-danger">' . $error . '</label>' : form_error('email', '<label class="alert-danger">', '</label>') ?>
                 </p> 
                 <div class="form-group">
-                    <input type="email" value="<?php echo set_value('email', '') ?>" class="form-control" name="email" placeholder="Email Address" required="required" autofocus="" />
+                    <input type="email" value="<?php echo set_value('email', '') ?>" autocomplete="off" class="form-control" name="email" placeholder="Email Address" required="required" autofocus="" />
                     <?php echo form_error('email', '<label class="alert-danger">', '</label>') ?>
                 </div>
                 <div class="form-group">

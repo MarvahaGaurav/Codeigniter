@@ -52,7 +52,7 @@ requirejs(
             var openNewWindow = function () {
                 let application_id = $( "#application_id" ).val();
                 let room_id = $( "#room_id" ).val();
-                let url = window.location.protocol + "//" + window.location.hostname + "/home/fast-calc/lux";
+                let url = window.location.protocol + "//" + window.location.hostname + "/home/fast-calc/luminary";
                 window.location = url;
             };
 

@@ -153,8 +153,8 @@
         let formData = $( "#quick_cal_form" );
         let form_data = $( formData ).serialize();
         /*Creating cookie with all form element*/
-        eraseCookie( "lux_form_data" );
-        setCookie( "lux_form_data", form_data, 7 );
+        eraseCookie( "luminary_form_data" );
+        setCookie( "luminary_form_data", form_data, 7 );
     } );
 
 

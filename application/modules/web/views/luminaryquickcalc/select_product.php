@@ -4,7 +4,7 @@
         <!-- breadcrumb -->
         <ul class="breadcrumb">
             <li><a href="javascript:void(0)">Home</a></li>
-            <li><a href="<?php echo base_url('/home/fast-calc/lux') ?>">No of Luminaries</a></li>
+            <li><a href="<?php echo base_url('/home/fast-calc/luminary') ?>">No of Luminaries</a></li>
             <li class="active">Select Product</li>
         </ul>
         <!-- //breadcrumb -->

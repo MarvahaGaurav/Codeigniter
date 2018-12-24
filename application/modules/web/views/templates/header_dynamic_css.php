@@ -137,7 +137,7 @@
                                     </ul>
                                 </li>
                                 <?php if (isset($userInfo, $userInfo['user_id']) && ((in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) ) || ((in_array((int)$userInfo['user_type'], [INSTALLER, ELECTRICAL_PLANNER,WHOLESALER], true) && $userInfo['is_owner']==ROLE_OWNER )) || ((in_array((int)$userInfo['user_type'], [INSTALLER, ELECTRICAL_PLANNER,WHOLESALER], true) && $permission['quote_view']==1 && $userInfo['is_owner']=ROLE_EMPLOYEE)))) {?>
-                                <li class="dropdown"><a href="" class="dropdown-toggle" data-toggle="dropdown">Quotes</a>
+                                <li class="dropdown <?php echo $activePage === "quotes" ? "active" : "" ?>"><a href="" class="dropdown-toggle" data-toggle="dropdown">Quotes</a>
                                     <ul class="dropdown-menu">
                                         <?php if (in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true)) { ?>
                                         <li><a href="<?php echo base_url("home/quotes") ?>">Quotes List</a></li>
@@ -149,18 +149,18 @@
                                     </ul>
                                 </li>
                                 <?php } ?>
-                                <?php if (isset($userInfo['user_id']) && ((in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) ) || ((in_array((int)$userInfo['user_type'], [INSTALLER, ELECTRICAL_PLANNER,WHOLESALER], true) && $userInfo['is_owner']==ROLE_OWNER )) || ((in_array((int)$userInfo['user_type'], [INSTALLER, ELECTRICAL_PLANNER,WHOLESALER], true) && $permission['insp_view']==1 && $userInfo['is_owner']=ROLE_EMPLOYEE)))) { ?>
-                                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Inspirations</a>
+                                <?php if (isset($userInfo['user_id']) && ((in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER, ARCHITECT], true) ) || ((in_array((int)$userInfo['user_type'], [INSTALLER, ELECTRICAL_PLANNER,WHOLESALER], true) && $userInfo['is_owner']==ROLE_OWNER )) || ((in_array((int)$userInfo['user_type'], [INSTALLER, ELECTRICAL_PLANNER,WHOLESALER], true) && $permission['insp_view']==1 && $userInfo['is_owner']=ROLE_EMPLOYEE)))) { ?>
+                                <li class="dropdown <?php echo $activePage === "inspirations" ? "active" : "" ?>"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Inspirations</a>
                                     <ul class="dropdown-menu">
                                         <li><a href="<?php echo base_url("home/inspirations") ?>">Inspiration List</a></li>
-                                        <?php if (((in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) ) || ((in_array((int)$userInfo['user_type'], [INSTALLER, ELECTRICAL_PLANNER,WHOLESALER], true) && $userInfo['is_owner']==ROLE_OWNER )) || ((in_array((int)$userInfo['user_type'], [INSTALLER, ELECTRICAL_PLANNER,WHOLESALER], true) && $permission['insp_add']==1 && $userInfo['is_owner']=ROLE_EMPLOYEE)))) { ?>
+                                        <?php if (((in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER, ARCHITECT], true) ) || ((in_array((int)$userInfo['user_type'], [INSTALLER, ELECTRICAL_PLANNER,WHOLESALER], true) && $userInfo['is_owner']==ROLE_OWNER )) || ((in_array((int)$userInfo['user_type'], [INSTALLER, ELECTRICAL_PLANNER,WHOLESALER], true) && $permission['insp_add']==1 && $userInfo['is_owner']=ROLE_EMPLOYEE)))) { ?>
                                         <li><a href="<?php echo base_url("home/inspirations/add") ?>">Add Inspiration</a></li>
                                         <?php }?>
                                     </ul>
                                 </li>
                                 <?php } ?>
                                 <?php
-                                if (isset($userInfo['user_type']) && in_array($userInfo['user_type'], [INSTALLER, WHOLESALER, ARCHITECT, ELECTRICAL_PLANNER]) && ROLE_OWNER === (int) $userInfo['is_owner']) {
+                                if (isset($userInfo['user_type']) && in_array($userInfo['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER]) && ROLE_OWNER === (int) $userInfo['is_owner']) {
                                     ?>
                                     <li class="dropdown <?php echo $activePage === "technicians" ? "active" : "" ?>"><a href="" class="dropdown-toggle" data-toggle="dropdown">Manage Technician</a>
                                         <ul class="dropdown-menu">
