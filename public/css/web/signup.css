@@ -26,8 +26,8 @@
     width: 100% !important;
 }
 
-.concealable{
-    display:none;
+.concealable {
+    display: none;
 }
 
 .signup-camera-holder {
@@ -42,19 +42,19 @@
     right: 4px !important;
 }
 
-
-.contact-number.bootstrap-select>.dropdown-toggle{
-    padding:6px;
+.m-b-0 {
+    margin-bottom: 0;
 }
 
+.contact-number.bootstrap-select>.dropdown-toggle {
+    padding: 6px;
+}
 
-
-@media (max-width : 766px){
-    .contact-number-input{
+@media (max-width: 766px) {
+    .contact-number-input {
         margin-left: 0.2%;
     }
-    
-    .bootstrap-select.btn-group .dropdown-toggle .caret{
+    .bootstrap-select.btn-group .dropdown-toggle .caret {
         right: 5px;
     }
 }

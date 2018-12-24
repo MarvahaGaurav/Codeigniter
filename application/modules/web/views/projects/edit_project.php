@@ -27,7 +27,7 @@
 
         <?php echo form_open_multipart(base_url('home/projects/' . $projectId . '/edit'), array ('id' => 'add_project', 'name' => "add_project")) ?>
         <div class="form-wrapper">
-            <div class="row form-inline-wrapper">
+            <div class="row form-inline-wrapper m-b-0">
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                     <div class="form-group">
                         <label class="labelTxt">Project Number <span></span></label>
@@ -107,7 +107,7 @@
             </div>
         </div>
         <!-- button-wrapper section -->
-        <div class="button-wrapper clearfix">
+        <div class="button-wrapper clearfix m-t-10">
             <input type="submit" value="Submit" class="custom-btn btn-margin btn-width save">
             <button type="button" class="custom-btn btn-margin btn-width cancel">Cancel</button>
         </div>

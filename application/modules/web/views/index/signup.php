@@ -194,7 +194,7 @@
                             </div>
                         </div>
                         <div class="form-group clearfix company-owner-wrapper <?php echo $isCompanyOwner ? "" : "concealable" ?>">
-                            <div class="image-wrapper">
+                            <div class="image-wrapper m-b-0">
                                 <div class="image-view-box img-view130p img-viewbdr-radius">
                                     <div id="company_cropped_image_preview" class="image-view img-view130" style="background-image:url(<?php  echo strlen(set_value('company_image'))>0?set_value('company_image'):base_url('public/images/svg/sg_logo_placeholder.svg') ?>);"></div>
                                 </div>

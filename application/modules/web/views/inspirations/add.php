@@ -87,11 +87,11 @@
                 <div class="user-detail-block3 no-margin">
                     <div class="row">
                         <div class="col-xs-12">
-                            <div class="form-group">
+                            <div class="form-group m-b-0">
                                 <label class="p-label">Add Images/Video</label>
                                 <div class="form-group-field">
                                     <!-- upload image and video -->
-                                    <ul id="album" class="album-wrapper">
+                                    <ul id="album" class="album-wrapper m-b-0">
                                         <li class="visible-wrapper">
                                             <div class="album-thumnail">
                                                 <input type="file" name="inspiration_image[]" data-container="#album" class="album-uploader" id="addalbum">
@@ -110,7 +110,7 @@
 
             <!-- Button wrapper section -->
         <div class="section-title clearfix">
-            <div class="button-wrapper">
+            <div class="button-wrapper m-t-10">
                 <button type="submit" id="inspiration-add-submit" class="custom-btn btn-width save">Submit</button>
             </div>
         </div>
