@@ -53,7 +53,7 @@ class Index extends BaseController
                 try {
                     $sg_userinfo = $this->Common_model->fetch_data(
                         'ai_user',
-                        array('user_id', 'first_name', 'email', 'status'),
+                        array('user_id', 'first_name', 'email', 'status', 'is_owner', 'user_type'),
                         array('where' => array('email' => $email, 'password' => $pass, 'status' => 1)),
                         true
                     );
@@ -72,6 +72,12 @@ class Index extends BaseController
                         "email" => $sg_userinfo['email'],
                         'status' => $sg_userinfo['status']
                     );
+
+                    if ((int)$sg_userinfo['is_owner'] === ROLE_EMPLOYEE) {
+                        $employeeStatus = $this->Common_model->fetch_data('ai_user', [
+                            'user_id' => 
+                        ]);
+                    }
                     //pr($sg_userinfo);
                     //SETS COOKIE DATA
                     if (isset($postDataArr["remember_me"]) && $postDataArr["remember_me"] == "on") {
