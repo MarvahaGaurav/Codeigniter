@@ -18,10 +18,10 @@ class TechnicianController extends BaseController
         $this->data['userInfo'] = $this->userInfo;
         $this->data['activePage'] = 'technicians';
         if (!isset($this->userInfo['user_type']) 
-            || !in_array($this->userInfo['user_type'], [INSTALLER, WHOLESALER, ARCHITECT, ELECTRICAL_PLANNER]) 
+            || !in_array($this->userInfo['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER]) 
             || ROLE_OWNER !== (int)$this->userInfo['is_owner']
         ) {
-            error404("", base_url());
+            show404($this->lang->line('adequate_permission_required'), base_url());
             exit;
         }
     }
@@ -43,7 +43,7 @@ class TechnicianController extends BaseController
         $data = $this->Employee->get($options);
         
         $this->load->library("Commonfn");
-        $technicianTypes = [INSTALLER => "Installer", ARCHITECT => "Architect", ELECTRICAL_PLANNER => "Electrical Planner", WHOLESALER => "Wholesaler"];
+        $technicianTypes = [INSTALLER => "Installer", ELECTRICAL_PLANNER => "Electrical Planner", WHOLESALER => "Wholesaler"];
         $this->data['links'] = $this->commonfn->pagination("home/technicians", $data['count'], $limit);
         $result = array_map(
             function ($row) use ($technicianTypes) {
@@ -147,7 +147,7 @@ class TechnicianController extends BaseController
         $data = $this->Employee->get($options);
         
         $this->load->library("Commonfn");
-        $technicianTypes = [INSTALLER => "Installer", ARCHITECT => "Architect", ELECTRICAL_PLANNER => "Electrical Planner", WHOLESALER => "Wholesaler"];
+        $technicianTypes = [INSTALLER => "Installer", ELECTRICAL_PLANNER => "Electrical Planner", WHOLESALER => "Wholesaler"];
         $this->data['links'] = $this->commonfn->pagination("home/technicians", $data['count'], $limit);
         $result = array_map(
             function ($row) use ($technicianTypes) {

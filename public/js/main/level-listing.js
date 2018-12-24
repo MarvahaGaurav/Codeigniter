@@ -129,6 +129,7 @@ requirejs(
           data: formData,
           beforeSend: function () {
             var html = $self.html().trim();
+            console.log(html);
             $self.html("<i class='fa fa-circle-o-notch fa-spin'></i> " + html);
           },
           success: function (response) {

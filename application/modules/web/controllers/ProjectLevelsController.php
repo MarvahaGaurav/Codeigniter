@@ -17,7 +17,7 @@ class ProjectLevelsController extends BaseController
         parent::__construct();
         $this->data['activePage'] = 'projects';
     }
-    
+
 
     /**
      * Level lisitng in project create flow
@@ -52,11 +52,10 @@ class ProjectLevelsController extends BaseController
 
             if (empty($projectData)) {
                 show404($this->lang->line('project_not_found'), base_url('/home/applications'));
-            } 
+            }
 
             if ((in_array((int)$this->userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) &&
-                (int)$this->userInfo['user_id'] !== (int)$projectData['user_id']) ||
-                (in_array((int)$this->userInfo['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], true) &&
+                (int)$this->userInfo['user_id'] !== (int)$projectData['user_id']) || (in_array((int)$this->userInfo['user_type'], [INSTALLER, WHOLESALER, ELECTRICAL_PLANNER], true) &&
                 (int)$this->userInfo['company_id'] !== (int)$projectData['company_id'])) {
                 show404($this->lang->line('forbidden_action'), base_url(''));
             }
@@ -83,7 +82,9 @@ class ProjectLevelsController extends BaseController
             });
 
             $activeLevels = array_column($activeLevels, 'level');
-            $activeLevels = array_map(function ($level) {return (int)$level;}, $activeLevels);
+            $activeLevels = array_map(function ($level) {
+                return (int)$level;
+            }, $activeLevels);
 
             $projectLevels = array_map(function ($level) use ($activeLevels) {
                 $level['level'] = (int)$level['level'];
@@ -105,12 +106,12 @@ class ProjectLevelsController extends BaseController
 
             $this->data['csrf'] = json_encode([
                 $this->data["csrfName"] = $this->security->get_csrf_token_name() =>
-                        $this->data["csrfToken"] = $this->security->get_csrf_hash(),
+                    $this->data["csrfToken"] = $this->security->get_csrf_hash(),
                 'project_id' => $this->data['projectId']
             ]);
-            
+
             $this->data['active_levels'] = $activeLevels;
-            
+
             $this->data['projectLevels'] = $projectLevels;
 
             $this->data['quotationRequest'] = $this->UtilModel->selectQuery('id', 'project_requests', [
@@ -129,12 +130,15 @@ class ProjectLevelsController extends BaseController
                 $this->data['projectRoomPrice'] = (array)$this->quotationTotalPrice((int)$this->userInfo['user_type'], $projectId);
                 $this->data['hasAddedFinalPrice'] = $this->hasTechnicianAddedFinalPrice($projectId);
             }
-            $companyDiscount = $this->UtilModel->selectQuery('company_discount', 'company_master', [
-                'where' => ['company_id' => $this->userInfo['company_id']], 'single_row' => true
-            ]);
+            $this->data['company_discount'] = 0;
 
-            
-            $this->data['company_discount'] = $companyDiscount['company_discount'];
+            if ((int)$this->userInfo['is_owner'] === ROLE_OWNER && (int)$this->userInfo['user_type'] === INSTALLER) {
+                $companyDiscount = $this->UtilModel->selectQuery('company_discount', 'company_master', [
+                    'where' => ['company_id' => $this->userInfo['company_id']], 'single_row' => true
+                ]);
+                $this->data['company_discount'] = $companyDiscount['company_discount'];
+            }
+
             //pr($this->data);
             website_view('projects/levels-listing', $this->data);
         } catch (\Exception $error) {

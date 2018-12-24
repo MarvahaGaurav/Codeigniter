@@ -386,6 +386,7 @@ class QuickCalcLuminaryController extends BaseController
             $response = $this->fetchQuickCalcData($insert, $uld);
             $quickCalcRoomData = json_encode($insert);
             $decodedResponse = json_decode($response, true);
+
             if (!isset($decodedResponse['projectionTop'], $decodedResponse['projectionSide'], $decodedResponse['projectionFront'])) {
                 $this->session->set_flashdata("flash-message", $this->lang->line('we_are_unable_to_get_data'));
                 $this->session->set_flashdata("flash-type", "danger");
@@ -407,7 +408,7 @@ class QuickCalcLuminaryController extends BaseController
 
             $this->session->set_flashdata("flash-message", $this->lang->line("room_calculated"));
             $this->session->set_flashdata("flash-type", "success");
-            redirect(base_url('home/fast-calc/lux/view-result'));
+            redirect(base_url('home/fast-calc/luminary/view-result'));
         } else {
             $this->data['validation_errors'] = $this->form_validation->error_array();
             $this->data['validation_error_keys'] = array_keys($this->data['validation_errors']);
