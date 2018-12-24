@@ -119,7 +119,7 @@
                     </div>
 
                     <div class="form-group-inline clearfix">
-                        <div class="form-group">
+                        <div class="form-group d_flex">
                             <select name="contact_number_code" id="contact-number-1" data-type="country-code" class="contact-number" data-style="btn-default custom-select-style">
                                 <?php foreach ($countries as $country) { ?>
                                     <option value="<?php echo $country['calling_code'] ?>" <?php echo set_select('contact_number_code', $country['calling_code']) ?> data-country="<?php echo $country['country_code1'] ?>"><?php echo "+{$country['calling_code']}" ?></option>
@@ -128,7 +128,7 @@
                             <input type="text" maxlength="20" class="form-control contact-number-input number-only-field" name="contact_number" value="<?php echo set_value('contact_number') ?>" placeholder="Contact Number" autofocus="" />
                             <?php echo form_error('contact_number', '<label for="contact_number" class="error">', "</label>"); ?>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group d_flex">
                             <select name="alternate_contact_number_code" id="contact-number-2" data-type="country-code" class="contact-number" data-style="btn-default custom-select-style">
                                 <?php foreach ($countries as $country) { ?>
                                     <option value="<?php echo $country['calling_code'] ?>" <?php echo set_select('alternate_contact_number_code', $country['calling_code']) ?> data-country="<?php echo $country['country_code1'] ?>"><?php echo "+{$country['calling_code']}" ?></option>
