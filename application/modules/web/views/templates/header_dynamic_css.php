@@ -19,6 +19,7 @@
             <link rel="stylesheet" href="<?php echo base_url("public/css/web/common.css") ?>">
             <link rel="stylesheet" href="<?php echo base_url("public/css/web/style.css") ?>">
             <link rel="stylesheet" href="<?php echo base_url("public/css/web/sgmedia.css") ?>">
+            <link rel="stylesheet" href="<?php echo base_url("public/css/plugin/font-awesome.min.css") ?>">
         <?php } ?>
 
         <!-- Css Plugins -->

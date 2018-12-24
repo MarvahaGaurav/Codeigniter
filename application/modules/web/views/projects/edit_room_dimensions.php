@@ -31,7 +31,7 @@
 
         <!-- form wrapper -->
         <div class="form-wrapper">
-            <div class="row form-inline-wrapper">
+            <div class="row form-inline-wrapper m-b-0">
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                     <div class="form-group">
                         <label class="labelTxt">Room Reference</label>

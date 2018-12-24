@@ -220,9 +220,9 @@
         <!-- Caption before section -->
         <div class="section-title clearfix">
             <div class="button-wrapper">
-                <a href="javascript:void(0)" class="custom-btn btn-margin btn-width save">
+                <!-- <a href="javascript:void(0)" class="custom-btn btn-margin btn-width save">
                     Next Room
-                </a>
+                </a> -->
                 <input type="submit" value="Done" class="custom-btn btn-margin btn-width save">
             </div>
         </div>

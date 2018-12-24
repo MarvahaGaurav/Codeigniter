@@ -18,6 +18,7 @@
         <link rel="stylesheet" href="public/css/web/common.css">
         <link rel="stylesheet" href="public/css/web/style.css">
         <link rel="stylesheet" href="public/css/web/sgmedia.css">
+        <link rel="stylesheet" href="public/css/plugin/font-awesome.min.css">
 
         <!-- Js Plugins -->
         <script src="public/js/jquery.min.js"></script>
