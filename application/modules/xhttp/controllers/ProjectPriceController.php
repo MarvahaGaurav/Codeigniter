@@ -309,7 +309,7 @@ class ProjectPriceController extends BaseController
                 'message' => $this->lang->line('quote-approved-success')
             ]);
         } catch (\Exception $error) {
-            pr($error);
+            
             json_dump(
                 [
                     "success" => false,
