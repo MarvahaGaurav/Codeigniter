@@ -22,6 +22,7 @@ trait TotalProjectPrice
         $this->productCharges = $this->ProjectRoomProducts->totalProductCharges([
             'project_id' => $projectId
         ]);
+        
 
         return $this->totalPriceCalculation($level);
     }
@@ -76,7 +77,7 @@ trait TotalProjectPrice
                 "subtotal" => $subTotal,
                 "total" => $total,
                 "discounted_price" => sprintf("%.2f", $subTotal - $total),
-                "expiry_date" => $this->priceData['expiry_date']
+                "expiry_date" => !empty($this->priceData['expiry_date'])?date("m-d-Y", strtotime($this->priceData['expiry_date'])):''
             ];
 
             // pd($totalPrice);
