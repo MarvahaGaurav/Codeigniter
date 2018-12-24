@@ -8,6 +8,7 @@ class NotificationController extends BaseController
     public function __construct()
     {
         parent::__construct();
+        $this->data['activePage'] = 'notifications';
     }
 
     public function index()

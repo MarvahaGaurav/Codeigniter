@@ -10,6 +10,7 @@ class TcoController extends BaseController
         parent::__construct();
         $this->load->library(['form_validation', 'tco']);
         $this->load->helper(['input_data']);
+        $this->data['activePage'] = 'projects';
     }
 
     public function tco($projectId, $level, $projectRoomId)

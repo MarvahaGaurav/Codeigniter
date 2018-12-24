@@ -6,6 +6,7 @@ class CompaniesController extends BaseController
     public function __construct()
     {
         parent::__construct();
+        $this->data['activePage'] = "companies";
     }
 
     /**

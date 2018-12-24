@@ -55,6 +55,8 @@
                 <?php } ?>
             </div>
         </div>
+        <input type="hidden" name="" id="project-id" value="<?php echo $projectId ?>">
+        <input type="hidden" name="" id="project-room-id" value="<?php echo $projectRoomId ?>">
         <!-- thumb wrapper section end -->
 
         <!-- no record found -->
@@ -68,7 +70,7 @@
     </div>
 </div>
 
-<div id="productModal" class="modal fade" role="dialog">    
+<div id="productModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -84,14 +86,14 @@
                     <div class="row" id="search_product_div">
                     <!-- no record found -->
                     <!-- no record found -->
-                    </div> 
-                            <div class="no-record text-center no-article-found-container">
-            <img src="<?php echo base_url('public/images/svg/sg_logo_placeholder.svg') ?>" alt="Note Paper">
-            <p><?php echo $this->lang->line('no_product_found') ?></p>
-            <p><?php echo $this->lang->line('search_products_prompt') ?></p>
-        </div>                   
+                    </div>
+                        <div class="no-record text-center no-article-found-container">
+                        <img src="<?php echo base_url('public/images/svg/sg_logo_placeholder.svg') ?>" alt="Note Paper">
+                        <p><?php echo $this->lang->line('no_product_found') ?></p>
+                        <p><?php echo $this->lang->line('search_products_prompt') ?></p>
+                    </div>
                 </div>
-            </div>            
+            </div>
         </div>
     </div>
 </div>

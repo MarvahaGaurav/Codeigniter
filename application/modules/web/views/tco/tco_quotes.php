@@ -7,6 +7,7 @@
     }?>
     
     <?php 
+    
     $quotes ='';
     $url = 'javascript:void(0)';
     if($request_status==QUOTATION_STATUS_QUOTED) {
@@ -117,7 +118,7 @@
                         </td    >
                         <td>
                             <div class="price-comparison">
-                                <input type="<?php echo $textType ?>" name="new_led_source_life_time" class="number-only-field restrict-characters" data-restrict-to="10" readonly value="<?php echo isset($productData['lifetime_hours'])&&!empty($productData['lifetime_hours'])?$productData['lifetime_hours']:$tcoData['new_led_source_life_time'] ?>" >
+                                <input type="<?php echo $textType ?>" name="new_led_source_life_time" class="number-only-field restrict-characters" data-restrict-to="10" readonly value="<?php echo isset($productData['lifetime_hours'])&&!empty($productData['lifetime_hours'])?$productData['lifetime_hours']:0 ?>" >
                             </div>
                         </td>
                         <td>

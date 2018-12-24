@@ -21,6 +21,7 @@ class QuotesController extends BaseController
         parent::__construct();
         $this->activeSessionGuard();
         $this->load->helper(['datetime']);
+        $this->data['activePage'] = 'quotes';
     }
 
 
@@ -584,6 +585,13 @@ class QuotesController extends BaseController
                 
                 $this->data['hasFinalQuotePriceAdded'] = $this->isFinalQuotePriceAdded($request_id);
             }
+
+            $companyDiscount = $this->UtilModel->selectQuery('company_discount', 'company_master', [
+                'where' => ['company_id' => $this->userInfo['company_id']], 'single_row' => true
+            ]);
+
+            
+            $this->data['company_discount'] = $companyDiscount['company_discount'];
 
           // pr($this->data);
             

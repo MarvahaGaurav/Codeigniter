@@ -20,11 +20,13 @@ requirejs.config({
 requirejs(
   ["jquery", "bootstrap", "common", "jqueryValidator", "jqueryScrollbar"],
   function ($) {
+    var $discountPrice = $("input[name='discount_price']");
+    
     setTimeout(function () {
       $("div.error").fadeOut(250);
     }, 3000);
 
-    if ($("#password-error").attr("data-message").trim().length > 0 ) {
+    if ($("#password-error").attr("data-message").trim().length > 0) {
       $("#old-password").focus();
     }
 
@@ -43,6 +45,11 @@ requirejs(
 
     $("#settings-form").validate({
       rules: {
+        discount_price: {
+          required: true,
+          min: 0,
+          max: 100
+        },
         langauge: "required",
         currency: "required",
         old_password: {
@@ -68,18 +75,27 @@ requirejs(
           },
           equalTo: '#new-password'
         }
+      },
+      errorPlacement: function (error, $element) {
+        if ($element.attr("name") === "discount_price") {
+          $("#discount-price-error").html(error);
+        } else {
+          $element.after(error);
+        }
       }
     });
-   		
-         $(document).on('click','.plus',function(){
-				$('.count').val(parseInt($('.count').val()) + 5 );
-    		});
-        	$(document).on('click','.minus',function(){
-    			$('.count').val(parseInt($('.count').val()) - 5 );
-    				if ($('.count').val() == 0) {
-						$('.count').val(1);
-					}
-    	    	});
+
+    $(document).on('click', '.plus', function () {
+      $('.count').val(parseInt($('.count').val()) + 5);
+      $discountPrice.trigger("keyup");
+    });
+    $(document).on('click', '.minus', function () {
+      $('.count').val(parseInt($('.count').val()) - 5);
+      if ($('.count').val() == 0) {
+        $('.count').val(1);
+      }
+      $discountPrice.trigger("keyup");
+    });
   },
   function ($error) {
 

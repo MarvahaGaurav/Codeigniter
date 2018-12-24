@@ -15,7 +15,9 @@ class ProjectLevelsController extends BaseController
     public function __construct()
     {
         parent::__construct();
+        $this->data['activePage'] = 'projects';
     }
+    
 
     /**
      * Level lisitng in project create flow
@@ -127,6 +129,12 @@ class ProjectLevelsController extends BaseController
                 $this->data['projectRoomPrice'] = (array)$this->quotationTotalPrice((int)$this->userInfo['user_type'], $projectId);
                 $this->data['hasAddedFinalPrice'] = $this->hasTechnicianAddedFinalPrice($projectId);
             }
+            $companyDiscount = $this->UtilModel->selectQuery('company_discount', 'company_master', [
+                'where' => ['company_id' => $this->userInfo['company_id']], 'single_row' => true
+            ]);
+
+            
+            $this->data['company_discount'] = $companyDiscount['company_discount'];
             //pr($this->data);
             website_view('projects/levels-listing', $this->data);
         } catch (\Exception $error) {

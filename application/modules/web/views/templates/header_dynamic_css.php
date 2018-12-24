@@ -28,6 +28,7 @@
     </head>
 
     <body>
+        <?php $activePage = isset($activePage)?$activePage:'' ?>
         <!-- header -->
         <header>
             <span id="something-went-wrong" data-message="<?php echo $this->lang->line('something_went_wrong') ?>"></span>
@@ -104,7 +105,7 @@
                             </div>
 
                             <ul class="nav navbar-nav">
-                                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Quick Calculations</a>
+                                <li class="dropdown <?php echo $activePage === "quickcalc" ? "active" : "" ?>"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Quick Calculations</a>
                                     <ul class="dropdown-menu">
                                         <li><a href="<?php echo base_url('home/applications') ?>">Application</a></li>
                                         <li><a href="<?php echo base_url('home/fast-calc/lux') ?>">Lux Values</a></li>
@@ -118,7 +119,7 @@
                                         ((in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) ) || ((in_array((int)$userInfo['user_type'], [INSTALLER, ELECTRICAL_PLANNER,WHOLESALER], true) && $userInfo['is_owner']==ROLE_OWNER )) || ((in_array((int)$userInfo['user_type'], [INSTALLER, ELECTRICAL_PLANNER,WHOLESALER], true) && $permission['project_view']==1 && $userInfo['is_owner']=ROLE_EMPLOYEE)))
                                     )
                                 ) {?>
-                                <li class="dropdown"><a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">Project</a>
+                                <li class="dropdown <?php echo $activePage === "projects" ? "active" : "" ?>"><a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">Project</a>
                                     <ul class="dropdown-menu">
                                         <li class="active"><a href="<?php echo base_url("home/projects") ?>">Project list</a></li>
                                         <?php if (isset($userInfo, $userInfo['user_id']) && ((in_array((int)$userInfo['user_type'], [PRIVATE_USER, BUSINESS_USER], true) ) || ((in_array((int)$userInfo['user_type'], [INSTALLER, ELECTRICAL_PLANNER,WHOLESALER], true) && $userInfo['is_owner']==ROLE_OWNER )) || ((in_array((int)$userInfo['user_type'], [INSTALLER, ELECTRICAL_PLANNER,WHOLESALER], true) && $permission['project_add']==1 && $userInfo['is_owner']=ROLE_EMPLOYEE)))) {?>
@@ -127,7 +128,7 @@
                                     </ul>
                                 </li>
                                 <?php } ?>
-                                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Companies</a>
+                                <li class="dropdown <?php echo $activePage === "companies" ? "active" : "" ?>"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Companies</a>
                                     <ul class="dropdown-menu">
                                         <li><a href="<?php echo base_url('home/companies') ?>">All Companies</a></li>
                                         <?php if (isset($userInfo['user_id'])) { ?>
@@ -161,7 +162,7 @@
                                 <?php
                                 if (isset($userInfo['user_type']) && in_array($userInfo['user_type'], [INSTALLER, WHOLESALER, ARCHITECT, ELECTRICAL_PLANNER]) && ROLE_OWNER === (int) $userInfo['is_owner']) {
                                     ?>
-                                    <li class="dropdown"><a href="" class="dropdown-toggle" data-toggle="dropdown">Manage Technician</a>
+                                    <li class="dropdown <?php echo $activePage === "technicians" ? "active" : "" ?>"><a href="" class="dropdown-toggle" data-toggle="dropdown">Manage Technician</a>
                                         <ul class="dropdown-menu">
                                             <li><a href="<?php echo base_url("home/technicians") ?>">Technician List</a></li>
                                             <li><a href="<?php echo base_url("home/technicians/requests") ?>">Request List</a></li>
