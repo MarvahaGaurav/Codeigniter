@@ -87,7 +87,7 @@ class ProjectPriceController extends BaseController
 
             $this->requestData = $this->input->post();
 
-            //pr($this->requestData);
+           // pr($this->requestData);
 
             if (isset($this->requestData['project_id'])) {
                 $this->requestData['project_id'] = encryptDecrypt($this->requestData['project_id'], 'decrypt');
@@ -132,11 +132,15 @@ class ProjectPriceController extends BaseController
                     'created_at_timestamp' => $this->timestamp,
                     'updated_at' => $this->datetime,
                     'updated_at_timestamp' => $this->timestamp,
-                    'expire_at' =>$this->requestData['expiry_date'],
+                    'expire_at' =>date("Y-m-d", strtotime($this->requestData['expiry_date'])),
                     'expire_at_timestamp' => strtotime($this->requestData['expiry_date'])
                 ];         
     
+                //pr($insertData);
+                
                 $this->UtilModel->insertTableData($insertData, 'project_quotations');
+
+                
             } else {
                 // update the quotations
 
@@ -148,9 +152,11 @@ class ProjectPriceController extends BaseController
                     'created_at_timestamp' => $this->timestamp,
                     'updated_at' => $this->datetime,
                     'updated_at_timestamp' => $this->timestamp,
-                    'expire_at' =>$this->requestData['expiry_date'],
+                    'expire_at' =>date("Y-m-d", strtotime($this->requestData['expiry_date'])),
                     'expire_at_timestamp' => strtotime($this->requestData['expiry_date'])
-                ];         
+                ];    
+                
+                //pr($updateData);
     
                 $this->UtilModel->updateTableData($updateData, 'project_quotations', ['id' =>$quotationData['id'] ]);
                 

@@ -248,6 +248,8 @@ class ProjectQuotation extends BaseModel
         }
 
         $query = $this->db->get();
+
+        //echo $this->db->last_query();die;
         
 
         $data = $query->row_array();

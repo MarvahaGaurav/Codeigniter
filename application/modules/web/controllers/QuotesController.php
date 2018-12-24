@@ -6,13 +6,13 @@ require_once APPPATH . "/libraries/Traits/TotalProjectPrice.php";
 require_once APPPATH . "/libraries/Traits/TechnicianChargesCheck.php";
 require_once APPPATH . "/libraries/Traits/InstallerPriceCheck.php";
 require_once APPPATH . "/libraries/Traits/QuickCalc.php";
-require_once APPPATH . "/libraries/Traits/TotalQuotationPrice.php";
+require_once APPPATH . "/libraries/Traits/QuotationPrice.php";
 
 
 class QuotesController extends BaseController
 {
-    use LevelRoomCheck, InstallerPriceCheck, TotalProjectPrice, TechnicianChargesCheck,QuickCalc;
-   // use TotalQuotationPrice {TotalQuotationPrice :: quotationTotalPrice as originalQuotationPrice;}
+    use LevelRoomCheck, InstallerPriceCheck, TotalProjectPrice,QuotationPrice, TechnicianChargesCheck,QuickCalc;
+   
     
     private $validationData;
 
@@ -578,14 +578,14 @@ class QuotesController extends BaseController
                 
                 $this->load->helper(['utility']);
                 $this->data['hasAddedAllPrice'] = $this->projectCheckPrice($id);
-                $this->data['projectRoomPrice'] = (array)$this->quotationTotalPrice((int)$this->userInfo['user_type'], $id);
+                $this->data['projectRoomPrice'] = (array)$this->originalQuotationPrice((int)$this->userInfo['company_id'], $id);
                 $this->data['hasAddedFinalPrice'] = $this->hasTechnicianAddedFinalPrice($id);
 
                 
                 $this->data['hasFinalQuotePriceAdded'] = $this->isFinalQuotePriceAdded($request_id);
             }
 
-           //pr($this->data);
+          // pr($this->data);
             
             website_view('quotes/project_details', $this->data);
         } catch (Exception $ex) {
@@ -991,7 +991,11 @@ class QuotesController extends BaseController
 
             $data = $this->ProjectRoomProducts->selectedProducts($params);
 
+            $this->load->model('Product');
+
             $params['room_id'] = $roomId;
+
+            //$this->data['assessory_products'] = $this->Product->roomProducts($params);
 
             $this->data['projectId'] = encryptDecrypt($projectId);
             $this->data['roomId'] = encryptDecrypt($roomId);
@@ -1010,6 +1014,9 @@ class QuotesController extends BaseController
             }, $data);
 
             $this->data['products'] = $data;
+
+
+            
 
             $this->data['quotationRequest'] = [];
             $this->data['hasAddedFinalPrice'] = false;
@@ -1031,6 +1038,7 @@ class QuotesController extends BaseController
             $this->data['request_status'] = $this->getRequestStatus($requestId);
 
 
+            //pr($this->data);
             website_view('quotes/project_selected_products', $this->data);
         } catch (\Exception $error) {
             show404($this->lang->line('internal_server_error'), base_url(''));
