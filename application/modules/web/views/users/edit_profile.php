@@ -39,7 +39,7 @@
                         </label>
                     </div>
 
-                    <?php if (!empty($compnaydetail) && $user['is_owner'] == 2) { ?>
+                    <?php if (!empty($compnaydetail) && ($user['is_owner'] == ROLE_OWNER || in_array($userInfo['user_type'], [BUSINESS_USER, ARCHITECT]))) { ?>
                         <hr>
                         <div class="profile-thumb">
                             <h3 class="profile-username">Company Logo</h3>
@@ -130,7 +130,7 @@
                     </div>
                     <!-- User detail Block wise end -->
 
-                    <?php if (!empty($compnaydetail) && $user['is_owner'] == 2) { ?>
+                    <?php if (!empty($compnaydetail) && ($user['is_owner'] == ROLE_OWNER || in_array($userInfo['user_type'], [BUSINESS_USER, ARCHITECT]))) { ?>
                         <!-- User detail Block wise -->
                         <div class="user-detail-block2">
                             <div class="row">

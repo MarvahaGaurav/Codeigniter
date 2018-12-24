@@ -44,27 +44,14 @@
             <div class="select-pricing-wrapper setting-section">
                 <div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                    <div class="form-group">
-                        <div class="pricing">
-                        <button type="button" class="minus btn-danger"><span class="glyphicon glyphicon-minus"></span></button>
-                        <input type="text" class="count" name="qty" value="0" min="0" max="100">
-                        <button type="button" class="plus btn-success"><span class="glyphicon glyphicon-plus"></span></button>
-                        </div>
-                    </div>
-<!--
                         <div class="form-group">
-                            <label class="labelTxt">Set Pricing</label>
-                            <div class="form-group-field">
-                                <select>
-                                    <option>20%</option>
-                                    <option>30%</option>
-                                    <option>40%</option>
-                                    <option>50%</option>
-                                </select>
-                                <span class="customArrow"></span>
+                            <div class="pricing">
+                            <button type="button" class="minus btn-danger"><span class="glyphicon glyphicon-minus"></span></button>
+                            <input type="text" class="count number-only-field" name="discount_price" value="0" min="0" max="100">
+                            <button type="button" class="plus btn-success"><span class="glyphicon glyphicon-plus"></span></button>
                             </div>
+                            <label for="discount_price" id="discount-price-error" class="error"></label>
                         </div>
--->
                     </div>
                 </div>
             </div>
@@ -296,7 +283,7 @@
                             <div class="form-group-field">
                                 <div class="input-wrapper">
                                     <input data-error="#old-password-error" type="password" maxlength="30" name="old_password" id="old-password" placeholder="********">
-                                    <span class="fa fa-eye-slash absolute-postn password-toggle" data-state="hidden"></span>
+                                    <span class="fa fa-eye-slash absolute-postn password-toggle clickable" data-state="hidden"></span>
                                 </div>
                                 <div class="error"><?php echo form_error("old_password") ?></div>
                             </div>
@@ -308,7 +295,7 @@
                             <div class="form-group-field">
                                 <div class="input-wrapper">
                                     <input data-error="#new-password-error" type="password" maxlength="30" name="new_password" id="new-password" placeholder="********">
-                                    <span class="fa fa-eye-slash absolute-postn password-toggle" data-state="hidden"></span>
+                                    <span class="fa fa-eye-slash absolute-postn password-toggle clickable" data-state="hidden"></span>
                                 </div>
                                 <div class="error"><?php echo form_error("new_password") ?></div>
                             </div>
@@ -320,7 +307,7 @@
                             <div class="form-group-field">
                                 <div class="input-wrapper">
                                     <input data-error="#confirm-password-error" type="password" maxlength="30" name="confirm_password" id="confirm-password" placeholder="********">
-                                    <span class="fa fa-eye-slash absolute-postn password-toggle" data-state="hidden"></span>
+                                    <span class="fa fa-eye-slash absolute-postn password-toggle clickable" data-state="hidden"></span>
                                 </div>
                                 <div class="error"><?php echo form_error("confirm_password") ?></div>
                             </div>

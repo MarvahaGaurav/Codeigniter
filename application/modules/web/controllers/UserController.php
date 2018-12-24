@@ -186,29 +186,51 @@ class UserController extends BaseController
         $this->userData = $userData;
         $this->load->library("form_validation");
         //this is required for callbacks to work with HMVC module
-        $this->form_validation->CI =& $this;
-        $validation_rules = $this->setValidation();
-        $rules = $validation_rules['settings'];
-        if (isset($post['old_password']) && strlen($post['old_password']) >= 8) {
-            $rules = array_merge($rules, $validation_rules['change-password']);
-        }
-        $this->form_validation->set_rules($rules);
-        if ($this->form_validation->run()) {
-            $this->load->model("User");
-            if (isset($post['old_password'])) {
-                $this->User->password = encrypt($post['new_password']);
+        if (!empty($post)) {
+            $this->form_validation->CI =& $this;
+            $validation_rules = $this->setValidation();
+            $rules = $validation_rules['settings'];
+            if (isset($post['old_password']) && strlen($post['old_password']) >= 8) {
+                $rules = array_merge($rules, $validation_rules['change-password']);
             }
+            $this->form_validation->set_rules($rules);
+            $valid = $this->form_validation->run();
+            if ((bool)$valid) {
+                $this->load->model("User");
+                if (isset($post['old_password'])) {
+                    $this->User->password = encrypt($post['new_password']);
+                }
 
-            $this->User->currency = $post['currency'];
-            $this->User->language = $post['language'];
+                if (isset($post['discount_price']) && (int)$this->userInfo['is_owner'] === ROLE_OWNER && (int)$this->userInfo['user_type'] === INSTALLER) {
+                    $discountPrice = sprintf("%.2f", $post['discount_price']);
+                    $this->UtilModel->updateTableData([
+                        'company_discount' => $discountPrice
+                    ], 'company_master', [
+                        'company_id' => $this->userInfo['company_id']
+                    ]);
+                }
 
-            $this->User->update(["user_id" => $userData['user_id']]);
-            $this->session->set_flashdata("flash-message", $this->lang->line("settings_updated"));
-            $this->session->set_flashdata("flash-type", "success");
-            redirect(base_url("home/settings/" . encryptDecrypt($userData['user_id'])));
+                $this->User->currency = $post['currency'];
+                $this->User->language = $post['language'];
+
+                $this->User->update(["user_id" => $userData['user_id']]);
+                $this->session->set_flashdata("flash-message", $this->lang->line("settings_updated"));
+                $this->session->set_flashdata("flash-type", "success");
+                redirect(base_url("home/settings/" . encryptDecrypt($userData['user_id'])));
+            } else {
+                
+            }
         }
         $this->data['user'] = $userData;
         $this->data['js'] = "settings";
+        $this->data['discount_price'] = 0;
+
+         if ((int)$this->userInfo['is_owner'] === ROLE_OWNER && (int)$this->userInfo['user_type'] === INSTALLER) {
+             $discountPrice = $this->UtilModel->selectQuery('company_discount', 'company_master', [
+                 'where' => ['company_id' => $this->userInfo['company_id']]
+             ]);
+             $this->data['discount_price'] = $discountPrice;
+         }
         
         load_website_views("users/settings", $this->data);
     }
@@ -249,6 +271,11 @@ class UserController extends BaseController
         
         $rules = [
             'settings' => [
+                [
+                    'field' => 'discount_price',
+                    'label' => 'Discount Price',
+                    'rules' => 'trim|greater_than_equal_to[0]|less_than_equal_to[100]'
+                ]
                 // [
                 //     'field' => 'currency',
                 //     'label' => 'Currency',

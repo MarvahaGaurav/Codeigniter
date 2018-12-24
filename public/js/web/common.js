@@ -26,8 +26,8 @@ $window.on('scroll', function () {
 // on hover menu open after and on click menu open before 992
 if ($(window).width() > 992) {
     $('ul.nav li.dropdown').hover(function () {
-            $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(300);
-        },
+        $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(300);
+    },
         function () {
             $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(300);
         });
@@ -297,7 +297,7 @@ $(document).ready(function () {
                             window.location.reload();
                         }
                     }
-                }, 
+                },
                 complete: function () {
                     $self.removeAttr("disabled");
                 }
@@ -306,27 +306,35 @@ $(document).ready(function () {
     }
 
     /* on type close icon show in search field end */
-    $(".password-toggle").on("mousedown", function () {
+    $(".password-toggle").on("click", function () {
         var $self = $(this),
             $inputSibling = $self.siblings('input');
 
-        $self.removeClass("fa-eye-slash");
-        $self.addClass("fa-eye");
+        if ($self.hasClass("fa-eye-slash")) {
 
-        $inputSibling.attr("type", "text");
-        $self.attr('data-state', 'visible');
+            $self.removeClass("fa-eye-slash");
+            $self.addClass("fa-eye");
+
+            $inputSibling.attr("type", "text");
+            $self.attr('data-state', 'visible');
+        } else {
+            $self.removeClass("fa-eye");
+            $self.addClass("fa-eye-slash");
+            $inputSibling.attr("type", "password");
+            $self.attr('data-state', 'hidden');
+        }
 
     });
 
-    $(".password-toggle").on("mouseup", function () {
-        var $self = $(this),
-            $inputSibling = $self.siblings('input');
+    // $(".password-toggle").on("mouseup", function () {
+    //     var $self = $(this),
+    //         $inputSibling = $self.siblings('input');
 
-        $self.removeClass("fa-eye");
-        $self.addClass("fa-eye-slash");
-        $inputSibling.attr("type", "password");
-        $self.attr('data-state', 'hidden');
-    });
+    //     $self.removeClass("fa-eye");
+    //     $self.addClass("fa-eye-slash");
+    //     $inputSibling.attr("type", "password");
+    //     $self.attr('data-state', 'hidden');
+    // });
 });
 
 function CheckforNum(e) {

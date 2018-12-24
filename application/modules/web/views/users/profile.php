@@ -28,7 +28,8 @@
                         <h3 class="profile-username"><?php echo $user['first_name'] ?></h3>
                         <p></p>
                     </div>
-                    <?php if(!empty($compnaydetail)) {?>
+                    <?php if(!empty($compnaydetail) &&
+                        ((int)$userInfo['is_owner'] === ROLE_OWNER || in_array((int)$userInfo['user_type'], [BUSINESS_USER, ARCHITECT], true))  ) {?>
                     <hr>
                     <div class="profile-thumb">
                         
@@ -80,7 +81,8 @@
                     </div>
                     <!-- User detail Block wise end -->
 
-                    <?php if(!empty($compnaydetail)) {?>
+                    <?php if(!empty($compnaydetail) &&
+                        ((int)$userInfo['is_owner'] === ROLE_OWNER || in_array((int)$userInfo['user_type'], [BUSINESS_USER, ARCHITECT], true))  ) {?>
                     <!-- User detail Block wise -->
                     <div class="user-detail-block">
                         <div class="row">
