@@ -52,7 +52,7 @@
                             <td class="text-center"><?php echo sprintf('%.2f', $project['version']); ?></td>
 <!--                            <td class="text-center">v1.1</td>
                             <td class="text-center">20</td>-->
-                            <td class="op-semibold">
+                            <td class="op-semibold white-space">
                                 <a href="<?php echo base_url("home/projects/" . encryptDecrypt($project['project_id'])) ?>" class="project-action" title="<?php echo $this->lang->line('view') ?>">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                 </a>
