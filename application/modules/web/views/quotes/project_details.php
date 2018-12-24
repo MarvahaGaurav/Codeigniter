@@ -262,7 +262,7 @@
                 <div class="form-group">
                     <label for="expiry_date" class="priceTxt">Expiry Date</label>
                     <div class="inputField date position-relative">
-                    <input type="text" id="dateTimePicker">
+                    <input type="text" id="dateTimePicker" <?php echo (bool)$hasFinalQuotePriceAdded && ($request_status==QUOTATION_STATUS_APPROVED ||$request_status==QUOTATION_STATUS_REJECTED)?'disabled="disabled"':'name="expiry_date"' ?> class="modal-price-fields restrict-characters number-only-field" id="expiry_date" value="<?php echo isset($projectRoomPrice['expiry_date'])?$projectRoomPrice['expiry_date']:'' ?>">
                         <!-- <input type="date" <?php echo (bool)$hasFinalQuotePriceAdded && ($request_status==QUOTATION_STATUS_APPROVED ||$request_status==QUOTATION_STATUS_REJECTED)?'disabled="disabled"':'name="expiry_date"' ?> class="modal-price-fields restrict-characters number-only-field" id="expiry_date"  value="<?php echo isset($projectRoomPrice['expiry_date'])?$projectRoomPrice['expiry_date']:'' ?>"> -->
                     </div>
                 </div>

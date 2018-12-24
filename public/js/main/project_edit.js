@@ -42,8 +42,26 @@ requirejs(
     function ($) {
         var $otherProjectCount = $("#other-project-count");
 
+        var $otherLevelCountDiv = $("#other-level-count-div");
+        var levelCount = $("#project_level_count").val();
+        
+
+        $(document).ready(function() {
+            var level =$('#levels :selected').val();
+           
+            if(level=='others') {
+                $('#levels').closest(".block-div")
+                .removeClass("col-lg-4 col-md-4 col-sm-4 col-xs-12")
+                .addClass("col-lg-2 col-md-2 col-sm-2 col-xs-6");
+            $otherLevelCountDiv.removeClass("concealable");
+            $('#levels').attr('name', '');
+            $otherProjectCount.attr('name', 'levels');
+            $otherProjectCount.val(levelCount);
+            }
+        });
+
         $otherProjectCount.on('keypress', function () {
-            var self = this,
+            var self = $otherProjectCount,
                 $self = $(this),
                 val = parseInt($self.val());
 

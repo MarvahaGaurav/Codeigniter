@@ -6,13 +6,13 @@ require_once APPPATH . "/libraries/Traits/TotalProjectPrice.php";
 require_once APPPATH . "/libraries/Traits/TechnicianChargesCheck.php";
 require_once APPPATH . "/libraries/Traits/InstallerPriceCheck.php";
 require_once APPPATH . "/libraries/Traits/QuickCalc.php";
-require_once APPPATH . "/libraries/Traits/TotalQuotationPrice.php";
+require_once APPPATH . "/libraries/Traits/QuotationPrice.php";
 
 
 class QuotesController extends BaseController
 {
-    use LevelRoomCheck, InstallerPriceCheck, TotalProjectPrice, TechnicianChargesCheck,QuickCalc;
-   // use TotalQuotationPrice {TotalQuotationPrice :: quotationTotalPrice as originalQuotationPrice;}
+    use LevelRoomCheck, InstallerPriceCheck, TotalProjectPrice,QuotationPrice, TechnicianChargesCheck,QuickCalc;
+   
     
     private $validationData;
 
@@ -579,14 +579,14 @@ class QuotesController extends BaseController
                 
                 $this->load->helper(['utility']);
                 $this->data['hasAddedAllPrice'] = $this->projectCheckPrice($id);
-                $this->data['projectRoomPrice'] = (array)$this->quotationTotalPrice((int)$this->userInfo['user_type'], $id);
+                $this->data['projectRoomPrice'] = (array)$this->originalQuotationPrice((int)$this->userInfo['company_id'], $id);
                 $this->data['hasAddedFinalPrice'] = $this->hasTechnicianAddedFinalPrice($id);
 
                 
                 $this->data['hasFinalQuotePriceAdded'] = $this->isFinalQuotePriceAdded($request_id);
             }
 
-           //pr($this->data);
+          // pr($this->data);
             
             website_view('quotes/project_details', $this->data);
         } catch (Exception $ex) {
@@ -912,7 +912,7 @@ class QuotesController extends BaseController
      * @param string projectRoomId
      * @return void
      */
-    public function selectedProjectProducts($projectId, $level, $roomId, $projectRoomId)
+    public function selectedProjectProducts($projectId,$requestId, $level, $roomId, $projectRoomId)
     {
         try {
 
@@ -928,13 +928,17 @@ class QuotesController extends BaseController
             $projectId = encryptDecrypt($projectId, "decrypt");
             $roomId = encryptDecrypt($roomId, "decrypt");
             $projectRoomId = encryptDecrypt($projectRoomId, "decrypt");
+
             $languageCode = $this->languageCode;
 
             $obj->validationData = ['project_id' => $projectId, 'level' => $level, 'room_id' => $roomId, 'project_room_id' => $projectRoomId];
 
+            
             $obj->validateAccessoryProduct();
 
             $status = $obj->validationRun();
+
+            
 
             if (!$status) {
                 show404($this->lang->line('bad_request'), base_url(''));
@@ -988,7 +992,11 @@ class QuotesController extends BaseController
 
             $data = $this->ProjectRoomProducts->selectedProducts($params);
 
+            $this->load->model('Product');
+
             $params['room_id'] = $roomId;
+
+            //$this->data['assessory_products'] = $this->Product->roomProducts($params);
 
             $this->data['projectId'] = encryptDecrypt($projectId);
             $this->data['roomId'] = encryptDecrypt($roomId);
@@ -1008,6 +1016,9 @@ class QuotesController extends BaseController
 
             $this->data['products'] = $data;
 
+
+            
+
             $this->data['quotationRequest'] = [];
             $this->data['hasAddedFinalPrice'] = false;
             if (in_array((int)$this->userInfo['user_type'], [INSTALLER], true)) {
@@ -1021,6 +1032,14 @@ class QuotesController extends BaseController
                 ]);
             }
 
+            $this->data['request_id'] = $requestId;
+
+            $requestId= encryptDecrypt($requestId, "decrypt");
+
+            $this->data['request_status'] = $this->getRequestStatus($requestId);
+
+
+            //pr($this->data);
             website_view('quotes/project_selected_products', $this->data);
         } catch (\Exception $error) {
             show404($this->lang->line('internal_server_error'), base_url(''));
@@ -1552,6 +1571,8 @@ class QuotesController extends BaseController
             $this->db->trans_rollback();
         }
     }
+
+    
 
     private function tcoFormHandler($requestData, $toInsert, $projectRoomId, $projectId, $level,$requestId)
     {

@@ -42,7 +42,7 @@ requirejs(
     function ($) {
         var $otherProjectCount = $("#other-project-count");
 
-        $otherProjectCount.on('keypress', function (e) {
+        $otherProjectCount.on('keypress', function (e) { 
             var self = this,
                 $self = $(this),
                 val = parseInt($self.val());
