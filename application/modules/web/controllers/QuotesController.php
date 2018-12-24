@@ -586,13 +586,16 @@ class QuotesController extends BaseController
                 $this->data['hasFinalQuotePriceAdded'] = $this->isFinalQuotePriceAdded($request_id);
             }
 
-            $companyDiscount = $this->UtilModel->selectQuery('company_discount', 'company_master', [
-                'where' => ['company_id' => $this->userInfo['company_id']], 'single_row' => true
-            ]);
-
+            $this->data['company_discount'] = 0;
             
-            $this->data['company_discount'] = $companyDiscount['company_discount'];
-
+            if ((int)$this->userInfo['is_owner'] === ROLE_OWNER && (int)$this->userInfo['user_type'] === INSTALLER) {
+                $companyDiscount = $this->UtilModel->selectQuery('company_discount', 'company_master', [
+                    'where' => ['company_id' => $this->userInfo['company_id']], 'single_row' => true
+                ]);
+                $this->data['company_discount'] = $companyDiscount['company_discount'];
+            }
+            
+            
           // pr($this->data);
             
             website_view('quotes/project_details', $this->data);

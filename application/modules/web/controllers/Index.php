@@ -75,7 +75,7 @@ class Index extends BaseController
 
                     if ((int)$sg_userinfo['is_owner'] === ROLE_EMPLOYEE) {
                         $employeeStatus = $this->Common_model->fetch_data('ai_user', [
-                            'user_id' => 
+                            'user_id' => $sg_userinfo['user_id']
                         ]);
                     }
                     //pr($sg_userinfo);

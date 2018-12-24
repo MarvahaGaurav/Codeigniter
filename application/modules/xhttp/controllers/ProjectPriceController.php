@@ -278,10 +278,17 @@ class ProjectPriceController extends BaseController
                     'id' => $request_id
             ]);
 
+
             $requestData = $this->UtilModel->selectQuery('request_id', 'project_quotations', [
                 'where' => ['id' => $request_id], 'single_row' => true
             ]);
 
+            $requestData['approved_at'] = $this->datetime;
+            $requestData['approved_at_timestamp'] = $this->timestamp;
+            
+            $this->UtilModel->updateTableData($updateData, 'project_requests', [
+                'id' => $requestData['request_id']
+            ]);
             $projectData = $this->UtilModel->selectQuery('project_id', 'project_requests', [
                 'where' => ['project_id' => $requestData['project_id']], 'single_row' => true
             ]);
