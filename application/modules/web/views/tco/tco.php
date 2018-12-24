@@ -4,9 +4,9 @@
         <!-- breadcrumb -->
         <ul class="breadcrumb">
             <li><a href="javascript:void(0)">Home</a></li>
-            <li><a href="javascript:void(0)">Project</a></li>
-            <li><a href="javascript:void(0)">Rooms</a></li>
-            <li><a href="javascript:void(0)">Result</a></li>
+            <li><a href="<?php echo base_url("home/projects") ?>">Project</a></li>
+            <li><a href="<?php echo base_url("home/projects/".encryptDecrypt($roomData['project_id'], "encrypt")."/levels/".$roomData['level']."/rooms") ?>">Rooms</a></li>
+            <li><a href="<?php echo base_url("home/projects/".encryptDecrypt($roomData['project_id'], "encrypt")."/levels/".$roomData['level']."/rooms/results") ?>">Result</a></li>
             <li class="active">TCO</li>
         </ul>
         <!-- //breadcrumb -->
@@ -20,12 +20,21 @@
         </div>
 
         <!-- Caption before section -->
-        <div class="section-title clearfix">
+        <!-- <div class="section-title clearfix">
             <h3 class="pull-left">Price Comparison</h3>
             <div class="button-wrapper-two pull-right">
                 <a href="javascript:void(0)" class="custom-btn btn-width save">
                     Show Competitor Price
                 </a>
+            </div>
+        </div> -->
+        <div class="section-title clearfix">
+            <h3 class="pull-left">Price Comparison</h3>
+            <div class="button-wrapper-two pull-right">
+            <label class="switch">
+                 Show Competitor Price
+                <input type="checkbox" id="competitor_show">
+            </label>
             </div>
         </div>
         <!-- Caption before section -->
@@ -56,8 +65,8 @@
                             </div>
                         </td>
                         <td>
-                            <div class="price-comparison">
-                                <input type="text" value="" >
+                            <div class="price-comparison competitor" style="display: none;">
+                                <input type="text" value=""  >
                             </div>
                         </td>
                     </tr>
@@ -74,7 +83,7 @@
                             </div>
                         </td>
                         <td>
-                            <div class="price-comparison">
+                            <div class="price-comparison competitor" style="display: none;">
                                 <input type="text" value="" >
                             </div>
                         </td>
@@ -92,7 +101,7 @@
                             </div>
                         </td>
                         <td>
-                            <div class="price-comparison">
+                            <div class="price-comparison competitor" style="display: none;">
                                 <input type="text" value="" >
                             </div>
                         </td>
@@ -110,7 +119,7 @@
                             </div>
                         </td>
                         <td>
-                            <div class="price-comparison">
+                            <div class="price-comparison competitor" style="display: none;">
                                 <input type="text" value="" >
                             </div>
                         </td>
@@ -128,7 +137,7 @@
                             </div>
                         </td>
                         <td>
-                            <div class="price-comparison">
+                            <div class="price-comparison competitor" style="display: none;">
                                 <input type="text" value="" >
                             </div>
                         </td>
@@ -146,7 +155,7 @@
                             </div>
                         </td>
                         <td>
-                            <div class="price-comparison">
+                            <div class="price-comparison competitor" style="display: none;">
                                 <input type="text" value="" >
                             </div>
                         </td>
@@ -164,7 +173,7 @@
                             </div>
                         </td>
                         <td>
-                            <div class="price-comparison">
+                            <div class="price-comparison competitor" style="display: none;">
                                 <input type="text" value="" >
                             </div>
                         </td>
@@ -182,7 +191,7 @@
                             </div>
                         </td>
                         <td>
-                            <div class="price-comparison">
+                            <div class="price-comparison competitor" style="display: none;">
                                 <input type="text" value="" >
                             </div>
                         </td>
@@ -199,7 +208,7 @@
                             </div>
                         </td>
                         <td>
-                            <div class="price-comparison">
+                            <div class="price-comparison competitor" style="display: none;">
                             </div>
                         </td>
                     </tr>
