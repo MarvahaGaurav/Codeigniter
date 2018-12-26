@@ -47,7 +47,8 @@ trait TotalProjectPrice
 
             $sumPrice = $this->priceData['price_per_luminaries'] + $this->priceData['installation_charges'];
 
-            $this->priceData['discount_price'] = (1 - ($this->priceData['discounted_price']/$sumPrice)) * 100;
+            $this->priceData['discount_price'] = $sumPrice > 0 ?
+                                                    (1 - ($this->priceData['discounted_price']/$sumPrice)) * 100:0;
 
             $subTotal = sprintf("%.2f", get_percentage($sumPrice, $this->priceData['discount_price'])
                 + $this->priceData['additional_product_charges']);

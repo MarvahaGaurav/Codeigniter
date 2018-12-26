@@ -30,7 +30,7 @@
                     <div class="row">
                         <?php foreach ($data as $key => $product) { ?>
                         <div class="col-sm-6 col-md-4">
-                            <a href="<?php echo base_url('home/fast-calc/product/').encryptdecrypt($product['product_id'])."/article/".encryptdecrypt($product['ps_articlecode'])?>">
+                            <a href="<?php echo strlen(trim((string)$product['uld']))>0?base_url('home/fast-calc/product/').encryptdecrypt($product['product_id'])."/article/".encryptdecrypt($product['ps_articlecode']):'javascript:void(0)'?>">
                                 <div class="thumbnail">
                                     <img src="<?php echo $product['ps_image'] ?>" alt="CircLED_Single_prodpic">
                                     <div class="caption">

@@ -40,9 +40,10 @@ requirejs(
             $roomLuminariesX = $("#room_luminaries_x"),
             $roomLuminariesY = $("#room_luminaries_y"),
             $xyTotal = $("#xy_total"),
+            $finalRoomSubmission = $("#final-room-submission"),
             $luxValues = $("input[name='lux_values']"),
-            $finalRoomSubmission = $("#final-room-submission");
-        
+            $calculatedLuxValue = $("input[name='calculated_lux_values']");
+
         addFormData = getFormData($addForm);
 
         if (
@@ -79,10 +80,12 @@ requirejs(
                         $roomLuminariesX.val(response.data.luminaireCountInX);
                         $roomLuminariesY.val(response.data.luminaireCountInY);
                         $xyTotal.val(response.data.luminaireCount);
-                        // $luxValues.val((response.data.illuminance));
+                        $calculatedLuxValue.removeAttr('readonly');
+                        $calculatedLuxValue.val((response.data.illuminance.toFixed(2)));
+                        $calculatedLuxValue.attr('readonly', 'readonly');
                     }
                 },
-                error: function(error) {
+                error: function (error) {
                     $roomLuminariesX.attr("placeholder", "");
                     $roomLuminariesX.removeAttr("disabled");
                     $roomLuminariesY.attr("placeholder", "");
@@ -96,7 +99,7 @@ requirejs(
         $("#display-advanced-options").on("change", function () {
             var self = this,
                 $self = $(self);
-            
+
             if (self.checked) {
                 $advancedOptionsDiv.slideDown();
             } else {
@@ -104,7 +107,7 @@ requirejs(
             }
         });
 
-        $(".dialux-suggestions-fields").on("change keydown", function () {
+        $(".dialux-suggestions-fields").on("change keyup", function () {
             var self = this,
                 $self = $(self),
                 formData = getFormData($addForm);
@@ -141,10 +144,12 @@ requirejs(
                             $roomLuminariesX.val(response.data.luminaireCountInX);
                             $roomLuminariesY.val(response.data.luminaireCountInY);
                             $xyTotal.val(response.data.luminaireCount);
-                            // $luxValues.val((response.data.illuminance));
+                            $calculatedLuxValue.removeAttr('readonly');
+                            $calculatedLuxValue.val((response.data.illuminance.toFixed(2)));
+                            $calculatedLuxValue.attr('readonly', 'readonly');
                         }
                     },
-                    error: function(error) {
+                    error: function (error) {
                         $roomLuminariesX.attr("placeholder", "");
                         $roomLuminariesX.removeAttr("disabled");
                         $roomLuminariesY.attr("placeholder", "");

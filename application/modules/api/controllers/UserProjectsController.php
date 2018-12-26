@@ -116,7 +116,8 @@ class UserProjectsController extends BaseController
 
             // pd($projectData);
 
-            $this->load->model(['Project', 'ProjectRooms', 'ProjectRoomProducts', 'ProjectLevel']);
+            $this->load->model(['Project', 'ProjectRooms', 'ProjectRoomProducts',
+                                'ProjectLevel', 'ProjectRoomQuotation']);
 
             $time = [
                 'datetime' => $this->datetime,
@@ -128,6 +129,20 @@ class UserProjectsController extends BaseController
             $projectLevelData = $this->UtilModel->selectQuery('*', 'project_levels', $params);
             $roomsData = $this->ProjectRooms->roomsData($params);
             $productsData = $this->ProjectRoomProducts->projectRoomProducts($params);
+            $insertProjectQuotations = (int)$this->user['user_type'] === INSTALLER && !empty($roomsData);
+            $this->load->helper(['db']);
+            $filterQuotation = [];
+            if ($insertProjectQuotations) {
+                $projectRoomIds = array_column($roomsData, 'id');
+                $roomQuotations = $this->ProjectRoomQuotation->quotationInfo([
+                    'where_in' => ['project_room_id' => $projectRoomIds]
+                ]);
+                $roomsData = getDataWith($roomsData, $roomQuotations, 'id', 'project_room_id', 'quotations', '', true);
+                $filterQuotation = array_map(function ($room) {
+                    return (bool)!empty($room['quotations']);
+                }, $roomsData);
+                // dd($filterQuotation);
+            }
 
             $this->db->trans_begin();
             $projectId = $this->Project->saveProject($projectData, $time);
@@ -139,6 +154,7 @@ class UserProjectsController extends BaseController
                 'where' => ['project_id' => $projectId]
             ];
 
+            $this->db->trans_begin();
             $clonedRoomsData = $this->ProjectRooms->roomsData($newProjectParams);
 
             $sourceDestinationRoomIdMap = [];
@@ -146,7 +162,13 @@ class UserProjectsController extends BaseController
                 $sourceDestinationRoomIdMap[$value['id']] = $clonedRoomsData[$key]['id'];
             }
             $this->ProjectRoomProducts->cloneProjectRoomProducts($productsData, $sourceDestinationRoomIdMap);
+            if ($insertProjectQuotations) {
+                $roomparams = ['where' => ['project_id' => $projectId]];
+                $projectRooms = $this->ProjectRooms->fetchData($roomparams);
+                $this->ProjectRoomQuotation->cloneQuotation($projectRooms, $filterQuotation, $roomQuotations, $this->user);
+            }
 
+            $this->db->trans_commit();
             $this->response([
                 'code' => HTTP_OK,
                 'msg' => $this->lang->line('project_cloned_success')

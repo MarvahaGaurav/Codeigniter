@@ -37,8 +37,8 @@ $route['api/v1/applications/(:num)/rooms'] = 'RoomController/rooms/application_i
 $route['api/v1/rooms/(:num)/products'] = 'ProductController/accessoryProducts/room_id/$1';
 
 $route['api/v1/products/mounting-types'] = 'ProductController/mountingTypes';
-$route['api/v1/rooms/(:any)/mounting-types/(:any)/products'] =
-'ProductController/roomProducts/room_id/$1/mounting_type/$2';
+$route['api/v1/mounting-types/(:any)/products'] = 'ProductController/roomProducts/mounting_type/$1';
+$route['api/v1/rooms/(:any)/mounting-types/(:any)/products'] = 'ProductController/roomProducts/room_id/$1/mounting_type/$2';
 
 $route['api/v1/projects/mail'] = 'QuotationMailController/sendProjectQuotationMail';
 $route['api/v1/requests/mail'] = 'QuotationMailController/sendRequestQuotationMail';

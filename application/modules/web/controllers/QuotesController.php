@@ -17,7 +17,7 @@ class QuotesController extends BaseController
     private $validationData;
 
     function __construct()
-    { 
+    {
         parent::__construct();
         $this->activeSessionGuard();
         $this->load->helper(['datetime']);

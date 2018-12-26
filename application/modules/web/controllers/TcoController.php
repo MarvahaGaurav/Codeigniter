@@ -84,7 +84,7 @@ class TcoController extends BaseController
             }
 
             $productData = $this->UtilModel->selectQuery('lifetime_hours, wattage, system_wattage', 'project_room_products as prp', [
-                'where' => ['project_room_id' => $roomData['id']], 
+                'where' => ['project_room_id' => $roomData['id']],
                 'join' => ['product_specifications as ps' => 'prp.product_id=ps.product_id AND prp.article_code=ps.articlecode'],
                 'single_row' => true
             ]);
@@ -117,9 +117,6 @@ class TcoController extends BaseController
                 
                 $this->load->model("ProjectRoomTcoValue");
                 $this->ProjectRoomTcoValue->insert($tcoData);
-                $this->session->set_flashdata("flash-message", $this->lang->line("tco_done"));
-                $this->session->set_flashdata("flash-type", "success");
-                redirect(base_url('home/projects/' . encryptDecrypt($projectId) . '/levels/' . $level . '/rooms/results'));
             } else {
                 $tcoData['roi'] = $roi;
                 $tcoData['updated_at'] = $this->datetime;
@@ -127,10 +124,11 @@ class TcoController extends BaseController
                 $this->UtilModel->updateTableData($tcoData, 'project_room_tco_values', [
                     'project_room_id' => $projectRoomId
                 ]);
-                $this->session->set_flashdata("flash-message", $this->lang->line("tco_done"));
-                $this->session->set_flashdata("flash-type", "success");
-                redirect(base_url('home/projects/' . encryptDecrypt($projectId) . '/levels/' . $level . '/rooms/results'));
             }
+            $this->session->set_flashdata("flash-message", $this->lang->line("tco_done"));
+            $this->session->set_flashdata("flash-type", "success");
+            $this->session->set_flashdata("tco_roi", $roi);
+            redirect(base_url('home/projects/' . encryptDecrypt($projectId) . '/levels/' . $level . '/rooms/results'));
         }
     }
 

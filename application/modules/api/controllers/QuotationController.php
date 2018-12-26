@@ -333,11 +333,11 @@ class QuotationController extends BaseController
             $quotations = $quotationData['data'];
             $count = $quotationData['count'];
 
-            // $priceData = $this->getQuotationPrice($quotations);
+            $priceData = $this->getQuotationPrice($quotations);
 
-            // $this->load->helper(['db']);
+            $this->load->helper(['db']);
 
-            // $quotations = getDataWith($quotations, $priceData, 'company_id', 'company_id', 'quotation_price', '', true);
+            $quotations = getDataWith($quotations, $priceData, 'company_id', 'company_id', 'quotation_price', '', true);
 
             if (empty($quotations)) {
                 $this->response([
@@ -347,25 +347,25 @@ class QuotationController extends BaseController
             }
 
             $this->load->helper('utility');
-            $quotations = array_map(function ($quotation) {
-                $quotation['quotation_price'] = json_decode($quotation['quotation_price'], true);
-                $quotation['quotation_price']['additional_product_charges'] = (double)$quotation['additional_product_charges'];
-                $quotation['quotation_price']['discount'] = (double)$quotation['discount'];
-                $quotation['quotation_price']['main_product_charge'] = 0.00;
-                $quotation['quotation_price']['accessory_product_charge'] = 0.00;
-                $roomCharge = $quotation['quotation_price']['price_per_luminaries'] + $quotation['quotation_price']['installation_charges'];
-                $roomCharge = get_percentage($roomCharge, $quotation['quotation_price']['discount_price']);
-                $quotation['quotation_price']['total'] = 0.00;
-                $quotation['quotation_price']['total'] = $quotation['quotation_price']['main_product_charge'] +
-                    $quotation['quotation_price']['accessory_product_charge'] +
-                    get_percentage(
-                    $roomCharge + $quotation['quotation_price']['additional_product_charges'],
-                    $quotation['quotation_price']['discount']
-                );
+            // $quotations = array_map(function ($quotation) {
+            //     $quotation['quotation_price'] = json_decode($quotation['quotation_price'], true);
+            //     $quotation['quotation_price']['additional_product_charges'] = (double)$quotation['additional_product_charges'];
+            //     $quotation['quotation_price']['discount'] = (double)$quotation['discount'];
+            //     $quotation['quotation_price']['main_product_charge'] = 0.00;
+            //     $quotation['quotation_price']['accessory_product_charge'] = 0.00;
+            //     $roomCharge = $quotation['quotation_price']['price_per_luminaries'] + $quotation['quotation_price']['installation_charges'];
+            //     $roomCharge = get_percentage($roomCharge, $quotation['quotation_price']['discount_price']);
+            //     $quotation['quotation_price']['total'] = 0.00;
+            //     $quotation['quotation_price']['total'] = $quotation['quotation_price']['main_product_charge'] +
+            //         $quotation['quotation_price']['accessory_product_charge'] +
+            //         get_percentage(
+            //             $roomCharge + $quotation['quotation_price']['additional_product_charges'],
+            //             $quotation['quotation_price']['discount']
+            //         );
 
-                unset($quotation['discount'], $quotation['additional_product_charges']);
-                return $quotation;
-            }, $quotations);
+            //     unset($quotation['discount'], $quotation['additional_product_charges']);
+            //     return $quotation;
+            // }, $quotations);
 
             $hasMorePages = false;
             $nextCount = -1;
@@ -1132,22 +1132,22 @@ class QuotationController extends BaseController
         ]);
     }
 
-    // private function getQuotationPrice($quotationData)
-    // {
-    //     $projectIds = array_unique(array_column($quotationData, 'project_id'));
+    private function getQuotationPrice($quotationData)
+    {
+        $projectIds = array_unique(array_column($quotationData, 'project_id'));
 
-    //     $data = $this->ProjectQuotation->quotationPriceByProjects($projectIds);
+        $data = $this->ProjectQuotation->quotationPriceByProjects($projectIds);
 
-    //     $data = array_map(function($price) {
-    //         $price['additional_product_charges'] = sprintf("%.2f", $price['additional_product_charges']);
-    //         $price['discount'] = sprintf("%.2f", $price['discount']);
-    //         $price['main_product_charges'] = "0.00";
-    //         $price['accessory_product_charges'] = "0.00";
-    //         $price['subtotal'] = sprintf("%.2f", $price['subtotal']);
-    //         unset($price['project_id']);
-    //         return $price;
-    //     }, $data);
+        $data = array_map(function ($price) {
+            $price['additional_product_charges'] = sprintf("%.2f", $price['additional_product_charges']);
+            $price['discount'] = sprintf("%.2f", $price['discount']);
+            $price['main_product_charges'] = "0.00";
+            $price['accessory_product_charges'] = "0.00";
+            $price['subtotal'] = sprintf("%.2f", $price['subtotal']);
+            unset($price['project_id']);
+            return $price;
+        }, $data);
 
-    //     return $data;
-    // }
+        return $data;
+    }
 }

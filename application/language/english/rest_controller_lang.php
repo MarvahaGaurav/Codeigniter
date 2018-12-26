@@ -217,6 +217,7 @@ $lang['notification_send_quotes'] = 'You have received a quotation from %s';
 $lang['notification_accept_quote'] = 'Your quote has been accepted by %s';
 $lang['notification_edit_quote_price'] = 'An updated quote has been provided';
 $lang['notification_request_approved'] = 'Your request to join %s has been approved';
+$lang['notification_request_rejected'] = 'Your request to join %s has been rejected';
 $lang['no_notification_found'] = 'You have no notifications';
 $lang['notification_fetched'] = 'Notifications fetched';
 $lang['no_request_found'] = 'No request found';
@@ -236,4 +237,3 @@ $lang['quotation_mail_success'] = 'You quotation has been sent to %s';
 
 $lang['quotations_for_project'] = 'Quotations: %s';
 $lang['quotation_file_name'] = '%s Quotes';
-

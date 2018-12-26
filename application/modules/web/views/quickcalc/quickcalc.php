@@ -274,6 +274,20 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    <div class="form-group">
+                        <label class="labelTxt">Calculated Lux Value</label>
+                        <div class="form-group-field">
+                            <input class="dialux-suggestions-fields number-only-field restrict-characters" readonly data-restrict-to="15" type="text" name="calculated_lux_values" value="" placeholder="">
+                            <label class="field-type">
+                                <select class="select-filed-name">
+                                    <option class="text-center">LUX</option>
+                                </select>
+                                <!-- <span class="customArrow"></span> -->
+                            </label>
+                        </div>
+                    </div>
+                </div>
                 <div class="clearfix"></div>
             </div>
         </div>

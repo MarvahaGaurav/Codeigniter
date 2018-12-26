@@ -56,10 +56,10 @@ class ProjectRooms extends BaseModel
      */
     public function get($params)
     {
-        $this->db->select("id as project_room_id, room_id, level, project_id, name, length, width, height, count,
-            maintainance_factor, shape, working_plane_height, rho_wall, rho_ceiling, reference_name, reference_number,
-            rho_floor, suspension_height, lux_value, luminaries_count_x, luminaries_count_y,
-            created_at", false)
+        $this->db->select("SQL_CALC_FOUND_ROWS id as project_room_id, room_id, level, project_id, name, length,
+            width, height, count, maintainance_factor, shape, working_plane_height, rho_wall, rho_ceiling,
+            reference_name, reference_number, rho_floor, suspension_height, lux_value, luminaries_count_x,
+            luminaries_count_y, created_at", false)
             ->from($this->tableName);
         
         if (isset($params['limit']) && is_numeric($params['limit']) && (int)$params['limit'] > 0) {
@@ -80,6 +80,41 @@ class ProjectRooms extends BaseModel
         
         $result['data'] = $query->result_array();
         $result['count'] = $this->db->query('SELECT FOUND_ROWS() as count')->row()->count;
+
+        return $result;
+    }
+
+    /**
+     * get project listing
+     *
+     * @param array $params
+     * @return array
+     */
+    public function fetchData($params)
+    {
+        $this->db->select("id as project_room_id, room_id, level, project_id, name, length,
+            width, height, count, maintainance_factor, shape, working_plane_height, rho_wall, rho_ceiling,
+            reference_name, reference_number, rho_floor, suspension_height, lux_value, luminaries_count_x,
+            luminaries_count_y, created_at", false)
+            ->from($this->tableName);
+        
+        if (isset($params['limit']) && is_numeric($params['limit']) && (int)$params['limit'] > 0) {
+            $this->db->limit((int)$params['limit']);
+        }
+
+        if (isset($params['offset']) && is_numeric($params['offset']) && (int)$params['offset'] > 0) {
+            $this->db->offset((int)$params['offset']);
+        }
+
+        if (isset($params['where']) && is_array($params['where']) && !empty($params['where'])) {
+            foreach ($params['where'] as $tableColumn => $searchValue) {
+                $this->db->where($tableColumn, $searchValue);
+            }
+        }
+
+        $query = $this->db->get();
+        
+        $result = $query->result_array();
 
         return $result;
     }
@@ -254,20 +289,20 @@ class ProjectRooms extends BaseModel
 
     /**
      * Fetch room count by level
-     * 
+     *
      * @param string $projectId
      *
      * @return void
      */
     public function roomCountByLevel($projectId)
     {
-        $this->db->select('id, COUNT(id) as room_count, level',false)
+        $this->db->select('id, COUNT(id) as room_count, level', false)
             ->from('project_rooms')
             ->where('project_id', $projectId)
             ->group_by('level');
 
         $query = $this->db->get();
-		
+        
         $result = $query->result_array();
 
         return $result;

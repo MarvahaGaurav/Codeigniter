@@ -34,9 +34,10 @@ requirejs(
             $roomLuminariesX = $("#room_luminaries_x"),
             $roomLuminariesY = $("#room_luminaries_y"),
             $xyTotal = $("#xy_total"),
-            $luxValues = $("input[name='lux_values']");
+            $luxValues = $("input[name='lux_values']"),
+            $calculatedLuxValue = $("input[name='calculated_lux_values']");
 
-        addFormData = getFormData($addForm);
+        var addFormData = getFormData($addForm);
 
         if (
             ("room_id" in addFormData && addFormData["room_id"].trim().length > 0) &&
@@ -58,7 +59,9 @@ requirejs(
                         $roomLuminariesX.val(response.data.luminaireCountInX);
                         $roomLuminariesY.val(response.data.luminaireCountInY);
                         $xyTotal.val(response.data.luminaireCount);
-                        // $luxValues.val((response.data.illuminance));
+                        $calculatedLuxValue.removeAttr('readonly');
+                        $calculatedLuxValue.val((response.data.illuminance.toFixed(2)));
+                        $calculatedLuxValue.attr('readonly', 'readonly');
                     }
                 }
             });
@@ -76,7 +79,7 @@ requirejs(
             }
         });
 
-        $(".dialux-suggestions-fields").on("change keydown", function () {
+        $(".dialux-suggestions-fields").on("change keyup", function () {
             var self = this,
                 $self = $(self),
                 formData = getFormData($addForm);
@@ -101,7 +104,9 @@ requirejs(
                             $roomLuminariesX.val(response.data.luminaireCountInX);
                             $roomLuminariesY.val(response.data.luminaireCountInY);
                             $xyTotal.val(response.data.luminaireCount);
-                            // $luxValues.val((response.data.illuminance));
+                            $calculatedLuxValue.removeAttr('readonly');
+                            $calculatedLuxValue.val((response.data.illuminance.toFixed(2)));
+                            $calculatedLuxValue.attr('readonly', 'readonly');
                         }
                     }
                 });

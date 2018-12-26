@@ -8,11 +8,15 @@ use DatabaseExceptions\SelectException;
 
 class ProjectRoomQuotation extends BaseModel
 {
+    private $datetime;
+    private $timestamp;
 
     public function __construct()
     {
         $this->load->database();
         $this->tableName = "project_room_quotations as prq";
+        $this->datetime = date("Y-m-d H:i:s");
+        $this->timestamp = time();
     }
 
     public function getQuotationRoom()
@@ -106,5 +110,29 @@ class ProjectRoomQuotation extends BaseModel
         $result = $query->result_array();
 
         return $result;
+    }
+
+    public function cloneQuotation($projectRooms, $filterQuotation, $roomQuotations, $userData)
+    {
+        $quotationsData = [];
+        foreach ($projectRooms as $key => $room) {
+            if ((bool)$filterQuotation[$key]) {
+                $quotationPriceData = array_shift($roomQuotations);
+                $quotationsData[] = [
+                    'project_room_id' => $room['project_room_id'],
+                    'user_id' => $userData['user_id'],
+                    'company_id' => $userData['company_id'],
+                    'price_per_luminaries' => $quotationPriceData['price_per_luminaries'],
+                    'installation_charges' => $quotationPriceData['installation_charges'],
+                    'discount_price' => $quotationPriceData['discount_price'],
+                    'created_at' => $this->datetime,
+                    'created_at_timestamp' => $this->datetime
+                ];
+            }
+        }
+        
+        if (!empty($quotationsData)) {
+            $this->db->insert_batch('project_room_quotations', $quotationsData);
+        }
     }
 }

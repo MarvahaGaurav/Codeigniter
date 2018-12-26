@@ -55,7 +55,8 @@ class ProjectController extends BaseController
                 );
             }
 
-            $this->load->model(['Project', 'ProjectRooms', 'ProjectRoomProducts', 'ProjectLevel']);
+            $this->load->model(['Project', 'ProjectRooms', 'ProjectRoomProducts',
+                                'ProjectLevel', 'ProjectRoomQuotation']);
 
             $time = [
                 'datetime' => $this->datetime,
@@ -67,6 +68,20 @@ class ProjectController extends BaseController
             $projectLevelData = $this->UtilModel->selectQuery('*', 'project_levels', $params);
             $roomsData = $this->ProjectRooms->roomsData($params);
             $productsData = $this->ProjectRoomProducts->projectRoomProducts($params);
+            $this->load->helper(['db']);
+            $insertProjectQuotations = (int)$this->userInfo['user_type'] === INSTALLER && !empty($roomsData);
+            $filterQuotation = [];
+            if ($insertProjectQuotations) {
+                $projectRoomIds = array_column($roomsData, 'id');
+                $roomQuotations = $this->ProjectRoomQuotation->quotationInfo([
+                    'where_in' => ['project_room_id' => $projectRoomIds]
+                ]);
+                $roomsData = getDataWith($roomsData, $roomQuotations, 'id', 'project_room_id', 'quotations', '', true);
+                $filterQuotation = array_map(function ($room) {
+                    return (bool)!empty($room['quotations']);
+                }, $roomsData);
+            }
+
 
             $this->db->trans_begin();
             $projectId = $this->Project->saveProject($projectData, $time);
@@ -78,14 +93,23 @@ class ProjectController extends BaseController
                 'where' => ['project_id' => $projectId]
             ];
 
+            $this->db->trans_begin();
             $clonedRoomsData = $this->ProjectRooms->roomsData($newProjectParams);
 
             $sourceDestinationRoomIdMap = [];
             foreach ($roomsData as $key => $value) {
                 $sourceDestinationRoomIdMap[$value['id']] = $clonedRoomsData[$key]['id'];
             }
+            
             $this->ProjectRoomProducts->cloneProjectRoomProducts($productsData, $sourceDestinationRoomIdMap);
 
+            if ($insertProjectQuotations) {
+                $roomparams = ['where' => ['project_id' => $projectId]];
+                $projectRooms = $this->ProjectRooms->fetchData($roomparams);
+                $this->ProjectRoomQuotation->cloneQuotation($projectRooms, $filterQuotation, $roomQuotations, $this->userInfo);
+            }
+
+            $this->db->trans_commit();
             $this->session->set_flashdata("flash-message", $this->lang->line('project_cloned_success'));
             $this->session->set_flashdata("flash-type", "success");
 
@@ -145,7 +169,6 @@ class ProjectController extends BaseController
         }
 
         try {
-
             $this->projectId = $this->requestData['project_id'];
             $this->deleteProject();
 
@@ -203,7 +226,6 @@ class ProjectController extends BaseController
                 ]
             );
         }
-
     }
 
     /**
@@ -235,6 +257,5 @@ class ProjectController extends BaseController
                 ]
             );
         }
-
     }
 }

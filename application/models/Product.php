@@ -110,7 +110,7 @@ class Product extends BaseModel
     public function searchProduct($params)
     {
         // pr($params);
-        $query = $this->db->select('SQL_CALC_FOUND_ROWS pro.* , pro_sp.image as ps_image , pro_sp.title as ps_title , pro_sp.articlecode as ps_articlecode', false)
+        $query = $this->db->select('SQL_CALC_FOUND_ROWS pro.* , pro_sp.uld as uld,pro_sp.image as ps_image , pro_sp.title as ps_title , pro_sp.articlecode as ps_articlecode', false)
             ->from('products as pro')
             ->join('product_specifications as pro_sp', 'pro.product_id = pro_sp.product_id');
 

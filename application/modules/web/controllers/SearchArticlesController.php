@@ -54,8 +54,6 @@ class SearchArticlesController extends BaseController
             $this->load->library('Commonfn');
             $this->data['links'] = $this->commonfn->pagination(uri_string(), $productData['count'], $param['limit']);
 
-            // pd($productData['data']);
-
             // pr($this->data);
             website_view('search/search', $this->data);
         } catch (Exception $e) {

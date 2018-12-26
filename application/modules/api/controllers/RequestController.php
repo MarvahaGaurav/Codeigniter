@@ -269,7 +269,7 @@ class RequestController extends BaseController
     private function technicianRequestData()
     {
         $data = [];
-        $this->load->model('ProjectRequest');
+        $this->load->model(['ProjectRequest', 'ProjectQuotation']);
         
         $this->params['offset'] =
                 isset($this->requestData['offset'])&&is_numeric($this->requestData['offset'])&&(int)$this->requestData['offset'] > 0 ? (int)$this->requestData['offset']: 0;
@@ -282,11 +282,22 @@ class RequestController extends BaseController
         } elseif ((int)$this->requestData['type'] === QUOTED_REQUEST) {
             $this->params['company_id'] = $this->user['company_id'];
             $data = $this->ProjectRequest->quotedRequestList($this->params);
-            $data['data'] = $this->parseRequestPriceData($data['data']);
+
+            $priceData = $this->getQuotationPrice($data['data']);
+
+            $this->load->helper(['db']);
+
+            $data['data'] = getDataWith($data['data'], $priceData, 'project_id', 'project_id', 'price', '', true);
+
+            // $data['data'] = $this->parseRequestPriceData($data['data']);
         } elseif ((int)$this->requestData['type'] === APPROVED_REQUEST) {
             $this->params['company_id'] = $this->user['company_id'];
             $data = $this->ProjectRequest->acceptedRequestList($this->params);
-            $data['data'] = $this->parseRequestPriceData($data['data']);
+            $priceData = $this->getQuotationPrice($data['data']);
+
+            $this->load->helper(['db']);
+
+            $data['data'] = getDataWith($data['data'], $priceData, 'project_id', 'project_id', 'price', '', true);
         }
 
         return $data;
@@ -377,5 +388,24 @@ class RequestController extends BaseController
         $this->form_validation->set_rules('type', 'Type', 'trim|required|regex_match[/^(1|2|3)$/]', [
             'regex_match' => $this->lang->line('invalid_request_list_type')
         ]);
+    }
+
+    private function getQuotationPrice($quotationData)
+    {
+        $projectIds = array_unique(array_column($quotationData, 'project_id'));
+
+        $data = $this->ProjectQuotation->quotationPriceByProjects($projectIds);
+
+        $data = array_map(function ($price) {
+            $price['additional_product_charges'] = sprintf("%.2f", $price['additional_product_charges']);
+            $price['discount'] = sprintf("%.2f", $price['discount']);
+            $price['main_product_charges'] = "0.00";
+            $price['accessory_product_charges'] = "0.00";
+            $price['subtotal'] = sprintf("%.2f", $price['subtotal']);
+            unset($price['company_id']);
+            return $price;
+        }, $data);
+
+        return $data;
     }
 }

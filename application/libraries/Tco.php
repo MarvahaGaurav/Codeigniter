@@ -234,14 +234,14 @@ class Tco
 
     public function yearlyEnergyConsumptionExisting()
     {
-        $existingEnergyConsumed = ($this->existingHoursPerYear * $this->existingWattage * $this->existingNumberOfLightSource) / 100;
+        $existingEnergyConsumed = ($this->existingHoursPerYear * $this->existingWattage * $this->existingNumberOfLightSource) / 1000;
 
         return $existingEnergyConsumed;
     }
 
     public function yearlyEnergyConsumptionNew()
     {
-        $newEnergyConsumed = ($this->newHoursPerYear * $this->newWattage * $this->newNumberOfLightSource) / 100;
+        $newEnergyConsumed = ($this->newHoursPerYear * $this->newWattage * $this->newNumberOfLightSource) / 1000;
 
         return $newEnergyConsumed;
     }
@@ -279,6 +279,4 @@ class Tco
         $priceOfInstallation = 1000;
         return ($newLuminaryPrice + $priceOfInstallation) / $this->yearlyTotal();
     }
-
 }
-

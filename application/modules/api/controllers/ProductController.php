@@ -124,7 +124,7 @@ class ProductController extends BaseController
                 [
                     'label' => 'room_id',
                     'field' => 'room_id',
-                    'rules' => 'trim|required|is_natural_no_zero',
+                    'rules' => 'trim|is_natural_no_zero',
                 ],
                 [
                     'label' => 'mounting_type',
@@ -146,16 +146,18 @@ class ProductController extends BaseController
 
             $params['where'] = [
                 'rp.type' => $get['mounting_type'],
-                'room_id' => $get['room_id'],
                 'EXISTS(SELECT id FROM product_specifications WHERE product_id = rp.product_id AND CHAR_LENGTH(uld) > 0)' => null
             ];
 
             if ($this->get('other_products') == 1) {
                 $params['where'] = [
                     'rp.type !=' => $get['mounting_type'],
-                    'room_id' => $get['room_id'],
                     'EXISTS(SELECT id FROM product_specifications WHERE product_id = rp.product_id AND CHAR_LENGTH(uld) > 0)' => null
                 ];
+            }
+
+            if (isset($get['room_id'])) {
+                $params['where']['room_id'] = $get['room_id'];
             }
 
             $data = $this->Product->productByMountingType($params);
@@ -719,10 +721,13 @@ class ProductController extends BaseController
         if (isset($this->requestData['room_id'], $this->requestData['mounting_type'])) {
             $roomId = (int)$this->requestData['room_id'];
             $mountingType = (int)$this->requestData['mounting_type'];
-            $params['where']["EXISTS(SELECT id FROM room_products WHERE room_products.product_id=product_specifications.product_id AND room_products.room_id='{$roomId}' AND room_products.type='{$mountingType}')"] = null;
-        } else if (isset($this->requestData['room_id'])) {
+            $params['where']["EXISTS(SELECT id FROM room_products WHERE room_products.product_id=product_specifications.product_id AND room_products.room_id='{$roomId}' AND room_products.type='{$mountingType}' LIMIT 1)"] = null;
+        } elseif (isset($this->requestData['mounting_type'])) {
+            $mountingType = (int)$this->requestData['mounting_type'];
+            $params['where']["EXISTS(SELECT id FROM room_products WHERE room_products.product_id=product_specifications.product_id AND room_products.type='{$mountingType}' LIMIT 1)"] = null;
+        } elseif (isset($this->requestData['room_id'])) {
             $roomId = (int)$this->requestData['room_id'];
-            $params['where']["EXISTS(SELECT id FROM room_products WHERE room_products.product_id=product_specifications.product_id AND room_products.room_id='{$roomId}')"] = null;
+            $params['where']["EXISTS(SELECT id FROM room_products WHERE room_products.product_id=product_specifications.product_id AND room_products.room_id='{$roomId}' LIMIT 1)"] = null;
         }
 
         $this->load->model(['ProductSpecification', 'ProductMountingTypes']);

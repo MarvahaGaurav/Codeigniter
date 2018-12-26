@@ -11,7 +11,7 @@ class BaseController extends MY_Controller
 {
     protected $data;
     protected $userInfo;
-    private   $user_query_fields;
+    private $user_query_fields;
     protected $session_data;
     protected $employeePermission;
     protected $datetime;
@@ -21,8 +21,8 @@ class BaseController extends MY_Controller
 
     public function __construct()
     {
-        // error_reporting(-1);
-        // ini_set('display_errors', 1);
+        error_reporting(-1);
+        ini_set('display_errors', 1);
         parent::__construct();
         $this->load->helper(['url', 'form', 'custom_cookie', 'common', 'debuging', 'datetime']);
         $this->load->model('Common_model');
@@ -36,6 +36,7 @@ class BaseController extends MY_Controller
         $this->session_data                = $this->session->userdata('sg_userinfo');
         $this->languageCode = "en";
         $this->employeePermission = [];
+        $this->data['activePage'] = '';
         // $this->employeePermission          = retrieveEmployeePermission($this->session->userdata('sg_userinfo')['user_id']);
         // $this->data['employee_permission'] = $this->employeePermission;
     }
@@ -237,7 +238,8 @@ class BaseController extends MY_Controller
             NOTIFICATION_SEND_QUOTES => "/home/projects/%s/quotations",
             NOTIFICATION_ACCEPT_QUOTE => "home/quotes/approved",
             NOTIFICATION_EDIT_QUOTE_PRICE => null,
-            NOTIFICATION_EMPLOYEE_APPROVED => null
+            NOTIFICATION_EMPLOYEE_APPROVED => null,
+            NOTIFICATION_ADMIN_NOTIFICATION => null
         ];
     }
 

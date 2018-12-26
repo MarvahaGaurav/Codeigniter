@@ -138,7 +138,7 @@ class ProjectLevelController extends BaseController
                 ]);
             }
 
-            $this->load->model(['ProjectRooms', 'ProjectRoomProducts']);
+            $this->load->model(['ProjectRooms', 'ProjectRoomProducts', 'ProjectRoomQuotation']);
 
             $roomsData = $this->ProjectRooms->roomsData([
                 'where' => [
@@ -147,18 +147,35 @@ class ProjectLevelController extends BaseController
                 ]
             ]);
 
+            $insertProjectQuotations = (int)$this->userInfo['user_type'] === INSTALLER && !empty($roomsData);
+            $filterQuotation = [];
+            $this->load->helper(['db']);
+            if ($insertProjectQuotations) {
+                $projectRoomIds = array_column($roomsData, 'id');
+                $roomQuotations = $this->ProjectRoomQuotation->quotationInfo([
+                    'where_in' => ['project_room_id' => $projectRoomIds]
+                ]);
+                $roomsData = getDataWith($roomsData, $roomQuotations, 'id', 'project_room_id', 'quotations', '', true);
+                $filterQuotation = array_map(function ($room) {
+                    return (bool)!empty($room['quotations']);
+                }, $roomsData);
+            }
+
             $time = [
                 'time' => $this->datetime,
                 'timestamp' => $this->timestamp
             ];
 
+            $this->db->trans_begin();
             $this->UtilModel->deleteData('project_rooms', [
                 'where_in' => ['level' => [$this->requestData['destination_levels']]],
                 'where' => ['project_id' => $this->requestData['project_id']]
             ]);
-
+                
             $this->ProjectRooms->cloneLevelRooms($roomsData, [$this->requestData['destination_levels']], $time);
-
+            $this->db->trans_commit();
+                
+            $this->db->trans_begin();
             $cloneRoomParams = [
                 'where' => ['project_id' => $this->requestData['project_id']],
                 'where_in' => ['level' => [$this->requestData['destination_levels']]]
@@ -179,7 +196,13 @@ class ProjectLevelController extends BaseController
             }
 
             $this->ProjectRoomProducts->cloneProjectRoomProducts($productsData, $sourceDestinationRoomIdMap);
-            
+            if ($insertProjectQuotations) {
+                $roomparams = ['where' => ['project_id' => $this->requestData['project_id'], 'level' => $this->requestData['destination_levels']]];
+                $projectRooms = $this->ProjectRooms->fetchData($roomparams);
+                $this->ProjectRoomQuotation->cloneQuotation($projectRooms, $filterQuotation, $roomQuotations, $this->userInfo);
+            }
+
+            $this->db->trans_commit();
             $this->session->set_flashdata("flash-message", $this->lang->line('level_clone_successful'));
             $this->session->set_flashdata("flash-type", "success");
             json_dump([
@@ -187,6 +210,7 @@ class ProjectLevelController extends BaseController
                 'msg' => $this->lang->line('level_clone_successful')
             ]);
         } catch (\Exception $error) {
+            $this->db->trans_rollback();
             json_dump(
                 [
                     "success" => false,

@@ -9,7 +9,7 @@ class Employee extends REST_Controller
 
     use Notifier, PermissionHandler;
 
-    public function __construct() 
+    public function __construct()
     {
         error_reporting(-1);
         ini_set('display_errors', 1);
@@ -50,7 +50,7 @@ class Employee extends REST_Controller
                 if ($respArr['code'] != SUCCESS_CODE) {
                     $this->response($respArr);
                 } else {
-                    $user_info = $respArr['userinfo'];                    
+                    $user_info = $respArr['userinfo'];
                 }
                 /*
                  * Validate if user is not blocked
@@ -59,37 +59,36 @@ class Employee extends REST_Controller
                     $this->response(array('code' => ACCOUNT_BLOCKED, 'msg' => $this->lang->line('account_blocked'), 'result' => (object)[]));
                 }
                 if ($this->db->trans_status() === true) {
-                    $this->db->trans_commit(); 
-                    if($user_info['company_id'] > 0 && $user_info['is_owner'] == '2') {
+                    $this->db->trans_commit();
+                    if ($user_info['company_id'] > 0 && $user_info['is_owner'] == '2') {
                         $fields = 'erm.er_id,erm.requested_by,u.user_id';
                         $myemployeerequests = $this->Common_model->EemployeeRequestsbyUser($fields, $user_info['user_id'], $user_info['company_id'], '0');
                         //pr($myemployeerequests);
                         //echo $this->db->last_query(); die;
-                        if($myemployeerequests) {
-                            if(is_array($myemployeerequests[0])) {
-                                foreach($myemployeerequests as $req){
+                        if ($myemployeerequests) {
+                            if (is_array($myemployeerequests[0])) {
+                                foreach ($myemployeerequests as $req) {
                                     $userreq[] = $req['user_id'];
-                                }                                                                
-                            }else{
+                                }
+                            } else {
                                 $userreq[] = $myemployeerequests['user_id'];
                             }
                             $whereArr['where_not_in'] = ['user_id'=>$userreq];
                         }
                         //pr($whereArr);
                         //$whereArr['where'] = ['company_id'=>$user_info['company_id'],'is_owner'=>'1'];
-                        //$myEmployeeList =  $this->Common_model->fetch_data('ai_user', 'user_id,first_name,middle_name,last_name,email,user_type,is_owner,IF(image !="",image,"") as image,IF(image_thumb !="",image_thumb,"") as image_thumb', $whereArr, false); 
+                        //$myEmployeeList =  $this->Common_model->fetch_data('ai_user', 'user_id,first_name,middle_name,last_name,email,user_type,is_owner,IF(image !="",image,"") as image,IF(image_thumb !="",image_thumb,"") as image_thumb', $whereArr, false);
                          $myEmployeeList = $this->Common_model->getMyEmployeesList('u.user_id,u.first_name,u.middle_name,u.last_name,u.email,u.user_type,u.is_owner,IF(u.image !="",u.image,"") as image,IF(u.image_thumb !="",u.image_thumb,"") as image_thumb', $user_info['user_id'], $user_info['company_id']);
                         //echo $this->db->last_query(); die;
-                        if(!$myEmployeeList) {
+                        if (!$myEmployeeList) {
                             $myEmployeeList = [];
                         }
                         $this->response(array('code' => SUCCESS_CODE, 'msg' => $this->lang->line('process_success'), 'result' => $myEmployeeList));
-                    }else{
+                    } else {
                         $myEmployeeList = [];
                         $this->response(array('code' => NO_DATA_FOUND, 'msg' => $this->lang->line('no_data_found'), 'result' => $myEmployeeList));
                     }
                     //pr($myEmployeeList);
-                    
                 }
             } catch (Exception $e) {
                 $this->db->trans_rollback();
@@ -103,7 +102,7 @@ class Employee extends REST_Controller
         }
     }
     
-    public function myemployeereuestlist_post() 
+    public function myemployeereuestlist_post()
     {
         $postDataArr = $this->post();
         $config = [];
@@ -113,7 +112,7 @@ class Employee extends REST_Controller
                 'field' => 'accesstoken',
                 'label' => 'Access Token',
                 'rules' => 'required'
-            ),                       
+            ),
         );
         
         $this->form_validation->set_rules($config);
@@ -123,7 +122,6 @@ class Employee extends REST_Controller
         $this->form_validation->set_message('required', 'Please enter the %s');
 
         if ($this->form_validation->run()) {
-
             try {
                 $this->load->library('commonfn');
                 $respArr = $this->Common_model->getUserInfo($postDataArr['accesstoken'], ['u.user_id','company_id','is_owner','user_type','status']);
@@ -136,7 +134,7 @@ class Employee extends REST_Controller
                 if ($respArr['code'] != SUCCESS_CODE) {
                     $this->response($respArr);
                 } else {
-                    $user_info = $respArr['userinfo'];                    
+                    $user_info = $respArr['userinfo'];
                 }
                 /*
                  * Validate if user is not blocked
@@ -145,13 +143,13 @@ class Employee extends REST_Controller
                     $this->response(array('code' => ACCOUNT_BLOCKED, 'msg' => $this->lang->line('account_blocked'), 'result' => (object)[]));
                 }
                 if ($this->db->trans_status() === true) {
-                    $this->db->trans_commit(); 
-                    if($user_info['company_id'] > 0 && $user_info['is_owner'] == '2') {
+                    $this->db->trans_commit();
+                    if ($user_info['company_id'] > 0 && $user_info['is_owner'] == '2') {
                         $fields = 'erm.*,u.user_id,u.first_name,u.middle_name,u.last_name,email,user_type,is_owner,IF(image !="",image,"") as image,IF(image_thumb !="",image_thumb,"") as image_thumb';
                         $myemployeerequests = $this->Common_model->EemployeeRequestsbyUser($fields, $user_info['user_id'], $user_info['company_id'], '0');
                         //echo $this->db->last_query(); die;
                         // print_r($myemployeerequests);
-                        if(!empty($myemployeerequests)) {
+                        if (!empty($myemployeerequests)) {
                             /*echo count($myemployeerequests); ;
                             var_dump(is_array($myemployeerequests[0]));die;
                             if(is_array($myemployeerequests[0]) === FALSE){
@@ -159,7 +157,7 @@ class Employee extends REST_Controller
                                 $myemployeerequests = $myem;
                             }*/
                             $this->response(array('code' => SUCCESS_CODE, 'msg' => $this->lang->line('process_success'), 'result' => $myemployeerequests));
-                        }else{
+                        } else {
                             $myemployeerequests = [];
                             $this->response(array('code' => NO_DATA_FOUND, 'msg' => $this->lang->line('no_data_found'), 'result' => $myemployeerequests));
                         }
@@ -168,7 +166,6 @@ class Employee extends REST_Controller
                         $this->response(array('code' => NO_DATA_FOUND, 'msg' => $this->lang->line('no_data_found'), 'result' =>  $myemployeerequests));
                     }
                     //pr($myEmployeeList);
-                    
                 }
             } catch (Exception $e) {
                 $this->db->trans_rollback();
@@ -219,27 +216,28 @@ class Employee extends REST_Controller
      *     type="string"
      *   ),
      * @SWG\Response(response=200, description="Employee List"),
-     * @SWG\Response(response=101, description="Account Blocked"),     
-     * @SWG\Response(response=201, description="Header is missing"),        
+     * @SWG\Response(response=101, description="Account Blocked"),
+     * @SWG\Response(response=201, description="Header is missing"),
      * @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
      * )
      */
-    public function actiononemployee_post() 
+    public function actiononemployee_post()
     {
         $postDataArr = $this->post();
         $language_code = $this->langcode_validate();
         $config = [];
         $head = $this->head();
-        if ((!isset($head['accesstoken']) || empty(trim($head['accesstoken']))) && (!isset($head['Accesstoken']) || empty(trim($head['Accesstoken']))) ) {
+        if ((!isset($head['accesstoken']) || empty(trim($head['accesstoken']))) && (!isset($head['Accesstoken']) || empty(trim($head['Accesstoken'])))) {
             $this->response(
                 [
                 "code" => HTTP_UNAUTHORIZED,
                 "api_code_result" => "UNAUTHORIZED",
                 "msg" => $this->lang->line("invalid_access_token")
-                ], HTTP_UNAUTHORIZED
+                ],
+                HTTP_UNAUTHORIZED
             );
         }
-        if (isset($head['Accesstoken']) && !empty($head['Accesstoken']) ) {
+        if (isset($head['Accesstoken']) && !empty($head['Accesstoken'])) {
             $head['accesstoken'] = $head['Accesstoken'];
         }
         $config = array(
@@ -247,17 +245,17 @@ class Employee extends REST_Controller
                 'field' => 'employee_id',
                 'label' => 'Employee ID',
                 'rules' => 'required'
-            ), 
+            ),
             array(
                 'field' => 'er_id',
                 'label' => 'Rquested ID',
                 'rules' => 'required'
-            ), 
+            ),
             array(
                 'field' => 'action',
                 'label' => 'Action',
                 'rules' => 'required'
-            ),  
+            ),
         );
         
         $this->form_validation->set_rules($config);
@@ -267,10 +265,9 @@ class Employee extends REST_Controller
         $this->form_validation->set_message('required', 'Please enter the %s');
 
         if ($this->form_validation->run()) {
-
             try {
                 $this->load->library('commonfn');
-                $respArr = $this->Common_model->getUserInfo($head['accesstoken'], ['u.user_id','company_id','is_owner','user_type','status']);                
+                $respArr = $this->Common_model->getUserInfo($head['accesstoken'], ['u.user_id','company_id','is_owner','user_type','status']);
                 $user_info = [];
                 
                 /*
@@ -279,7 +276,7 @@ class Employee extends REST_Controller
                 if ($respArr['code'] != SUCCESS_CODE) {
                     $this->response($respArr);
                 } else {
-                    $user_info = $respArr['userinfo'];                    
+                    $user_info = $respArr['userinfo'];
                 }
                 /*
                  * Validate if user is not blocked
@@ -288,18 +285,18 @@ class Employee extends REST_Controller
                     $this->response(array('code' => ACCOUNT_BLOCKED, 'msg' => $this->lang->line('account_blocked'), 'result' => (object)[]));
                 }
                 $whereArr['where'] = ['er_id'=>$postDataArr['er_id']];
-                $myEmployeedetail =  $this->Common_model->fetch_data('employee_request_master', 'requested_by,requested_to,status', $whereArr, true);   
+                $myEmployeedetail =  $this->Common_model->fetch_data('employee_request_master', 'requested_by,requested_to,status', $whereArr, true);
                 
-                if(!empty($myEmployeedetail) && $myEmployeedetail['requested_by'] == $postDataArr['employee_id']) {                    
-                    $whereArr['where'] = ['er_id'=>$postDataArr['er_id']];                
+                if (!empty($myEmployeedetail) && $myEmployeedetail['requested_by'] == $postDataArr['employee_id']) {
+                    $whereArr['where'] = ['er_id'=>$postDataArr['er_id']];
                     $updaterequesr =  $this->Common_model->update_single('employee_request_master', ['status'=>$postDataArr['action']], $whereArr);
                 } else {
                      $this->response(array('code' => INVALID_REQUEST_ID, 'msg' => $this->lang->line('invalid_request_id'), 'result' => (object)[]));
                 }
                 if ($this->db->trans_status() === true) {
-                    $this->db->trans_commit(); 
+                    $this->db->trans_commit();
                     
-                    if($updaterequesr) {
+                    if ($updaterequesr) {
                         $companyId = $user_info['company_id'];
                         $companyInfo = $this->Common_model->fetch_data('company_master', 'company_name', [
                             'where' => ['company_id' => $companyId]
@@ -308,10 +305,10 @@ class Employee extends REST_Controller
                         if ($postDataArr['action'] === 1) {
                             $this->approvePermission($myEmployeedetail['requested_to'], $myEmployeedetail['requested_by'], $companyName);
                         } else {
-                            $this->rejectRequest();
+                            $this->rejectRequest($myEmployeedetail['requested_to'], $myEmployeedetail['requested_by'], $companyName);
                         }
                         $this->response(array('code' => SUCCESS_CODE, 'msg' => $this->lang->line('process_success'), 'result' => (object)[]));
-                    }else{                        
+                    } else {
                         $this->response(array('code' => TRY_AGAIN_CODE, 'msg' => $this->lang->line('process_failuare'), 'result' => (object)[]));
                     }
                 }
@@ -327,7 +324,7 @@ class Employee extends REST_Controller
         }
     }
 
-    public function employeedetail_post() 
+    public function employeedetail_post()
     {
         $postDataArr = $this->post();
         $config = [];
@@ -337,7 +334,7 @@ class Employee extends REST_Controller
                 'field' => 'employee_id',
                 'label' => 'Employee ID',
                 'rules' => 'trim|required'
-            ), 
+            ),
         );
         
         $this->form_validation->set_rules($config);
@@ -347,10 +344,9 @@ class Employee extends REST_Controller
         $this->form_validation->set_message('required', 'Please enter the %s');
 
         if ($this->form_validation->run()) {
-
             try {
                 $this->load->library('commonfn');
-                $respArr = $this->Common_model->getUserInfo($postDataArr['accesstoken'], ['u.user_id','company_id','is_owner','user_type','status']);                
+                $respArr = $this->Common_model->getUserInfo($postDataArr['accesstoken'], ['u.user_id','company_id','is_owner','user_type','status']);
                 $user_info = [];
                 
                 /*
@@ -359,7 +355,7 @@ class Employee extends REST_Controller
                 if ($respArr['code'] != SUCCESS_CODE) {
                     $this->response($respArr);
                 } else {
-                    $user_info = $respArr['userinfo'];                    
+                    $user_info = $respArr['userinfo'];
                 }
                 /*
                  * Validate if user is not blocked
@@ -369,20 +365,19 @@ class Employee extends REST_Controller
                 }
                 
                 if ($this->db->trans_status() === true) {
-                    $this->db->trans_commit(); 
+                    $this->db->trans_commit();
                     
                     /* I have to work in this area*/
                     $whereArr['where'] = ['user_id'=>$postDataArr['employee_id'],'is_owner'=>'1'];
-                    $myEmployeeDetail =  $this->Common_model->fetch_data('ai_user', 'user_id,first_name,middle_name,last_name,email,company_id,IF(image !="",CONCAT("' . IMAGE_PATH . '","",image),"") as image,IF(image_thumb !="",CONCAT("' . THUMB_IMAGE_PATH . '","",image_thumb),"") as image_thumb', $whereArr, true); 
+                    $myEmployeeDetail =  $this->Common_model->fetch_data('ai_user', 'user_id,first_name,middle_name,last_name,email,company_id,IF(image !="",CONCAT("' . IMAGE_PATH . '","",image),"") as image,IF(image_thumb !="",CONCAT("' . THUMB_IMAGE_PATH . '","",image_thumb),"") as image_thumb', $whereArr, true);
                         
-                    if($user_info['company_id'] > 0 && $user_info['is_owner'] == '2' && $user_info['company_id'] == $myEmployeeDetail['company_id']) {
+                    if ($user_info['company_id'] > 0 && $user_info['is_owner'] == '2' && $user_info['company_id'] == $myEmployeeDetail['company_id']) {
                         $this->response(array('code' => SUCCESS_CODE, 'msg' => $this->lang->line('process_success'), 'result' => $myEmployeeDetail));
-                    }else {
+                    } else {
                         $myEmployeeDetail = [];
                         $this->response(array('code' => NO_DATA_FOUND, 'msg' => $this->lang->line('no_data_found'), 'result' => (object)$myEmployeeDetail));
                     }
                     /* I have to work in this area*/
-                    
                 }
             } catch (Exception $e) {
                 $this->db->trans_rollback();
@@ -504,27 +499,28 @@ class Employee extends REST_Controller
      *     type="string"
      *   ),
      * @SWG\Response(response=200, description="Employee List"),
-     * @SWG\Response(response=101, description="Account Blocked"),     
-     * @SWG\Response(response=201, description="Header is missing"),        
+     * @SWG\Response(response=101, description="Account Blocked"),
+     * @SWG\Response(response=201, description="Header is missing"),
      * @SWG\Response(response=418, description="Required Parameter Missing or Invalid"),
      * )
      */
-    public function setpermissopnforemp_post() 
+    public function setpermissopnforemp_post()
     {
         $postDataArr = $this->post();
         $langugage_code = $this->langcode_validate();
         $config = [];
         $head = $this->head();
-        if ((!isset($head['accesstoken']) || empty(trim($head['accesstoken']))) && (!isset($head['Accesstoken']) || empty(trim($head['Accesstoken']))) ) {
+        if ((!isset($head['accesstoken']) || empty(trim($head['accesstoken']))) && (!isset($head['Accesstoken']) || empty(trim($head['Accesstoken'])))) {
             $this->response(
                 [
                 "code" => HTTP_UNAUTHORIZED,
                 "api_code_result" => "UNAUTHORIZED",
                 "msg" => $this->lang->line("invalid_access_token")
-                ], HTTP_UNAUTHORIZED
+                ],
+                HTTP_UNAUTHORIZED
             );
         }
-        if (isset($head['Accesstoken']) && !empty($head['Accesstoken']) ) {
+        if (isset($head['Accesstoken']) && !empty($head['Accesstoken'])) {
             $head['accesstoken'] = $head['Accesstoken'];
         }
         $config = array(
@@ -532,7 +528,7 @@ class Employee extends REST_Controller
                 'field' => 'employee_id',
                 'label' => 'Employee ID',
                 'rules' => 'required'
-            ),  
+            ),
         );
         
         $this->form_validation->set_rules($config);
@@ -542,7 +538,6 @@ class Employee extends REST_Controller
         $this->form_validation->set_message('required', 'Please enter the %s');
 
         if ($this->form_validation->run()) {
-
             try {
                 $this->load->library('commonfn');
                 $respArr = $this->Common_model->getUserInfo($head['accesstoken'], ['u.user_id','company_id','is_owner','user_type','status']);
@@ -554,7 +549,7 @@ class Employee extends REST_Controller
                 if ($respArr['code'] != SUCCESS_CODE) {
                     $this->response($respArr);
                 } else {
-                    $user_info = $respArr['userinfo'];                    
+                    $user_info = $respArr['userinfo'];
                 }
                 /*
                  * Validate if user is not blocked
@@ -564,7 +559,7 @@ class Employee extends REST_Controller
                 }
                 //pr($user_info);
                 $whereArr['where'] = ['employee_id'=>$postDataArr['employee_id'],'user_id'=>$user_info['user_id']];
-                $myEmployeepermissiondetail =  $this->Common_model->fetch_data('user_employee_permission', '*', $whereArr, true);                         
+                $myEmployeepermissiondetail =  $this->Common_model->fetch_data('user_employee_permission', '*', $whereArr, true);
                 //pr($myEmployeepermissiondetail);
                 $insArr['quote_view'] = $postDataArr['quote_view'];
                 $insArr['quote_add'] = $postDataArr['quote_add'];
@@ -578,22 +573,22 @@ class Employee extends REST_Controller
                 $insArr['project_add'] = $postDataArr['project_add'];
                 $insArr['project_edit'] = $postDataArr['project_edit'];
                 $insArr['project_delete'] = $postDataArr['project_delete'];
-                if(!empty($myEmployeepermissiondetail)) { 
+                if (!empty($myEmployeepermissiondetail)) {
                     //die('update');
                     $insArr['modify_date'] = date('Y-m-d H:i:s');
-                    $whereArr['where'] = ['pr_id'=>$myEmployeepermissiondetail['pr_id']];                
-                    $updaterequesr =  $this->Common_model->update_single('user_employee_permission', $insArr, $whereArr); 
-                }else{
+                    $whereArr['where'] = ['pr_id'=>$myEmployeepermissiondetail['pr_id']];
+                    $updaterequesr =  $this->Common_model->update_single('user_employee_permission', $insArr, $whereArr);
+                } else {
                     //die('insert');
                     $insArr['user_id'] = $user_info['user_id'];
                     $insArr['employee_id'] = $postDataArr['employee_id'];
-                    $insertrequesr =  $this->Common_model->insert_single('user_employee_permission', $insArr); 
+                    $insertrequesr =  $this->Common_model->insert_single('user_employee_permission', $insArr);
                 }
                 if ($this->db->trans_status() === true) {
-                    $this->db->trans_commit(); 
+                    $this->db->trans_commit();
 
                     $this->notifyPermissionGranted($myEmployeepermissiondetail['user_id'], $myEmployeepermissiondetail['employee_id'], $myEmployeepermissiondetail, $insArr);
-                    $this->response(array('code' => SUCCESS_CODE, 'msg' => $this->lang->line('process_success'), 'result' => (object)[])); 
+                    $this->response(array('code' => SUCCESS_CODE, 'msg' => $this->lang->line('process_success'), 'result' => (object)[]));
                 }
             } catch (Exception $e) {
                 $this->db->trans_rollback();
@@ -613,7 +608,7 @@ class Employee extends REST_Controller
         $language_code = trim($language_code);
         $valid_language_codes = ["en","da","nb","sv","fi","fr","nl","de"];
 
-        if (empty($language_code) ) {
+        if (empty($language_code)) {
             $this->response(
                 [
                 'code' => HTTP_UNPROCESSABLE_ENTITY,
@@ -626,7 +621,7 @@ class Employee extends REST_Controller
             );
         }
 
-        if (! in_array($language_code, $valid_language_codes) ) {
+        if (! in_array($language_code, $valid_language_codes)) {
             $this->response(
                 [
                 'code' => HTTP_UNPROCESSABLE_ENTITY,

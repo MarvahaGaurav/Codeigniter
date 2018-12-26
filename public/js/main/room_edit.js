@@ -36,10 +36,62 @@ requirejs(
             $roomLuminariesX = $("#room_luminaries_x"),
             $roomLuminariesY = $("#room_luminaries_y"),
             $xyTotal = $("#xy_total"),
-            $luxValues = $("input[name='lux_values']")
-            $finalRoomSubmission = $("#final-room-submission");
+            $finalRoomSubmission = $("#final-room-submission"),
+            $luxValues = $("input[name='lux_values']"),
+            $calculatedLuxValue = $("input[name='calculated_lux_values']");
 
-        $(".dialux-suggestions-fields").on("change keydown", function () {
+        var addFormData = getFormData($editForm);
+
+        if (
+            ("room_id" in addFormData && addFormData["room_id"].trim().length > 0) &&
+            ("article_code" in addFormData && addFormData["article_code"].trim().length > 0) &&
+            ("product_id" in addFormData && addFormData["product_id"].trim().length > 0) &&
+            ("length" in addFormData && addFormData["length"].trim().length > 0) &&
+            ("width" in addFormData && addFormData["width"].trim().length > 0) &&
+            ("height" in addFormData && addFormData["height"].trim().length > 0) &&
+            ("lux_values" in addFormData && addFormData["lux_values"].trim().length > 0) &&
+            ("maintainance_factor" in addFormData && addFormData["maintainance_factor"].trim().length > 0)
+        ) {
+            $.ajax({
+                url: window.location.protocol + "//" + window.location.host + "/xhttp/quick-calc/suggestions",
+                method: "POST",
+                data: addFormData,
+                dataType: "json",
+                beforeSend: function () {
+                    $roomLuminariesX.attr("value", "");
+                    $roomLuminariesX.attr("placeholder", "loading...");
+                    $roomLuminariesX.attr("disabled", "disabled");
+                    $roomLuminariesY.attr("value", "");
+                    $roomLuminariesY.attr("placeholder", "loading...");
+                    $roomLuminariesY.attr("disabled", "disabled");
+                    $finalRoomSubmission.attr("disabled", "disabled");
+                },
+                success: function (response) {
+                    $roomLuminariesX.attr("placeholder", "");
+                    $roomLuminariesX.removeAttr("disabled");
+                    $roomLuminariesY.attr("placeholder", "");
+                    $roomLuminariesY.removeAttr("disabled");
+                    $finalRoomSubmission.removeAttr("disabled");
+                    if (response.success) {
+                        $roomLuminariesX.val(response.data.luminaireCountInX);
+                        $roomLuminariesY.val(response.data.luminaireCountInY);
+                        $xyTotal.val(response.data.luminaireCount);
+                        $calculatedLuxValue.removeAttr('readonly');
+                        $calculatedLuxValue.val((response.data.illuminance.toFixed(2)));
+                        $calculatedLuxValue.attr('readonly', 'readonly');
+                    }
+                },
+                error: function (error) {
+                    $roomLuminariesX.attr("placeholder", "");
+                    $roomLuminariesX.removeAttr("disabled");
+                    $roomLuminariesY.attr("placeholder", "");
+                    $roomLuminariesY.removeAttr("disabled");
+                    $finalRoomSubmission.removeAttr("disabled");
+                }
+            });
+        }
+
+        $(".dialux-suggestions-fields").on("change keyup", function () {
             var self = this,
                 $self = $(self),
                 formData = getFormData($editForm);
@@ -78,10 +130,12 @@ requirejs(
                             $roomLuminariesX.val(response.data.luminaireCountInX);
                             $roomLuminariesY.val(response.data.luminaireCountInY);
                             $xyTotal.val(response.data.luminaireCount);
-                            // $luxValues.val((response.data.illuminance));
+                            $calculatedLuxValue.removeAttr('readonly');
+                            $calculatedLuxValue.val((response.data.illuminance.toFixed(2)));
+                            $calculatedLuxValue.attr('readonly', 'readonly');
                         }
                     },
-                    error: function(error) {
+                    error: function (error) {
                         $roomLuminariesX.attr("placeholder", "");
                         $roomLuminariesX.removeAttr("disabled");
                         $roomLuminariesY.attr("placeholder", "");
@@ -97,7 +151,7 @@ requirejs(
         $("#display-advanced-options").on("change", function () {
             var self = this,
                 $self = $(self);
-            
+
             if (self.checked) {
                 $advancedOptionsDiv.slideDown();
             } else {
@@ -163,7 +217,7 @@ requirejs(
 
         $("#edit_room_form").validate({
             rules: validationRules,
-            submitHandler: function ( form ) {
+            submitHandler: function (form) {
                 $("#final-room-submission").attr("disabled", "disabled");
                 form.submit();
             }
