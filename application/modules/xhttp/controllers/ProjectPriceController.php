@@ -161,6 +161,15 @@ class ProjectPriceController extends BaseController
                 $this->UtilModel->updateTableData($updateData, 'project_quotations', ['id' =>$quotationData['id'] ]);
                 
             }
+
+            /*****************send email to user ******************/
+           
+            $this->load->library('Commonfn');
+
+            $data['subject'] = $this->lang->line('quote_price_submitted');
+            $data['email'] = 'nirmalsingh.chauhan@appinventiv.com';
+            $data['mailerName'] = 'sendquote';
+            $isSend =$this->commonfn->sendEmailToUser($data);
             
             
             
@@ -198,7 +207,7 @@ class ProjectPriceController extends BaseController
            
             $this->load->library('Commonfn');
 
-            $data['subject'] = 'Quote Submitted';
+            $data['subject'] = $this->lang->line('project_price_submitted');
             $data['email'] = $this->requestData['email'];
             $data['mailerName'] = 'sendquote';
             $isSend =$this->commonfn->sendEmailToUser($data);
