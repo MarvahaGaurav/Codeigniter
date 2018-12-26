@@ -1,0 +1,18 @@
+#view-result-modal {
+    text-align: center;
+    padding: 0!important;
+}
+
+#view-result-modal:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -4px;
+}
+
+#view-result-modal .modal-dialog {
+    display: inline-block;
+    text-align: left;
+    vertical-align: middle;
+}

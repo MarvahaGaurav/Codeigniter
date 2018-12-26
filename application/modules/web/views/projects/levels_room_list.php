@@ -1,3 +1,4 @@
+<span id="view-result-pop" data-to-view-result="<?php echo isset($roomViewResult)?$roomViewResult:'false' ?>"></span>
 <div class="inner-container">
     <div class="container">
 
@@ -166,6 +167,26 @@
                     <p>Tap on <a href="login.html" class="page-link">Add Room</a> button to add a room.</p>
                 </div> -->
         <!-- no record found -->
+    </div>
+</div>
+
+<div id="view-result-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-custom">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center">View Calculated Result</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-description"></div>
+            </div>
+            <div class="modal-button-wrapper text-center">
+                <button type="button" class="custom-btn btn-margin btn-width cancel no" data-dismiss="modal">Close</button>
+                <button type="button" class="custom-btn btn-margin btn-width save yes redirectable" data-redirect-to="<?php echo isset($viewResultProjectRoomId)&&!empty($viewResultProjectRoomId)?base_url('home/projects/view-result/' . $viewResultProjectRoomId):'javascript:void(0)' ?>" id="view-room-result">View</button>
+            </div>
+        </div>
     </div>
 </div>
 
