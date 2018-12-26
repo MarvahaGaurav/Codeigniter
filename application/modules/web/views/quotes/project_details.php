@@ -304,7 +304,7 @@
 
 <!------send email to customer modal--->
 
-<div id="send-email-to-customer" class="modal fade" role="dialog" >
+<!-- <div id="send-email-to-customer" class="modal fade" role="dialog" >
     <div class="modal-dialog modal-custom">
         <div class="modal-content">
             <div class="modal-header">
@@ -336,5 +336,5 @@
         </div>
 
     </div>
-</div>
+</div> -->
 

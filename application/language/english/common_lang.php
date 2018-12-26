@@ -263,6 +263,8 @@ $lang['delete_quote_confirmation'] = 'Are you sure want to delete this quote?';
 $lang['delete_quote'] = 'Delete Quote';
 $lang['quote_not_found'] = 'Quote not found';
 $lang['quote_deleted'] = 'Quote deleted sucessfully';
+$lang['project_price_submitted'] = 'Project Price Submitted';
+$lang['quote_price_submitted'] = 'Quote Price Submitted';
 
 
 

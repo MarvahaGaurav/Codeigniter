@@ -187,7 +187,9 @@
             <div class="modal-footer">
                 <div class="text-center button-wrapper">
                     <button type="button" class="custom-btn btn-margin btn-width save" data-csrf='<?php echo $csrf ?>' data-text="<?php echo $this->lang->line('select') ?>" id="final-price-submit" data-clone=""><?php echo $this->lang->line('add_final_price_button_txt') ?></button>
+                    <button type="button" class="custom-btn btn-margin btn-width save" data-target="#send-email-to-customer" data-csrf='<?php echo $csrf ?>' data-text="<?php echo $this->lang->line('select') ?>" id="final-project-email-now" data-clone=""><?php echo $this->lang->line('send-email-now') ?></button>
                 </div>
+                
             </div>
             <?php }?>
         </div>
@@ -195,4 +197,41 @@
     </div>
 </div>
 <?php } ?>
+
+<!------send email to customer modal--->
+
+<div id="send-email-to-customer" class="modal fade" role="dialog" >
+    <div class="modal-dialog modal-custom">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <div class="text-center">
+                    <h4 class="modal-title"><?php echo $this->lang->line('send_email_to_customer_txt') ?></h4>
+                </div>
+            </div>
+            <div class="modal-body">
+                <?php echo form_open('', ['id' => 'installer-send-email', 'class' => 'form-horizontal', 'role' => 'form']) ?>
+                <div class="projectPric">
+                <div class="form-group">
+                        	
+                    <label for="contact-email" class="col-sm-6 control-label" id="email_error">E-mail:</label>
+                            <div class="col-sm-10">
+                            	<input type="text" name="email" required class="form-control" id="contact-email" placeholder="you@example.com">
+                                
+                                <div class="has-error" id="emails"></div>
+                            </div>
+                        </div>            
+                </div>
+                <?php echo form_close() ?>
+
+            </div>
+
+            <div class="text-center button-wrapper">
+                    <button type="button" class="custom-btn btn-margin btn-width save" data-csrf='<?php echo $csrf ?>' data-text="<?php echo $this->lang->line('select') ?>" value="<?php echo $this->lang->line('send_email') ?>" id="send-email" data-clone=""><?php echo $this->lang->line('send_email') ?></button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 

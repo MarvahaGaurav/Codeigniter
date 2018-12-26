@@ -88,9 +88,9 @@ requirejs(
         },
         success: function (response) {
           if (response.success) {
-            //window.location.reload();
-            $('#project-final-price-modal').modal('hide');
-            $('#send-email-to-customer').modal('show');
+            window.location.reload();
+            //$('#project-final-price-modal').modal('hide');
+            //$('#send-email-to-customer').modal('show');
 
           }
         },
@@ -100,12 +100,20 @@ requirejs(
       })
     });
 
-    $("#send-email-to-customer").on("click", function () {
+    $("#final-project-email-now").on("click", function () {
+      $('#project-final-price-modal').modal('hide');
+      $('#send-email-to-customer').modal('show');
+
+     
+    });
+
+
+    $("#send-email").on("click", function () {
       var self = this,
         $self = $(this),
         $installerSubmitData = $("#installer-send-email");
 
-      console.log($('#send-email-to-customer').text().trim());
+      //console.log($('#send-email-to-customer').text().trim());
 
       var formData = getFormData($installerSubmitData);
       var text = $self.text();
@@ -135,7 +143,7 @@ requirejs(
           success: function (response) {
             if (response.success) {
               //window.location.reload();
-              window.location.href = window.location.protocol + "//" + window.location.host + "/home/quotes/awaiting";
+              window.location.href = window.location.protocol + "//" + window.location.host + "/home/projects";
             }
           },
           error: function (error) {
