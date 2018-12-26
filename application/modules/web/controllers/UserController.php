@@ -218,19 +218,18 @@ class UserController extends BaseController
                 $this->session->set_flashdata("flash-type", "success");
                 redirect(base_url("home/settings/" . encryptDecrypt($userData['user_id'])));
             } else {
-                
             }
         }
         $this->data['user'] = $userData;
         $this->data['js'] = "settings";
         $this->data['discount_price'] = 0;
 
-         if ((int)$this->userInfo['is_owner'] === ROLE_OWNER && (int)$this->userInfo['user_type'] === INSTALLER) {
-             $discountPrice = $this->UtilModel->selectQuery('company_discount', 'company_master', [
-                 'where' => ['company_id' => $this->userInfo['company_id']], "single_row" => true
-             ]);
-             $this->data['discount_price'] = $discountPrice['company_discount'];
-         }
+        if ((int)$this->userInfo['is_owner'] === ROLE_OWNER && (int)$this->userInfo['user_type'] === INSTALLER) {
+            $discountPrice = $this->UtilModel->selectQuery('company_discount', 'company_master', [
+                'where' => ['company_id' => $this->userInfo['company_id']], "single_row" => true
+            ]);
+            $this->data['discount_price'] = $discountPrice['company_discount'];
+        }
         
         load_website_views("users/settings", $this->data);
     }

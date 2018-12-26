@@ -17,6 +17,7 @@ class BaseController extends MY_Controller
     protected $datetime;
     protected $timestamp;
     protected $user;
+    protected $languageLocale;
     protected $languageCode;
 
     public function __construct()
@@ -37,8 +38,32 @@ class BaseController extends MY_Controller
         $this->languageCode = "en";
         $this->employeePermission = [];
         $this->data['activePage'] = '';
+        $this->languageLocale = [
+            "en" => "english",
+            "da" => "danish",
+            "nb" => "norwegian",
+            "sv" => "swedish",
+            "fi" => "finnish",
+            "fr" => "french",
+            "nl" => "dutch",
+            "de" => "german"
+        ];
+        $this->loadLanguage();
         // $this->employeePermission          = retrieveEmployeePermission($this->session->userdata('sg_userinfo')['user_id']);
         // $this->data['employee_permission'] = $this->employeePermission;
+    }
+
+    private function loadLanguageFile()
+    {
+        $class = $this->router->fetch_class();
+        $method = $this->router->fetch_method();
+        $this->load->config('lang');
+        $languageFileConfig = $this->config->item('websiteLang');
+        if (isset($languageFileConfig[$class], $languageFileConfig[$class][$method]) && is_array($languageFileConfig[$class][$method])) {
+            foreach ($languageFileConfig[$class][$method] as $files) {
+                $this->lang->load($file, $this->languageLocale[$this->languageCode]);
+            }
+        }
     }
 
     private function getNotifications($userId)
@@ -135,29 +160,29 @@ class BaseController extends MY_Controller
      * @return array
      */
     protected function handleEmployeePermission($userTypesToCheck, $permissionsToCheck, $redirectUrl)
-    { 
+    {
         
         if (!is_array($userTypesToCheck) || !is_array($permissionsToCheck)) {
             show404($this->lang->line('internal_server_error'), $redirectUrl);
         }
         if (in_array((int)$this->userInfo['user_type'], $userTypesToCheck, true) &&
         (int)$this->userInfo['is_owner'] === ROLE_EMPLOYEE
-        ) { 
+        ) {
             $this->load->helper('common');
             $this->data['permissions'] = $this->employeePermission;
             
-            if (empty($this->employeePermission)) { 
+            if (empty($this->employeePermission)) {
                 show404($this->lang->line('adequate_permission_required'), $redirectUrl);
             }
 
-            $permissionKeys = array_keys($this->employeePermission); 
+            $permissionKeys = array_keys($this->employeePermission);
             
-            foreach ($permissionsToCheck as $permissionToCheck) { 
-                if (!in_array($permissionToCheck, $permissionKeys)) { 
+            foreach ($permissionsToCheck as $permissionToCheck) {
+                if (!in_array($permissionToCheck, $permissionKeys)) {
                     show404($this->lang->line('adequate_permission_required'), $redirectUrl);
                 }
                     
-                if (!(bool)$this->employeePermission[$permissionToCheck]) { 
+                if (!(bool)$this->employeePermission[$permissionToCheck]) {
                     show404($this->lang->line('adequate_permission_required'), $redirectUrl);
                 }
             }
@@ -183,7 +208,7 @@ class BaseController extends MY_Controller
             (int)$this->userInfo['user_type'],
             $validUserTypes,
             true
-        )) { 
+        )) {
             $message = strlen(trim($message)) > 0 ? $message : $this->lang->line('forbidden_action');
             show404($message, $redirectUrl);
         }
@@ -214,7 +239,7 @@ class BaseController extends MY_Controller
                     isset($notification['messages'], $notification['messages']['message'])? $notification['messages']['message']: ''
                 );
                 unset($notification['messages']);
-            } else if ((int)$notification['type'] === NOTIFICATION_ADMIN_NOTIFICATION && isset($notification['admin_messages'], $notification['admin_messages']['title'])) {
+            } elseif ((int)$notification['type'] === NOTIFICATION_ADMIN_NOTIFICATION && isset($notification['admin_messages'], $notification['admin_messages']['title'])) {
                 $notification['message'] = $notification['admin_messages']['title'];
             }
             if ((int)$notification['type'] === NOTIFICATION_SEND_QUOTES) {

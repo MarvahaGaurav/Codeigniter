@@ -258,7 +258,7 @@ class Tco
 
     public function yearlySavingInCo2Emissions()
     {
-        return $this->yearlySavingInKwH() * 2000;
+        return $this->yearlySavingInKwH() / 2000;
     }
 
     public function yearlySavingInMaintainance()
