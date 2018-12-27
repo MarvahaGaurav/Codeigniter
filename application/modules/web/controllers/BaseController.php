@@ -22,20 +22,19 @@ class BaseController extends MY_Controller
 
     public function __construct()
     {
-        error_reporting(-1);
-        ini_set('display_errors', 1);
+        // error_reporting(-1);
+        // ini_set('display_errors', 1);
         parent::__construct();
         $this->load->helper(['url', 'form', 'custom_cookie', 'common', 'debuging', 'datetime']);
         $this->load->model('Common_model');
         $this->load->library('session');
-        $this->lang->load('common', "english");
-        $this->lang->load('rest_controller', "english");
         $this->userInfo                    = [];
         $this->datetime                    = date("Y-m-d H:i:s");
         $this->timestamp                   = time();
         $this->user_query_fields           = 'status,user_id,first_name,image,email, user_type, is_owner, company_id';
         $this->session_data                = $this->session->userdata('sg_userinfo');
         $this->languageCode = "en";
+        $this->setLanguageCode();
         $this->employeePermission = [];
         $this->data['activePage'] = '';
         $this->languageLocale = [
@@ -48,6 +47,8 @@ class BaseController extends MY_Controller
             "nl" => "dutch",
             "de" => "german"
         ];
+        $this->lang->load('common', $this->languageLocale[$this->languageCode]);
+        $this->lang->load('rest_controller', $this->languageLocale[$this->languageCode]);
         $this->loadLanguage();
         // $this->employeePermission          = retrieveEmployeePermission($this->session->userdata('sg_userinfo')['user_id']);
         // $this->data['employee_permission'] = $this->employeePermission;
@@ -63,6 +64,14 @@ class BaseController extends MY_Controller
             foreach ($languageFileConfig[$class][$method] as $files) {
                 $this->lang->load($file, $this->languageLocale[$this->languageCode]);
             }
+        }
+    }
+
+    private function setLanguageCode()
+    {
+        $languageCookie = get_cookie("lang_locale_sg");
+        if (in_array($languageCookie, ["en","da","nb","sv","fi","fr","nl","de"])) {
+            $this->languageCode = $languageCookie;
         }
     }
 
