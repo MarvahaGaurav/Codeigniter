@@ -25,7 +25,7 @@ class BaseController extends MY_Controller
         // error_reporting(-1);
         // ini_set('display_errors', 1);
         parent::__construct();
-        $this->load->helper(['url', 'form', 'custom_cookie', 'common', 'debuging', 'datetime']);
+        $this->load->helper(['url', 'form', 'custom_cookie', 'common', 'debuging', 'datetime', 'cookie']);
         $this->load->model('Common_model');
         $this->load->library('session');
         $this->userInfo                    = [];
@@ -49,7 +49,7 @@ class BaseController extends MY_Controller
         ];
         $this->lang->load('common', $this->languageLocale[$this->languageCode]);
         $this->lang->load('rest_controller', $this->languageLocale[$this->languageCode]);
-        $this->loadLanguage();
+        $this->loadLanguageFile();
         // $this->employeePermission          = retrieveEmployeePermission($this->session->userdata('sg_userinfo')['user_id']);
         // $this->data['employee_permission'] = $this->employeePermission;
     }
@@ -61,7 +61,7 @@ class BaseController extends MY_Controller
         $this->load->config('lang');
         $languageFileConfig = $this->config->item('websiteLang');
         if (isset($languageFileConfig[$class], $languageFileConfig[$class][$method]) && is_array($languageFileConfig[$class][$method])) {
-            foreach ($languageFileConfig[$class][$method] as $files) {
+            foreach ($languageFileConfig[$class][$method] as $file) {
                 $this->lang->load($file, $this->languageLocale[$this->languageCode]);
             }
         }

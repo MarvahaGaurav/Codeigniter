@@ -62,18 +62,18 @@
                             -->
                             <div class="sl-nav navbar-right">
                                 <ul>
-                                <li><a href="javascript:void(0)" class="lang"><b>Language</b><i class="fa fa-angle-down" aria-hidden="true"></i></a>
-                                    <ul>
-                                    <li><a href="#!"><i class="sl-flag flag-gb"></i> <span>English</span></a></li>
-                                    <li><a href="#!"><i class="sl-flag flag-no"></i> <span>Norsk</span></a></li>
-                                    <li><a href="#!"><i class="sl-flag flag-se"></i> <span>Svenska</span></a></li>
-                                    <li><a href="#!"><i class="sl-flag flag-dk"></i> <span>Dansk</span></a></li>
-                                    <li><a href="#!"><i class="sl-flag flag-de"></i> <span>Deutsch</span></a></li>
-                                    <li><a href="#!"><i class="sl-flag flag-nl"></i> <span>Nederlands</span></a></li>
-                                    <li><a href="#!"><i class="sl-flag flag-fr"></i> <span>Français</span></a></li>
-                                    <li><a href="#!"><i class="sl-flag flag-fi"></i> <span>Suomi</span></a></li>
-                                    </ul>
-                                </li>
+                                    <li><a href="javascript:void(0)" class="lang"><b><?php echo $this->lang->line('language');?></b><i class="fa fa-angle-down" aria-hidden="true"></i></a>
+                                        <ul class="locale">
+                                        <li data-locale='en'><a href="#!"><i class="sl-flag flag-en"></i> <span>English</span></a></li>
+                                        <li data-locale='da'><a href="#!"><i class="sl-flag flag-da"></i> <span>Danish</span></a></li>
+                                        <li data-locale='nb'><a href="#!"><i class="sl-flag flag-nb"></i> <span>Norwegian</span></a></li>
+                                        <li data-locale='sv'><a href="#!"><i class="sl-flag flag-sv"></i> <span>Swedish</span></a></li>
+                                        <li data-locale='fi'><a href="#!"><i class="sl-flag flag-fi"></i> <span>Finnish</span></a></li>
+                                        <li data-locale='fr'><a href="#!"><i class="sl-flag flag-fr"></i> <span>French</span></a></li>
+                                        <li data-locale='nl'><a href="#!"><i class="sl-flag flag-nl"></i> <span>Dutch</span></a></li>
+                                        <li data-locale='de'><a href="#!"><i class="sl-flag flag-de"></i> <span>German</span></a></li>
+                                        </ul>
+                                    </li>
                                 </ul>
                             </div>
                                 <ul class="nav navbar-nav navbar-right">
