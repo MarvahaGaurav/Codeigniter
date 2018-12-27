@@ -363,13 +363,7 @@ $lang['Save'] = 'sparen';
 $lang['Cancel'] = 'Stornieren';
 
 
-
-
-
 $lang['Technician_Requests'] = 'Technikeranfragen';
-
-
-
 
 /*
 

@@ -413,3 +413,38 @@ function restrictCharacters(e) {
 }
 
 $(".restrict-characters").on('keydown', restrictCharacters);
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+var locale = getCookie('lang_locale_sg');
+if (!locale) {
+    setCookie('lang_locale_sg', 'en', 2);
+}
+$('.locale li').on('click', function () {
+    locale = $(this).attr('data-locale');
+    setCookie('lang_locale_sg', locale, 2);
+    location.reload();
+});
+
