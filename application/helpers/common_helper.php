@@ -320,3 +320,11 @@ function retrieveEmployeePermission($userId)
     
     return $data;
 }
+
+if (! function_exists("__()")) {
+    function __(string $lang)
+    {
+        $ci = &get_instance();
+        echo $ci->lang->line($lang);
+    }
+}

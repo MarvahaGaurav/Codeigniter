@@ -267,4 +267,199 @@ $lang['project_price_submitted'] = 'Project Price Submitted';
 $lang['quote_price_submitted'] = 'Quote Price Submitted';
 
 
+$lang['language'] = 'Language';
+$lang['hi'] = 'Hi!';
+$lang['guest'] = 'Guest';
+$lang['login'] = 'Login';
+$lang['sign_up'] = 'SignUp';
+$lang['My_Profile'] = 'My Profile';
+$lang['Settings'] = 'Settings';
+$lang['Logout'] = 'Logout';
 
+$lang['Quick_Calculations'] = 'Quick Calculations';
+
+$lang['Application'] = 'Application';
+$lang['Lux_Values'] = 'Lux Values';
+$lang['Number_Luminaires'] = 'Number Luminaires';
+$lang['Project'] = 'Project';
+$lang['Project_list'] = 'Project list';
+$lang['Companies'] = 'Companies';
+$lang['All_Companies'] = 'All Companies';
+$lang['Create_New_Project'] = 'Create New Project';
+$lang['Favourite_Companies'] = 'Favourite Companies';
+$lang['Quotes'] = 'Quotes';
+$lang['Quotes_List'] = 'Quotes List';
+$lang['Awaiting'] = 'Awaiting';
+$lang['Submitted'] = 'Submitted';
+$lang['Approved'] = 'Approved';
+
+$lang['Inspirations'] = 'Inspirations';
+$lang['Inspiration_List'] = 'Inspiration List';
+$lang['Add_Inspiration'] = 'Add Inspiration';
+
+$lang['Manage_Technician'] = 'Manage Technician';
+$lang['Technician_List'] = 'Technician List';
+$lang['Request_List'] = 'Request List';
+
+
+$lang['Home'] = 'Home';
+$lang['Applications'] = 'Applications';
+$lang['Select_Application'] = 'Select Application';
+$lang['Residential_Lighting'] = 'Residential Lighting';
+$lang['Professional_lighting'] = 'Professional lighting';
+
+
+/*
+    web/CompaniesController/companies
+*/
+
+$lang['Home'] = 'Home';
+$lang['Companies'] = 'Companies';
+$lang['Message'] = 'We are continously designing, prototyping and testing new products to enable us to deliver products that are energy efficient and environmental friendly, in combination with a creation of the ambiance that you need, always keeping in mind that luminaires have a great impact on the environment.';
+$lang['Search_Companies'] = 'Search Companies';
+$lang['Search'] = 'Search';
+$lang['City'] = 'City';
+$lang['Country'] = 'Country';
+$lang['Actions'] = 'Actions';
+$lang['View'] = 'View';
+
+
+/*
+    web/CompaniesController/companyDetails/$1
+*/
+
+$lang['Home'] = 'Home';
+$lang['Companies'] = 'Companies';
+$lang['Company_Profile'] = 'Company Profile';
+$lang['Search_Inspirations'] = 'Search Inspirations';
+$lang['Actions'] = 'Actions';
+$lang['View'] = 'View';
+$lang['Basic_Details'] = 'Basic Details';
+$lang['Mobile_Number'] = 'Mobile Number';
+$lang['Alternate_Number'] = 'Mobile Number';
+$lang['Inspiration'] = 'Inspiration';
+$lang['Search'] = 'Search';
+$lang['Inspirations'] = 'Inspirations';
+$lang['Location'] = 'Location';
+$lang['Products'] = 'Products';
+$lang['Description'] = 'Description';
+
+
+
+/*
+    web/CompaniesController/favoriteCompanies
+*/
+
+$lang['Home'] = 'Home';
+$lang['Search_Companies'] = 'Search Companies';
+$lang['Search'] = 'Search';
+$lang['Companies'] = 'Companies';
+$lang['City'] = 'City';
+$lang['Country'] = 'Country';
+$lang['Actions'] = 'Actions';
+$lang['View'] = 'View';
+$lang['Favorite_Companies'] = 'Favorite Companies';
+
+
+
+/*
+    web/InspirationController/details/$1
+*/
+
+$lang['Home'] = 'Home';
+$lang['Inspirations'] = 'Inspirations';
+$lang['Inspiration_Details'] = 'Inspiration Details';
+$lang['Basic_Details'] = 'Basic Details';
+$lang['Company'] = 'Company';
+$lang['Project_Location'] = 'Project Location';
+$lang['Products'] = 'Products';
+$lang['Description'] = 'Description';
+
+
+/*
+    web/InspirationController
+*/
+
+$lang['Home'] = 'Home';
+$lang['Inspirations'] = 'Inspirations';
+$lang['Message'] = 'We are continously designing, prototyping and testing new products to enable us to deliver products that are energy efficient and environmental friendly, in combination with a creation of the ambiance that you need, always keeping in mind that luminaires have a great impact on the environment.';
+$lang['Inspiration'] = 'Inspiration';
+$lang['Search_Inspirations'] = 'Search Inspirations';
+
+$lang['Location'] = 'Location';
+$lang['Products'] = 'Products';
+$lang['Actions'] = 'Actions';
+$lang['Inspiration_Description'] = 'Inspiration Description';
+
+
+$lang['Edit_Inspiration'] = 'Edit Inspiration';
+$lang['Add_Inspiration'] = 'Add Inspiration';
+
+$lang['Inspiration_Details'] = 'Inspiration Details';
+$lang['Description'] = 'Description';
+$lang['Inspiration_Title'] = 'Inspiration Title';
+$lang['Address'] = 'Address';
+$lang['Used_Products'] = 'Used Products';
+$lang['Add_Images_Video'] = 'Add Images/Video';
+
+$lang['Submit'] = 'Submit';
+$lang['Pick_your_Location'] = 'Pick your Location';
+$lang['Done'] = 'Done';
+$lang['Name'] = 'Name';
+$lang['Click_to_pick_location'] = 'Click to pick location';
+
+
+/*
+    Manage Technician
+*/
+$lang['Home'] = 'Home';
+$lang['Manage_Technician'] = 'Manage Technician';
+$lang['Technician_List'] = 'Technician List';
+$lang['Technician'] = 'Technician';
+$lang['City'] = 'City';
+$lang['Country'] = 'Country';
+$lang['Actions'] = 'Actions';
+$lang['Account_Type'] = 'Account Type';
+
+$lang['View'] = 'View';
+$lang['Delete'] = 'Delete';
+$lang['Search'] = 'Search';
+$lang['Search_Technician'] = 'Search Technician';
+
+$lang['Technician_Profile'] = 'Technician Profile';
+
+$lang['Basic_Details'] = 'Basic Details';
+$lang['Email_ID'] = 'Email ID';
+
+$lang['Mobile_Number'] = 'Mobile Number';
+$lang['Alternate_Number'] = 'Mobile Number';
+
+$lang['Address_Details'] = 'Address Details';
+$lang['Zipcode'] = 'Zipcode';
+$lang['Project'] = 'Project';
+$lang['Inspiration'] = 'Inspiration';
+$lang['Quote'] = 'Quote';
+$lang['View'] = 'View';
+$lang['Add'] = 'Add';
+$lang['Edit'] = 'Edit';
+$lang['Delete'] = 'Delete';
+$lang['Accept'] = 'Accept';
+$lang['Reject'] = 'Reject';
+$lang['Save'] = 'Save';
+$lang['Cancel'] = 'Cancel';
+
+
+$lang['Technician_Requests'] = 'Technician Requests';
+
+
+/*
+
+    Footer
+*/
+
+
+$lang['About_us'] = 'About us';
+$lang['Contact'] = 'Contact';
+$lang['Terms'] = 'Terms of sale and delivery - SG Production/Riegens UK';
+$lang['Address'] = 'Address';
+$lang['Contact_info'] = 'Contact info';

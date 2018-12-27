@@ -1,6 +1,6 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 /* WEBSITE LANG FILES */
 $lang["not_an_image"] = "Not an Image";
 $lang["image_too_big"] = "Image too large";
@@ -178,3 +178,207 @@ $lang['application_data_fetched'] = "Application data fetched";
 
 $lang['products_found'] = "Products Found";
 
+
+
+$lang['language'] = 'Sprache';
+$lang['hi'] = 'Hallo!';
+$lang['guest'] = 'Gast';
+$lang['login'] = 'Anmeldung';
+$lang['sign_up'] = 'Anmelden';
+$lang['My_Profile'] = 'Mein Profil';
+$lang['Settings'] = 'die Einstellungen';
+$lang['Logout'] = 'Ausloggen';
+
+$lang['Quick_Calculations'] = 'Hurtige beregninger';
+$lang['Application'] = 'Ansøgning';
+$lang['Lux_Values'] = 'Lux værdier';
+$lang['Number_Luminaires'] = 'Nummerarmaturer';
+$lang['Project'] = 'Projekt';
+$lang['Project_list'] = 'Projektliste';
+$lang['Companies'] = 'Virksomheder';
+$lang['All_Companies'] = 'Alle selskaber';
+$lang['Create_New_Project'] = 'Neues Projekt erstellen';
+$lang['Favourite_Companies'] = 'Lieblingsunternehmen';
+$lang['Quotes'] = 'Zitate';
+$lang['Quotes_List'] = 'Zitate Liste';
+$lang['Awaiting'] = 'Warten';
+$lang['Submitted'] = 'Eingereicht';
+$lang['Approved'] = 'Genehmigt';
+$lang['Inspirations'] = 'Inspirationen';
+$lang['Inspiration_List'] = 'Inspirationsliste';
+$lang['Add_Inspiration'] = 'Inspiration hinzufügen';
+
+$lang['Manage_Technician'] = 'Techniker verwalten';
+$lang['Technician_List'] = 'Technikerliste';
+$lang['Request_List'] = 'Wunschliste';
+
+
+
+$lang['Home'] = 'Zuhause';
+$lang['Applications'] = 'Anwendungen';
+$lang['Select_Application'] = 'Wählen Sie Anwendung';
+$lang['Residential_Lighting'] = 'Wohnraumbeleuchtung';
+$lang['Professional_lighting'] = 'Professionelle Beleuchtung';
+
+
+
+/*
+    web/CompaniesController/companies
+*/
+
+$lang['Home'] = 'Zuhause';
+$lang['Companies'] = 'Virksomheder';
+$lang['Message'] = 'Wir entwickeln, prototypisieren und testen ständig neue Produkte, damit wir energieeffiziente und umweltfreundliche Produkte liefern können, in Verbindung mit der Schaffung des von Ihnen benötigten Ambientes. Dabei berücksichtigen wir immer, dass Leuchten die Umwelt stark beeinflussen.';
+$lang['Search_Companies'] = 'Unternehmen suchen';
+$lang['Search'] = 'Unternehmen';
+$lang['City'] = 'Stadt';
+$lang['Country'] = 'Land';
+$lang['Actions'] = 'Aktionen';
+$lang['View'] = 'Aussicht';
+
+
+/*
+    web/CompaniesController/companyDetails/$1
+*/
+
+$lang['Home'] = 'Zuhause';
+$lang['Companies'] = 'Virksomheder';
+$lang['Company_Profile'] = 'Firmenprofil';
+$lang['Search_Inspirations'] = 'Inspirationen suchen';
+$lang['Actions'] = 'Aktionen';
+$lang['View'] = 'Aussicht';
+$lang['Basic_Details'] = 'Grundlegende Details';
+$lang['Mobile_Number'] = 'Handynummer';
+$lang['Alternate_Number'] = 'Alternative Nummer';
+
+$lang['Inspiration'] = 'Inspiration';
+$lang['Search'] = 'Unternehmen';
+$lang['Inspirations'] = 'Inspirationen';
+
+$lang['Location'] = 'Ort';
+$lang['Products'] = 'Produkte';
+$lang['Description'] = 'Beschreibung';
+
+
+
+/*
+    web/CompaniesController/favoriteCompanies
+*/
+$lang['Home'] = 'Zuhause';
+$lang['Search_Companies'] = 'Unternehmen suchen';
+$lang['Search'] = 'Unternehmen';
+$lang['Companies'] = 'Virksomheder';
+$lang['City'] = 'Stadt';
+$lang['Country'] = 'Land';
+$lang['Actions'] = 'Aktionen';
+$lang['View'] = 'Aussicht';
+$lang['Favorite_Companies'] = 'Lieblingsunternehmen';
+
+
+/*
+    web/InspirationController/details/$1
+*/
+
+$lang['Home'] = 'Home';
+$lang['Inspirations'] = 'Inspirationen';
+$lang['Inspiration_Details'] = 'Inspirationsdetails';
+$lang['Basic_Details'] = 'Grundlegende Details';
+$lang['Company'] = 'Unternehmen';
+$lang['Project_Location'] = 'Projektstandort';
+$lang['Products'] = 'Produkte';
+$lang['Description'] = 'Beschreibung';
+
+
+
+/*
+    web/InspirationController
+*/
+
+$lang['Home'] = 'Home';
+$lang['Inspirations'] = 'Inspirations';
+$lang['Message'] = 'Wir entwickeln, prototypisieren und testen ständig neue Produkte, damit wir energieeffiziente und umweltfreundliche Produkte liefern können, in Verbindung mit der Schaffung des von Ihnen benötigten Ambientes. Dabei berücksichtigen wir immer, dass Leuchten die Umwelt stark beeinflussen.';
+$lang['Inspiration'] = 'Inspiration';
+
+$lang['Search_Inspirations'] = 'Inspirationen suchen';
+
+$lang['Location'] = 'Ort';
+$lang['Products'] = 'Produkte';
+$lang['Actions'] = 'Aktionen';
+$lang['Inspiration_Description'] = 'Inspiration Beschreibung';
+
+$lang['Edit_Inspiration'] = 'Inspiration bearbeiten';
+$lang['Add_Inspiration'] = 'Inspiration hinzufügen';
+
+$lang['Inspiration_Details'] = 'Inspirationsdetails';
+$lang['Description'] = 'Beschreibung';
+$lang['Inspiration_Title'] = 'Inspiration Titel';
+$lang['Address'] = 'Adresse';
+$lang['Used_Products'] = 'Verwendete Produkte';
+$lang['Add_Images_Video'] = 'Bilder / Video hinzufügen';
+
+$lang['Submit'] = 'einreichen';
+$lang['Pick_your_Location'] = 'Wählen Sie Ihren Standort aus';
+$lang['Done'] = 'Erledigt';
+$lang['Name'] = 'Name';
+
+$lang['Click_to_pick_location'] = 'Klicken Sie, um den Ort auszuwählen';
+
+
+/*
+    Manage Technician
+*/
+$lang['Home'] = 'Home';
+$lang['Manage_Technician'] = 'Techniker verwalten';
+$lang['Technician_List'] = 'Technikerliste';
+$lang['Technician'] = 'Techniker';
+$lang['City'] = 'Stadt';
+$lang['Country'] = 'Land';
+$lang['Actions'] = 'Aktionen';
+$lang['Account_Type'] = 'Konto Typ';
+$lang['View'] = 'Aussicht';
+$lang['Delete'] = 'Löschen';
+$lang['Search'] = 'Unternehmen';
+$lang['Search_Technician'] = 'Techniker suchen';
+
+$lang['Technician_Profile'] = 'Technikerprofil';
+
+$lang['Basic_Details'] = 'Grundlegende Details';
+$lang['Email_ID'] = 'E-Mail-ID';
+$lang['Mobile_Number'] = 'Handynummer';
+$lang['Alternate_Number'] = 'Alternative Nummer';
+
+$lang['Address_Details'] = 'Adressen Details';
+$lang['Zipcode'] = 'Postleitzahl';
+$lang['Project'] = 'Projekt';
+$lang['Inspiration'] = 'Inspiration';
+$lang['Quote'] = 'Zitat';
+
+$lang['View'] = 'Aussicht';
+$lang['Add'] = 'Hinzufügen';
+$lang['Edit'] = 'Bearbeiten';
+$lang['Delete'] = 'Löschen';
+$lang['Accept'] = 'Akzeptieren';
+$lang['Reject'] = 'Ablehnen';
+$lang['Save'] = 'sparen';
+$lang['Cancel'] = 'Stornieren';
+
+
+
+
+
+$lang['Technician_Requests'] = 'Technikeranfragen';
+
+
+
+
+/*
+
+    Footer
+*/
+
+
+$lang['About_us'] = 'Über uns';
+$lang['Contact'] = 'Kontakt';
+$lang['Terms'] = 'Verkaufs- und Lieferbedingungen - SG Production / Riegens UK';
+$lang['Address'] = 'Adresse';
+$lang['Contact_info'] = 'Kontaktinformation';
